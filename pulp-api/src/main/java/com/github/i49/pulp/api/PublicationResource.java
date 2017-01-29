@@ -1,14 +1,20 @@
 package com.github.i49.pulp.api;
 
-import java.net.URI;
-
 /**
  * A resource that contains content or instructions that contribute to the logic and rendering of 
  * a publication.
  */
 public interface PublicationResource extends Comparable<PublicationResource> {
 
-	URI getIdentifier();
+	/**
+	 * Returns the name of this publication.
+	 * @return the name of this publication.
+	 */
+	String getName();
 	
+	/**
+	 * Returns the media type of this publication.
+	 * @return the media type of this publication.
+	 */
 	CoreMediaType getMediaType();
 }

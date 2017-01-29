@@ -34,27 +34,27 @@ public class PublicationResourceFactoryImpl implements PublicationResourceFactor
 	}
 	
 	@Override
-	public XhtmlContentDocument createXhtmlContentDocument(URI identifier, URI location) {
-		if (identifier == null || location == null) {
+	public XhtmlContentDocument createXhtmlContentDocument(String name, URI location) {
+		if (name == null || location == null) {
 			throw new NullPointerException();
 		}
-		return new SimpleXhtmlContentDocument(identifier, location);
+		return new SimpleXhtmlContentDocument(name, location);
 	}
 
 	@Override
-	public AuxiliaryResource createAuxiliaryResource(URI identifier, CoreMediaType mediaType, URI location) {
-		if (identifier == null || mediaType == null || location == null) {
+	public AuxiliaryResource createAuxiliaryResource(String name, CoreMediaType mediaType, URI location) {
+		if (name == null || mediaType == null || location == null) {
 			throw new NullPointerException();
 		}
-		return new SimpleAuxiliaryResource(identifier, mediaType, location);
+		return new SimpleAuxiliaryResource(name, mediaType, location);
 	}
 
 	private static class SimpleAuxiliaryResource extends AbstractPublicationResource implements AuxiliaryResource {
 
 		private final URI location;
 
-		public SimpleAuxiliaryResource(URI identifier, CoreMediaType mediaType, URI location) {
-			super(identifier, mediaType);
+		public SimpleAuxiliaryResource(String name, CoreMediaType mediaType, URI location) {
+			super(name, mediaType);
 			this.location = location;
 		}
 
@@ -68,8 +68,8 @@ public class PublicationResourceFactoryImpl implements PublicationResourceFactor
 
 		private boolean linear;
 		
-		public AbstractContentDocument(URI identifier, CoreMediaType mediaType, URI location) {
-			super(identifier, mediaType, location);
+		public AbstractContentDocument(String name, CoreMediaType mediaType, URI location) {
+			super(name, mediaType, location);
 		}
 		
 		@Override
@@ -85,8 +85,8 @@ public class PublicationResourceFactoryImpl implements PublicationResourceFactor
 	
 	private class SimpleXhtmlContentDocument extends AbstractContentDocument implements XhtmlContentDocument {
 
-		public SimpleXhtmlContentDocument(URI identifier, URI location) {
-			super(identifier, CoreMediaType.APPLICATION_XHTML_XML, location);
+		public SimpleXhtmlContentDocument(String name, URI location) {
+			super(name, CoreMediaType.APPLICATION_XHTML_XML, location);
 		}
 
 		@Override

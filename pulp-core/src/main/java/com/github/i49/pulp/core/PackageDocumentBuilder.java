@@ -1,6 +1,5 @@
 package com.github.i49.pulp.core;
 
-import java.net.URI;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -43,7 +42,7 @@ class PackageDocumentBuilder {
 	private Document doc;
 	private final OffsetDateTime now;
 	
-	private Map<URI, String> identifiers = new HashMap<>();
+	private Map<String, String> identifiers = new HashMap<>();
 	private int nextNumber;
 	
 	/**
@@ -210,11 +209,11 @@ class PackageDocumentBuilder {
 	 */
 	private Element item(PublicationResource resource) {
 		String id = nextItemId();
-		this.identifiers.put(resource.getIdentifier(), id);
+		this.identifiers.put(resource.getName(), id);
 		
 		Element item = doc.createElementNS(DEFAULT_NAMESPACE_URI, "item");
 		item.setAttribute("id", id);
-		item.setAttribute("href", resource.getIdentifier().toString());
+		item.setAttribute("href", resource.getName().toString());
 		item.setAttribute("media-type", resource.getMediaType().toString());
 		
 		String properties = itemProperties(resource);
@@ -255,7 +254,7 @@ class PackageDocumentBuilder {
 	 */
 	private Element itemref(ContentDocument document) {
 		Element itemref = doc.createElementNS(DEFAULT_NAMESPACE_URI, "itemref");
-		String idref = this.identifiers.get(document.getIdentifier());
+		String idref = this.identifiers.get(document.getName());
 		itemref.setAttribute("idref", idref);
 		if (!document.isLinear()) {
 			itemref.setAttribute("linear", "no");

@@ -1,7 +1,5 @@
 package com.github.i49.pulp.core;
 
-import java.net.URI;
-
 import com.github.i49.pulp.api.CoreMediaType;
 import com.github.i49.pulp.api.PublicationResource;
 
@@ -10,20 +8,20 @@ import com.github.i49.pulp.api.PublicationResource;
  */
 abstract class AbstractPublicationResource implements PublicationResource {
 
-	private final URI identifier;
+	private final String name;
 	private final CoreMediaType mediaType;
 	
-	protected AbstractPublicationResource(URI identifier, CoreMediaType mediaType) {
-		if (identifier == null || mediaType == null) {
+	protected AbstractPublicationResource(String name, CoreMediaType mediaType) {
+		if (name == null || mediaType == null) {
 			throw new NullPointerException();
 		}
-		this.identifier = identifier;
+		this.name = name;
 		this.mediaType = mediaType;
 	}
 
 	@Override
-	public URI getIdentifier() {
-		return identifier;
+	public String getName() {
+		return name;
 	}
 	
 	@Override
@@ -33,12 +31,12 @@ abstract class AbstractPublicationResource implements PublicationResource {
 
 	@Override
 	public String toString() {
-		return getIdentifier().toString();
+		return getName().toString();
 	}
 
 	@Override
 	public int hashCode() {
-		return identifier.hashCode();
+		return name.hashCode();
 	}
 
 	@Override
@@ -53,11 +51,11 @@ abstract class AbstractPublicationResource implements PublicationResource {
 			return false;
 		}
 		PublicationResource other = (PublicationResource)obj;
-		return getIdentifier().equals(other.getIdentifier());
+		return getName().equals(other.getName());
 	}
 
 	@Override
 	public int compareTo(PublicationResource other) {
-		return getIdentifier().compareTo(other.getIdentifier());
+		return getName().compareTo(other.getName());
 	}
 }

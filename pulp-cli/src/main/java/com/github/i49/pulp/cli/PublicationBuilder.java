@@ -69,15 +69,15 @@ class PublicationBuilder {
 			return;
 		}
 		
-		URI identifier = this.baseURI.relativize(location);
+		String name = this.baseURI.relativize(location).toString();
 		if (mediaType == CoreMediaType.APPLICATION_XHTML_XML) {
-			ContentDocument document = factory.createXhtmlContentDocument(identifier, location);
+			ContentDocument document = factory.createXhtmlContentDocument(name, location);
 			document.setLinear(true);
 			this.publication.getContentList().add(document);
 		} else {
-			AuxiliaryResource resource = factory.createAuxiliaryResource(identifier, mediaType, location);
+			AuxiliaryResource resource = factory.createAuxiliaryResource(name, mediaType, location);
 			this.publication.getAuxiliaryResources().add(resource);
-			Matcher m = COVER_IMAGE_PATTERN.matcher(identifier.toString());
+			Matcher m = COVER_IMAGE_PATTERN.matcher(name);
 			if (m.matches()) {
 				this.publication.setCoverImage(resource);
 			}
