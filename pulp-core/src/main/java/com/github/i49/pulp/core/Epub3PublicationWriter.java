@@ -1,10 +1,7 @@
 package com.github.i49.pulp.core;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,9 +16,8 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 
-import com.github.i49.pulp.api.AuxiliaryResource;
-import com.github.i49.pulp.api.ContentDocument;
 import com.github.i49.pulp.api.Publication;
+import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationWriter;
 
 /**
@@ -32,12 +28,9 @@ class Epub3PublicationWriter implements PublicationWriter {
 	private static final String MIMETYPE = "application/epub+zip";
 	private static final String DEFAULT_PACKAGE_DIR = "EPUB/";
 	private static final String PACKAGE_DOCUMENT_NAME = "package.opf";
-	private static final int BUFFER_SIZE = 128 * 1024;
 
 	private final Transformer transformer;
 	private final Archiver archiver;
-	private final List<ContentProcessor> processors;
-	private TocBuilder tocBuilder;
 	
 	private final DocumentBuilder documentBuilder;
 	
@@ -47,13 +40,10 @@ class Epub3PublicationWriter implements PublicationWriter {
 		this.documentBuilder = createDocumentBuilder();
 		this.transformer = createTransformer();
 		this.archiver = new ZipArchiver(stream);
-		this.processors = new ArrayList<>();
 	}
 
 	@Override
 	public void write(Publication pub) throws Exception {
-		this.tocBuilder = new TocBuilder();
-		addProcessor(this.tocBuilder);
 		writeAll(pub);
 	}
 
@@ -87,30 +77,15 @@ class Epub3PublicationWriter implements PublicationWriter {
 	}
 
 	private void writeAllResources(Publication publication) throws IOException {
-		for (ContentDocument resource: publication.getContentList()) {
-			writeResource(resource);
-		}
-		for (AuxiliaryResource resource: publication.getAuxiliaryResources()) {
+		for (PublicationResource resource: publication.getAllResources()) {
 			writeResource(resource);
 		}
 	}
 	
-	private void writeResource(ContentDocument resource) throws IOException {
-		if (resource instanceof AuxiliaryResource) {
-			writeResource((AuxiliaryResource)resource);
-		}
-	}
-	
-	private void writeResource(AuxiliaryResource resource) throws IOException {
+	private void writeResource(PublicationResource resource) throws IOException {
 		String entryName = this.packageDir + resource.getName().toString();
-		if (resource instanceof AuxiliaryResource) {
-			byte[] buffer = new byte[BUFFER_SIZE];
-			try (InputStream in = resource.openOctetStream(); OutputStream out = archiver.append(entryName)) {
-				int length = 0;
-				while ((length = in.read(buffer)) != -1) {
-					out.write(buffer, 0, length);
-				}
-			}
+		try (OutputStream out = archiver.append(entryName)) {
+			resource.persist(out);
 		}
 	}
 	
@@ -135,12 +110,9 @@ class Epub3PublicationWriter implements PublicationWriter {
 		this.transformer.transform(source, target);
 	}
 	
-	private void addProcessor(ContentProcessor processor) {
-		this.processors.add(processor);
-	}
-	
 	private static DocumentBuilder createDocumentBuilder() throws ParserConfigurationException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setNamespaceAware(true);
 		return factory.newDocumentBuilder();
 	}
 	

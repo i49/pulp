@@ -10,6 +10,7 @@ abstract class AbstractPublicationResource implements PublicationResource {
 
 	private final String name;
 	private final CoreMediaType mediaType;
+	private boolean primary;
 	
 	protected AbstractPublicationResource(String name, CoreMediaType mediaType) {
 		if (name == null || mediaType == null) {
@@ -17,6 +18,7 @@ abstract class AbstractPublicationResource implements PublicationResource {
 		}
 		this.name = name;
 		this.mediaType = mediaType;
+		this.primary = false;
 	}
 
 	@Override
@@ -28,34 +30,19 @@ abstract class AbstractPublicationResource implements PublicationResource {
 	public CoreMediaType getMediaType() {
 		return mediaType;
 	}
+	
+	@Override
+	public boolean isPrimary() {
+		return primary;
+	}
+	
+	@Override
+	public void setPrimary(boolean primary) {
+		this.primary = primary;
+	}
 
 	@Override
 	public String toString() {
 		return getName().toString();
-	}
-
-	@Override
-	public int hashCode() {
-		return name.hashCode();
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		PublicationResource other = (PublicationResource)obj;
-		return getName().equals(other.getName());
-	}
-
-	@Override
-	public int compareTo(PublicationResource other) {
-		return getName().compareTo(other.getName());
 	}
 }

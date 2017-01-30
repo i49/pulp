@@ -9,12 +9,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.github.i49.pulp.api.AuxiliaryResource;
-import com.github.i49.pulp.api.ContentDocument;
 import com.github.i49.pulp.api.CoreMediaType;
 import com.github.i49.pulp.api.Epub;
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Publication;
+import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationResourceFactory;
 
 /**
@@ -64,28 +63,26 @@ class PublicationBuilder {
 	}
 	
 	private void addResource(URI location) {
-		CoreMediaType mediaType = CoreMediaType.guessMediaType(location);
-		if (mediaType == null) {
+		String name = this.baseURI.relativize(location).toString();
+		PublicationResource resource = factory.createResource(name, location);
+		if (resource == null) {
 			return;
 		}
-		
-		String name = this.baseURI.relativize(location).toString();
+		this.publication.addResource(resource);
+		CoreMediaType mediaType = resource.getMediaType();
 		if (mediaType == CoreMediaType.APPLICATION_XHTML_XML) {
-			ContentDocument document = factory.createXhtmlContentDocument(name, location);
-			document.setLinear(true);
-			this.publication.getContentList().add(document);
-		} else {
-			AuxiliaryResource resource = factory.createAuxiliaryResource(name, mediaType, location);
-			this.publication.getAuxiliaryResources().add(resource);
+			resource.setPrimary(true);
+			this.publication.getContentList().add(resource.getName());
+		} else if (mediaType.getType().equals("image")) {
 			Matcher m = COVER_IMAGE_PATTERN.matcher(name);
 			if (m.matches()) {
-				this.publication.setCoverImage(resource);
+				this.publication.setCoverImage(name);
 			}
 		}
 	}
 	
 	protected void sortContentDocuments(Order order) {
-		List<ContentDocument> documents = this.publication.getContentList();
+		List<String> documents = this.publication.getContentList();
 		if (order == Order.ASCENDING) {
 			Collections.sort(documents);
 		} else {

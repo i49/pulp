@@ -16,8 +16,6 @@ import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.github.i49.pulp.api.AuxiliaryResource;
-import com.github.i49.pulp.api.ContentDocument;
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
@@ -193,10 +191,7 @@ class PackageDocumentBuilder {
 	 */
 	private Element manifest() {
 		Element manifest = doc.createElementNS(DEFAULT_NAMESPACE_URI, "manifest");
-		for (ContentDocument resource: publication.getContentList()) {
-			manifest.appendChild(item(resource));
-		}
-		for (AuxiliaryResource resource: publication.getAuxiliaryResources()) {
+		for (PublicationResource resource: publication.getAllResources()) {
 			manifest.appendChild(item(resource));
 		}
 		return manifest;
@@ -241,22 +236,25 @@ class PackageDocumentBuilder {
 	 */
 	private Element spine() {
 		Element spine = doc.createElementNS(DEFAULT_NAMESPACE_URI, "spine");
-		for (ContentDocument document: publication.getContentList()) {
-			spine.appendChild(itemref(document));
+		for (String name: publication.getContentList()) {
+			PublicationResource resource = publication.getResourceByName(name);
+			if (resource != null) {
+				spine.appendChild(itemref(resource));
+			}
 		}
 		return spine;
 	}
 	
 	/**
 	 * Creates an itemref element in spine. 
-	 * @param chapter the chapter for which an itemref will be created.
+	 * @param resource the resource to be added to the spine.
 	 * @return created itemref element.
 	 */
-	private Element itemref(ContentDocument document) {
+	private Element itemref(PublicationResource resource) {
 		Element itemref = doc.createElementNS(DEFAULT_NAMESPACE_URI, "itemref");
-		String idref = this.identifiers.get(document.getName());
+		String idref = this.identifiers.get(resource.getName());
 		itemref.setAttribute("idref", idref);
-		if (!document.isLinear()) {
+		if (!resource.isPrimary()) {
 			itemref.setAttribute("linear", "no");
 		}
 		return itemref;

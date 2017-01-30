@@ -1,7 +1,5 @@
 package com.github.i49.pulp.api;
 
-import java.net.URI;
-
 /**
  * The media types which specify types and formats of the Publication Resources
  * contained in a publication.
@@ -30,63 +28,38 @@ public enum CoreMediaType {
 	private final String type;
 	private final String subtype;
 	
+	/**
+	 * Constructs a media type.
+	 * @param type the type part of the media type.
+	 * @param subtype the subtype part of the media type.
+	 */
 	private CoreMediaType(String type, String subtype) {
 		this.type = type;
 		this.subtype = subtype;
 	}
 	
-	@Override
-	public String toString() {
-		return type + "/" + subtype;
+	/**
+	 * Returns the type part of this media type.
+	 * @return the type part of this media type. 
+	 */
+	public String getType() {
+		return type;
 	}
 	
 	/**
-	 * Guesses media type from a file extension.
-	 * @param location the location of the resource.
-	 * @return the media type found or {@code null} if not found.
+	 * Returns the subtype part of this media type.
+	 * @return the subtype part of this media type. 
 	 */
-	public static CoreMediaType guessMediaType(URI location) {
-		if (location == null) {
-			return null;
-		}
-		String path = location.getPath();
-		int lastIndex = path.lastIndexOf(".");
-		if (lastIndex < 0) {
-			return null;
-		}
-		String extension = path.substring(lastIndex + 1);
-		CoreMediaType mediaType = null;
-		switch (extension.toLowerCase()) {
-		case "xhtml":
-			mediaType = CoreMediaType.APPLICATION_XHTML_XML;
-			break;
-		case "ncx":
-			mediaType = CoreMediaType.APPLICATION_NCX_XML;
-			break;
-		case "otf":
-		case "ttf":
-			mediaType = CoreMediaType.APPLICATION_OPENTYPE;
-			break;
-		case "gif":
-			mediaType = CoreMediaType.IMAGE_GIF;
-			break;
-		case "jpg":
-		case "jpeg":
-			mediaType = CoreMediaType.IMAGE_JPEG;
-			break;
-		case "png":
-			mediaType = CoreMediaType.IMAGE_PNG;
-			break;
-		case "svg":
-			mediaType = CoreMediaType.IMAGE_SVG_XML;
-			break;
-		case "css":
-			mediaType = CoreMediaType.TEXT_CSS;
-			break;
-		case "js":
-			mediaType = CoreMediaType.TEXT_JAVASCRIPT;
-			break;
-		}
-		return mediaType;
+	public String getSubtype() {
+		return subtype;
+	}
+
+	/**
+	 * Return the string representation of this media type.
+	 * @return the string representation of this media type.
+	 */
+	@Override
+	public String toString() {
+		return type + "/" + subtype;
 	}
 }

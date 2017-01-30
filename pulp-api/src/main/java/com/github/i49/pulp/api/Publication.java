@@ -1,7 +1,7 @@
 package com.github.i49.pulp.api;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
  * A publication.
@@ -15,16 +15,44 @@ public interface Publication {
 	Metadata getMetadata();
 	
 	/**
-	 * Return the list of content documents.
-	 * @return the list of content documents.
+	 * Returns whether this publication contains the resource specified or not.
+	 * @param name the name of the resource.
+	 * @return {@code true} if this publication contains the resource, {@code false} otherwise.
 	 */
-	List<ContentDocument> getContentList();
+	boolean hasResource(String name);
 
 	/**
-	 * Returns auxiliary resources that help the rendering of this publication.
-	 * @return the set of auxiliary resources.
+	 * Returns the publication resource that has a name with the specified value in this publication.
+	 * @param name the name of the resource to be returned.
+	 * @return the resource if found in this publication, {@code null} otherwise. 
 	 */
-	Set<AuxiliaryResource> getAuxiliaryResources();
+	PublicationResource getResourceByName(String name);
+	
+	/**
+	 * Returns all resources contained in this publication.
+	 * @return all resources in this publication. The collection cannot be modified.
+	 */
+	Collection<PublicationResource> getAllResources();
+	
+	/**
+	 * Adds a publication resource to this publication.
+	 * @param resource the resource to be added to this publication.
+	 * @return this publication.
+	 */
+	Publication addResource(PublicationResource resource);
+	
+	/**
+	 * Removes a publication resource from this publication.
+	 * @param resource the resource to be removed from this publication.
+	 * @return this publication.
+	 */
+	Publication removeResource(PublicationResource resource);
+	
+	/**
+	 * Return the list of content names.
+	 * @return the list of content names.
+	 */
+	List<String> getContentList();
 
 	/**
 	 * Returns a resource that represents a cover image.
@@ -33,8 +61,9 @@ public interface Publication {
 	PublicationResource getCoverImage();
 
 	/**
-	 * Assigns a resource that represents a cover image.
-	 * @param resource the resource that represents a a cover image.
+	 * Select a publication resource representing a cover image of this publication.
+	 * @param name the name of the resource representing a cover image.
+	 * @return this publication.
 	 */
-	void setCoverImage(PublicationResource resource);
+	Publication setCoverImage(String name);
 }
