@@ -10,6 +10,8 @@ import com.github.i49.pulp.api.spi.EpubProvider;
  */
 public class EpubProviderImpl extends EpubProvider {
 	
+	private final XmlService xmlService = new XmlService();
+	
 	public EpubProviderImpl() {
 	}
 
@@ -20,11 +22,11 @@ public class EpubProviderImpl extends EpubProvider {
 
 	@Override
 	public PublicationResourceFactory createResourceFactory() {
-		return new PublicationResourceFactoryImpl();
+		return new PublicationResourceFactoryImpl(this.xmlService);
 	}
 
 	@Override
 	public PublicationWriterFactory createWriterFactory() {
-		return new PublicationWriterFactoryImpl();
+		return new PublicationWriterFactoryImpl(this.xmlService);
 	}
 }

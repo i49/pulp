@@ -1,7 +1,5 @@
 package com.github.i49.pulp.core;
 
-import javax.xml.parsers.DocumentBuilder;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -9,27 +7,25 @@ class ContainerXmlBuilder {
 	
 	private static final String DEFAULT_NAMESPACE_URI = "urn:oasis:names:tc:opendocument:xmlns:container";
 	
-	private final DocumentBuilder builder;
+	private final Document documemt;
 	
-	ContainerXmlBuilder(DocumentBuilder builder) {
-		this.builder = builder;
+	ContainerXmlBuilder(Document document) {
+		this.documemt = document;
 	}
 	
 	Document build(String packageDir) {
-		Document doc = builder.newDocument();
-	
-		Element root = doc.createElementNS(DEFAULT_NAMESPACE_URI, "container");
+		Element root = documemt.createElementNS(DEFAULT_NAMESPACE_URI, "container");
 		root.setAttribute("version", "1.0");
-		doc.appendChild(root);
+		documemt.appendChild(root);
 		
-		Element rootfiles = doc.createElementNS(DEFAULT_NAMESPACE_URI, "rootfiles");
+		Element rootfiles = documemt.createElementNS(DEFAULT_NAMESPACE_URI, "rootfiles");
 		root.appendChild(rootfiles);
 		
-		Element rootfile = doc.createElementNS(DEFAULT_NAMESPACE_URI, "rootfile");
+		Element rootfile = documemt.createElementNS(DEFAULT_NAMESPACE_URI, "rootfile");
 		rootfile.setAttribute("full-path", packageDir + "package.opf");
 		rootfile.setAttribute("media-type", "application/oebps-package+xml");
 		rootfiles.appendChild(rootfile);
 		
-		return doc;
+		return documemt;
 	}
 }

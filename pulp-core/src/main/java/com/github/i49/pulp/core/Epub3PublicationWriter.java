@@ -3,16 +3,7 @@ package com.github.i49.pulp.core;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 
@@ -29,17 +20,14 @@ class Epub3PublicationWriter implements PublicationWriter {
 	private static final String DEFAULT_PACKAGE_DIR = "EPUB/";
 	private static final String PACKAGE_DOCUMENT_NAME = "package.opf";
 
-	private final Transformer transformer;
 	private final Archiver archiver;
-	
-	private final DocumentBuilder documentBuilder;
+	private final XmlService xmlService;
 	
 	private String packageDir = DEFAULT_PACKAGE_DIR;
 	
-	public Epub3PublicationWriter(OutputStream stream) throws Exception {
-		this.documentBuilder = createDocumentBuilder();
-		this.transformer = createTransformer();
+	public Epub3PublicationWriter(OutputStream stream, XmlService xmlService) throws Exception {
 		this.archiver = new ZipArchiver(stream);
+		this.xmlService = xmlService;
 	}
 
 	@Override
@@ -65,15 +53,15 @@ class Epub3PublicationWriter implements PublicationWriter {
 	}
 	
 	private void writeContainerXml() throws IOException, TransformerException {
-		ContainerXmlBuilder builder = new ContainerXmlBuilder(documentBuilder); 
-		Document doc = builder.build(packageDir);
-		writeXmlEntry("META-INF/container.xml", doc);
+		ContainerXmlBuilder builder = new ContainerXmlBuilder(xmlService.createDocument()); 
+		Document document = builder.build(packageDir);
+		writeXmlDocument("META-INF/container.xml", document);
 	}
 
 	private void writePackageDocument(Publication publication) throws IOException, TransformerException {
-		PackageDocumentBuilder builder = new PackageDocumentBuilder(publication, documentBuilder); 
-		Document doc = builder.build();
-		writeXmlEntry(this.packageDir + PACKAGE_DOCUMENT_NAME, doc);
+		PackageDocumentBuilder builder = new PackageDocumentBuilder(xmlService.createDocument(), publication); 
+		Document document = builder.build();
+		writeXmlDocument(this.packageDir + PACKAGE_DOCUMENT_NAME, document);
 	}
 
 	private void writeAllResources(Publication publication) throws IOException {
@@ -89,40 +77,9 @@ class Epub3PublicationWriter implements PublicationWriter {
 		}
 	}
 	
-	private void writeXmlEntry(String entryName, Document doc) throws IOException, TransformerException {
+	private void writeXmlDocument(String entryName, Document document) throws IOException, TransformerException {
 		try (OutputStream stream = archiver.append(entryName)) {
-			writeXmlDeclaration(stream);	
-			transform(doc, stream);
+			xmlService.writeDocument(stream, document);
 		}
-	}
-	
-	private void writeXmlDeclaration(OutputStream stream) throws IOException {
-		writeText(stream, "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n");
-	}
-	
-	private void writeText(OutputStream stream, String text) throws IOException {
-		stream.write(text.getBytes());
-	}
-	
-	private void transform(Document doc, OutputStream stream) throws TransformerException {
-		DOMSource source = new DOMSource(doc);
-		StreamResult target = new StreamResult(stream);
-		this.transformer.transform(source, target);
-	}
-	
-	private static DocumentBuilder createDocumentBuilder() throws ParserConfigurationException {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setNamespaceAware(true);
-		return factory.newDocumentBuilder();
-	}
-	
-	private static Transformer createTransformer() throws TransformerConfigurationException {
-		TransformerFactory factory = TransformerFactory.newInstance();
-		Transformer t = factory.newTransformer();
-		t.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-		t.setOutputProperty(OutputKeys.INDENT, "yes");
-		t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-		t.setOutputProperty(OutputKeys.METHOD, "xml");
-		return t;
 	}
 }

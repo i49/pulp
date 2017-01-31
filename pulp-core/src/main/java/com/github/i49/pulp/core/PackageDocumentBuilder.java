@@ -11,8 +11,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import javax.xml.parsers.DocumentBuilder;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -36,8 +34,8 @@ class PackageDocumentBuilder {
 	
 	private static final DateTimeFormatter ISO8601_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	
+	private Document document;
 	private Publication publication;
-	private Document doc;
 	private final OffsetDateTime now;
 	
 	private Map<String, String> identifiers = new HashMap<>();
@@ -45,12 +43,12 @@ class PackageDocumentBuilder {
 	
 	/**
 	 * Construct this builder.
-	 * @param publication the publication for which a publication document will be built.
-	 * @param builder the XML document builder.
+	 * @param document the XML document of the package document.
+	 * @param publication the publication for which a package document will be built.
 	 */
-	PackageDocumentBuilder(Publication publication, DocumentBuilder builder) {
+	PackageDocumentBuilder(Document document, Publication publication) {
+		this.document = document;
 		this.publication = publication;
-		this.doc = builder.newDocument();
 		this.now = OffsetDateTime.now();
 		this.nextNumber = 1;
 	}
@@ -60,8 +58,8 @@ class PackageDocumentBuilder {
 	 * @return built package document.
 	 */
 	Document build() {
-		this.doc.appendChild(root());
-		return this.doc;
+		this.document.appendChild(root());
+		return this.document;
 	}
 	
 	/**
@@ -69,7 +67,7 @@ class PackageDocumentBuilder {
 	 * @return created element.
 	 */
 	private Element root() {
-		Element root = doc.createElementNS(DEFAULT_NAMESPACE_URI, "package");
+		Element root = document.createElementNS(DEFAULT_NAMESPACE_URI, "package");
 		root.setAttribute("version", VERSION);
 		root.setAttribute("unique-identifier", UNIQUE_IDENTIFIER);
 	
@@ -93,7 +91,7 @@ class PackageDocumentBuilder {
 	private Element metadata() {
 		Metadata meta = publication.getMetadata();
 
-		Element e = doc.createElementNS(DEFAULT_NAMESPACE_URI, "metadata");
+		Element e = document.createElementNS(DEFAULT_NAMESPACE_URI, "metadata");
 		e.setAttribute("xmlns:dc", DC_NAMESPACE_URI);
 
 		addIdentifier(e, meta);
@@ -175,8 +173,8 @@ class PackageDocumentBuilder {
 	}
 	
 	private Element createMetadata(String name, String value) {
-		Element e = doc.createElement(name);
-		e.appendChild(doc.createTextNode(value));
+		Element e = document.createElement(name);
+		e.appendChild(document.createTextNode(value));
 		return e;
 	}
 	
@@ -190,7 +188,7 @@ class PackageDocumentBuilder {
 	 * @return created manifest element.
 	 */
 	private Element manifest() {
-		Element manifest = doc.createElementNS(DEFAULT_NAMESPACE_URI, "manifest");
+		Element manifest = document.createElementNS(DEFAULT_NAMESPACE_URI, "manifest");
 		for (PublicationResource resource: publication.getAllResources()) {
 			manifest.appendChild(item(resource));
 		}
@@ -206,7 +204,7 @@ class PackageDocumentBuilder {
 		String id = nextItemId();
 		this.identifiers.put(resource.getName(), id);
 		
-		Element item = doc.createElementNS(DEFAULT_NAMESPACE_URI, "item");
+		Element item = document.createElementNS(DEFAULT_NAMESPACE_URI, "item");
 		item.setAttribute("id", id);
 		item.setAttribute("href", resource.getName().toString());
 		item.setAttribute("media-type", resource.getMediaType().toString());
@@ -235,7 +233,7 @@ class PackageDocumentBuilder {
 	 * @return created spine element.
 	 */
 	private Element spine() {
-		Element spine = doc.createElementNS(DEFAULT_NAMESPACE_URI, "spine");
+		Element spine = document.createElementNS(DEFAULT_NAMESPACE_URI, "spine");
 		for (String name: publication.getContentList()) {
 			PublicationResource resource = publication.getResourceByName(name);
 			if (resource != null) {
@@ -251,7 +249,7 @@ class PackageDocumentBuilder {
 	 * @return created itemref element.
 	 */
 	private Element itemref(PublicationResource resource) {
-		Element itemref = doc.createElementNS(DEFAULT_NAMESPACE_URI, "itemref");
+		Element itemref = document.createElementNS(DEFAULT_NAMESPACE_URI, "itemref");
 		String idref = this.identifiers.get(resource.getName());
 		itemref.setAttribute("idref", idref);
 		if (!resource.isPrimary()) {

@@ -2,16 +2,12 @@ package com.github.i49.pulp.core;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.EnumSet;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
 import com.github.i49.pulp.api.CoreMediaType;
 import com.github.i49.pulp.api.EpubException;
@@ -31,16 +27,10 @@ class PublicationResourceFactoryImpl implements PublicationResourceFactory {
 			CoreMediaType.APPLICATION_XHTML_XML,
 			CoreMediaType.IMAGE_SVG_XML);
 
-	private final DocumentBuilder xmlDocumentBuilder;
+	private final XmlService xmlService;
 	
-	PublicationResourceFactoryImpl() {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setNamespaceAware(true);
-		try {
-			this.xmlDocumentBuilder = factory.newDocumentBuilder();
-		} catch (ParserConfigurationException e) {
-			throw new EpubException(e.getMessage(), e);
-		}
+	PublicationResourceFactoryImpl(XmlService xmlService) {
+		this.xmlService = xmlService;
 	}
 
 	@Override
@@ -84,16 +74,30 @@ class PublicationResourceFactoryImpl implements PublicationResourceFactory {
 	}
 	
 	private class BasicXmlStreamResource extends BasicStreamResource implements XmlResource {
+		
+		private Document document;
 
 		public BasicXmlStreamResource(String name, CoreMediaType mediaType, URI location) {
 			super(name, mediaType, location);
 		}
 
 		@Override
+		public void persist(OutputStream stream) throws IOException {
+			Document document = getDocument();
+			if (document != null) {
+				xmlService.writeDocument(stream, document);
+			}
+		}
+
+		@Override
 		public Document getDocument() {
-			try (InputStream s = openStream()) {
-				return xmlDocumentBuilder.parse(s);
-			} catch (IOException | SAXException e) {
+			if (this.document != null) {
+				return this.document;
+			}
+			try (InputStream stream = openStream()) {
+				this.document = xmlService.readDocument(stream);
+				return this.document;
+			} catch (IOException e) {
 				throw new EpubException(e.getMessage(), e);
 			}
 		}
