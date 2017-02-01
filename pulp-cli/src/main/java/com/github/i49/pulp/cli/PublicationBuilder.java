@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -26,7 +27,8 @@ class PublicationBuilder {
 	private Order order = Order.ASCENDING;
 	private Publication publication;
 	private final PublicationResourceFactory factory;
-
+	private final List<String> contents = new ArrayList<>();
+	
 	private static final String METADATA_FILENAME = "metadata.yaml";
 	private static final Pattern COVER_IMAGE_PATTERN = Pattern.compile("cover.(png|gif|jpg|jpeg)");
 	
@@ -72,7 +74,7 @@ class PublicationBuilder {
 		CoreMediaType mediaType = resource.getMediaType();
 		if (mediaType == CoreMediaType.APPLICATION_XHTML_XML) {
 			resource.setPrimary(true);
-			this.publication.getContentList().add(resource.getName());
+			this.publication.getSpine().add(resource);
 		} else if (mediaType.getType().equals("image")) {
 			Matcher m = COVER_IMAGE_PATTERN.matcher(name);
 			if (m.matches()) {
@@ -82,11 +84,14 @@ class PublicationBuilder {
 	}
 	
 	protected void sortContentDocuments(Order order) {
-		List<String> documents = this.publication.getContentList();
 		if (order == Order.ASCENDING) {
-			Collections.sort(documents);
+			Collections.sort(this.contents);
 		} else {
-			Collections.sort(documents, Collections.reverseOrder());
+			Collections.sort(this.contents, Collections.reverseOrder());
+		}
+		for (String name: this.contents) {
+			PublicationResource resource = this.publication.getResourceByName(name);
+			this.publication.getSpine().add(resource);
 		}
 	}
 }

@@ -1,15 +1,14 @@
 package com.github.i49.pulp.core;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
+import com.github.i49.pulp.api.Spine;
 
 /**
  * An implementation of {@link Publication}.
@@ -19,7 +18,7 @@ class PublicationImpl implements Publication {
 	private final Metadata metadata = new MetadataImpl();
 
 	private final Map<String, PublicationResource> resourceMap = new HashMap<>();
-	private final List<String> contentList = new ArrayList<>();
+	private final SpineImpl spine = new SpineImpl();
 	
 	private PublicationResource coverImage;
 	
@@ -72,8 +71,8 @@ class PublicationImpl implements Publication {
 	}
 	
 	@Override
-	public List<String> getContentList() {
-		return contentList;
+	public Spine getSpine() {
+		return spine;
 	}
 
 	@Override

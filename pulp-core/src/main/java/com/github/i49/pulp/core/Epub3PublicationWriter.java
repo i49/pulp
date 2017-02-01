@@ -3,10 +3,9 @@ package com.github.i49.pulp.core;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.xml.transform.TransformerException;
-
 import org.w3c.dom.Document;
 
+import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationWriter;
@@ -21,26 +20,39 @@ class Epub3PublicationWriter implements PublicationWriter {
 	private static final String PACKAGE_DOCUMENT_NAME = "package.opf";
 
 	private final Archiver archiver;
+	private boolean closed;
 	private final XmlService xmlService;
 	
 	private String packageDir = DEFAULT_PACKAGE_DIR;
 	
 	public Epub3PublicationWriter(OutputStream stream, XmlService xmlService) throws Exception {
 		this.archiver = new ZipArchiver(stream);
+		this.closed = false;
 		this.xmlService = xmlService;
 	}
 
 	@Override
-	public void write(Publication pub) throws Exception {
-		writeAll(pub);
+	public void write(Publication pub) {
+		try {
+			writeAll(pub);
+		} catch (IOException e) {
+			throw new EpubException(e.getMessage(), e);
+		}
 	}
 
 	@Override
-	public void close() throws IOException {
-		this.archiver.close();
+	public void close() {
+		if (!this.closed) {
+			try {
+				this.archiver.close();
+				this.closed = true;
+			} catch (IOException e) {
+				throw new EpubException(e.getMessage(), e);
+			}
+		}
 	}
 	
-	private void writeAll(Publication pub) throws Exception {
+	private void writeAll(Publication pub) throws IOException {
 		writeMimeType();
 		writeContainerXml();
 		writePackageDocument(pub);
@@ -52,13 +64,13 @@ class Epub3PublicationWriter implements PublicationWriter {
 		archiver.appendRaw("mimetype", content);
 	}
 	
-	private void writeContainerXml() throws IOException, TransformerException {
+	private void writeContainerXml() throws IOException {
 		ContainerXmlBuilder builder = new ContainerXmlBuilder(xmlService.createDocument()); 
 		Document document = builder.build(packageDir);
 		writeXmlDocument("META-INF/container.xml", document);
 	}
 
-	private void writePackageDocument(Publication publication) throws IOException, TransformerException {
+	private void writePackageDocument(Publication publication) throws IOException {
 		PackageDocumentBuilder builder = new PackageDocumentBuilder(xmlService.createDocument(), publication); 
 		Document document = builder.build();
 		writeXmlDocument(this.packageDir + PACKAGE_DOCUMENT_NAME, document);
@@ -77,7 +89,7 @@ class Epub3PublicationWriter implements PublicationWriter {
 		}
 	}
 	
-	private void writeXmlDocument(String entryName, Document document) throws IOException, TransformerException {
+	private void writeXmlDocument(String entryName, Document document) throws IOException {
 		try (OutputStream stream = archiver.append(entryName)) {
 			xmlService.writeDocument(stream, document);
 		}

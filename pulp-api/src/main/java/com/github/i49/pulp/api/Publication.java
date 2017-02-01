@@ -1,10 +1,9 @@
 package com.github.i49.pulp.api;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
- * A publication.
+ * A publication that represents a single intellectual or artistic work.
  */
 public interface Publication {
 
@@ -30,7 +29,7 @@ public interface Publication {
 	
 	/**
 	 * Returns all resources contained in this publication.
-	 * @return all resources in this publication. The collection cannot be modified.
+	 * @return all resources in this publication. The returned collection cannot be modified.
 	 */
 	Collection<PublicationResource> getAllResources();
 	
@@ -49,10 +48,11 @@ public interface Publication {
 	Publication removeResource(PublicationResource resource);
 	
 	/**
-	 * Return the list of content names.
-	 * @return the list of content names.
+	 * Return the spine that binds the all pages composing this publication.
+	 * The spine determines the order in which the resources in this publication will be rendered. 
+	 * @return the spine of this publication.
 	 */
-	List<String> getContentList();
+	Spine getSpine();
 
 	/**
 	 * Returns a resource that represents a cover image.

@@ -22,7 +22,7 @@ class ZipArchiver implements Archiver {
 
 	@Override
 	public void close() throws IOException {
-		if (!closed) {
+		if (!this.closed) {
 			this.zstream.close();
 			this.closed = true;
 		}

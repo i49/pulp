@@ -17,6 +17,7 @@ import org.w3c.dom.Element;
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
+import com.github.i49.pulp.api.Spine;
 
 /**
  * A builder class to build a document carrying bibliographical and structural metadata 
@@ -234,11 +235,8 @@ class PackageDocumentBuilder {
 	 */
 	private Element spine() {
 		Element spine = document.createElementNS(DEFAULT_NAMESPACE_URI, "spine");
-		for (String name: publication.getContentList()) {
-			PublicationResource resource = publication.getResourceByName(name);
-			if (resource != null) {
-				spine.appendChild(itemref(resource));
-			}
+		for (Spine.Page page: publication.getSpine()) {
+			spine.appendChild(itemref(page.getResource()));
 		}
 		return spine;
 	}
