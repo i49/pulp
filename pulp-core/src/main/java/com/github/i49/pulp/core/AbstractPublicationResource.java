@@ -10,7 +10,6 @@ abstract class AbstractPublicationResource implements PublicationResource {
 
 	private final String name;
 	private final CoreMediaType mediaType;
-	private boolean primary;
 	
 	protected AbstractPublicationResource(String name, CoreMediaType mediaType) {
 		if (name == null || mediaType == null) {
@@ -18,7 +17,6 @@ abstract class AbstractPublicationResource implements PublicationResource {
 		}
 		this.name = name;
 		this.mediaType = mediaType;
-		this.primary = false;
 	}
 
 	@Override
@@ -31,16 +29,6 @@ abstract class AbstractPublicationResource implements PublicationResource {
 		return mediaType;
 	}
 	
-	@Override
-	public boolean isPrimary() {
-		return primary;
-	}
-	
-	@Override
-	public void setPrimary(boolean primary) {
-		this.primary = primary;
-	}
-
 	@Override
 	public String toString() {
 		return getName().toString();

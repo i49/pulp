@@ -3,13 +3,13 @@ package com.github.i49.pulp.core;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-class ContainerXmlBuilder {
+class ContainerDocumentBuilder {
 	
 	private static final String DEFAULT_NAMESPACE_URI = "urn:oasis:names:tc:opendocument:xmlns:container";
 	
 	private final Document documemt;
 	
-	ContainerXmlBuilder(Document document) {
+	ContainerDocumentBuilder(Document document) {
 		this.documemt = document;
 	}
 	

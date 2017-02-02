@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.github.i49.pulp.api.Epub;
@@ -15,10 +16,16 @@ import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.cli.MetadataLoader;
 
 public class MetadataLoaderTest {
+	
+	private Metadata m;
+	
+	@Before
+	public void setUp() {
+		m = Epub.createPublication().getDefaultRendition().getMetadata(); 
+	}
 
 	@Test
 	public void loadNormal() throws IOException {
-		Metadata m = Epub.createPublication().getMetadata();
 		try (InputStream s = getClass().getResourceAsStream("metadata.yaml")) {
 			MetadataLoader loader = MetadataLoader.from(s);
 			loader.load(m);

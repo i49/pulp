@@ -15,8 +15,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.Metadata;
-import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
+import com.github.i49.pulp.api.Rendition;
 import com.github.i49.pulp.api.Spine;
 
 /**
@@ -36,7 +36,7 @@ class PackageDocumentBuilder {
 	private static final DateTimeFormatter ISO8601_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	
 	private Document document;
-	private Publication publication;
+	private Rendition rendition;
 	private final OffsetDateTime now;
 	
 	private Map<String, String> identifiers = new HashMap<>();
@@ -45,11 +45,11 @@ class PackageDocumentBuilder {
 	/**
 	 * Construct this builder.
 	 * @param document the XML document of the package document.
-	 * @param publication the publication for which a package document will be built.
+	 * @param rendition the rendition for which a package document will be built.
 	 */
-	PackageDocumentBuilder(Document document, Publication publication) {
+	PackageDocumentBuilder(Document document, Rendition rendition) {
 		this.document = document;
-		this.publication = publication;
+		this.rendition = rendition;
 		this.now = OffsetDateTime.now();
 		this.nextNumber = 1;
 	}
@@ -90,7 +90,7 @@ class PackageDocumentBuilder {
 	 * @return created metadata element.
 	 */
 	private Element metadata() {
-		Metadata meta = publication.getMetadata();
+		Metadata meta = rendition.getMetadata();
 
 		Element e = document.createElementNS(DEFAULT_NAMESPACE_URI, "metadata");
 		e.setAttribute("xmlns:dc", DC_NAMESPACE_URI);
@@ -190,7 +190,7 @@ class PackageDocumentBuilder {
 	 */
 	private Element manifest() {
 		Element manifest = document.createElementNS(DEFAULT_NAMESPACE_URI, "manifest");
-		for (PublicationResource resource: publication.getAllResources()) {
+		for (PublicationResource resource: rendition.getAllResources()) {
 			manifest.appendChild(item(resource));
 		}
 		return manifest;
@@ -220,7 +220,7 @@ class PackageDocumentBuilder {
 	
 	private String itemProperties(PublicationResource resource) {
 		List<String> properties = new ArrayList<>();
-		if (resource == this.publication.getCoverImage()) {
+		if (resource == this.rendition.getCoverImage()) {
 			properties.add("cover-image");
 		}
 		if (properties.isEmpty()) {
@@ -235,22 +235,22 @@ class PackageDocumentBuilder {
 	 */
 	private Element spine() {
 		Element spine = document.createElementNS(DEFAULT_NAMESPACE_URI, "spine");
-		for (Spine.Page page: publication.getSpine()) {
-			spine.appendChild(itemref(page.getResource()));
+		for (Spine.Page page: rendition.getSpine()) {
+			spine.appendChild(itemref(page));
 		}
 		return spine;
 	}
 	
 	/**
 	 * Creates an itemref element in spine. 
-	 * @param resource the resource to be added to the spine.
+	 * @param page the page to be added to the spine.
 	 * @return created itemref element.
 	 */
-	private Element itemref(PublicationResource resource) {
+	private Element itemref(Spine.Page page) {
 		Element itemref = document.createElementNS(DEFAULT_NAMESPACE_URI, "itemref");
-		String idref = this.identifiers.get(resource.getName());
+		String idref = this.identifiers.get(page.getResource().getName());
 		itemref.setAttribute("idref", idref);
-		if (!resource.isPrimary()) {
+		if (!page.isLinear()) {
 			itemref.setAttribute("linear", "no");
 		}
 		return itemref;

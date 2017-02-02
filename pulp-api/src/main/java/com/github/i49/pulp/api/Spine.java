@@ -3,8 +3,8 @@ package com.github.i49.pulp.api;
 import java.util.Iterator;
 
 /**
- * The Spine where the pages are gathered and bound.
- * An instance of this class will be owned by a {@link Publication} instance. 
+ * The spine where the pages are gathered and bound.
+ * One spine belongs to one {@link Rendition}. 
  */
 public interface Spine extends Iterable<Spine.Page> {
 
@@ -21,7 +21,7 @@ public interface Spine extends Iterable<Spine.Page> {
 		
 		/**
 		 * Returns {@code true} if this page is considered primary.
-		 * @return {@code true} if this page is considered primary, {@code false} if this page is considered auxiliary.
+		 * @return {@code true} if this page is considered primary, {@code false} if considered auxiliary.
 		 */
 		boolean isLinear();
 		

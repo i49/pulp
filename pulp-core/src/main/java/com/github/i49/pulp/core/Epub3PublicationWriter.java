@@ -9,6 +9,7 @@ import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationWriter;
+import com.github.i49.pulp.api.Rendition;
 
 /**
  * Publication writer that is defined as EPUB3 specification.
@@ -52,11 +53,15 @@ class Epub3PublicationWriter implements PublicationWriter {
 		}
 	}
 	
-	private void writeAll(Publication pub) throws IOException {
+	private void writeAll(Publication publication) throws IOException {
 		writeMimeType();
-		writeContainerXml();
-		writePackageDocument(pub);
-		writeAllResources(pub);
+		writeContainerDocument();
+		writeRendition(publication.getDefaultRendition());
+	}
+	
+	private void writeRendition(Rendition rendition) throws IOException {
+		writePackageDocument(rendition);
+		writeAllResources(rendition);
 	}
 	
 	private void writeMimeType() throws IOException {
@@ -64,20 +69,20 @@ class Epub3PublicationWriter implements PublicationWriter {
 		archiver.appendRaw("mimetype", content);
 	}
 	
-	private void writeContainerXml() throws IOException {
-		ContainerXmlBuilder builder = new ContainerXmlBuilder(xmlService.createDocument()); 
-		Document document = builder.build(packageDir);
+	private void writeContainerDocument() throws IOException {
+		ContainerDocumentBuilder builder = new ContainerDocumentBuilder(xmlService.createDocument()); 
+		Document document = builder.build(this.packageDir);
 		writeXmlDocument("META-INF/container.xml", document);
 	}
 
-	private void writePackageDocument(Publication publication) throws IOException {
-		PackageDocumentBuilder builder = new PackageDocumentBuilder(xmlService.createDocument(), publication); 
+	private void writePackageDocument(Rendition rendition) throws IOException {
+		PackageDocumentBuilder builder = new PackageDocumentBuilder(xmlService.createDocument(), rendition); 
 		Document document = builder.build();
 		writeXmlDocument(this.packageDir + PACKAGE_DOCUMENT_NAME, document);
 	}
 
-	private void writeAllResources(Publication publication) throws IOException {
-		for (PublicationResource resource: publication.getAllResources()) {
+	private void writeAllResources(Rendition rendition) throws IOException {
+		for (PublicationResource resource: rendition.getAllResources()) {
 			writeResource(resource);
 		}
 	}

@@ -16,6 +16,7 @@ import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationResourceFactory;
+import com.github.i49.pulp.api.Rendition;
 
 /**
  * A builder to build a publication.
@@ -25,7 +26,7 @@ class PublicationBuilder {
 	private final Path sourceDir;
 	private final URI baseURI;
 	private Order order = Order.ASCENDING;
-	private Publication publication;
+	
 	private final PublicationResourceFactory factory;
 	private final List<String> contents = new ArrayList<>();
 	
@@ -43,10 +44,11 @@ class PublicationBuilder {
 	}
 	
 	public Publication build() throws IOException {
-		this.publication = Epub.createPublication();
-		loadMetadata(this.publication.getMetadata());
-		addResources();
-		sortContentDocuments(this.order);
+		Publication publication = Epub.createPublication();
+		Rendition rendition = publication.getDefaultRendition();
+		loadMetadata(rendition.getMetadata());
+		addResources(rendition);
+		sortContentDocuments(rendition, this.order);
 		return publication;
 	}
 
@@ -58,40 +60,39 @@ class PublicationBuilder {
 		}
 	}
 	
-	private void addResources() throws IOException {
+	private void addResources(Rendition rendition) throws IOException {
 		Files.walk(this.sourceDir).filter(Files::isRegularFile).forEach(path->{
-			addResource(path.toUri());
+			addResource(rendition, path.toUri());
 		});
 	}
 	
-	private void addResource(URI location) {
+	private void addResource(Rendition rendition, URI location) {
 		String name = this.baseURI.relativize(location).toString();
 		PublicationResource resource = factory.createResource(name, location);
 		if (resource == null) {
 			return;
 		}
-		this.publication.addResource(resource);
+		rendition.addResource(resource);
 		CoreMediaType mediaType = resource.getMediaType();
 		if (mediaType == CoreMediaType.APPLICATION_XHTML_XML) {
-			resource.setPrimary(true);
-			this.publication.getSpine().add(resource);
+			contents.add(name);
 		} else if (mediaType.getType().equals("image")) {
 			Matcher m = COVER_IMAGE_PATTERN.matcher(name);
 			if (m.matches()) {
-				this.publication.setCoverImage(name);
+				rendition.setCoverImage(name);
 			}
 		}
 	}
 	
-	protected void sortContentDocuments(Order order) {
+	protected void sortContentDocuments(Rendition rendition, Order order) {
 		if (order == Order.ASCENDING) {
 			Collections.sort(this.contents);
 		} else {
 			Collections.sort(this.contents, Collections.reverseOrder());
 		}
 		for (String name: this.contents) {
-			PublicationResource resource = this.publication.getResourceByName(name);
-			this.publication.getSpine().add(resource);
+			PublicationResource resource = rendition.getResourceByName(name);
+			rendition.getSpine().add(resource);
 		}
 	}
 }

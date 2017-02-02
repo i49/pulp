@@ -22,14 +22,6 @@ public interface PublicationResource {
 	CoreMediaType getMediaType();
 	
 	/**
-	 * Returns whether this resource is primary or not.
-	 * @return {@code true} if this resource is primary, {@code false} otherwise.
-	 */
-	boolean isPrimary();
-	
-	void setPrimary(boolean primary);
-	
-	/**
 	 * Persists this resource.
 	 * @param stream the stream to which this resource will be written.
 	 * @throws IOException thrown if I/O error occurred.

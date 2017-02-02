@@ -25,7 +25,7 @@ class XmlService {
 	private final DocumentBuilder documentBuilder;
 	private final Transformer transformer;
 	
-	private static final String XML_DECLARATION = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n";
+	private static final String XML_DECLARATION = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 	
 	public XmlService() {
 		try {
