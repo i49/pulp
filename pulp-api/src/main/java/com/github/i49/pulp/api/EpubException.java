@@ -11,6 +11,10 @@ public class EpubException extends RuntimeException {
 		super(message);
 	}
 	
+	public EpubException(Throwable cause) {
+		super(cause);
+	}
+
 	public EpubException(String message, Throwable cause) {
 		super(message, cause);
 	}

@@ -1,5 +1,6 @@
 package com.github.i49.pulp.core;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -13,7 +14,7 @@ import com.github.i49.pulp.api.CoreMediaType;
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationResourceFactory;
-import com.github.i49.pulp.api.XmlResource;
+import com.github.i49.pulp.api.XmlDocument;
 
 /**
  * An implementation of {@link PublicationResourceFactory}.
@@ -46,7 +47,7 @@ class PublicationResourceFactoryImpl implements PublicationResourceFactory {
 		if (name == null || uri == null) {
 			throw new NullPointerException();
 		}
-		CoreMediaType mediaType = CoreMediaTypes.guessMediaType(uri);
+		CoreMediaType mediaType = CoreMediaTypes.guessMediaType(name);
 		if (mediaType == null) {
 			return null;
 		}
@@ -66,19 +67,51 @@ class PublicationResourceFactoryImpl implements PublicationResourceFactory {
 		if (name == null || uri == null || mediaType == null) {
 			throw new NullPointerException();
 		}
-		if (xmlSet.contains(mediaType)) {
-			return new BasicXmlStreamResource(name, mediaType, uri);
+		PublicationResource resource = null;
+		if (mediaType == CoreMediaType.APPLICATION_XHTML_XML) {
+			resource = new DeferredXhtmlDocument(name, uri);
+		} else if (xmlSet.contains(mediaType)) {
+			resource = new DeferredXmlDocument(name, mediaType, uri);
 		} else {
-			return new BasicStreamResource(name, mediaType, uri);
+			resource = new DeferredByteArrayResource(name, mediaType, uri);
+		}
+		return resource;
+	}
+	
+	private class DeferredByteArrayResource extends AbstractByteArrayResource {
+		
+		private static final int BUFFER_SIZE = 16 * 1024;
+		private final URI uri;
+
+		public DeferredByteArrayResource(String name, CoreMediaType mediaType, URI uri) {
+			super(name, mediaType);
+			this.uri = uri;
+		}
+
+		@Override
+		public byte[] getByteArray() {
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			byte[] buffer = new byte[BUFFER_SIZE];
+			try (InputStream in = uri.toURL().openStream()) {
+				int len = 0;
+				while ((len = in.read(buffer)) != -1) {
+					out.write(buffer, 0, len);
+				}
+			} catch (IOException e) {
+				throw new EpubException(e);
+			}
+			return out.toByteArray();
 		}
 	}
 	
-	private class BasicXmlStreamResource extends BasicStreamResource implements XmlResource {
+	private class DeferredXmlDocument extends AbstractPublicationResource implements XmlDocument {
 		
+		private final URI uri;
 		private Document document;
 
-		public BasicXmlStreamResource(String name, CoreMediaType mediaType, URI location) {
-			super(name, mediaType, location);
+		public DeferredXmlDocument(String name, CoreMediaType mediaType, URI uri) {
+			super(name, mediaType);
+			this.uri = uri;
 		}
 
 		@Override
@@ -94,12 +127,19 @@ class PublicationResourceFactoryImpl implements PublicationResourceFactory {
 			if (this.document != null) {
 				return this.document;
 			}
-			try (InputStream stream = openStream()) {
+			try (InputStream stream = uri.toURL().openStream()) {
 				this.document = xmlService.readDocument(stream);
 				return this.document;
 			} catch (IOException e) {
-				throw new EpubException(e.getMessage(), e);
+				throw new EpubException(e);
 			}
+		}
+	}
+	
+	private class DeferredXhtmlDocument extends DeferredXmlDocument implements DefaultXhtmlDocument {
+
+		public DeferredXhtmlDocument(String name, URI uri) {
+			super(name, CoreMediaType.APPLICATION_XHTML_XML, uri);
 		}
 	}
 }

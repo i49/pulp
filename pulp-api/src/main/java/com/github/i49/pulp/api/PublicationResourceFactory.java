@@ -10,7 +10,7 @@ public interface PublicationResourceFactory {
 	
 	/**
 	 * Creates a publication resource that contributes the rendering of a publication.
-	 * The media type of the resource will be estimated with the file extension.
+	 * The media type of the resource will be judged by the file extension part of the name.
 	 * @param name the name of the publication resource.
 	 * @param path the path where the publication resource resides.  
 	 * @return created publication resource.
@@ -20,7 +20,7 @@ public interface PublicationResourceFactory {
 
 	/**
 	 * Creates a publication resource that contributes the rendering of a publication.
-	 * The media type of the resource will be estimated with the file extension.
+	 * The media type of the resource will be judged by the file extension part of the name.
 	 * @param name the name of the publication resource.
 	 * @param uri the URL where the publication resource resides.  
 	 * @return created publication resource.

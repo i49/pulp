@@ -1,7 +1,5 @@
 package com.github.i49.pulp.core;
 
-import java.net.URI;
-
 import com.github.i49.pulp.api.CoreMediaType;
 
 final class CoreMediaTypes {
@@ -11,18 +9,17 @@ final class CoreMediaTypes {
 	 * @param location the location of the resource.
 	 * @return the media type found or {@code null} if not found.
 	 */
-	public static CoreMediaType guessMediaType(URI location) {
-		if (location == null) {
+	public static CoreMediaType guessMediaType(String name) {
+		if (name == null) {
 			return null;
 		}
-		String path = location.getPath();
-		int lastIndex = path.lastIndexOf(".");
+		int lastIndex = name.lastIndexOf(".");
 		if (lastIndex < 0) {
 			return null;
 		}
-		String extension = path.substring(lastIndex + 1);
+		String fileExtension = name.substring(lastIndex + 1);
 		CoreMediaType mediaType = null;
-		switch (extension.toLowerCase()) {
+		switch (fileExtension.toLowerCase()) {
 		case "xhtml":
 			mediaType = CoreMediaType.APPLICATION_XHTML_XML;
 			break;
