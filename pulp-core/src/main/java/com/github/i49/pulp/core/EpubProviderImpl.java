@@ -1,7 +1,9 @@
 package com.github.i49.pulp.core;
 
+import java.util.function.Consumer;
+
 import com.github.i49.pulp.api.Publication;
-import com.github.i49.pulp.api.PublicationResourceFactory;
+import com.github.i49.pulp.api.PublicationBuilder;
 import com.github.i49.pulp.api.PublicationWriterFactory;
 import com.github.i49.pulp.api.spi.EpubProvider;
 
@@ -16,13 +18,10 @@ public class EpubProviderImpl extends EpubProvider {
 	}
 
 	@Override
-	public Publication createPublication() {
-		return new PublicationImpl();
-	}
-
-	@Override
-	public PublicationResourceFactory createResourceFactory() {
-		return new PublicationResourceFactoryImpl(this.xmlService);
+	public Publication createPublication(Consumer<PublicationBuilder> c) {
+		PublicationBuilderImpl builder = new PublicationBuilderImpl(this.xmlService);
+		c.accept(builder);
+		return builder.build();
 	}
 
 	@Override

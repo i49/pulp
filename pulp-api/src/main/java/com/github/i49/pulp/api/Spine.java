@@ -13,6 +13,8 @@ public interface Spine extends Iterable<Spine.Page> {
 	 */
 	public interface Page {
 		
+		String getName();
+		
 		/**
 		 * Returns the resource assigned to this page.
 		 * @return the resource assigned to this page.
@@ -24,14 +26,6 @@ public interface Spine extends Iterable<Spine.Page> {
 		 * @return {@code true} if this page is considered primary, {@code false} if considered auxiliary.
 		 */
 		boolean isLinear();
-		
-		/**
-		 * Assigns the value of the linear property that determines whether this spine
-		 * is primary or not.  
-		 * @param linear {@code true} if this page is primary, {@code false} if auxiliary.
-		 * @return this page.
-		 */
-		Page setLinear(boolean linear);
 	};
 	
 	/**
@@ -54,52 +48,4 @@ public interface Spine extends Iterable<Spine.Page> {
 	 * @return {@code true} if this spine contains no pages, {@code false} otherwise.
 	 */
 	boolean isEmpty();
-	
-	/**
-	 * Creates a new page and appends it to the end of this spine.
-	 * 
-	 * @param resource the resource to be assigned to the new page.
-	 * @return created page.
-	 * @exception NullPointerException if the specified resource is {@code null}.
-	 * @exception IllegalArgumentException if the specified resource is not valid one.  
-	 */
-	Page add(PublicationResource resource);
-	
-	/**
-	 * Creates a new page and inserts it at the specified position in this spine.
-	 *  
-	 * @param index the index at which the new page to be inserted.
-	 * @param resource the resource to be assigned to the new page.
-	 * @return created page.
-	 * @exception IllegalArgumentException if the specified resource is not valid one.  
-	 * @exception NullPointerException if the specified resource is {@code null}.
-	 */
-	Page add(int index, PublicationResource resource);
-
-	/**
-	 * Returns the page at the specified position in this spine.
-	 * 
-	 * @param index the index of the page to be returned.
-	 * @return the page at the specified position in this spine.
-	 * @exception IndexOutOfBoundsException if the index specified is out of range.
-	 */
-	Page get(int index);
-	
-	/**
-	 * Creates a new page and replaces the page at the specified position with the new one.
-	 * 
-	 * @param index the index of the page to be replaced.
-	 * @param resource the resource to be assigned to the new page.
-	 * @return created page.
-	 * @exception NullPointerException if the specified resource is {@code null}.
-	 * @exception IndexOutOfBoundsException if the index specified is out of range.
-	 * @exception IllegalArgumentException if the specified resource is not valid one.  
-	 */
-	Page set(int index, PublicationResource resource);
-
-	/**
-	 * Removes all of the pages in this spine. 
-	 * The spine will be empty after the invocation of this method.
-	 */
-	void clear();
 }

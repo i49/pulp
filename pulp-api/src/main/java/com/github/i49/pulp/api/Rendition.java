@@ -15,38 +15,24 @@ public interface Rendition {
 	Metadata getMetadata();
 	
 	/**
-	 * Returns {@code true} if this rendition contains the resource specified.
-	 * @param name the name of the resource.
-	 * @return {@code true} if this rendition contains the resource, {@code false} otherwise.
+	 * Returns {@code true} if this rendition contains the item specified.
+	 * @param name the name of the rendition item.
+	 * @return {@code true} if this rendition contains the item, {@code false} otherwise.
 	 */
-	boolean hasResource(String name);
+	boolean hasItem(String name);
 
 	/**
-	 * Returns the publication resource that has a name with the specified value in this rendition.
+	 * Returns the rendition item that has a name with the specified value in this rendition.
 	 * @param name the name of the resource to be returned.
-	 * @return the resource if found in this rendition, {@code null} otherwise. 
+	 * @return the item if found in this rendition, {@code null} otherwise. 
 	 */
-	PublicationResource getResourceByName(String name);
+	Item getItemByName(String name);
 	
 	/**
 	 * Returns all resources contained in this rendition.
 	 * @return all resources in this rendition. The returned collection cannot be modified.
 	 */
-	Collection<PublicationResource> getAllResources();
-	
-	/**
-	 * Adds a publication resource to this rendition.
-	 * @param resource the resource to be added to this rendition.
-	 * @return this rendition.
-	 */
-	Rendition addResource(PublicationResource resource);
-	
-	/**
-	 * Removes a publication resource from this rendition.
-	 * @param resource the resource to be removed from this rendition.
-	 * @return this rendition.
-	 */
-	Rendition removeResource(PublicationResource resource);
+	Collection<Item> getAllItems();
 	
 	/**
 	 * Return the spine that binds the all pages composing this rendition.
@@ -56,15 +42,32 @@ public interface Rendition {
 	Spine getSpine();
 
 	/**
-	 * Returns a resource that represents a cover image of this rendition.
-	 * @return the cover image resource.
+	 * Returns a rendition item that represents a cover image of this rendition.
+	 * @return the cover image item if this rendition has, {@code null} if not.
 	 */
-	PublicationResource getCoverImage();
-
+	Item getCoverImage();
+	
 	/**
-	 * Select a publication resource representing a cover image of this rendition.
-	 * @param name the name of the resource representing a cover image.
-	 * @return this rendition.
+	 * Publication resource that this rendition requires to render contents.
 	 */
-	Rendition setCoverImage(String name);
+	public static interface Item {
+		
+		/**
+		 * Returns the name of the item.
+		 * @return the name of the item.
+		 */
+		String getName();
+		
+		/**
+		 * Returns the publication resource assigned to this item.
+		 * @return the publication resource.
+		 */
+		PublicationResource getResource();
+
+		/**
+		 * Returns the media type of the resource.
+		 * @return the media type.
+		 */
+		CoreMediaType getMediaType();
+	}
 }

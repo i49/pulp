@@ -1,6 +1,7 @@
 package com.github.i49.pulp.api;
 
 import java.io.OutputStream;
+import java.util.function.Consumer;
 
 import com.github.i49.pulp.api.spi.EpubProvider;
 
@@ -11,24 +12,26 @@ public final class Epub {
 
 	/**
 	 * Creates an instance of {@link Publication}.
-	 * @return created {@link Publication} instance.
+	 * @param consumer accepts {@link PublicationBuilder} to build a publication.
+	 * @return created publication.
 	 */
-	public static Publication createPublication() {
-		return EpubProvider.provider().createPublication();
+	public static Publication createPublication(Consumer<PublicationBuilder> consumer) {
+		return EpubProvider.provider().createPublication(consumer);
 	}
 	
 	/**
-	 * Creates an instance of {@link PublicationResourceFactory}.
-	 * @return created {@link PublicationResourceFactory} instance.
+	 * Creates a {@link PublicationWriter} instance that writes a publication to the given stream.
+	 * @param stream the stream to which the writer will writes a publication.
+	 * @return created publication writer.
 	 */
-	public static PublicationResourceFactory createResourceFactory() {
-		return EpubProvider.provider().createResourceFactory();
-	}
-	
 	public static PublicationWriter createWriter(OutputStream stream) {
 		return createWriterFactory().createWriter(stream);
 	}
 	
+	/**
+	 * Creates a {@link PublicationWriterFactory} instance that can create one or more {@link PublicationWriter}s.
+	 * @return created publication writer factory.
+	 */
 	public static PublicationWriterFactory createWriterFactory() {
 		return EpubProvider.provider().createWriterFactory();
 	}

@@ -7,7 +7,6 @@ import org.w3c.dom.Document;
 
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Publication;
-import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationWriter;
 import com.github.i49.pulp.api.Rendition;
 
@@ -82,15 +81,15 @@ class Epub3PublicationWriter implements PublicationWriter {
 	}
 
 	private void writeAllResources(Rendition rendition) throws IOException {
-		for (PublicationResource resource: rendition.getAllResources()) {
-			writeResource(resource);
+		for (Rendition.Item item: rendition.getAllItems()) {
+			writeResource(item);
 		}
 	}
 	
-	private void writeResource(PublicationResource resource) throws IOException {
-		String entryName = this.packageDir + resource.getName().toString();
+	private void writeResource(Rendition.Item item) throws IOException {
+		String entryName = this.packageDir + item.getName().toString();
 		try (OutputStream out = archiver.append(entryName)) {
-			resource.persist(out);
+			item.getResource().persist(out);
 		}
 	}
 	

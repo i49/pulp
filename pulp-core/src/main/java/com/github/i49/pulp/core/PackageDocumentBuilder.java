@@ -15,7 +15,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.Metadata;
-import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.Rendition;
 import com.github.i49.pulp.api.Spine;
 
@@ -190,8 +189,8 @@ class PackageDocumentBuilder {
 	 */
 	private Element manifest() {
 		Element manifest = document.createElementNS(DEFAULT_NAMESPACE_URI, "manifest");
-		for (PublicationResource resource: rendition.getAllResources()) {
-			manifest.appendChild(item(resource));
+		for (Rendition.Item item: rendition.getAllItems()) {
+			manifest.appendChild(item(item));
 		}
 		return manifest;
 	}
@@ -201,26 +200,26 @@ class PackageDocumentBuilder {
 	 * @param resource the resource for which an item will be created.
 	 * @return created item element.
 	 */
-	private Element item(PublicationResource resource) {
+	private Element item(Rendition.Item item) {
 		String id = nextItemId();
-		this.identifiers.put(resource.getName(), id);
+		this.identifiers.put(item.getName(), id);
 		
-		Element item = document.createElementNS(DEFAULT_NAMESPACE_URI, "item");
-		item.setAttribute("id", id);
-		item.setAttribute("href", resource.getName().toString());
-		item.setAttribute("media-type", resource.getMediaType().toString());
+		Element element = document.createElementNS(DEFAULT_NAMESPACE_URI, "item");
+		element.setAttribute("id", id);
+		element.setAttribute("href", item.getName().toString());
+		element.setAttribute("media-type", item.getMediaType().toString());
 		
-		String properties = itemProperties(resource);
+		String properties = itemProperties(item);
 		if (properties != null) {
-			item.setAttribute("properties", properties);
+			element.setAttribute("properties", properties);
 		}
 
-		return item;
+		return element;
 	}
 	
-	private String itemProperties(PublicationResource resource) {
+	private String itemProperties(Rendition.Item item) {
 		List<String> properties = new ArrayList<>();
-		if (resource == this.rendition.getCoverImage()) {
+		if (item == this.rendition.getCoverImage()) {
 			properties.add("cover-image");
 		}
 		if (properties.isEmpty()) {
@@ -248,7 +247,7 @@ class PackageDocumentBuilder {
 	 */
 	private Element itemref(Spine.Page page) {
 		Element itemref = document.createElementNS(DEFAULT_NAMESPACE_URI, "itemref");
-		String idref = this.identifiers.get(page.getResource().getName());
+		String idref = this.identifiers.get(page.getName());
 		itemref.setAttribute("idref", idref);
 		if (!page.isLinear()) {
 			itemref.setAttribute("linear", "no");

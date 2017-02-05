@@ -56,9 +56,9 @@ public class BuildCommand extends Command {
 	}
 	
 	private void build(Path source, Path target) throws Exception {
-		PublicationBuilder builder = new PublicationBuilder(source);
+		PublicationCompiler builder = new PublicationCompiler(source);
 		builder.setDocumentOrder(this.order);
-		Publication publication = builder.build();
+		Publication publication = builder.compile();
 
 		try (PublicationWriter writer = Epub.createWriter(Files.newOutputStream(target))) {
 			writer.write(publication);

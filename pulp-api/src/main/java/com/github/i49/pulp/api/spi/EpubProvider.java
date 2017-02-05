@@ -2,10 +2,11 @@ package com.github.i49.pulp.api.spi;
 
 import java.util.Iterator;
 import java.util.ServiceLoader;
+import java.util.function.Consumer;
 
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Publication;
-import com.github.i49.pulp.api.PublicationResourceFactory;
+import com.github.i49.pulp.api.PublicationBuilder;
 import com.github.i49.pulp.api.PublicationWriterFactory;
 
 /**
@@ -34,9 +35,7 @@ public abstract class EpubProvider {
 	 * Creates a publication.
 	 * @return a publication.
 	 */
-	public abstract Publication createPublication();
-	
-	public abstract PublicationResourceFactory createResourceFactory();
+	public abstract Publication createPublication(Consumer<PublicationBuilder> c);
 	
 	public abstract PublicationWriterFactory createWriterFactory();
 }
