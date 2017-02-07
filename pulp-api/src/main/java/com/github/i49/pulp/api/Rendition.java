@@ -1,6 +1,7 @@
 package com.github.i49.pulp.api;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * A logical document entity consisting of a set of interrelated resources 
@@ -35,18 +36,17 @@ public interface Rendition {
 	Collection<Item> getAllItems();
 	
 	/**
-	 * Return the spine that binds the all pages composing this rendition.
-	 * The spine determines the order in which the resources in this rendition will be rendered. 
-	 * @return the spine of this rendition.
-	 */
-	Spine getSpine();
-
-	/**
 	 * Returns a rendition item that represents a cover image of this rendition.
 	 * @return the cover image item if this rendition has, {@code null} if not.
 	 */
 	Item getCoverImage();
 	
+	/**
+	 * Returns the ordered list of the pages bound to the spine of this rendition.
+	 * @return the ordered list of the pages.
+	 */
+	List<Page> getPages();
+
 	/**
 	 * Publication resource that this rendition requires to render contents.
 	 */
@@ -70,4 +70,28 @@ public interface Rendition {
 		 */
 		CoreMediaType getMediaType();
 	}
+
+	/**
+	 * A page bound to the spine of this rendition.
+	 */
+	public interface Page {
+		
+		/**
+		 * Returns the name of this page.
+		 * @return the name of this page. 
+		 */
+		String getName();
+		
+		/**
+		 * Returns the resource assigned to this page.
+		 * @return the resource assigned to this page.
+		 */
+		PublicationResource getResource();
+		
+		/**
+		 * Returns {@code true} if this page is considered primary.
+		 * @return {@code true} if this page is considered primary, {@code false} if considered auxiliary.
+		 */
+		boolean isLinear();
+	};
 }

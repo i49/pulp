@@ -2,9 +2,11 @@ package com.github.i49.pulp.core;
 
 import java.net.URI;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.github.i49.pulp.api.CoreMediaType;
@@ -12,23 +14,21 @@ import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.Rendition;
 import com.github.i49.pulp.api.RenditionBuilder;
-import com.github.i49.pulp.api.Spine;
-import com.github.i49.pulp.api.SpineBuilder;
 
 public class RenditionBuilderImpl implements RenditionBuilder {
 
 	private final String baseName;
-	private final Map<String, Rendition.Item> items;
+	private final Map<String, ItemImpl> items;
 	private Rendition.Item coverImage;
+	private final List<PageImpl> pages;
 
 	private final ResourceFactory resourceFactory;
-	private final SpineBuilderImpl spineBuilder;
 	
 	public RenditionBuilderImpl(String baseName, ResourceFactory resourceFactory) {
 		this.baseName = baseName;
 		this.resourceFactory = resourceFactory;
 		this.items = new HashMap<>();
-		this.spineBuilder = new SpineBuilderImpl(this.items);
+		this.pages = new ArrayList<>();
 	}
 	
 	@Override
@@ -66,20 +66,21 @@ public class RenditionBuilderImpl implements RenditionBuilder {
 	}
 
 	@Override
-	public SpineBuilder start(String name) {
-		spineBuilder.next(name);
-		return spineBuilder;
+	public void addPage(String name) {
+		addPage(name, true);
 	}
 
 	@Override
-	public SpineBuilder start(String name, boolean linear) {
-		spineBuilder.next(name, linear);
-		return spineBuilder;
+	public void addPage(String name, boolean linear) {
+		ItemImpl item = items.get(name);
+		if (item == null) {
+			throw new IllegalArgumentException("Item \"" + name + "\" is not found in the rendition.");
+		}
+		pages.add(new PageImpl(item, linear));
 	}
 	
 	public Rendition build() {
-		RenditionImpl rendition = new RenditionImpl(this.baseName, this.items);
-		rendition.spine = this.spineBuilder.build();
+		RenditionImpl rendition = new RenditionImpl(this.baseName, this.items, this.pages);
 		rendition.coverImage = this.coverImage;
 		return rendition;
 	}
@@ -94,12 +95,13 @@ public class RenditionBuilderImpl implements RenditionBuilder {
 		private final String baseName;
 		private final MetadataImpl metadata = new MetadataImpl();
 		private final Map<String, Rendition.Item> items;
-		private Spine spine;
+		private List<Rendition.Page> pages;
 		private Item coverImage;
 		
-		public RenditionImpl(String baseName, Map<String, Rendition.Item> items) {
+		public RenditionImpl(String baseName, Map<String, ItemImpl> items, List<PageImpl> pages) {
 			this.baseName = baseName;
 			this.items = Collections.unmodifiableMap(items);
+			this.pages = Collections.unmodifiableList(pages);
 		}
 
 		@Override
@@ -129,13 +131,13 @@ public class RenditionBuilderImpl implements RenditionBuilder {
 		}
 
 		@Override
-		public Spine getSpine() {
-			return spine;
+		public Item getCoverImage() {
+			return coverImage;
 		}
 
 		@Override
-		public Item getCoverImage() {
-			return coverImage;
+		public List<Page> getPages() {
+			return pages;
 		}
 	}
 	
@@ -162,6 +164,37 @@ public class RenditionBuilderImpl implements RenditionBuilder {
 		@Override
 		public CoreMediaType getMediaType() {
 			return getResource().getMediaType();
+		}
+	}
+	
+	private static class PageImpl implements Rendition.Page {
+
+		private final ItemImpl item;
+		private final boolean linear;
+		
+		public PageImpl(ItemImpl item, boolean linear) {
+			this.item = item;
+			this.linear = linear;
+		}
+	
+		@Override
+		public String getName() {
+			return item.getName();
+		}
+
+		@Override
+		public PublicationResource getResource() {
+			return item.getResource();
+		}
+
+		@Override
+		public boolean isLinear() {
+			return linear;
+		}
+
+		@Override
+		public String toString() {
+			return getName();
 		}
 	}
 }

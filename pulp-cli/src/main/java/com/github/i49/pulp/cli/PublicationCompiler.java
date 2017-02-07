@@ -16,7 +16,6 @@ import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationBuilder;
 import com.github.i49.pulp.api.RenditionBuilder;
-import com.github.i49.pulp.api.SpineBuilder;
 
 /**
  * A class to compile a publication.
@@ -83,12 +82,8 @@ class PublicationCompiler {
 		
 		sortDocuments(documents);
 		
-		if (documents.size() > 0) {
-			int index = 0;
-			SpineBuilder s = r.start(documents.get(index++));
-			while (index < documents.size()) {
-				s.next(documents.get(index++));
-			}
+		for (String doc: documents) {
+			r.addPage(doc);
 		}
 	}
 	

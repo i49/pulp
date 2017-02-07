@@ -17,9 +17,8 @@ public class PublicationBuilderTest {
 		
 		Publication pub = Epub.createPublication(p->{
 			p.addRendition(r->{
-				r
-				.addResource("helloworld.xhtml", dir.resolve("helloworld.xhtml"))
-				.start("helloworld.xhtml");
+				r.addResource("helloworld.xhtml", dir.resolve("helloworld.xhtml"));
+				r.addPage("helloworld.xhtml");
 			});
 		});
 		

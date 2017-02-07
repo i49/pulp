@@ -1,9 +1,9 @@
 package com.github.i49.pulp.api;
 
 import java.io.OutputStream;
+import java.util.Iterator;
+import java.util.ServiceLoader;
 import java.util.function.Consumer;
-
-import com.github.i49.pulp.api.spi.EpubProvider;
 
 /**
  * Factory class for creating EPUB processing objects. 
@@ -16,7 +16,7 @@ public final class Epub {
 	 * @return created publication.
 	 */
 	public static Publication createPublication(Consumer<PublicationBuilder> consumer) {
-		return EpubProvider.provider().createPublication(consumer);
+		return getProvider().createPublication(consumer);
 	}
 	
 	/**
@@ -33,7 +33,24 @@ public final class Epub {
 	 * @return created publication writer factory.
 	 */
 	public static PublicationWriterFactory createWriterFactory() {
-		return EpubProvider.provider().createWriterFactory();
+		return getProvider().createWriterFactory();
+	}
+
+	private static class ThreadLocalLoader extends ThreadLocal<ServiceLoader<EpubProvider>> {
+		@Override
+		protected ServiceLoader<EpubProvider> initialValue() {
+			return ServiceLoader.load(EpubProvider.class);
+		}
+	}
+	
+	private static final ThreadLocal<ServiceLoader<EpubProvider>> threadLoader = new ThreadLocalLoader();
+	
+	public static EpubProvider getProvider() {
+		Iterator<EpubProvider> it = threadLoader.get().iterator();
+		if (it.hasNext()) {
+			return it.next();
+		}
+		throw new EpubException("Implementation for EpubProvider was not found.");
 	}
 	
 	private Epub() {

@@ -15,7 +15,7 @@ public interface RenditionBuilder {
 	
 	RenditionBuilder selectCoverImage(String name);
 
-	SpineBuilder start(String name);
+	void addPage(String name);
 
-	SpineBuilder start(String name, boolean linear);
+	void addPage(String name, boolean linear);
 }

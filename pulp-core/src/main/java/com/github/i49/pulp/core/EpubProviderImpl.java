@@ -2,15 +2,15 @@ package com.github.i49.pulp.core;
 
 import java.util.function.Consumer;
 
+import com.github.i49.pulp.api.EpubProvider;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationBuilder;
 import com.github.i49.pulp.api.PublicationWriterFactory;
-import com.github.i49.pulp.api.spi.EpubProvider;
 
 /**
  * An implementation of {@link EpubProvider} interface.
  */
-public class EpubProviderImpl extends EpubProvider {
+public class EpubProviderImpl implements EpubProvider {
 	
 	private final XmlService xmlService = new XmlService();
 	

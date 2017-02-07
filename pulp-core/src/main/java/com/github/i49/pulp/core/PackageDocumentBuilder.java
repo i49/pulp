@@ -16,7 +16,6 @@ import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Rendition;
-import com.github.i49.pulp.api.Spine;
 
 /**
  * A builder class to build a document carrying bibliographical and structural metadata 
@@ -234,7 +233,7 @@ class PackageDocumentBuilder {
 	 */
 	private Element spine() {
 		Element spine = document.createElementNS(DEFAULT_NAMESPACE_URI, "spine");
-		for (Spine.Page page: rendition.getSpine()) {
+		for (Rendition.Page page: rendition.getPages()) {
 			spine.appendChild(itemref(page));
 		}
 		return spine;
@@ -245,7 +244,7 @@ class PackageDocumentBuilder {
 	 * @param page the page to be added to the spine.
 	 * @return created itemref element.
 	 */
-	private Element itemref(Spine.Page page) {
+	private Element itemref(Rendition.Page page) {
 		Element itemref = document.createElementNS(DEFAULT_NAMESPACE_URI, "itemref");
 		String idref = this.identifiers.get(page.getName());
 		itemref.setAttribute("idref", idref);
