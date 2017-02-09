@@ -15,7 +15,6 @@ import com.github.i49.pulp.api.Epub;
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationBuilder;
-import com.github.i49.pulp.api.RenditionBuilder;
 
 /**
  * A class to compile a publication.
@@ -25,6 +24,7 @@ class PublicationCompiler {
 	private final Path sourceDir;
 	private final URI baseURI;
 	private Order order = Order.ASCENDING;
+	private PublicationBuilder builder;
 	
 	private static final String METADATA_FILENAME = "metadata.yaml";
 	
@@ -40,16 +40,16 @@ class PublicationCompiler {
 	}
 	
 	public Publication compile() throws IOException {
-		return Epub.createPublication(this::buildPublication);
+		this.builder = Epub.createPublicationBuilder();
+		buildRendition();
+		return this.builder.build();
 	}
 	
-	private void buildPublication(PublicationBuilder p) {
-		p.addRendition(this::buildRendition);
-	}
-	
-	private void buildRendition(RenditionBuilder r) {
+	private void buildRendition() {
 		try {
-			addResources(r);
+			this.builder.startRendition();
+			addResources();
+			this.builder.endRendition();
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
@@ -63,7 +63,7 @@ class PublicationCompiler {
 		}
 	}
 	
-	private void addResources(RenditionBuilder r) throws IOException {
+	private void addResources() throws IOException {
 		List<String> documents = new ArrayList<>();
 	
 		Files.walk(this.sourceDir).filter(Files::isRegularFile).forEach(path->{
@@ -72,18 +72,18 @@ class PublicationCompiler {
 			if (shouldIgnore(name)) {
 				return;
 			}
-			r.addResource(name, uri);
+			builder.addResource(name, uri);
 			if (checkContentDocument(name)) {
 				documents.add(name);
 			} else if (checkCoverImage(name)){
-				r.selectCoverImage(name);
+				builder.selectCoverImage(name);
 			}
 		});
 		
 		sortDocuments(documents);
 		
 		for (String doc: documents) {
-			r.addPage(doc);
+			builder.addPage(doc);
 		}
 	}
 	

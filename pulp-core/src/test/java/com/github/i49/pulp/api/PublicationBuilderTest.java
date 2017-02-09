@@ -15,13 +15,14 @@ public class PublicationBuilderTest {
 	@Test
 	public void test() {
 		
-		Publication pub = Epub.createPublication(p->{
-			p.addRendition(r->{
-				r.addResource("helloworld.xhtml", dir.resolve("helloworld.xhtml"));
-				r.addPage("helloworld.xhtml");
-			});
-		});
+		PublicationBuilder builder = Epub.createPublicationBuilder();
+		builder.startRendition("EPUB");
+		builder.addResource("helloworld.xhtml", dir.resolve("helloworld.xhtml"));
+		builder.addPage("helloworld.xhtml");
+		builder.endRendition();
+
+		Publication publication = builder.build();
 		
-		assertThat(pub, is(notNullValue()));
+		assertThat(publication, is(notNullValue()));
 	}
 }

@@ -1,17 +1,15 @@
 package com.github.i49.pulp.api;
 
-import java.util.function.Consumer;
-
 /**
  * Service provider for EPUB processing objects.
  */
 public interface EpubProvider {
 
 	/**
-	 * Creates a publication.
-	 * @return a publication.
+	 * Creates a builder of a publication.
+	 * @return a builder of a publication.
 	 */
-	Publication createPublication(Consumer<PublicationBuilder> c);
+	PublicationBuilder createPublicationBuilder();
 	
 	PublicationWriterFactory createWriterFactory();
 }

@@ -3,7 +3,6 @@ package com.github.i49.pulp.api;
 import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.ServiceLoader;
-import java.util.function.Consumer;
 
 /**
  * Factory class for creating EPUB processing objects. 
@@ -15,8 +14,8 @@ public final class Epub {
 	 * @param consumer accepts {@link PublicationBuilder} to build a publication.
 	 * @return created publication.
 	 */
-	public static Publication createPublication(Consumer<PublicationBuilder> consumer) {
-		return getProvider().createPublication(consumer);
+	public static PublicationBuilder createPublicationBuilder() {
+		return getProvider().createPublicationBuilder();
 	}
 	
 	/**

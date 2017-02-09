@@ -20,7 +20,7 @@ import org.xml.sax.SAXException;
 
 import com.github.i49.pulp.api.EpubException;
 
-class XmlService {
+public class XmlService {
 
 	private final DocumentBuilder documentBuilder;
 	private final Transformer transformer;

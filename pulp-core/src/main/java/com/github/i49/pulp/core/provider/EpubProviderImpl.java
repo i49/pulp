@@ -1,11 +1,11 @@
-package com.github.i49.pulp.core;
-
-import java.util.function.Consumer;
+package com.github.i49.pulp.core.provider;
 
 import com.github.i49.pulp.api.EpubProvider;
-import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationBuilder;
 import com.github.i49.pulp.api.PublicationWriterFactory;
+import com.github.i49.pulp.core.PublicationBuilderImpl;
+import com.github.i49.pulp.core.PublicationWriterFactoryImpl;
+import com.github.i49.pulp.core.XmlService;
 
 /**
  * An implementation of {@link EpubProvider} interface.
@@ -18,10 +18,8 @@ public class EpubProviderImpl implements EpubProvider {
 	}
 
 	@Override
-	public Publication createPublication(Consumer<PublicationBuilder> c) {
-		PublicationBuilderImpl builder = new PublicationBuilderImpl(this.xmlService);
-		c.accept(builder);
-		return builder.build();
+	public PublicationBuilder createPublicationBuilder() {
+		return new PublicationBuilderImpl(this.xmlService);
 	}
 
 	@Override

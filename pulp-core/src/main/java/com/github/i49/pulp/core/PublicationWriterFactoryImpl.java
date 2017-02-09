@@ -8,11 +8,11 @@ import com.github.i49.pulp.api.PublicationWriterFactory;
 /**
  * An implementation of {@link PublicationWriterFactory}.
  */
-class PublicationWriterFactoryImpl implements PublicationWriterFactory {
+public class PublicationWriterFactoryImpl implements PublicationWriterFactory {
 
 	private final XmlService xmlService;
 	
-	PublicationWriterFactoryImpl(XmlService xmlService) {
+	public PublicationWriterFactoryImpl(XmlService xmlService) {
 		this.xmlService = xmlService;
 	}
 	
