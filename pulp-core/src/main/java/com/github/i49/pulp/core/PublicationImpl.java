@@ -2,22 +2,27 @@ package com.github.i49.pulp.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.Rendition;
 
+/**
+ * An implementation of {@link Publication}.
+ */
 public class PublicationImpl implements Publication {
 	
-	private final PublicationResourceManager resourceManager;
+	private final XmlService xmlService;
 	private final List<Rendition> renditions;
+	private final Map<String, PublicationResourceBuilderFactoryImpl> factories;
 	
-	private static final String DEFAULT_RENDITION_PREFIX = "EPUB";
-	
-	public PublicationImpl(PublicationResourceManager resourceManager) {
-		this.resourceManager = resourceManager;
+	public PublicationImpl(XmlService xmlService) {
+		this.xmlService = xmlService;
 		this.renditions = new ArrayList<>();
+		this.factories = new HashMap<>();
 	}
 
 	@Override
@@ -33,7 +38,7 @@ public class PublicationImpl implements Publication {
 		if (prefix == null) {
 			prefix = DEFAULT_RENDITION_PREFIX;
 		}
-		Rendition rendition = new RenditionImpl(prefix, resourceManager);
+		Rendition rendition = new RenditionImpl(prefix, getResourceBuilderFactory(prefix));
 		this.renditions.add(rendition);
 		return rendition;
 	}
@@ -41,5 +46,14 @@ public class PublicationImpl implements Publication {
 	@Override
 	public Iterator<Rendition> iterator() {
 		return Collections.unmodifiableList(renditions).iterator();
+	}
+	
+	private PublicationResourceBuilderFactoryImpl getResourceBuilderFactory(String prefix) {
+		PublicationResourceBuilderFactoryImpl factory = this.factories.get(prefix);
+		if (factory == null) {
+			factory = new PublicationResourceBuilderFactoryImpl(xmlService);
+			this.factories.put(prefix, factory);
+		}
+		return factory;
 	}
 }

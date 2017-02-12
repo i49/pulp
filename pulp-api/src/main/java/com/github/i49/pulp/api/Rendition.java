@@ -8,37 +8,60 @@ import java.util.List;
  * representing one rendering of a {@link Publication}. 
  */
 public interface Rendition {
-	
+
+	/**
+	 * Returns the prefix of this rendition.
+	 * The prefix is used as the base path of the rendition when persisted.
+	 * @return the prefix of this rendition.
+	 */
+	String getPrefix();
+
 	/**
 	 * Return the metadata of this rendition.
 	 * @return the metadata of this rendition.
 	 */
 	Metadata getMetadata();
 
+	/**
+	 * Returns the factory to build {@link PublicationResource}s for this rendition.
+	 * @return {@link PublicationResourceBuilderFactory} for this rendition.
+	 */
 	PublicationResourceBuilderFactory getResourceBuilderFactory();
 	
-	String getPrefix();
-
-	Item addResource(PublicationResource resource);
+	/**
+	 * Adds a resource required for this rendition.
+	 * @param resource the required resource for this rendition.
+	 * @return the item referring the required resource. 
+	 */
+	Item require(PublicationResource resource);
 	
-	void removeResource(String path);
+	/**
+	 * Removes a resource from this rendition. 
+	 * @param pathname the pathname of the resource to be removed.
+	 */
+	void unrequire(String pathname);
 	
-	Item getItem(String path);
+	Item getItem(String pathname);
 	
+	/**
+	 * Returns all items in this rendition.
+	 * @return the collection containing all items, cannot be modified.
+	 */
 	Collection<Item> getItems();
 	
 	/**
-	 * Creates a new page.
-	 * @param path the pathname of the item used by the new page.
-	 * @return created page.
+	 * Returns the page of the given pathname if it exists, or newly created page if it does not exist.
+	 * @param pathname the pathname of the item assigned to the new page.
+	 * @return specified page.
+	 * @exception EpubException if the specified item does not exist.
 	 */
-	Page createPage(String path);
+	Page page(String pathname);
 	
 	/**
-	 * Returns the ordered list of the pages bound to the spine of this rendition.
+	 * Returns the ordered list of the pages presented to the readers of this rendition.
 	 * @return the ordered list of the pages.
 	 */
-	List<Page> getPages();
+	List<Page> getPageList();
 	
 	/**
 	 * A resource required by this rendition. 
@@ -49,7 +72,7 @@ public interface Rendition {
 		 * Returns the pathname of this item.
 		 * @return the pathname of this item.
 		 */
-		String getPath();
+		String getPathname();
 		
 		/**
 		 * Returns the publication resource that this item refers to.
@@ -75,8 +98,8 @@ public interface Rendition {
 	public static interface Page {
 		
 		/**
-		 * Returns the resource item of this page.
-		 * @return the resource item of this page.
+		 * Returns the item of this page.
+		 * @return the item of this page.
 		 */
 		Item getItem();
 		

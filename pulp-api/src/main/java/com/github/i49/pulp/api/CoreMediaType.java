@@ -1,8 +1,7 @@
 package com.github.i49.pulp.api;
 
 /**
- * The media types which specify types and formats of the Publication Resources
- * contained in a publication.
+ * The media type that specifies type and format of {@link PublicationResource}.
  */
 public enum CoreMediaType {
 

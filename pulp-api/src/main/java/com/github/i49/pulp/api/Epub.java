@@ -34,7 +34,11 @@ public final class Epub {
 		return getProvider().createWriterFactory();
 	}
 
+	/**
+	 * Thread-local service loader.
+	 */
 	private static class ThreadLocalLoader extends ThreadLocal<ServiceLoader<EpubProvider>> {
+
 		@Override
 		protected ServiceLoader<EpubProvider> initialValue() {
 			return ServiceLoader.load(EpubProvider.class);
@@ -43,12 +47,16 @@ public final class Epub {
 	
 	private static final ThreadLocal<ServiceLoader<EpubProvider>> threadLoader = new ThreadLocalLoader();
 	
-	public static EpubProvider getProvider() {
+	/**
+	 * Returns the service provider of {@link EpubProvider}. 
+	 * @return found service provider.
+	 */
+	private static EpubProvider getProvider() {
 		Iterator<EpubProvider> it = threadLoader.get().iterator();
 		if (it.hasNext()) {
 			return it.next();
 		}
-		throw new EpubException("Implementation for EpubProvider was not found.");
+		throw new EpubException("Implementation of EpubProvider is not found.");
 	}
 	
 	private Epub() {

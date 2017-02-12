@@ -8,10 +8,20 @@ package com.github.i49.pulp.api;
 public interface Publication extends Iterable<Rendition> {
 	
 	/**
+	 * Default location of renditions.
+	 */
+	static final String DEFAULT_RENDITION_PREFIX = "EPUB";
+	
+	/**
 	 * Returns the default {@link Rendition} of this publication.
 	 * @return the default {@link Rendition} of this publication.
 	 */
 	Rendition getDefaultRendition();
 	
+	/**
+	 * Adds a new {@link Rendition}.
+	 * @param prefix the path prefix of the new rendition. if the value is {@code null}, the default prefix is used.
+	 * @return created rendition.
+	 */
 	Rendition addRendition(String prefix);
 }

@@ -1,12 +1,14 @@
 package com.github.i49.pulp.api;
 
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 
 public class RenditionTest {
@@ -15,36 +17,30 @@ public class RenditionTest {
 	
 	public static class RenditionBuildTest {
 		
-		private Publication publication;
-		private Rendition rendition;
-		
-		@Before
-		public void setUp() {
-			this.publication = Epub.createPublication();
-			this.rendition = this.publication.addRendition(null);
-		}
-		
 		@Test
 		public void testBuild() throws IOException {
 			
-			Path samplePath = getSamplePath("basic");
+			Path dir = getSamplePath("basic");
 			
-			Rendition r = this.rendition;
-			PublicationResourceBuilderFactory f = rendition.getResourceBuilderFactory();
-			r.addResource(f.getBuilder("chapter01.xhtml").content(samplePath.resolve("chapter01.xhtml")).build());
-			r.addResource(f.getBuilder("chapter02.xhtml").content(samplePath.resolve("chapter02.xhtml")).build());
-			r.addResource(f.getBuilder("images/figure01.png").content(samplePath.resolve("images/figure01.png")).build());
-			r.addResource(f.getBuilder("css/stylesheet.css").content(samplePath.resolve("css/stylesheet.css")).build());
-			r.addResource(f.getBuilder("cover.png").content(samplePath.resolve("cover.png")).build()).asCoverImage();
+			Publication p = Epub.createPublication();
+			Rendition r = p.addRendition(null);
+			PublicationResourceBuilderFactory f = r.getResourceBuilderFactory();
+			r.require(f.get("chapter01.xhtml").from(dir).build());
+			r.require(f.get("chapter02.xhtml").from(dir).build());
+			r.require(f.get("images/figure01.png").from(dir).build());
+			r.require(f.get("css/stylesheet.css").from(dir).build());
+			r.require(f.get("cover.png").from(dir).build()).asCoverImage();
 			
-			List<Rendition.Page> pages = r.getPages();
-			pages.add(r.createPage("chapter01.xhtml"));
-			pages.add(r.createPage("chapter02.xhtml"));
+			List<Rendition.Page> pages = r.getPageList();
+			pages.add(r.page("chapter01.xhtml"));
+			pages.add(r.page("chapter02.xhtml"));
 			
 			Path outputPath = Paths.get("target", "basic.zip");
 			try (PublicationWriter writer = Epub.createWriter(Files.newOutputStream(outputPath))) {
-				writer.write(publication);
+				writer.write(p);
 			}
+			
+			assertThat(p.getDefaultRendition(), is(r));
 		}
 	}
 	

@@ -7,32 +7,41 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.Rendition;
 
+/**
+ * An implementation of {@link Rendition}.
+ */
 public class RenditionImpl implements Rendition {
 
 	private final String prefix;
 
-	private final PublicationResourceManager resourceManager;
 	private final PublicationResourceBuilderFactoryImpl resourceBuilderFactory;
 	
 	private final MetadataImpl metadata;
 	
 	private final Map<String, Item> manifest;
-	private final List<Page> pages;
+	private final Map<String, Page> pages;
+	private final List<Page> pageList;
 	
 	private Item coverImage;
 	
-	public RenditionImpl(String prefix, PublicationResourceManager resourceManager) {
+	public RenditionImpl(String prefix, PublicationResourceBuilderFactoryImpl factory) {
 		this.prefix = prefix;
-		this.resourceManager = resourceManager;
-		this.resourceBuilderFactory = new PublicationResourceBuilderFactoryImpl(prefix, resourceManager);
+		this.resourceBuilderFactory = factory;
 		this.metadata = new MetadataImpl();
 		this.manifest = new HashMap<>();
-		this.pages = new ArrayList<>();
+		this.pages = new HashMap<>();
+		this.pageList = new ArrayList<>();
+	}
+	
+	@Override
+	public String getPrefix() {
+		return prefix;
 	}
 	
 	@Override
@@ -46,36 +55,38 @@ public class RenditionImpl implements Rendition {
 	}
 
 	@Override
-	public String getPrefix() {
-		return prefix;
-	}
-	
-	@Override
-	public Item addResource(PublicationResource resource) {
+	public Item require(PublicationResource resource) {
 		if (resource == null) {
-			return null;
-		} else if (this.resourceManager.containsKey(resource.getName())) {
-			throw new IllegalArgumentException("Resource given already exists.");
+			throw new NullPointerException(Messages.PARAMETER_IS_NULL("resource"));
 		}
-		
-		this.resourceManager.put(resource.getName(), resource);
-		
-		String relativePath = getRelativePathOf(resource);
-		Item item = new ItemImpl(relativePath, resource);
-		this.manifest.put(relativePath, item);
+		String pathname = resource.getPathname();
+		if (resourceBuilderFactory.getBuilt(pathname) != resource) {
+			throw new EpubException(Messages.INVALID_RESOURCE(pathname));
+		}
+		Item item = getItem(pathname);
+		if (item == null) {
+			item = createItem(resource);
+		}
 		return item;
 	}
 	
 	@Override
-	public void removeResource(String path) {
+	public void unrequire(String pathname) {
+		if (pathname == null) {
+			throw new NullPointerException(Messages.PARAMETER_IS_NULL("pathname"));
+		}
+		Item item = getItem(pathname);
+		if (item != null) {
+			this.manifest.remove(pathname);
+		}
 	}
 	
 	@Override
-	public Item getItem(String path) {
-		if (path == null) {
+	public Item getItem(String pathname) {
+		if (pathname == null) {
 			return null;
 		}
-		return manifest.get(path);
+		return manifest.get(pathname);
 	}
 	
 	@Override
@@ -84,40 +95,53 @@ public class RenditionImpl implements Rendition {
 	}
 	
 	@Override
-	public Page createPage(String pathname) {
-		Item item = manifest.get(pathname);
-		if (item == null) {
-			throw new IllegalArgumentException(pathname + " not found");
+	public Page page(String pathname) {
+		if (pathname == null) {
+			throw new NullPointerException(Messages.PARAMETER_IS_NULL("pathaname"));
 		}
-		return new PageImpl(item);
+		Page page = this.pages.get(pathname);
+		if (page == null) {
+			page = createPage(pathname);
+		}
+		return page;
 	}
 
 	@Override
-	public List<Page> getPages() {
-		return pages;
+	public List<Page> getPageList() {
+		return pageList;
 	}
 	
-	String getRelativePathOf(PublicationResource resource) {
-		String prefix = this.prefix + "/";
-		if (!resource.getName().startsWith(prefix)) {
-			throw new IllegalArgumentException();
+	private Item createItem(PublicationResource resource) {
+		String pathname = resource.getPathname();
+		Item item = new ItemImpl(resource);
+		this.manifest.put(pathname, item);
+		return item;
+	}
+	
+	private Page createPage(String pathname) {
+		Item item = this.manifest.get(pathname);
+		if (item == null) {
+			throw new EpubException(Messages.MISSING_PUBLICATION_RESOURCE(pathname));
 		}
-		return resource.getName().substring(prefix.length());
+		Page page = new PageImpl(item);
+		this.pages.put(pathname, page);
+		return page;
 	}
 
+	/**
+	 * An implementation of {@link Rendition.Item}.
+	 */
 	private class ItemImpl implements Rendition.Item {
 		
-		private final String path;
 		private final PublicationResource resource;
 		
-		private ItemImpl(String path, PublicationResource resource) {
-			this.path = path;
+		private ItemImpl(PublicationResource resource) {
 			this.resource = resource;
 		}
 
 		@Override
-		public String getPath() {
-			return path;
+		public String getPathname() {
+			return resource.getPathname();
 		}
 
 		@Override
@@ -138,7 +162,7 @@ public class RenditionImpl implements Rendition {
 		
 		@Override
 		public String toString() {
-			return getPath();
+			return getPathname();
 		}
 	}
 	

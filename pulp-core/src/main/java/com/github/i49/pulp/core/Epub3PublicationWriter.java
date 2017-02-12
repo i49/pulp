@@ -90,7 +90,7 @@ class Epub3PublicationWriter implements PublicationWriter {
 	}
 	
 	private void writeResource(Rendition.Item item) throws IOException {
-		String entryName = this.packageDir + item.getPath();
+		String entryName = this.packageDir + item.getPathname();
 		PublicationResource resource = item.getResource();
 		byte[] buffer = new byte[BUFFER_SIZE];
 		try (InputStream in = resource.openStream(); OutputStream out = archiver.append(entryName)) {

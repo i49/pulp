@@ -4,16 +4,19 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import com.github.i49.pulp.api.CoreMediaType;
 import com.github.i49.pulp.api.XhtmlDocument;
 
-/**
- * Default implementation of {@link XhtmlDocument}.
- */
-interface DefaultXhtmlDocument extends XhtmlDocument {
+class BasicXhtmlDocument extends BasicXmlDocument implements XhtmlDocument {
 
-	static final String NAMESPACE_URI = "http://www.w3.org/1999/xhtml";
+	public static final String NAMESPACE_URI = "http://www.w3.org/1999/xhtml";
 	
-	default String getTitle() {
+	public BasicXhtmlDocument(String path, XmlContent content) {
+		super(path, CoreMediaType.APPLICATION_XHTML_XML, content);
+	}
+
+	@Override
+	public String getTitle() {
 		String title = null;
 		Document document = getDocument();
 		if (document != null) {

@@ -5,7 +5,6 @@ import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationWriterFactory;
 import com.github.i49.pulp.core.PublicationImpl;
 import com.github.i49.pulp.core.PublicationWriterFactoryImpl;
-import com.github.i49.pulp.core.PublicationResourceManager;
 import com.github.i49.pulp.core.XmlService;
 
 /**
@@ -20,8 +19,7 @@ public class EpubProviderImpl implements EpubProvider {
 	
 	@Override
 	public Publication createPublication() {
-		PublicationResourceManager resourceManager = new PublicationResourceManager(this.xmlService); 
-		return new PublicationImpl(resourceManager);
+		return new PublicationImpl(this.xmlService);
 	}
 
 	@Override

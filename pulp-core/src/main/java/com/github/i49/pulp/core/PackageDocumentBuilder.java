@@ -201,11 +201,11 @@ class PackageDocumentBuilder {
 	 */
 	private Element item(Rendition.Item item) {
 		String id = nextItemId();
-		this.identifiers.put(item.getPath(), id);
+		this.identifiers.put(item.getPathname(), id);
 		
 		Element element = document.createElementNS(DEFAULT_NAMESPACE_URI, "item");
 		element.setAttribute("id", id);
-		element.setAttribute("href", item.getPath());
+		element.setAttribute("href", item.getPathname());
 		element.setAttribute("media-type", item.getResource().getMediaType().toString());
 		
 		String properties = itemProperties(item);
@@ -233,7 +233,7 @@ class PackageDocumentBuilder {
 	 */
 	private Element spine() {
 		Element spine = document.createElementNS(DEFAULT_NAMESPACE_URI, "spine");
-		for (Rendition.Page page: rendition.getPages()) {
+		for (Rendition.Page page: rendition.getPageList()) {
 			spine.appendChild(itemref(page));
 		}
 		return spine;
@@ -246,7 +246,7 @@ class PackageDocumentBuilder {
 	 */
 	private Element itemref(Rendition.Page page) {
 		Element itemref = document.createElementNS(DEFAULT_NAMESPACE_URI, "itemref");
-		String idref = this.identifiers.get(page.getItem().getPath());
+		String idref = this.identifiers.get(page.getItem().getPathname());
 		itemref.setAttribute("idref", idref);
 		if (!page.isLinear()) {
 			itemref.setAttribute("linear", "no");

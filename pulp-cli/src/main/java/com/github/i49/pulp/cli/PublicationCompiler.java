@@ -73,8 +73,8 @@ class PublicationCompiler {
 			if (shouldIgnore(relativePath)) {
 				return;
 			}
-			PublicationResource r = f.getBuilder(relativePath).content(uri).build();
-			Rendition.Item item = rendition.addResource(r);
+			PublicationResource r = f.get(relativePath).from(uri).build();
+			Rendition.Item item = rendition.require(r);
 			if (checkContentDocument(relativePath)) {
 				documents.add(relativePath);
 			} else if (checkCoverImage(relativePath)){
@@ -85,7 +85,7 @@ class PublicationCompiler {
 		sortDocuments(documents);
 		
 		for (String document: documents) {
-			rendition.getPages().add(rendition.createPage(document));
+			rendition.getPageList().add(rendition.page(document));
 		}
 	}
 	

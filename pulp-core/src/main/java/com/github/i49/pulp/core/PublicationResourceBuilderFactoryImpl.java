@@ -1,42 +1,57 @@
 package com.github.i49.pulp.core;
 
-import com.github.i49.pulp.api.CoreMediaType;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.github.i49.pulp.api.EpubException;
+import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationResourceBuilder;
 import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
 
-public class PublicationResourceBuilderFactoryImpl implements PublicationResourceBuilderFactory {
+/**
+ * An implementation of {@link PublicationResourceBuilderFactory}.
+ */
+class PublicationResourceBuilderFactoryImpl implements PublicationResourceBuilderFactory {
 	
-	private final String prefix;
-	private final PublicationResourceManager resourceManager;
+	private final XmlService xmlService;
+	private Map<String, PublicationResource> resourceMap;
 	
-	PublicationResourceBuilderFactoryImpl(String prefix, PublicationResourceManager resourceManager) {
-		if (prefix.endsWith("/")) {
-			this.prefix = prefix;
-		} else {
-			this.prefix = prefix + "/";
-		}
-		this.resourceManager = resourceManager;
+	PublicationResourceBuilderFactoryImpl(XmlService xmlService) {
+		this.xmlService = xmlService;
+		this.resourceMap = new HashMap<>();
 	}
 
 	@Override
-	public PublicationResourceBuilder getBuilder(String path) {
-		CoreMediaType mediaType = CoreMediaTypes.guessMediaType(path);
-		if (mediaType == null) {
-			throw new EpubException("Unknown media type.");
+	public PublicationResourceBuilder get(String pathname) {
+		if (pathname == null) {
+			throw new NullPointerException(Messages.PARAMETER_IS_NULL("pathname"));
+		} else if (getBuilt(pathname) != null) {
+			throw new EpubException(Messages.RESOURCE_ALREADY_EXISTS(pathname));
 		}
-		return getBuilder(path, mediaType);
+		return new PublicationResourceBuilderImpl(pathname, this.xmlService);
 	}
 
 	@Override
-	public PublicationResourceBuilder getBuilder(String path, CoreMediaType mediaType) {
-		if (resourceManager.containsKey(path)) {
-			throw new EpubException("Resource already exists.");
+	public PublicationResource getBuilt(String pathname) {
+		if (pathname == null) {
+			return null;
 		}
-		return new PublicationResourceBuilderImpl(resolve(path), mediaType, this.resourceManager.getXmlService());
+		return resourceMap.get(pathname);
 	}
 	
-	private String resolve(String path) {
-		return prefix + path;
+	
+	/**
+	 * An implementation of {@link PublicationResourceBuilder}.
+	 */
+	private class PublicationResourceBuilderImpl extends AbstractPublicationResourceBuilder {
+
+		private PublicationResourceBuilderImpl(String pathname, XmlService xmlService) {
+			super(pathname, xmlService);
+		}
+
+		@Override
+		protected void addResource(PublicationResource resource) {
+			resourceMap.put(resource.getPathname(), resource);
+		}
 	}
 }

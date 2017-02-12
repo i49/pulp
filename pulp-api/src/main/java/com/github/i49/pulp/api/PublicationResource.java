@@ -5,22 +5,26 @@ import java.io.InputStream;
 
 /**
  * A resource that contains content or instructions that contribute to
- * the logic and rendering of a publication.
+ * the logic and rendering of a {@link Publication}.
  */
 public interface PublicationResource {
 
 	/**
-	 * Returns the name of this publication.
-	 * @return the name of this publication.
+	 * Returns the pathname of this resource.
+	 * @return the pathname of this resource.
 	 */
-	String getName();
+	String getPathname();
 	
 	/**
-	 * Returns the media type of this publication.
-	 * @return the media type of this publication.
+	 * Returns the media type of this resource.
+	 * @return the media type of this resource.
 	 */
 	CoreMediaType getMediaType();
 	
-	
+	/**
+	 * Opens a new {@link InputStream} providing the content of this resource. 
+	 * @return a new input stream.
+	 * @throws IOException if I/O error occurs.
+	 */
 	InputStream openStream() throws IOException;
 }

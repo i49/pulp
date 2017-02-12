@@ -9,24 +9,24 @@ import com.github.i49.pulp.api.PublicationResource;
 /**
  * A skeletal class implementing {@link PublicaionResource}.
  */
-class AbstractPublicationResource implements PublicationResource {
+class BasicPublicationResource implements PublicationResource {
 
-	private final String name;
+	private final String pathname;
 	private final CoreMediaType mediaType;
 	private final Content content;
 	
-	public AbstractPublicationResource(String name, CoreMediaType mediaType, Content content) {
-		if (name == null || mediaType == null) {
+	public BasicPublicationResource(String pathname, CoreMediaType mediaType, Content content) {
+		if (pathname == null || mediaType == null) {
 			throw new NullPointerException();
 		}
-		this.name = name;
+		this.pathname = pathname;
 		this.mediaType = mediaType;
 		this.content = content;
 	}
 
 	@Override
-	public String getName() {
-		return name;
+	public String getPathname() {
+		return pathname;
 	}
 	
 	@Override
@@ -41,7 +41,7 @@ class AbstractPublicationResource implements PublicationResource {
 
 	@Override
 	public String toString() {
-		return getName().toString();
+		return getPathname().toString();
 	}
 	
 	protected Content getContent() {
