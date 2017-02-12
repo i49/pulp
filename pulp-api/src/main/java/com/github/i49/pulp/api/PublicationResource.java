@@ -1,7 +1,7 @@
 package com.github.i49.pulp.api;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStream;
 
 /**
  * A resource that contains content or instructions that contribute to
@@ -21,10 +21,6 @@ public interface PublicationResource {
 	 */
 	CoreMediaType getMediaType();
 	
-	/**
-	 * Persists this resource.
-	 * @param stream the stream to which this resource will be written.
-	 * @throws IOException thrown if I/O error occurred.
-	 */
-	void persist(OutputStream stream) throws IOException;
+	
+	InputStream openStream() throws IOException;
 }

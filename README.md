@@ -1,15 +1,16 @@
 
 # Pulp
 
-Pulp is EPUB processing API and its implementation.
+Pulp project provides Java API for EPUB processing and its implementation.
 
 ## Project Structure
 
-This project consists of the following four subprojects.
+This project consists of the following modules.
 
-Project           |Description
+Modules           |Description
 ------------------|-------------------------------------
-pulp-api          |EPUB processing API
+pulp-api          |Java API for EPUB processing
+pulp-api-test     |Unit tests of the API implementation
 pulp-core         |Reference implementation of the API
-pulp-cli          |Utility tool built on the API
-pulp-distribution |Assembles the distributable file
+pulp-cli          |Command line utility built on the API
+pulp-distribution |Assembles files for distribution

@@ -188,7 +188,7 @@ class PackageDocumentBuilder {
 	 */
 	private Element manifest() {
 		Element manifest = document.createElementNS(DEFAULT_NAMESPACE_URI, "manifest");
-		for (Rendition.Item item: rendition.getAllItems()) {
+		for (Rendition.Item item: rendition.getItems()) {
 			manifest.appendChild(item(item));
 		}
 		return manifest;
@@ -201,12 +201,12 @@ class PackageDocumentBuilder {
 	 */
 	private Element item(Rendition.Item item) {
 		String id = nextItemId();
-		this.identifiers.put(item.getName(), id);
+		this.identifiers.put(item.getPath(), id);
 		
 		Element element = document.createElementNS(DEFAULT_NAMESPACE_URI, "item");
 		element.setAttribute("id", id);
-		element.setAttribute("href", item.getName().toString());
-		element.setAttribute("media-type", item.getMediaType().toString());
+		element.setAttribute("href", item.getPath());
+		element.setAttribute("media-type", item.getResource().getMediaType().toString());
 		
 		String properties = itemProperties(item);
 		if (properties != null) {
@@ -218,7 +218,7 @@ class PackageDocumentBuilder {
 	
 	private String itemProperties(Rendition.Item item) {
 		List<String> properties = new ArrayList<>();
-		if (item == this.rendition.getCoverImage()) {
+		if (item.isCoverImage()) {
 			properties.add("cover-image");
 		}
 		if (properties.isEmpty()) {
@@ -246,7 +246,7 @@ class PackageDocumentBuilder {
 	 */
 	private Element itemref(Rendition.Page page) {
 		Element itemref = document.createElementNS(DEFAULT_NAMESPACE_URI, "itemref");
-		String idref = this.identifiers.get(page.getName());
+		String idref = this.identifiers.get(page.getItem().getPath());
 		itemref.setAttribute("idref", idref);
 		if (!page.isLinear()) {
 			itemref.setAttribute("linear", "no");

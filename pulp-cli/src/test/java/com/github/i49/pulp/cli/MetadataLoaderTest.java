@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import com.github.i49.pulp.api.Epub;
 import com.github.i49.pulp.api.Metadata;
+import com.github.i49.pulp.api.Rendition;
 import com.github.i49.pulp.cli.MetadataLoader;
 
 public class MetadataLoaderTest {
@@ -21,7 +22,8 @@ public class MetadataLoaderTest {
 	
 	@Before
 	public void setUp() {
-		//m = Epub.createPublication().getDefaultRendition().getMetadata(); 
+		Rendition rendition = Epub.createPublication().addRendition(null);
+		m = rendition.getMetadata(); 
 	}
 
 	@Test

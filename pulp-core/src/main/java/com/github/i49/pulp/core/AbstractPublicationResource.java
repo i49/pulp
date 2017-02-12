@@ -1,22 +1,27 @@
 package com.github.i49.pulp.core;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import com.github.i49.pulp.api.CoreMediaType;
 import com.github.i49.pulp.api.PublicationResource;
 
 /**
  * A skeletal class implementing {@link PublicaionResource}.
  */
-abstract class AbstractPublicationResource implements PublicationResource {
+class AbstractPublicationResource implements PublicationResource {
 
 	private final String name;
 	private final CoreMediaType mediaType;
+	private final Content content;
 	
-	protected AbstractPublicationResource(String name, CoreMediaType mediaType) {
+	public AbstractPublicationResource(String name, CoreMediaType mediaType, Content content) {
 		if (name == null || mediaType == null) {
 			throw new NullPointerException();
 		}
 		this.name = name;
 		this.mediaType = mediaType;
+		this.content = content;
 	}
 
 	@Override
@@ -30,7 +35,16 @@ abstract class AbstractPublicationResource implements PublicationResource {
 	}
 	
 	@Override
+	public InputStream openStream() throws IOException {
+		return getContent().openStream();
+	}
+
+	@Override
 	public String toString() {
 		return getName().toString();
+	}
+	
+	protected Content getContent() {
+		return content;
 	}
 }

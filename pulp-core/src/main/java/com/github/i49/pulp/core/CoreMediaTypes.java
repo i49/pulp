@@ -1,9 +1,18 @@
 package com.github.i49.pulp.core;
 
+import java.util.EnumSet;
+
 import com.github.i49.pulp.api.CoreMediaType;
 
 final class CoreMediaTypes {
 
+	private static final EnumSet<CoreMediaType> xmlSet = EnumSet.of(
+			CoreMediaType.APPLICAIION_PLS_XML,
+			CoreMediaType.APPLICATION_NCX_XML,
+			CoreMediaType.APPLICATION_SMIL_XML,
+			CoreMediaType.APPLICATION_XHTML_XML,
+			CoreMediaType.IMAGE_SVG_XML);
+	
 	/**
 	 * Guesses media type from a file extension.
 	 * @param location the location of the resource.
@@ -51,6 +60,10 @@ final class CoreMediaTypes {
 			break;
 		}
 		return mediaType;
+	}
+	
+	public static boolean checkTypeIsXml(CoreMediaType mediaType) {
+		return xmlSet.contains(mediaType);
 	}
 	
 	private CoreMediaTypes() {

@@ -8,90 +8,88 @@ import java.util.List;
  * representing one rendering of a {@link Publication}. 
  */
 public interface Rendition {
-
+	
 	/**
 	 * Return the metadata of this rendition.
 	 * @return the metadata of this rendition.
 	 */
 	Metadata getMetadata();
-	
-	/**
-	 * Returns {@code true} if this rendition contains the item specified.
-	 * @param name the name of the rendition item.
-	 * @return {@code true} if this rendition contains the item, {@code false} otherwise.
-	 */
-	boolean hasItem(String name);
 
-	/**
-	 * Returns the rendition item that has a name with the specified value in this rendition.
-	 * @param name the name of the resource to be returned.
-	 * @return the item if found in this rendition, {@code null} otherwise. 
-	 */
-	Item getItemByName(String name);
+	PublicationResourceBuilderFactory getResourceBuilderFactory();
+	
+	String getPrefix();
+
+	Item addResource(PublicationResource resource);
+	
+	void removeResource(String path);
+	
+	Item getItem(String path);
+	
+	Collection<Item> getItems();
 	
 	/**
-	 * Returns all resources contained in this rendition.
-	 * @return all resources in this rendition. The returned collection cannot be modified.
+	 * Creates a new page.
+	 * @param path the pathname of the item used by the new page.
+	 * @return created page.
 	 */
-	Collection<Item> getAllItems();
-	
-	/**
-	 * Returns a rendition item that represents a cover image of this rendition.
-	 * @return the cover image item if this rendition has, {@code null} if not.
-	 */
-	Item getCoverImage();
+	Page createPage(String path);
 	
 	/**
 	 * Returns the ordered list of the pages bound to the spine of this rendition.
 	 * @return the ordered list of the pages.
 	 */
 	List<Page> getPages();
-
+	
 	/**
-	 * Publication resource that this rendition requires to render contents.
+	 * A resource required by this rendition. 
 	 */
 	public static interface Item {
 		
 		/**
-		 * Returns the name of the item.
-		 * @return the name of the item.
+		 * Returns the pathname of this item.
+		 * @return the pathname of this item.
 		 */
-		String getName();
+		String getPath();
 		
 		/**
-		 * Returns the publication resource assigned to this item.
-		 * @return the publication resource.
+		 * Returns the publication resource that this item refers to.
+		 * @return the publication resource that this item refers to. 
 		 */
 		PublicationResource getResource();
-
+		
 		/**
-		 * Returns the media type of the resource.
-		 * @return the media type.
+		 * Returns {@code true} if this item is the cover image of this rendition.
+		 * @return {@code true} if this item is the cover image of this rendition, {@code false} otherwise. 
 		 */
-		CoreMediaType getMediaType();
+		boolean isCoverImage();
+		
+		/**
+		 * Uses this item as the cover image of this rendition.
+		 */
+		Item asCoverImage();
 	}
-
+	
 	/**
 	 * A page bound to the spine of this rendition.
 	 */
-	public interface Page {
+	public static interface Page {
 		
 		/**
-		 * Returns the name of this page.
-		 * @return the name of this page. 
+		 * Returns the resource item of this page.
+		 * @return the resource item of this page.
 		 */
-		String getName();
-		
-		/**
-		 * Returns the resource assigned to this page.
-		 * @return the resource assigned to this page.
-		 */
-		PublicationResource getResource();
+		Item getItem();
 		
 		/**
 		 * Returns {@code true} if this page is considered primary.
 		 * @return {@code true} if this page is considered primary, {@code false} if considered auxiliary.
 		 */
 		boolean isLinear();
+		
+		/**
+		 * Sets the linearity of this page.
+		 * @param linear {@code true} if this page is considered primary, {@code false} otherwise.
+		 */
+		Page linear(boolean linear);
 	};
 }

@@ -1,60 +1,95 @@
 package com.github.i49.pulp.core;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.github.i49.pulp.api.CoreMediaType;
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.PublicationResource;
+import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.Rendition;
 
 public class RenditionImpl implements Rendition {
 
-	@SuppressWarnings("unused")
 	private final String prefix;
 
-	private final MetadataImpl metadata = new MetadataImpl();
-	private final Map<String, Rendition.Item> items;
-	private List<Rendition.Page> pages;
+	private final PublicationResourceManager resourceManager;
+	private final PublicationResourceBuilderFactoryImpl resourceBuilderFactory;
+	
+	private final MetadataImpl metadata;
+	
+	private final Map<String, Item> manifest;
+	private final List<Page> pages;
+	
 	private Item coverImage;
 	
-	public RenditionImpl(String prefix, Map<String, ItemImpl> items, List<PageImpl> pages) {
+	public RenditionImpl(String prefix, PublicationResourceManager resourceManager) {
 		this.prefix = prefix;
-		this.items = Collections.unmodifiableMap(items);
-		this.pages = Collections.unmodifiableList(pages);
+		this.resourceManager = resourceManager;
+		this.resourceBuilderFactory = new PublicationResourceBuilderFactoryImpl(prefix, resourceManager);
+		this.metadata = new MetadataImpl();
+		this.manifest = new HashMap<>();
+		this.pages = new ArrayList<>();
 	}
-
+	
 	@Override
 	public Metadata getMetadata() {
 		return metadata;
 	}
 
 	@Override
-	public boolean hasItem(String name) {
-		if (name == null) {
-			return false;
-		}
-		return items.containsKey(name);
+	public PublicationResourceBuilderFactory getResourceBuilderFactory() {
+		return resourceBuilderFactory;
 	}
 
 	@Override
-	public Item getItemByName(String name) {
-		if (name == null) {
+	public String getPrefix() {
+		return prefix;
+	}
+	
+	@Override
+	public Item addResource(PublicationResource resource) {
+		if (resource == null) {
+			return null;
+		} else if (this.resourceManager.containsKey(resource.getName())) {
+			throw new IllegalArgumentException("Resource given already exists.");
+		}
+		
+		this.resourceManager.put(resource.getName(), resource);
+		
+		String relativePath = getRelativePathOf(resource);
+		Item item = new ItemImpl(relativePath, resource);
+		this.manifest.put(relativePath, item);
+		return item;
+	}
+	
+	@Override
+	public void removeResource(String path) {
+	}
+	
+	@Override
+	public Item getItem(String path) {
+		if (path == null) {
 			return null;
 		}
-		return items.get(name);
+		return manifest.get(path);
 	}
-
+	
 	@Override
-	public Collection<Item> getAllItems() {
-		return items.values();
+	public Collection<Item> getItems() {
+		return Collections.unmodifiableCollection(manifest.values());
 	}
-
+	
 	@Override
-	public Item getCoverImage() {
-		return coverImage;
+	public Page createPage(String pathname) {
+		Item item = manifest.get(pathname);
+		if (item == null) {
+			throw new IllegalArgumentException(pathname + " not found");
+		}
+		return new PageImpl(item);
 	}
 
 	@Override
@@ -62,54 +97,64 @@ public class RenditionImpl implements Rendition {
 		return pages;
 	}
 	
-	void setCoverImage(Item coverImage) {
-		this.coverImage = coverImage;
+	String getRelativePathOf(PublicationResource resource) {
+		String prefix = this.prefix + "/";
+		if (!resource.getName().startsWith(prefix)) {
+			throw new IllegalArgumentException();
+		}
+		return resource.getName().substring(prefix.length());
 	}
 
-	static class ItemImpl implements Rendition.Item {
-
-		private final String name;
+	private class ItemImpl implements Rendition.Item {
+		
+		private final String path;
 		private final PublicationResource resource;
 		
-		public ItemImpl(String name, PublicationResource resource) {
-			this.name = name;
+		private ItemImpl(String path, PublicationResource resource) {
+			this.path = path;
 			this.resource = resource;
 		}
 
 		@Override
-		public String getName() {
-			return name;
+		public String getPath() {
+			return path;
 		}
 
 		@Override
 		public PublicationResource getResource() {
 			return resource;
 		}
-
+		
 		@Override
-		public CoreMediaType getMediaType() {
-			return getResource().getMediaType();
+		public boolean isCoverImage() {
+			return this == coverImage;
+		}
+		
+		@Override
+		public Item asCoverImage() {
+			coverImage = this;
+			return this;
+		}
+		
+		@Override
+		public String toString() {
+			return getPath();
 		}
 	}
+	
+	private static class PageImpl implements Rendition.Page {
 
-	static class PageImpl implements Rendition.Page {
-
-		private final ItemImpl item;
-		private final boolean linear;
+		private final Item item;
+		private boolean linear;
 		
-		public PageImpl(ItemImpl item, boolean linear) {
+		private PageImpl(Item item)  {
 			this.item = item;
-			this.linear = linear;
+			this.linear = true;
 		}
 	
 		@Override
-		public String getName() {
-			return item.getName();
-		}
-
-		@Override
-		public PublicationResource getResource() {
-			return item.getResource();
+		public Item getItem() {
+			return item;
 		}
 
 		@Override
@@ -118,8 +163,14 @@ public class RenditionImpl implements Rendition {
 		}
 
 		@Override
+		public PageImpl linear(boolean linear) {
+			this.linear = linear;
+			return this;
+		}
+
+		@Override
 		public String toString() {
-			return getName();
+			return getItem().toString();
 		}
 	}
 }

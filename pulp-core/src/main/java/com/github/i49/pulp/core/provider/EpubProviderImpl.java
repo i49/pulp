@@ -1,10 +1,11 @@
 package com.github.i49.pulp.core.provider;
 
 import com.github.i49.pulp.api.EpubProvider;
-import com.github.i49.pulp.api.PublicationBuilder;
+import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationWriterFactory;
-import com.github.i49.pulp.core.PublicationBuilderImpl;
+import com.github.i49.pulp.core.PublicationImpl;
 import com.github.i49.pulp.core.PublicationWriterFactoryImpl;
+import com.github.i49.pulp.core.PublicationResourceManager;
 import com.github.i49.pulp.core.XmlService;
 
 /**
@@ -16,10 +17,11 @@ public class EpubProviderImpl implements EpubProvider {
 	
 	public EpubProviderImpl() {
 	}
-
+	
 	@Override
-	public PublicationBuilder createPublicationBuilder() {
-		return new PublicationBuilderImpl(this.xmlService);
+	public Publication createPublication() {
+		PublicationResourceManager resourceManager = new PublicationResourceManager(this.xmlService); 
+		return new PublicationImpl(resourceManager);
 	}
 
 	@Override

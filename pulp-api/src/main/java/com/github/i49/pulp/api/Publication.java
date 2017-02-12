@@ -5,11 +5,13 @@ package com.github.i49.pulp.api;
  * such as book, magazine, newspaper, journal, office document or beyond.
  * A publication consists of one or more {@link Rendition}s.
  */
-public interface Publication {
+public interface Publication extends Iterable<Rendition> {
 	
 	/**
 	 * Returns the default {@link Rendition} of this publication.
 	 * @return the default {@link Rendition} of this publication.
 	 */
 	Rendition getDefaultRendition();
+	
+	Rendition addRendition(String prefix);
 }

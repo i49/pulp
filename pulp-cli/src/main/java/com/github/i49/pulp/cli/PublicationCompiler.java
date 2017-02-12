@@ -14,7 +14,9 @@ import java.util.regex.Pattern;
 import com.github.i49.pulp.api.Epub;
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Publication;
-import com.github.i49.pulp.api.PublicationBuilder;
+import com.github.i49.pulp.api.PublicationResource;
+import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
+import com.github.i49.pulp.api.Rendition;
 
 /**
  * A class to compile a publication.
@@ -24,7 +26,6 @@ class PublicationCompiler {
 	private final Path sourceDir;
 	private final URI baseURI;
 	private Order order = Order.ASCENDING;
-	private PublicationBuilder builder;
 	
 	private static final String METADATA_FILENAME = "metadata.yaml";
 	
@@ -40,16 +41,15 @@ class PublicationCompiler {
 	}
 	
 	public Publication compile() throws IOException {
-		this.builder = Epub.createPublicationBuilder();
-		buildRendition();
-		return this.builder.build();
+		Publication publication = Epub.createPublication();
+		buildRendition(publication.addRendition(null));
+		return publication;
 	}
 	
-	private void buildRendition() {
+	private void buildRendition(Rendition rendition) {
 		try {
-			this.builder.startRendition();
-			addResources();
-			this.builder.endRendition();
+			loadMetadata(rendition.getMetadata());
+			addResourcesToRendition(rendition);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
@@ -63,27 +63,29 @@ class PublicationCompiler {
 		}
 	}
 	
-	private void addResources() throws IOException {
+	private void addResourcesToRendition(Rendition rendition) throws IOException {
 		List<String> documents = new ArrayList<>();
+		PublicationResourceBuilderFactory f = rendition.getResourceBuilderFactory();
 	
 		Files.walk(this.sourceDir).filter(Files::isRegularFile).forEach(path->{
 			URI uri = path.toUri();
-			String name = this.baseURI.relativize(uri).toString();
-			if (shouldIgnore(name)) {
+			String relativePath = this.baseURI.relativize(uri).toString();
+			if (shouldIgnore(relativePath)) {
 				return;
 			}
-			builder.addResource(name, uri);
-			if (checkContentDocument(name)) {
-				documents.add(name);
-			} else if (checkCoverImage(name)){
-				builder.selectCoverImage(name);
+			PublicationResource r = f.getBuilder(relativePath).content(uri).build();
+			Rendition.Item item = rendition.addResource(r);
+			if (checkContentDocument(relativePath)) {
+				documents.add(relativePath);
+			} else if (checkCoverImage(relativePath)){
+				item.asCoverImage();
 			}
 		});
 		
 		sortDocuments(documents);
 		
-		for (String doc: documents) {
-			builder.addPage(doc);
+		for (String document: documents) {
+			rendition.getPages().add(rendition.createPage(document));
 		}
 	}
 	

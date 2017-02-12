@@ -10,12 +10,11 @@ import java.util.ServiceLoader;
 public final class Epub {
 
 	/**
-	 * Creates an instance of {@link Publication}.
-	 * @param consumer accepts {@link PublicationBuilder} to build a publication.
-	 * @return created publication.
+	 * Creates an empty publication.
+	 * @return an empty publication.
 	 */
-	public static PublicationBuilder createPublicationBuilder() {
-		return getProvider().createPublicationBuilder();
+	public static Publication createPublication() {
+		return getProvider().createPublication();
 	}
 	
 	/**

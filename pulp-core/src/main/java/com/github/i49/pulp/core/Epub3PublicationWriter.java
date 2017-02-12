@@ -1,12 +1,14 @@
 package com.github.i49.pulp.core;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.w3c.dom.Document;
 
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Publication;
+import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationWriter;
 import com.github.i49.pulp.api.Rendition;
 
@@ -15,15 +17,16 @@ import com.github.i49.pulp.api.Rendition;
  */
 class Epub3PublicationWriter implements PublicationWriter {
 
-	private static final String MIMETYPE = "application/epub+zip";
-	private static final String DEFAULT_PACKAGE_DIR = "EPUB/";
-	private static final String PACKAGE_DOCUMENT_NAME = "package.opf";
-
 	private final Archiver archiver;
 	private boolean closed;
 	private final XmlService xmlService;
 	
 	private String packageDir = DEFAULT_PACKAGE_DIR;
+
+	private static final String MIMETYPE = "application/epub+zip";
+	private static final String DEFAULT_PACKAGE_DIR = "EPUB/";
+	private static final String PACKAGE_DOCUMENT_NAME = "package.opf";
+	private static final int BUFFER_SIZE = 128 * 1024;
 	
 	public Epub3PublicationWriter(OutputStream stream, XmlService xmlService) throws Exception {
 		this.archiver = new ZipArchiver(stream);
@@ -81,15 +84,21 @@ class Epub3PublicationWriter implements PublicationWriter {
 	}
 
 	private void writeAllResources(Rendition rendition) throws IOException {
-		for (Rendition.Item item: rendition.getAllItems()) {
+		for (Rendition.Item item: rendition.getItems()) {
 			writeResource(item);
 		}
 	}
 	
 	private void writeResource(Rendition.Item item) throws IOException {
-		String entryName = this.packageDir + item.getName().toString();
-		try (OutputStream out = archiver.append(entryName)) {
-			item.getResource().persist(out);
+		String entryName = this.packageDir + item.getPath();
+		PublicationResource resource = item.getResource();
+		byte[] buffer = new byte[BUFFER_SIZE];
+		try (InputStream in = resource.openStream(); OutputStream out = archiver.append(entryName)) {
+			int len = 0;
+			while ((len = in.read(buffer)) != -1) {
+				out.write(buffer, 0, len);
+			}
+			out.flush();
 		}
 	}
 	
