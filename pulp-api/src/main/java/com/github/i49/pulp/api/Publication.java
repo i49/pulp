@@ -24,4 +24,11 @@ public interface Publication extends Iterable<Rendition> {
 	 * @return created rendition.
 	 */
 	Rendition addRendition(String prefix);
+	
+	/**
+	 * Returns an instance of {@link PublicationResourceBuilderFactory} for producing {@link PublicationResourceBuilder}.
+	 * @param rendition the rendition for which resources will be built.
+	 * @return a factory instance.
+	 */
+	PublicationResourceBuilderFactory getResourceBuilderFactory(Rendition rendition);
 }

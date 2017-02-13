@@ -42,14 +42,16 @@ class PublicationCompiler {
 	
 	public Publication compile() throws IOException {
 		Publication publication = Epub.createPublication();
-		buildRendition(publication.addRendition(null));
+		Rendition rendition = publication.addRendition(null);
+		PublicationResourceBuilderFactory factory = publication.getResourceBuilderFactory(rendition);
+		buildRendition(rendition, factory);
 		return publication;
 	}
 	
-	private void buildRendition(Rendition rendition) {
+	private void buildRendition(Rendition rendition, PublicationResourceBuilderFactory factory) {
 		try {
 			loadMetadata(rendition.getMetadata());
-			addResourcesToRendition(rendition);
+			addResourcesToRendition(rendition, factory);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
@@ -63,9 +65,8 @@ class PublicationCompiler {
 		}
 	}
 	
-	private void addResourcesToRendition(Rendition rendition) throws IOException {
+	private void addResourcesToRendition(Rendition rendition, PublicationResourceBuilderFactory factory) throws IOException {
 		List<String> documents = new ArrayList<>();
-		PublicationResourceBuilderFactory f = rendition.getResourceBuilderFactory();
 	
 		Files.walk(this.sourceDir).filter(Files::isRegularFile).forEach(path->{
 			URI uri = path.toUri();
@@ -73,7 +74,7 @@ class PublicationCompiler {
 			if (shouldIgnore(relativePath)) {
 				return;
 			}
-			PublicationResource r = f.get(relativePath).from(uri).build();
+			PublicationResource r = factory.builder(relativePath).from(uri).build();
 			Rendition.Item item = rendition.require(r);
 			if (checkContentDocument(relativePath)) {
 				documents.add(relativePath);

@@ -13,12 +13,5 @@ public interface PublicationResourceBuilderFactory {
 	 * @exception NullPointerException if given {@code pathname} is {@code null}. 
 	 * @exception EpubException if the publication resource with given {@code pathname} is already built. 
 	 */
-	PublicationResourceBuilder get(String pathname);
-
-	/**
-	 * Returns the publication resource built by the builder created by this factory.
-	 * @param pathname the pathname of the resource.
-	 * @return the publication resource if found, {@code null} otherwise.
-	 */
-	PublicationResource getBuilt(String pathname);
+	PublicationResourceBuilder builder(String pathname);
 }

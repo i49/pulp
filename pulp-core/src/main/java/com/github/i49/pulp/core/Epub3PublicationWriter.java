@@ -93,7 +93,7 @@ class Epub3PublicationWriter implements PublicationWriter {
 		String entryName = this.packageDir + item.getPathname();
 		PublicationResource resource = item.getResource();
 		byte[] buffer = new byte[BUFFER_SIZE];
-		try (InputStream in = resource.openStream(); OutputStream out = archiver.append(entryName)) {
+		try (InputStream in = resource.openContent(); OutputStream out = archiver.append(entryName)) {
 			int len = 0;
 			while ((len = in.read(buffer)) != -1) {
 				out.write(buffer, 0, len);

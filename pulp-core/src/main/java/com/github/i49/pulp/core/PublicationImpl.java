@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.i49.pulp.api.Publication;
+import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.Rendition;
 
 /**
@@ -17,12 +18,12 @@ public class PublicationImpl implements Publication {
 	
 	private final XmlService xmlService;
 	private final List<Rendition> renditions;
-	private final Map<String, PublicationResourceBuilderFactoryImpl> factories;
+	private final Map<String, Map<String, PublicationResource>> resources;
 	
 	public PublicationImpl(XmlService xmlService) {
 		this.xmlService = xmlService;
 		this.renditions = new ArrayList<>();
-		this.factories = new HashMap<>();
+		this.resources = new HashMap<>();
 	}
 
 	@Override
@@ -38,7 +39,8 @@ public class PublicationImpl implements Publication {
 		if (prefix == null) {
 			prefix = DEFAULT_RENDITION_PREFIX;
 		}
-		Rendition rendition = new RenditionImpl(prefix, getResourceBuilderFactory(prefix));
+		Map<String, PublicationResource> resourceMap = Collections.unmodifiableMap(getResourceMap(prefix));
+		Rendition rendition = new RenditionImpl(prefix, resourceMap);
 		this.renditions.add(rendition);
 		return rendition;
 	}
@@ -48,12 +50,22 @@ public class PublicationImpl implements Publication {
 		return Collections.unmodifiableList(renditions).iterator();
 	}
 	
-	private PublicationResourceBuilderFactoryImpl getResourceBuilderFactory(String prefix) {
-		PublicationResourceBuilderFactoryImpl factory = this.factories.get(prefix);
-		if (factory == null) {
-			factory = new PublicationResourceBuilderFactoryImpl(xmlService);
-			this.factories.put(prefix, factory);
+	@Override
+	public PublicationResourceBuilderFactoryImpl getResourceBuilderFactory(Rendition rendition) {
+		if (rendition == null) {
+			throw new NullPointerException(Messages.PARAMETER_IS_NULL("rendition"));
 		}
-		return factory;
+		String prefix = rendition.getPrefix();
+		Map<String, PublicationResource> resourceMap = getResourceMap(prefix);
+		return new PublicationResourceBuilderFactoryImpl(resourceMap, xmlService);
+	}
+	
+	private Map<String, PublicationResource> getResourceMap(String prefix) {
+		Map<String, PublicationResource> resourceMap = this.resources.get(prefix);
+		if (resourceMap == null) {
+			resourceMap = new HashMap<>();
+			this.resources.put(prefix, resourceMap);
+		}
+		return resourceMap;
 	}
 }

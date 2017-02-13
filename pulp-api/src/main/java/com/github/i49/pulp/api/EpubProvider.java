@@ -1,7 +1,8 @@
 package com.github.i49.pulp.api;
 
 /**
- * Service provider for EPUB processing objects.
+ * Service Provider Interface (SPI) to be implemented by API implementor.
+ * This type is for internal use and the users of the API need not to care this interface.
  */
 public interface EpubProvider {
 	
@@ -12,7 +13,7 @@ public interface EpubProvider {
 	Publication createPublication();
 
 	/**
-	 * Creates a new factory instance in order to create publication writers.
+	 * Creates an instance of factory that can produce publication writers.
 	 * @return an instance of publication writer factory.
 	 */
 	PublicationWriterFactory createWriterFactory();

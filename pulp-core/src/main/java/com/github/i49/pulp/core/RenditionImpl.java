@@ -10,7 +10,6 @@ import java.util.Map;
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.PublicationResource;
-import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.Rendition;
 
 /**
@@ -19,8 +18,7 @@ import com.github.i49.pulp.api.Rendition;
 public class RenditionImpl implements Rendition {
 
 	private final String prefix;
-
-	private final PublicationResourceBuilderFactoryImpl resourceBuilderFactory;
+	private final Map<String, PublicationResource> resourceMap;
 	
 	private final MetadataImpl metadata;
 	
@@ -30,9 +28,10 @@ public class RenditionImpl implements Rendition {
 	
 	private Item coverImage;
 	
-	public RenditionImpl(String prefix, PublicationResourceBuilderFactoryImpl factory) {
+	public RenditionImpl(String prefix, Map<String, PublicationResource> resourceMap) {
 		this.prefix = prefix;
-		this.resourceBuilderFactory = factory;
+		this.resourceMap = resourceMap;
+		
 		this.metadata = new MetadataImpl();
 		this.manifest = new HashMap<>();
 		this.pages = new HashMap<>();
@@ -50,17 +49,17 @@ public class RenditionImpl implements Rendition {
 	}
 
 	@Override
-	public PublicationResourceBuilderFactory getResourceBuilderFactory() {
-		return resourceBuilderFactory;
+	public Map<String, PublicationResource> getAvailableResources() {
+		return resourceMap;
 	}
-
+	
 	@Override
 	public Item require(PublicationResource resource) {
 		if (resource == null) {
 			throw new NullPointerException(Messages.PARAMETER_IS_NULL("resource"));
 		}
 		String pathname = resource.getPathname();
-		if (resourceBuilderFactory.getBuilt(pathname) != resource) {
+		if (!resourceMap.containsValue(resource)) {
 			throw new EpubException(Messages.INVALID_RESOURCE(pathname));
 		}
 		Item item = getItem(pathname);

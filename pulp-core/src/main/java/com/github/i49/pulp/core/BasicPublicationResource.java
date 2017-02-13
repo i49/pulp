@@ -35,7 +35,7 @@ class BasicPublicationResource implements PublicationResource {
 	}
 	
 	@Override
-	public InputStream openStream() throws IOException {
+	public InputStream openContent() throws IOException {
 		return getContent().openStream();
 	}
 

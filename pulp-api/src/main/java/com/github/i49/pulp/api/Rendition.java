@@ -2,6 +2,7 @@ package com.github.i49.pulp.api;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A logical document entity consisting of a set of interrelated resources 
@@ -21,13 +22,13 @@ public interface Rendition {
 	 * @return the metadata of this rendition.
 	 */
 	Metadata getMetadata();
-
-	/**
-	 * Returns the factory to build {@link PublicationResource}s for this rendition.
-	 * @return {@link PublicationResourceBuilderFactory} for this rendition.
-	 */
-	PublicationResourceBuilderFactory getResourceBuilderFactory();
 	
+	/**
+	 * Returns all resources available for this rendition.
+	 * @return all resources available for this rendition.
+	 */
+	Map<String, PublicationResource> getAvailableResources();
+
 	/**
 	 * Adds a resource required for this rendition.
 	 * @param resource the required resource for this rendition.

@@ -21,7 +21,7 @@ class Messages {
 	}
 	
 	static String INVALID_RESOURCE(String pathname) {
-		return localize("invalid.resoure", pathname);
+		return localize("invalid.resource", pathname);
 	}
 	
 	static String UNKNOWN_MEDIA_TYPE(String pathname) {
