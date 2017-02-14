@@ -89,6 +89,7 @@ public interface Rendition {
 		
 		/**
 		 * Uses this item as the cover image of this rendition.
+		 * @return this item.
 		 */
 		Item asCoverImage();
 	}
@@ -113,7 +114,8 @@ public interface Rendition {
 		/**
 		 * Sets the linearity of this page.
 		 * @param linear {@code true} if this page is considered primary, {@code false} otherwise.
+		 * @return this page.
 		 */
 		Page linear(boolean linear);
-	};
+	}
 }

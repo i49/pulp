@@ -1,6 +1,7 @@
 package com.github.i49.pulp.api;
 
 import java.io.Closeable;
+import java.io.IOException;
 
 /**
  * A writer to write a publication.
