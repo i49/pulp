@@ -1,5 +1,6 @@
 package com.github.i49.pulp.core;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -9,7 +10,9 @@ import java.util.Map;
 
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Metadata;
+import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
+import com.github.i49.pulp.api.PublicationResourceRegistry;
 import com.github.i49.pulp.api.Rendition;
 
 /**
@@ -17,30 +20,40 @@ import com.github.i49.pulp.api.Rendition;
  */
 public class RenditionImpl implements Rendition {
 
-	private final String prefix;
-	private final Map<String, PublicationResource> resourceMap;
+	private final Publication publication;
+	private final PublicationResourceRegistry rootRegistry;
 	
-	private final MetadataImpl metadata;
+	private final URI packagePath;
+	private final PublicationResourceRegistry localRegistry;
 	
-	private final Map<String, Item> manifest;
-	private final Map<String, Page> pages;
+	private final MetadataImpl metadata = new MetadataImpl();
+	
+	private final Map<URI, Item> manifest;
+	private final Map<URI, Page> pages;
 	private final List<Page> pageList;
 	
 	private Item coverImage;
 	
-	public RenditionImpl(String prefix, Map<String, PublicationResource> resourceMap) {
-		this.prefix = prefix;
-		this.resourceMap = resourceMap;
+	public RenditionImpl(Publication publication, String packagePath) {
+		this.publication = publication;
+		this.rootRegistry = publication.getResourceRegistry();
 		
-		this.metadata = new MetadataImpl();
+		this.packagePath = URI.create(packagePath);
+		this.localRegistry = rootRegistry.getChildRegistry(packagePath);
+		
 		this.manifest = new HashMap<>();
 		this.pages = new HashMap<>();
 		this.pageList = new ArrayList<>();
 	}
 	
 	@Override
-	public String getPrefix() {
-		return prefix;
+	public Publication getPublication() {
+		return publication;
+	}
+	
+	@Override
+	public String getPackageDocumentPath() {
+		return packagePath.getPath();
 	}
 	
 	@Override
@@ -49,8 +62,8 @@ public class RenditionImpl implements Rendition {
 	}
 
 	@Override
-	public Map<String, PublicationResource> getAvailableResources() {
-		return resourceMap;
+	public PublicationResourceRegistry getResourceRegistry() {
+		return localRegistry;
 	}
 	
 	@Override
@@ -58,11 +71,11 @@ public class RenditionImpl implements Rendition {
 		if (resource == null) {
 			throw new NullPointerException(Messages.PARAMETER_IS_NULL("resource"));
 		}
-		String pathname = resource.getPathname();
-		if (!resourceMap.containsValue(resource)) {
-			throw new EpubException(Messages.INVALID_RESOURCE(pathname));
+		if (!rootRegistry.contains(resource)) {
+			throw new EpubException(Messages.INVALID_RESOURCE(resource.getIdentifier()));
 		}
-		Item item = getItem(pathname);
+		URI identifier = resource.getIdentifier();
+		Item item = manifest.get(identifier);
 		if (item == null) {
 			item = createItem(resource);
 		}
@@ -111,22 +124,26 @@ public class RenditionImpl implements Rendition {
 	}
 	
 	private Item createItem(PublicationResource resource) {
-		String pathname = resource.getPathname();
 		Item item = new ItemImpl(resource);
-		this.manifest.put(pathname, item);
+		this.manifest.put(resource.getIdentifier(), item);
 		return item;
 	}
 	
-	private Page createPage(String pathname) {
-		Item item = this.manifest.get(pathname);
+	private Page createPage(String identifier) {
+		URI resolved = resolve(identifier);
+		Item item = this.manifest.get(resolved);
 		if (item == null) {
-			throw new EpubException(Messages.MISSING_PUBLICATION_RESOURCE(pathname));
+			throw new EpubException(Messages.MISSING_PUBLICATION_RESOURCE(resolved));
 		}
 		Page page = new PageImpl(item);
-		this.pages.put(pathname, page);
+		this.pages.put(resolved, page);
 		return page;
 	}
-
+	
+	private URI resolve(String pathname) {
+		return packagePath.resolve(pathname);
+	}
+	
 	/**
 	 * An implementation of {@link Rendition.Item}.
 	 */
@@ -139,8 +156,8 @@ public class RenditionImpl implements Rendition {
 		}
 
 		@Override
-		public String getPathname() {
-			return resource.getPathname();
+		public URI getIdentifier() {
+			return resource.getIdentifier();
 		}
 
 		@Override
@@ -161,7 +178,7 @@ public class RenditionImpl implements Rendition {
 		
 		@Override
 		public String toString() {
-			return getPathname();
+			return getIdentifier().toString();
 		}
 	}
 	

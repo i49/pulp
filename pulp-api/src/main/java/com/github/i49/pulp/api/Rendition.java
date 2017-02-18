@@ -1,21 +1,26 @@
 package com.github.i49.pulp.api;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A logical document entity consisting of a set of interrelated resources 
  * representing one rendering of a {@link Publication}. 
  */
 public interface Rendition {
+	
+	/**
+	 * Return the publication that this rendition belongs to.
+	 * @return the publication.
+	 */
+	Publication getPublication();
 
 	/**
-	 * Returns the prefix of this rendition.
-	 * The prefix is used as the base path of the rendition when persisted.
-	 * @return the prefix of this rendition.
+	 * Returns the path to the Package Document of this rendition.
+	 * @return the path to the Package Document of this rendition.
 	 */
-	String getPrefix();
+	String getPackageDocumentPath();
 
 	/**
 	 * Return the metadata of this rendition.
@@ -24,10 +29,11 @@ public interface Rendition {
 	Metadata getMetadata();
 	
 	/**
-	 * Returns all resources available for this rendition.
-	 * @return all resources available for this rendition.
+	 * Returns the publication resource registry that resolves relative paths 
+	 * against the base path of this rendition.
+	 * @return the publication resource registry.
 	 */
-	Map<String, PublicationResource> getAvailableResources();
+	PublicationResourceRegistry getResourceRegistry();
 
 	/**
 	 * Adds a resource required for this rendition.
@@ -70,10 +76,10 @@ public interface Rendition {
 	public static interface Item {
 		
 		/**
-		 * Returns the pathname of this item.
-		 * @return the pathname of this item.
+		 * Returns the identifier of this item.
+		 * @return the identifier of this item.
 		 */
-		String getPathname();
+		URI getIdentifier();
 		
 		/**
 		 * Returns the publication resource that this item refers to.

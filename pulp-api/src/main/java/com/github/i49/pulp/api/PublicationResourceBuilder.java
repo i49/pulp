@@ -26,28 +26,32 @@ public interface PublicationResourceBuilder {
 	 * @param path the path from which the content will be read.
 	 * @return this builder.
 	 */
-	PublicationResourceBuilder from(Path path);
+	PublicationResourceBuilder source(Path path);
 
 	/**
 	 * Specifies the content of the resource with a URI.
 	 * @param uri the URI from which the content will be read.
 	 * @return this builder.
 	 */
-	PublicationResourceBuilder from(URI uri);
+	PublicationResourceBuilder source(URI uri);
 	
 	/**
 	 * Specifies the content of the resource with a byte array.
 	 * @param bytes the byte array to be used as the content of the resource.
 	 * @return this builder.
 	 */
-	PublicationResourceBuilder from(byte[] bytes);
+	PublicationResourceBuilder source(byte[] bytes);
 	
 	/**
 	 * Specifies the supplier of the content for the resource.
 	 * @param supplier the supplier of {@link InputStream} that will produce the content.
 	 * @return this builder.
 	 */
-	PublicationResourceBuilder from(Supplier<InputStream> supplier);
+	PublicationResourceBuilder source(Supplier<InputStream> supplier);
+	
+	PublicationResourceBuilder sourceDir(Path base);
+	
+	PublicationResourceBuilder sourceDir(URI base);
 	
 	/**
 	 * Builds a {@link PublicationResource}.

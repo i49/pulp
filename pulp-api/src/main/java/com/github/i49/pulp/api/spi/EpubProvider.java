@@ -1,4 +1,7 @@
-package com.github.i49.pulp.api;
+package com.github.i49.pulp.api.spi;
+
+import com.github.i49.pulp.api.Publication;
+import com.github.i49.pulp.api.PublicationWriterFactory;
 
 /**
  * Service Provider Interface (SPI) to be implemented by API implementor.

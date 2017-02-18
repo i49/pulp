@@ -2,6 +2,7 @@ package com.github.i49.pulp.api;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 
 /**
  * A resource that contains content or instructions that contribute to
@@ -10,10 +11,10 @@ import java.io.InputStream;
 public interface PublicationResource {
 
 	/**
-	 * Returns the pathname of this resource.
-	 * @return the pathname of this resource.
+	 * Returns the identifier of this resource.
+	 * @return the identifier of this resource.
 	 */
-	String getPathname();
+	URI getIdentifier();
 	
 	/**
 	 * Returns the media type of this resource.

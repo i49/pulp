@@ -4,6 +4,8 @@ import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
+import com.github.i49.pulp.api.spi.EpubProvider;
+
 /**
  * Factory class for creating EPUB processing objects.
  * This class is the central interface of the API. 

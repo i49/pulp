@@ -1,4 +1,4 @@
-package com.github.i49.pulp.core;
+package com.github.i49.pulp.core.container;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +11,7 @@ import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationWriter;
 import com.github.i49.pulp.api.Rendition;
+import com.github.i49.pulp.core.XmlService;
 
 /**
  * Publication writer that is defined as EPUB3 specification.
@@ -90,8 +91,8 @@ class Epub3PublicationWriter implements PublicationWriter {
 	}
 	
 	private void writeResource(Rendition.Item item) throws IOException {
-		String entryName = this.packageDir + item.getPathname();
 		PublicationResource resource = item.getResource();
+		String entryName = resource.getIdentifier().getPath();
 		byte[] buffer = new byte[BUFFER_SIZE];
 		try (InputStream in = resource.openContent(); OutputStream out = archiver.append(entryName)) {
 			int len = 0;

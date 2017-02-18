@@ -2,13 +2,10 @@ package com.github.i49.pulp.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import com.github.i49.pulp.api.Publication;
-import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.Rendition;
 
 /**
@@ -16,14 +13,13 @@ import com.github.i49.pulp.api.Rendition;
  */
 public class PublicationImpl implements Publication {
 	
-	private final XmlService xmlService;
-	private final List<Rendition> renditions;
-	private final Map<String, Map<String, PublicationResource>> resources;
+	private static final String DEFAULT_PACKAGE_DOCUMENT_PATH = "EPUB/package.opf";
+	
+	private final RootPublicationResourceRegistry resourceRegistry;
+	private final List<Rendition> renditions = new ArrayList<>();
 	
 	public PublicationImpl(XmlService xmlService) {
-		this.xmlService = xmlService;
-		this.renditions = new ArrayList<>();
-		this.resources = new HashMap<>();
+		this.resourceRegistry = new RootPublicationResourceRegistry(xmlService);
 	}
 
 	@Override
@@ -35,12 +31,21 @@ public class PublicationImpl implements Publication {
 	}
 	
 	@Override
-	public Rendition addRendition(String prefix) {
-		if (prefix == null) {
-			prefix = DEFAULT_RENDITION_PREFIX;
+	public RootPublicationResourceRegistry getResourceRegistry() {
+		return resourceRegistry;
+	}
+	
+	@Override
+	public Rendition addRendition() {
+		return addRendition(DEFAULT_PACKAGE_DOCUMENT_PATH);
+	}
+	
+	@Override
+	public Rendition addRendition(String packagePath) {
+		if (packagePath == null) {
+			packagePath = DEFAULT_PACKAGE_DOCUMENT_PATH;
 		}
-		Map<String, PublicationResource> resourceMap = Collections.unmodifiableMap(getResourceMap(prefix));
-		Rendition rendition = new RenditionImpl(prefix, resourceMap);
+		Rendition rendition = new RenditionImpl(this, packagePath);
 		this.renditions.add(rendition);
 		return rendition;
 	}
@@ -48,24 +53,5 @@ public class PublicationImpl implements Publication {
 	@Override
 	public Iterator<Rendition> iterator() {
 		return Collections.unmodifiableList(renditions).iterator();
-	}
-	
-	@Override
-	public PublicationResourceBuilderFactoryImpl getResourceBuilderFactory(Rendition rendition) {
-		if (rendition == null) {
-			throw new NullPointerException(Messages.PARAMETER_IS_NULL("rendition"));
-		}
-		String prefix = rendition.getPrefix();
-		Map<String, PublicationResource> resourceMap = getResourceMap(prefix);
-		return new PublicationResourceBuilderFactoryImpl(resourceMap, xmlService);
-	}
-	
-	private Map<String, PublicationResource> getResourceMap(String prefix) {
-		Map<String, PublicationResource> resourceMap = this.resources.get(prefix);
-		if (resourceMap == null) {
-			resourceMap = new HashMap<>();
-			this.resources.put(prefix, resourceMap);
-		}
-		return resourceMap;
 	}
 }

@@ -2,6 +2,7 @@ package com.github.i49.pulp.core;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 
 import com.github.i49.pulp.api.CoreMediaType;
 import com.github.i49.pulp.api.PublicationResource;
@@ -11,22 +12,22 @@ import com.github.i49.pulp.api.PublicationResource;
  */
 class BasicPublicationResource implements PublicationResource {
 
-	private final String pathname;
+	private final URI identifier;
 	private final CoreMediaType mediaType;
 	private final Content content;
 	
-	public BasicPublicationResource(String pathname, CoreMediaType mediaType, Content content) {
-		if (pathname == null || mediaType == null) {
+	public BasicPublicationResource(URI identifier, CoreMediaType mediaType, Content content) {
+		if (identifier == null || mediaType == null) {
 			throw new NullPointerException();
 		}
-		this.pathname = pathname;
+		this.identifier = identifier;
 		this.mediaType = mediaType;
 		this.content = content;
 	}
 
 	@Override
-	public String getPathname() {
-		return pathname;
+	public URI getIdentifier() {
+		return identifier;
 	}
 	
 	@Override
@@ -41,7 +42,7 @@ class BasicPublicationResource implements PublicationResource {
 
 	@Override
 	public String toString() {
-		return getPathname().toString();
+		return getIdentifier().toString();
 	}
 	
 	protected Content getContent() {

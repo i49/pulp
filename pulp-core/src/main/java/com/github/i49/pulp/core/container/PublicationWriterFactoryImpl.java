@@ -1,9 +1,10 @@
-package com.github.i49.pulp.core;
+package com.github.i49.pulp.core.container;
 
 import java.io.OutputStream;
 
 import com.github.i49.pulp.api.PublicationWriter;
 import com.github.i49.pulp.api.PublicationWriterFactory;
+import com.github.i49.pulp.core.XmlService;
 
 /**
  * An implementation of {@link PublicationWriterFactory}.

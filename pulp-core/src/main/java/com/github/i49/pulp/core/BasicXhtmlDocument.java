@@ -1,5 +1,7 @@
 package com.github.i49.pulp.core;
 
+import java.net.URI;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -11,8 +13,8 @@ class BasicXhtmlDocument extends BasicXmlDocument implements XhtmlDocument {
 
 	public static final String NAMESPACE_URI = "http://www.w3.org/1999/xhtml";
 	
-	public BasicXhtmlDocument(String path, XmlContent content) {
-		super(path, CoreMediaType.APPLICATION_XHTML_XML, content);
+	public BasicXhtmlDocument(URI identifier, XmlContent content) {
+		super(identifier, CoreMediaType.APPLICATION_XHTML_XML, content);
 	}
 
 	@Override

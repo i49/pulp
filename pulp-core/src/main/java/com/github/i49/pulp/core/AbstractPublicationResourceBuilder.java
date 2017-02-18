@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URI;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.Supplier;
 
@@ -19,14 +18,16 @@ import com.github.i49.pulp.api.PublicationResourceBuilder;
 
 abstract class AbstractPublicationResourceBuilder implements PublicationResourceBuilder {
 
-	private final String pathname;
+	private final URI identifier;
+	private final String localPath;
 	private final XmlService xmlService;
 	
 	private Supplier<InputStream> source;
 	private CoreMediaType mediaType;
 	
-	AbstractPublicationResourceBuilder(String pathname, XmlService xmlService) {
-		this.pathname = pathname;
+	AbstractPublicationResourceBuilder(URI identifier, String localPath, XmlService xmlService) {
+		this.identifier = identifier;
+		this.localPath = localPath;
 		this.mediaType = null;
 		this.xmlService = xmlService;
 	}
@@ -38,46 +39,58 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	}
 
 	@Override
-	public PublicationResourceBuilder from(Path path) {
+	public PublicationResourceBuilder source(Path path) {
 		if (path == null) {
 			return this;
 		}
-		URI uri = path.toUri();
-		if (Files.isDirectory(path)) {
-			uri = uri.resolve(pathname);
-		}
-		return from(uri);
+		return source(path.toUri());
 	}
 
 	@Override
-	public PublicationResourceBuilder from(URI uri) {
+	public PublicationResourceBuilder source(URI uri) {
 		if (uri == null) {
 			return this;
 		}
-		return from(()->{
+		return source(()->{
 			try {
 				return uri.toURL().openStream();
 			} catch (IOException e) {
-				throw new UncheckedIOException(e);
+				throw new EpubException(e.getMessage(), e);
 			}
 		});
 	}
 	
 	@Override
-	public PublicationResourceBuilder from(byte[] bytes) {
+	public PublicationResourceBuilder source(byte[] bytes) {
 		if (bytes == null) {
 			return this;
 		}
-		return from(()->new ByteArrayInputStream(bytes));
+		return source(()->new ByteArrayInputStream(bytes));
 	}
 	
 	@Override
-	public PublicationResourceBuilder from(Supplier<InputStream> contentProvider) {
+	public PublicationResourceBuilder source(Supplier<InputStream> contentProvider) {
 		if (contentProvider == null) {
 			return this;
 		}
 		this.source = contentProvider;
 		return this;
+	}
+
+	@Override
+	public PublicationResourceBuilder sourceDir(Path dir) {
+		if (dir == null) {
+			return this;
+		}
+		return sourceDir(dir.toUri());
+	}
+
+	@Override
+	public PublicationResourceBuilder sourceDir(URI dir) {
+		if (dir == null) {
+			return this;
+		}
+		return source(dir.resolve(localPath));
 	}
 	
 	@Override
@@ -99,31 +112,31 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	
 	private void updateMediaType() {
 		if (this.mediaType == null) {
-			this.mediaType = CoreMediaTypes.guessMediaType(pathname);
+			this.mediaType = CoreMediaTypes.guessMediaType(localPath);
 			if (this.mediaType == null) {
-				throw new EpubException(Messages.UNKNOWN_MEDIA_TYPE(pathname));
+				throw new EpubException(Messages.UNKNOWN_MEDIA_TYPE(localPath));
 			}
 		}
 	}
 	
 	protected PublicationResource createResource(Supplier<InputStream> source) {
-		return new BasicPublicationResource(pathname, mediaType, new DeferredContent(source));
+		return new BasicPublicationResource(identifier, mediaType, new DeferredContent(source));
 	}
 	
 	protected PublicationResource createXmlDocument(Document document) {
-		return new BasicXmlDocument(pathname, mediaType, new DomContent(document));
+		return new BasicXmlDocument(identifier, mediaType, new DomContent(document));
 	}
 	
 	protected PublicationResource createXmlDocument(Supplier<InputStream> source) {
-		return new BasicXmlDocument(pathname, mediaType, new DeferredXmlContent(source));
+		return new BasicXmlDocument(identifier, mediaType, new DeferredXmlContent(source));
 	}
 
 	protected PublicationResource createXhtmlDocument(Document document) {
-		return new BasicXhtmlDocument(pathname, new DomContent(document));
+		return new BasicXhtmlDocument(identifier, new DomContent(document));
 	}
 	
 	protected PublicationResource createXhtmlDocument(Supplier<InputStream> source) {
-		return new BasicXhtmlDocument(pathname, new DeferredXmlContent(source));
+		return new BasicXhtmlDocument(identifier, new DeferredXmlContent(source));
 	}
 
 	private static class DeferredContent implements Content {

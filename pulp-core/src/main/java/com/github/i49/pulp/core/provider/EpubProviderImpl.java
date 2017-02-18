@@ -1,11 +1,11 @@
 package com.github.i49.pulp.core.provider;
 
-import com.github.i49.pulp.api.EpubProvider;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationWriterFactory;
+import com.github.i49.pulp.api.spi.EpubProvider;
 import com.github.i49.pulp.core.PublicationImpl;
-import com.github.i49.pulp.core.PublicationWriterFactoryImpl;
 import com.github.i49.pulp.core.XmlService;
+import com.github.i49.pulp.core.container.PublicationWriterFactoryImpl;
 
 /**
  * An implementation of {@link EpubProvider} interface.

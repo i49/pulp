@@ -1,4 +1,4 @@
-package com.github.i49.pulp.core;
+package com.github.i49.pulp.core.container;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -37,7 +37,7 @@ class PackageDocumentBuilder {
 	private Rendition rendition;
 	private final OffsetDateTime now;
 	
-	private Map<String, String> identifiers = new HashMap<>();
+	private Map<Rendition.Item, String> identifiers = new HashMap<>();
 	private int nextNumber;
 	
 	/**
@@ -201,11 +201,11 @@ class PackageDocumentBuilder {
 	 */
 	private Element item(Rendition.Item item) {
 		String id = nextItemId();
-		this.identifiers.put(item.getPathname(), id);
+		this.identifiers.put(item, id);
 		
 		Element element = document.createElementNS(DEFAULT_NAMESPACE_URI, "item");
 		element.setAttribute("id", id);
-		element.setAttribute("href", item.getPathname());
+		element.setAttribute("href", item.getIdentifier().toString());
 		element.setAttribute("media-type", item.getResource().getMediaType().toString());
 		
 		String properties = itemProperties(item);
@@ -246,7 +246,7 @@ class PackageDocumentBuilder {
 	 */
 	private Element itemref(Rendition.Page page) {
 		Element itemref = document.createElementNS(DEFAULT_NAMESPACE_URI, "itemref");
-		String idref = this.identifiers.get(page.getItem().getPathname());
+		String idref = this.identifiers.get(page.getItem());
 		itemref.setAttribute("idref", idref);
 		if (!page.isLinear()) {
 			itemref.setAttribute("linear", "no");

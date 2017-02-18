@@ -15,7 +15,7 @@ import com.github.i49.pulp.api.Epub;
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
-import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
+import com.github.i49.pulp.api.PublicationResourceRegistry;
 import com.github.i49.pulp.api.Rendition;
 
 /**
@@ -43,15 +43,14 @@ class PublicationCompiler {
 	public Publication compile() throws IOException {
 		Publication publication = Epub.createPublication();
 		Rendition rendition = publication.addRendition(null);
-		PublicationResourceBuilderFactory factory = publication.getResourceBuilderFactory(rendition);
-		buildRendition(rendition, factory);
+		buildRendition(rendition);
 		return publication;
 	}
 	
-	private void buildRendition(Rendition rendition, PublicationResourceBuilderFactory factory) {
+	private void buildRendition(Rendition rendition) {
 		try {
 			loadMetadata(rendition.getMetadata());
-			addResourcesToRendition(rendition, factory);
+			addResourcesToRendition(rendition);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
@@ -65,8 +64,10 @@ class PublicationCompiler {
 		}
 	}
 	
-	private void addResourcesToRendition(Rendition rendition, PublicationResourceBuilderFactory factory) throws IOException {
+	private void addResourcesToRendition(Rendition rendition) throws IOException {
+		
 		List<String> documents = new ArrayList<>();
+		PublicationResourceRegistry registry = rendition.getResourceRegistry();
 	
 		Files.walk(this.sourceDir).filter(Files::isRegularFile).forEach(path->{
 			URI uri = path.toUri();
@@ -74,7 +75,7 @@ class PublicationCompiler {
 			if (shouldIgnore(relativePath)) {
 				return;
 			}
-			PublicationResource r = factory.builder(relativePath).from(uri).build();
+			PublicationResource r = registry.builder(relativePath).source(uri).build();
 			Rendition.Item item = rendition.require(r);
 			if (checkContentDocument(relativePath)) {
 				documents.add(relativePath);

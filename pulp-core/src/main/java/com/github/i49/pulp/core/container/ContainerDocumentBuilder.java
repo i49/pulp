@@ -1,4 +1,4 @@
-package com.github.i49.pulp.core;
+package com.github.i49.pulp.core.container;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

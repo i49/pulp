@@ -23,13 +23,13 @@ public class RenditionTest {
 			Path dir = pathToDir("basic");
 			
 			Publication p = Epub.createPublication();
-			Rendition r = p.addRendition(null);
-			PublicationResourceBuilderFactory f = p.getResourceBuilderFactory(r);
-			r.require(f.builder("chapter01.xhtml").from(dir).build());
-			r.require(f.builder("chapter02.xhtml").from(dir).build());
-			r.require(f.builder("images/figure01.png").from(dir).build());
-			r.require(f.builder("css/stylesheet.css").from(dir).build());
-			r.require(f.builder("cover.png").from(dir).build()).asCoverImage();
+			Rendition r = p.addRendition();
+			PublicationResourceRegistry registry = r.getResourceRegistry();
+			r.require(registry.builder("chapter01.xhtml").sourceDir(dir).build());
+			r.require(registry.builder("chapter02.xhtml").sourceDir(dir).build());
+			r.require(registry.builder("images/figure01.png").sourceDir(dir).build());
+			r.require(registry.builder("css/stylesheet.css").sourceDir(dir).build());
+			r.require(registry.builder("cover.png").sourceDir(dir).build()).asCoverImage();
 			
 			List<Rendition.Page> pages = r.getPageList();
 			pages.add(r.page("chapter01.xhtml"));
