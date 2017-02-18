@@ -12,22 +12,22 @@ import com.github.i49.pulp.api.PublicationResource;
  */
 class BasicPublicationResource implements PublicationResource {
 
-	private final URI identifier;
+	private final URI location;
 	private final CoreMediaType mediaType;
 	private final Content content;
 	
-	public BasicPublicationResource(URI identifier, CoreMediaType mediaType, Content content) {
-		if (identifier == null || mediaType == null) {
+	public BasicPublicationResource(URI location, CoreMediaType mediaType, Content content) {
+		if (location == null || mediaType == null) {
 			throw new NullPointerException();
 		}
-		this.identifier = identifier;
+		this.location = location;
 		this.mediaType = mediaType;
 		this.content = content;
 	}
 
 	@Override
-	public URI getIdentifier() {
-		return identifier;
+	public URI getLocation() {
+		return location;
 	}
 	
 	@Override
@@ -42,7 +42,7 @@ class BasicPublicationResource implements PublicationResource {
 
 	@Override
 	public String toString() {
-		return getIdentifier().toString();
+		return getLocation().toString();
 	}
 	
 	protected Content getContent() {

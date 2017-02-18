@@ -13,7 +13,7 @@ import com.github.i49.pulp.api.Rendition;
  */
 public class PublicationImpl implements Publication {
 	
-	private static final String DEFAULT_PACKAGE_DOCUMENT_PATH = "EPUB/package.opf";
+	private static final String DEFAULT_RENDITION_LOCATION = "EPUB/package.opf";
 	
 	private final RootPublicationResourceRegistry resourceRegistry;
 	private final List<Rendition> renditions = new ArrayList<>();
@@ -37,15 +37,15 @@ public class PublicationImpl implements Publication {
 	
 	@Override
 	public Rendition addRendition() {
-		return addRendition(DEFAULT_PACKAGE_DOCUMENT_PATH);
+		return addRendition(DEFAULT_RENDITION_LOCATION);
 	}
 	
 	@Override
-	public Rendition addRendition(String packagePath) {
-		if (packagePath == null) {
-			packagePath = DEFAULT_PACKAGE_DOCUMENT_PATH;
+	public Rendition addRendition(String location) {
+		if (location == null) {
+			location = DEFAULT_RENDITION_LOCATION;
 		}
-		Rendition rendition = new RenditionImpl(this, packagePath);
+		Rendition rendition = new RenditionImpl(this, location);
 		this.renditions.add(rendition);
 		return rendition;
 	}

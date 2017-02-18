@@ -9,8 +9,8 @@ import com.github.i49.pulp.api.XmlDocument;
 
 class BasicXmlDocument extends BasicPublicationResource implements XmlDocument {
 
-	public BasicXmlDocument(URI identifier, CoreMediaType mediaType, XmlContent content) {
-		super(identifier, mediaType, content);
+	public BasicXmlDocument(URI location, CoreMediaType mediaType, XmlContent content) {
+		super(location, mediaType, content);
 	}
 
 	@Override

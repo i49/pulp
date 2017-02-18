@@ -11,10 +11,10 @@ import java.net.URI;
 public interface PublicationResource {
 
 	/**
-	 * Returns the identifier of this resource.
-	 * @return the identifier of this resource.
+	 * Returns the location of this resource inside or outside the EPUB container.
+	 * @return the location of this resource.
 	 */
-	URI getIdentifier();
+	URI getLocation();
 	
 	/**
 	 * Returns the media type of this resource.

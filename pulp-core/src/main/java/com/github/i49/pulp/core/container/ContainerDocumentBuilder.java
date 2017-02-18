@@ -3,29 +3,55 @@ package com.github.i49.pulp.core.container;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.github.i49.pulp.api.Publication;
+import com.github.i49.pulp.api.Rendition;
+import com.github.i49.pulp.core.XmlService;
+
 class ContainerDocumentBuilder {
 	
 	private static final String DEFAULT_NAMESPACE_URI = "urn:oasis:names:tc:opendocument:xmlns:container";
+	private static final String PACKAGE_DOCUMENT_MEDIA_TYPE = "application/oebps-package+xml";
 	
-	private final Document documemt;
+	private final XmlService xmlService;
+	private Publication publication;
 	
-	ContainerDocumentBuilder(Document document) {
-		this.documemt = document;
+	private Document document;
+	
+	public ContainerDocumentBuilder(XmlService xmlService) {
+		this.xmlService = xmlService;
 	}
 	
-	Document build(String packageDir) {
-		Element root = documemt.createElementNS(DEFAULT_NAMESPACE_URI, "container");
-		root.setAttribute("version", "1.0");
-		documemt.appendChild(root);
-		
-		Element rootfiles = documemt.createElementNS(DEFAULT_NAMESPACE_URI, "rootfiles");
-		root.appendChild(rootfiles);
-		
-		Element rootfile = documemt.createElementNS(DEFAULT_NAMESPACE_URI, "rootfile");
-		rootfile.setAttribute("full-path", packageDir + "package.opf");
-		rootfile.setAttribute("media-type", "application/oebps-package+xml");
-		rootfiles.appendChild(rootfile);
-		
-		return documemt;
+	public ContainerDocumentBuilder publication(Publication publication) {
+		this.publication = publication;
+		return this;
+	}
+	
+	public Document build() {
+		document = xmlService.createDocument();
+		addRootElement();
+		return document;
+	}
+	
+	private Element addRootElement() {
+		Element container = document.createElementNS(DEFAULT_NAMESPACE_URI, "container");
+		container.setAttribute("version", "1.0");
+		document.appendChild(container);
+		container.appendChild(addRootfiles());
+		return container;
+	}
+	
+	private Element addRootfiles() {
+		Element rootfiles = document.createElementNS(DEFAULT_NAMESPACE_URI, "rootfiles");
+		for (Rendition rendition: this.publication) {
+			rootfiles.appendChild(addRootfile(rendition));
+		}
+		return rootfiles;
+	}
+	
+	private Element addRootfile(Rendition rendition) {
+		Element rootfile = document.createElementNS(DEFAULT_NAMESPACE_URI, "rootfile");
+		rootfile.setAttribute("full-path", rendition.getPackageDocumentPath());
+		rootfile.setAttribute("media-type", PACKAGE_DOCUMENT_MEDIA_TYPE);
+		return rootfile;
 	}
 }

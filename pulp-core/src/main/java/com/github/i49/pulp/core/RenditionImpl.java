@@ -72,9 +72,9 @@ public class RenditionImpl implements Rendition {
 			throw new NullPointerException(Messages.PARAMETER_IS_NULL("resource"));
 		}
 		if (!rootRegistry.contains(resource)) {
-			throw new EpubException(Messages.INVALID_RESOURCE(resource.getIdentifier()));
+			throw new EpubException(Messages.INVALID_RESOURCE(resource.getLocation()));
 		}
-		URI identifier = resource.getIdentifier();
+		URI identifier = resource.getLocation();
 		Item item = manifest.get(identifier);
 		if (item == null) {
 			item = createItem(resource);
@@ -125,7 +125,7 @@ public class RenditionImpl implements Rendition {
 	
 	private Item createItem(PublicationResource resource) {
 		Item item = new ItemImpl(resource);
-		this.manifest.put(resource.getIdentifier(), item);
+		this.manifest.put(resource.getLocation(), item);
 		return item;
 	}
 	
@@ -156,8 +156,8 @@ public class RenditionImpl implements Rendition {
 		}
 
 		@Override
-		public URI getIdentifier() {
-			return resource.getIdentifier();
+		public URI getLocation() {
+			return resource.getLocation();
 		}
 
 		@Override
@@ -178,7 +178,7 @@ public class RenditionImpl implements Rendition {
 		
 		@Override
 		public String toString() {
-			return getIdentifier().toString();
+			return getLocation().toString();
 		}
 	}
 	

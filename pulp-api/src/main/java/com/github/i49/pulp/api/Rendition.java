@@ -30,7 +30,7 @@ public interface Rendition {
 	
 	/**
 	 * Returns the publication resource registry that resolves relative paths 
-	 * against the base path of this rendition.
+	 * against the location of this rendition.
 	 * @return the publication resource registry.
 	 */
 	PublicationResourceRegistry getResourceRegistry();
@@ -76,14 +76,14 @@ public interface Rendition {
 	public static interface Item {
 		
 		/**
-		 * Returns the identifier of this item.
-		 * @return the identifier of this item.
+		 * Returns the location of the publication resource.
+		 * @return the location of the publication resource.
 		 */
-		URI getIdentifier();
+		URI getLocation();
 		
 		/**
-		 * Returns the publication resource that this item refers to.
-		 * @return the publication resource that this item refers to. 
+		 * Returns the publication resource referenced by this item.
+		 * @return the publication resource. 
 		 */
 		PublicationResource getResource();
 		

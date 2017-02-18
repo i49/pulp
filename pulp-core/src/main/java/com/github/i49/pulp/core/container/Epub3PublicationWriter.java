@@ -22,11 +22,7 @@ class Epub3PublicationWriter implements PublicationWriter {
 	private boolean closed;
 	private final XmlService xmlService;
 	
-	private String packageDir = DEFAULT_PACKAGE_DIR;
-
 	private static final String MIMETYPE = "application/epub+zip";
-	private static final String DEFAULT_PACKAGE_DIR = "EPUB/";
-	private static final String PACKAGE_DOCUMENT_NAME = "package.opf";
 	private static final int BUFFER_SIZE = 128 * 1024;
 	
 	public Epub3PublicationWriter(OutputStream stream, XmlService xmlService) throws Exception {
@@ -58,8 +54,14 @@ class Epub3PublicationWriter implements PublicationWriter {
 	
 	private void writeAll(Publication publication) throws IOException {
 		writeMimeType();
-		writeContainerDocument();
-		writeRendition(publication.getDefaultRendition());
+		writeContainerDocument(publication);
+		writeAllRenditions(publication);
+	}
+	
+	private void writeAllRenditions(Publication publication) throws IOException {
+		for (Rendition rendition: publication) {
+			writeRendition(rendition);
+		}
 	}
 	
 	private void writeRendition(Rendition rendition) throws IOException {
@@ -72,16 +74,16 @@ class Epub3PublicationWriter implements PublicationWriter {
 		archiver.appendRaw("mimetype", content);
 	}
 	
-	private void writeContainerDocument() throws IOException {
-		ContainerDocumentBuilder builder = new ContainerDocumentBuilder(xmlService.createDocument()); 
-		Document document = builder.build(this.packageDir);
+	private void writeContainerDocument(Publication publication) throws IOException {
+		ContainerDocumentBuilder builder = new ContainerDocumentBuilder(xmlService); 
+		Document document = builder.publication(publication).build();
 		writeXmlDocument("META-INF/container.xml", document);
 	}
 
 	private void writePackageDocument(Rendition rendition) throws IOException {
-		PackageDocumentBuilder builder = new PackageDocumentBuilder(xmlService.createDocument(), rendition); 
-		Document document = builder.build();
-		writeXmlDocument(this.packageDir + PACKAGE_DOCUMENT_NAME, document);
+		PackageDocumentBuilder builder = new PackageDocumentBuilder(xmlService); 
+		Document document = builder.rendition(rendition).build();
+		writeXmlDocument(rendition.getPackageDocumentPath(), document);
 	}
 
 	private void writeAllResources(Rendition rendition) throws IOException {
@@ -92,7 +94,7 @@ class Epub3PublicationWriter implements PublicationWriter {
 	
 	private void writeResource(Rendition.Item item) throws IOException {
 		PublicationResource resource = item.getResource();
-		String entryName = resource.getIdentifier().getPath();
+		String entryName = resource.getLocation().getPath();
 		byte[] buffer = new byte[BUFFER_SIZE];
 		try (InputStream in = resource.openContent(); OutputStream out = archiver.append(entryName)) {
 			int len = 0;

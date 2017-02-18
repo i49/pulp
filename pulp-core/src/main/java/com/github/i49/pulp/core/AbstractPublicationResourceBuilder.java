@@ -18,15 +18,15 @@ import com.github.i49.pulp.api.PublicationResourceBuilder;
 
 abstract class AbstractPublicationResourceBuilder implements PublicationResourceBuilder {
 
-	private final URI identifier;
+	private final URI location;
 	private final String localPath;
 	private final XmlService xmlService;
 	
 	private Supplier<InputStream> source;
 	private CoreMediaType mediaType;
 	
-	AbstractPublicationResourceBuilder(URI identifier, String localPath, XmlService xmlService) {
-		this.identifier = identifier;
+	AbstractPublicationResourceBuilder(URI location, String localPath, XmlService xmlService) {
+		this.location = location;
 		this.localPath = localPath;
 		this.mediaType = null;
 		this.xmlService = xmlService;
@@ -120,23 +120,23 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	}
 	
 	protected PublicationResource createResource(Supplier<InputStream> source) {
-		return new BasicPublicationResource(identifier, mediaType, new DeferredContent(source));
+		return new BasicPublicationResource(location, mediaType, new DeferredContent(source));
 	}
 	
 	protected PublicationResource createXmlDocument(Document document) {
-		return new BasicXmlDocument(identifier, mediaType, new DomContent(document));
+		return new BasicXmlDocument(location, mediaType, new DomContent(document));
 	}
 	
 	protected PublicationResource createXmlDocument(Supplier<InputStream> source) {
-		return new BasicXmlDocument(identifier, mediaType, new DeferredXmlContent(source));
+		return new BasicXmlDocument(location, mediaType, new DeferredXmlContent(source));
 	}
 
 	protected PublicationResource createXhtmlDocument(Document document) {
-		return new BasicXhtmlDocument(identifier, new DomContent(document));
+		return new BasicXhtmlDocument(location, new DomContent(document));
 	}
 	
 	protected PublicationResource createXhtmlDocument(Supplier<InputStream> source) {
-		return new BasicXhtmlDocument(identifier, new DeferredXmlContent(source));
+		return new BasicXhtmlDocument(location, new DeferredXmlContent(source));
 	}
 
 	private static class DeferredContent implements Content {

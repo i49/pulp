@@ -29,11 +29,11 @@ class RootPublicationResourceRegistry implements PublicationResourceRegistry {
 	}
 
 	@Override
-	public boolean contains(String identifier) {
-		if (identifier == null) {
+	public boolean contains(String location) {
+		if (location == null) {
 			return false;
 		}
-		return resourceMap.containsKey(resolve(identifier));
+		return resourceMap.containsKey(resolve(location));
 	}
 	
 	@Override
@@ -45,22 +45,20 @@ class RootPublicationResourceRegistry implements PublicationResourceRegistry {
 	}
 	
 	@Override
-	public PublicationResource get(String pathname) {
-		if (pathname == null) {
+	public PublicationResource get(String location) {
+		if (location == null) {
 			return null;
 		}
-		return resourceMap.get(resolve(pathname));
+		return resourceMap.get(resolve(location));
 	}
 	
 	@Override
-	public PublicationResourceBuilder builder(String identifier) {
-		if (identifier == null) {
+	public PublicationResourceBuilder builder(String location) {
+		if (location == null) {
 			throw new NullPointerException(Messages.PARAMETER_IS_NULL("identifier"));
-		} else if (contains(identifier)) {
-			throw new EpubException(Messages.RESOURCE_ALREADY_EXISTS(identifier));
 		}
-		URI resolved = resolve(identifier);
-		return new PublicationResourceBuilderImpl(resolved, identifier, this.xmlService);
+		URI absolute = resolve(location);
+		return new PublicationResourceBuilderImpl(absolute, location, this.xmlService);
 	}
 	
 	@Override
@@ -77,16 +75,16 @@ class RootPublicationResourceRegistry implements PublicationResourceRegistry {
 	}
 	
 	/**
-	 * Resolves the identifier against the base of this registry. 
-	 * @param identifier the resource identifier that may be relative URI.
-	 * @return the absolute URI.
+	 * Resolves the location against the base of this registry. 
+	 * @param location the resource location that may be relative URI.
+	 * @return the absolute location.
 	 */
-	protected URI resolve(String identifier) {
-		return URI.create(identifier);
+	protected URI resolve(String location) {
+		return URI.create(location);
 	}
 	
 	private void registreResource(PublicationResource resource) {
-		resourceMap.put(resource.getIdentifier(), resource);
+		resourceMap.put(resource.getLocation(), resource);
 	}
 
 	/**
@@ -120,8 +118,9 @@ class RootPublicationResourceRegistry implements PublicationResourceRegistry {
 		}
 		
 		@Override
-		protected URI resolve(String pathname) {
-			return this.base.resolve(pathname);
+		protected URI resolve(String location) {
+			URI resolved = this.base.resolve(location); 
+			return resolved;
 		}
 	}
 }

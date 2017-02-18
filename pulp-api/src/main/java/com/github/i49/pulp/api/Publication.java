@@ -23,8 +23,8 @@ public interface Publication extends Iterable<Rendition> {
 	
 	/**
 	 * Adds a new {@link Rendition} with the location of the Package Document in the container specified.
-	 * @param packagePath the path to the Package Document of the new rendition that can be such as "EPUB/package.opf".
+	 * @param location the location of the Package Document that can be such as "EPUB/package.opf".
 	 * @return created rendition.
 	 */
-	Rendition addRendition(String packagePath);
+	Rendition addRendition(String location);
 }

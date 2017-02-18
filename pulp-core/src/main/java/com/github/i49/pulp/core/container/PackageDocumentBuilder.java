@@ -1,5 +1,6 @@
 package com.github.i49.pulp.core.container;
 
+import java.net.URI;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -16,6 +17,7 @@ import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Rendition;
+import com.github.i49.pulp.core.XmlService;
 
 /**
  * A builder class to build a document carrying bibliographical and structural metadata 
@@ -27,45 +29,44 @@ class PackageDocumentBuilder {
 	private static final String DC_NAMESPACE_URI = "http://purl.org/dc/elements/1.1/";
 	
 	private static final String VERSION = "3.0";
-	private static final String UNIQUE_IDENTIFIER = "publication-id";
+	private static final String UNIQUE_IDENTIFIER = "pub-id";
 	private static final String ID_PREFIX = "item";
-	private static final String DEFAULT_TITLE = "unknown title";
+	private static final String DEFAULT_TITLE = "(untitled)";
 	
 	private static final DateTimeFormatter ISO8601_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	
-	private Document document;
+	private final XmlService xmlService;
 	private Rendition rendition;
+	private URI packageBase;
 	private final OffsetDateTime now;
-	
+
+	private Document document;
 	private Map<Rendition.Item, String> identifiers = new HashMap<>();
 	private int nextNumber;
 	
 	/**
 	 * Construct this builder.
-	 * @param document the XML document of the package document.
-	 * @param rendition the rendition for which a package document will be built.
 	 */
-	PackageDocumentBuilder(Document document, Rendition rendition) {
-		this.document = document;
-		this.rendition = rendition;
+	public PackageDocumentBuilder(XmlService xmlService) {
+		this.xmlService = xmlService;
 		this.now = OffsetDateTime.now();
 		this.nextNumber = 1;
+	}
+	
+	public PackageDocumentBuilder rendition(Rendition rendition) {
+		this.rendition = rendition;
+		URI packageLocation = URI.create(rendition.getPackageDocumentPath()); 
+		this.packageBase = packageLocation.resolve(".");
+		return this;
 	}
 	
 	/**
 	 * Builds the package document.
 	 * @return built package document.
 	 */
-	Document build() {
-		this.document.appendChild(root());
-		return this.document;
-	}
-	
-	/**
-	 * Creates a package element at the root of the document.
-	 * @return created element.
-	 */
-	private Element root() {
+	public Document build() {
+		document = this.xmlService.createDocument();
+
 		Element root = document.createElementNS(DEFAULT_NAMESPACE_URI, "package");
 		root.setAttribute("version", VERSION);
 		root.setAttribute("unique-identifier", UNIQUE_IDENTIFIER);
@@ -74,7 +75,8 @@ class PackageDocumentBuilder {
 		root.appendChild(manifest());
 		root.appendChild(spine());
 		
-		return root;
+		document.appendChild(root);
+		return document;
 	}
 	
 	/**
@@ -203,9 +205,11 @@ class PackageDocumentBuilder {
 		String id = nextItemId();
 		this.identifiers.put(item, id);
 		
+		URI href = this.packageBase.relativize(item.getLocation()); 
+		
 		Element element = document.createElementNS(DEFAULT_NAMESPACE_URI, "item");
 		element.setAttribute("id", id);
-		element.setAttribute("href", item.getIdentifier().toString());
+		element.setAttribute("href", href.toString());
 		element.setAttribute("media-type", item.getResource().getMediaType().toString());
 		
 		String properties = itemProperties(item);
