@@ -13,6 +13,11 @@ public interface Publication extends Iterable<Rendition> {
 	 */
 	Rendition getDefaultRendition();
 	
+	/**
+	 * Returns the {@link PublicationResourceRegistry} that manages publication resources
+	 * for this publication.
+	 * @return the publication resource registry
+	 */
 	PublicationResourceRegistry getResourceRegistry();
 
 	/**
@@ -25,6 +30,7 @@ public interface Publication extends Iterable<Rendition> {
 	 * Adds a new {@link Rendition} with the location of the Package Document in the container specified.
 	 * @param location the location of the Package Document that can be such as "EPUB/package.opf".
 	 * @return created rendition.
+	 * @exception EpubException if specified {@code location} is invalid.
 	 */
 	Rendition addRendition(String location);
 }

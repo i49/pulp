@@ -1,7 +1,5 @@
 package com.github.i49.pulp.api;
 
-import java.net.URI;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -17,10 +15,10 @@ public interface Rendition {
 	Publication getPublication();
 
 	/**
-	 * Returns the path to the Package Document of this rendition.
-	 * @return the path to the Package Document of this rendition.
+	 * Returns the location to the Package Document of this rendition.
+	 * @return the location to the Package Document of this rendition.
 	 */
-	String getPackageDocumentPath();
+	String getLocation();
 
 	/**
 	 * Return the metadata of this rendition.
@@ -36,25 +34,10 @@ public interface Rendition {
 	PublicationResourceRegistry getResourceRegistry();
 
 	/**
-	 * Adds a resource required for this rendition.
-	 * @param resource the required resource for this rendition.
-	 * @return the item referring the required resource. 
+	 * Returns the manifest that carries a set of required publication resources.
+	 * @return the manifest of this rendition.
 	 */
-	Item require(PublicationResource resource);
-	
-	/**
-	 * Removes a resource from this rendition. 
-	 * @param pathname the pathname of the resource to be removed.
-	 */
-	void unrequire(String pathname);
-	
-	Item getItem(String pathname);
-	
-	/**
-	 * Returns all items in this rendition.
-	 * @return the collection containing all items, cannot be modified.
-	 */
-	Collection<Item> getItems();
+	Manifest getManifest();
 	
 	/**
 	 * Returns the page of the given pathname if it exists, or newly created page if it does not exist.
@@ -71,36 +54,6 @@ public interface Rendition {
 	List<Page> getPageList();
 	
 	/**
-	 * A resource required by this rendition. 
-	 */
-	public static interface Item {
-		
-		/**
-		 * Returns the location of the publication resource.
-		 * @return the location of the publication resource.
-		 */
-		URI getLocation();
-		
-		/**
-		 * Returns the publication resource referenced by this item.
-		 * @return the publication resource. 
-		 */
-		PublicationResource getResource();
-		
-		/**
-		 * Returns {@code true} if this item is the cover image of this rendition.
-		 * @return {@code true} if this item is the cover image of this rendition, {@code false} otherwise. 
-		 */
-		boolean isCoverImage();
-		
-		/**
-		 * Uses this item as the cover image of this rendition.
-		 * @return this item.
-		 */
-		Item asCoverImage();
-	}
-	
-	/**
 	 * A page bound to the spine of this rendition.
 	 */
 	public static interface Page {
@@ -109,7 +62,7 @@ public interface Rendition {
 		 * Returns the item of this page.
 		 * @return the item of this page.
 		 */
-		Item getItem();
+		Manifest.Item getItem();
 		
 		/**
 		 * Returns {@code true} if this page is considered primary.

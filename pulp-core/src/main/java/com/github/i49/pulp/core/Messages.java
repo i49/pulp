@@ -25,8 +25,8 @@ public class Messages {
 		return localize("invalid.resource", identifier);
 	}
 	
-	static String INVALID_PATHNAME(String pathname) {
-		return localize("invalid.pathname", pathname);
+	static String INVALID_LOCATION(String location) {
+		return localize("invalid.location", location);
 	}
 	
 	static String UNKNOWN_MEDIA_TYPE(String pathname) {

@@ -2,18 +2,20 @@ package com.github.i49.pulp.core;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import com.github.i49.pulp.api.EpubException;
+import com.github.i49.pulp.api.Manifest;
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationResourceRegistry;
 import com.github.i49.pulp.api.Rendition;
+import com.github.i49.pulp.api.Manifest.Item;
 
 /**
  * An implementation of {@link Rendition}.
@@ -23,25 +25,22 @@ public class RenditionImpl implements Rendition {
 	private final Publication publication;
 	private final PublicationResourceRegistry rootRegistry;
 	
-	private final URI packagePath;
+	private final URI location;
 	private final PublicationResourceRegistry localRegistry;
 	
 	private final MetadataImpl metadata = new MetadataImpl();
 	
-	private final Map<URI, Item> manifest;
+	private final ManifestImpl manifest = new ManifestImpl();
 	private final Map<URI, Page> pages;
 	private final List<Page> pageList;
 	
-	private Item coverImage;
-	
-	public RenditionImpl(Publication publication, String packagePath) {
+	public RenditionImpl(Publication publication, URI location) {
 		this.publication = publication;
 		this.rootRegistry = publication.getResourceRegistry();
 		
-		this.packagePath = URI.create(packagePath);
-		this.localRegistry = rootRegistry.getChildRegistry(packagePath);
+		this.location = location;
+		this.localRegistry = rootRegistry.getChildRegistry(location.getPath());
 		
-		this.manifest = new HashMap<>();
 		this.pages = new HashMap<>();
 		this.pageList = new ArrayList<>();
 	}
@@ -52,8 +51,8 @@ public class RenditionImpl implements Rendition {
 	}
 	
 	@Override
-	public String getPackageDocumentPath() {
-		return packagePath.getPath();
+	public String getLocation() {
+		return location.getPath();
 	}
 	
 	@Override
@@ -67,43 +66,8 @@ public class RenditionImpl implements Rendition {
 	}
 	
 	@Override
-	public Item require(PublicationResource resource) {
-		if (resource == null) {
-			throw new NullPointerException(Messages.PARAMETER_IS_NULL("resource"));
-		}
-		if (!rootRegistry.contains(resource)) {
-			throw new EpubException(Messages.INVALID_RESOURCE(resource.getLocation()));
-		}
-		URI identifier = resource.getLocation();
-		Item item = manifest.get(identifier);
-		if (item == null) {
-			item = createItem(resource);
-		}
-		return item;
-	}
-	
-	@Override
-	public void unrequire(String pathname) {
-		if (pathname == null) {
-			throw new NullPointerException(Messages.PARAMETER_IS_NULL("pathname"));
-		}
-		Item item = getItem(pathname);
-		if (item != null) {
-			this.manifest.remove(pathname);
-		}
-	}
-	
-	@Override
-	public Item getItem(String pathname) {
-		if (pathname == null) {
-			return null;
-		}
-		return manifest.get(pathname);
-	}
-	
-	@Override
-	public Collection<Item> getItems() {
-		return Collections.unmodifiableCollection(manifest.values());
+	public Manifest getManifest() {
+		return manifest;
 	}
 	
 	@Override
@@ -123,15 +87,9 @@ public class RenditionImpl implements Rendition {
 		return pageList;
 	}
 	
-	private Item createItem(PublicationResource resource) {
-		Item item = new ItemImpl(resource);
-		this.manifest.put(resource.getLocation(), item);
-		return item;
-	}
-	
-	private Page createPage(String identifier) {
-		URI resolved = resolve(identifier);
-		Item item = this.manifest.get(resolved);
+	private Page createPage(String location) {
+		URI resolved = resolve(location);
+		Item item = this.manifest.getItem(location);
 		if (item == null) {
 			throw new EpubException(Messages.MISSING_PUBLICATION_RESOURCE(resolved));
 		}
@@ -141,13 +99,67 @@ public class RenditionImpl implements Rendition {
 	}
 	
 	private URI resolve(String pathname) {
-		return packagePath.resolve(pathname);
+		return location.resolve(pathname);
 	}
 	
 	/**
-	 * An implementation of {@link Rendition.Item}.
+	 * An implementation of {@code Manifest}.
 	 */
-	private class ItemImpl implements Rendition.Item {
+	private class ManifestImpl implements Manifest {
+		
+		private final Map<PublicationResource, Item> items = new HashMap<>();
+		private Item coverImage;
+
+		@Override
+		public Iterator<Item> iterator() {
+			return Collections.unmodifiableCollection(items.values()).iterator();
+		}
+
+		@Override
+		public Item addItem(PublicationResource resource) {
+			if (resource == null) {
+				return null;
+			} else if (!rootRegistry.contains(resource)) {
+				throw new EpubException(Messages.INVALID_RESOURCE(resource.getLocation()));
+			}
+			Item item = items.get(resource);
+			if (item == null) {
+				item = new ItemImpl(resource);
+				items.put(resource, item);
+			}
+			return item;
+		}
+
+		@Override
+		public void removeItem(Item item) {
+			if (item == null) {
+				return;
+			}
+			items.remove(item.getResource());
+		}
+
+		@Override
+		public Item getItem(String location) {
+			if (location == null) {
+				return null;
+			}
+			PublicationResource resource = localRegistry.get(location);
+			if (resource == null) {
+				return null;
+			}
+			return items.get(resource);
+		}
+
+		@Override
+		public Item getCoverImage() {
+			return coverImage;
+		}
+	}
+	
+	/**
+	 * An implementation of {@link Manifest.Item}.
+	 */
+	private class ItemImpl implements Manifest.Item {
 		
 		private final PublicationResource resource;
 		
@@ -156,23 +168,23 @@ public class RenditionImpl implements Rendition {
 		}
 
 		@Override
-		public URI getLocation() {
-			return resource.getLocation();
+		public PublicationResource getResource() {
+			return resource;
 		}
 
 		@Override
-		public PublicationResource getResource() {
-			return resource;
+		public URI getLocation() {
+			return resource.getLocation();
 		}
 		
 		@Override
 		public boolean isCoverImage() {
-			return this == coverImage;
+			return this == manifest.coverImage;
 		}
 		
 		@Override
 		public Item asCoverImage() {
-			coverImage = this;
+			manifest.coverImage = this;
 			return this;
 		}
 		

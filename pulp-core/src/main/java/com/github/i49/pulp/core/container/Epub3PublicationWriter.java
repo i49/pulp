@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import org.w3c.dom.Document;
 
 import com.github.i49.pulp.api.EpubException;
+import com.github.i49.pulp.api.Manifest;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationWriter;
@@ -83,16 +84,16 @@ class Epub3PublicationWriter implements PublicationWriter {
 	private void writePackageDocument(Rendition rendition) throws IOException {
 		PackageDocumentBuilder builder = new PackageDocumentBuilder(xmlService); 
 		Document document = builder.rendition(rendition).build();
-		writeXmlDocument(rendition.getPackageDocumentPath(), document);
+		writeXmlDocument(rendition.getLocation(), document);
 	}
 
 	private void writeAllResources(Rendition rendition) throws IOException {
-		for (Rendition.Item item: rendition.getItems()) {
+		for (Manifest.Item item: rendition.getManifest()) {
 			writeResource(item);
 		}
 	}
 	
-	private void writeResource(Rendition.Item item) throws IOException {
+	private void writeResource(Manifest.Item item) throws IOException {
 		PublicationResource resource = item.getResource();
 		String entryName = resource.getLocation().getPath();
 		byte[] buffer = new byte[BUFFER_SIZE];

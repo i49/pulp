@@ -22,25 +22,26 @@ public class RenditionTest {
 			
 			Path dir = pathToDir("basic");
 			
-			Publication p = Epub.createPublication();
-			Rendition r = p.addRendition();
-			PublicationResourceRegistry registry = r.getResourceRegistry();
-			r.require(registry.builder("chapter01.xhtml").sourceDir(dir).build());
-			r.require(registry.builder("chapter02.xhtml").sourceDir(dir).build());
-			r.require(registry.builder("images/figure01.png").sourceDir(dir).build());
-			r.require(registry.builder("css/stylesheet.css").sourceDir(dir).build());
-			r.require(registry.builder("cover.png").sourceDir(dir).build()).asCoverImage();
+			Publication publication = Epub.createPublication();
+			Rendition rendition = publication.addRendition();
+			PublicationResourceRegistry r = rendition.getResourceRegistry();
+			Manifest m = rendition.getManifest();
+			m.addItem(r.builder("chapter01.xhtml").sourceDir(dir).build());
+			m.addItem(r.builder("chapter02.xhtml").sourceDir(dir).build());
+			m.addItem(r.builder("images/figure01.png").sourceDir(dir).build());
+			m.addItem(r.builder("css/stylesheet.css").sourceDir(dir).build());
+			m.addItem(r.builder("cover.png").sourceDir(dir).build()).asCoverImage();
 			
-			List<Rendition.Page> pages = r.getPageList();
-			pages.add(r.page("chapter01.xhtml"));
-			pages.add(r.page("chapter02.xhtml"));
+			List<Rendition.Page> pages = rendition.getPageList();
+			pages.add(rendition.page("chapter01.xhtml"));
+			pages.add(rendition.page("chapter02.xhtml"));
 			
 			Path outputPath = Paths.get("target", "basic.zip");
 			try (PublicationWriter writer = Epub.createWriter(Files.newOutputStream(outputPath))) {
-				writer.write(p);
+				writer.write(publication);
 			}
 			
-			assertThat(p.getDefaultRendition(), is(r));
+			assertThat(publication.getDefaultRendition(), is(rendition));
 		}
 	}
 	

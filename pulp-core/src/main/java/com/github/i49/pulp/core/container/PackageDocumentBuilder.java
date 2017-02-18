@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.github.i49.pulp.api.Manifest;
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Rendition;
 import com.github.i49.pulp.core.XmlService;
@@ -41,7 +42,7 @@ class PackageDocumentBuilder {
 	private final OffsetDateTime now;
 
 	private Document document;
-	private Map<Rendition.Item, String> identifiers = new HashMap<>();
+	private Map<Manifest.Item, String> identifiers = new HashMap<>();
 	private int nextNumber;
 	
 	/**
@@ -55,7 +56,7 @@ class PackageDocumentBuilder {
 	
 	public PackageDocumentBuilder rendition(Rendition rendition) {
 		this.rendition = rendition;
-		URI packageLocation = URI.create(rendition.getPackageDocumentPath()); 
+		URI packageLocation = URI.create(rendition.getLocation()); 
 		this.packageBase = packageLocation.resolve(".");
 		return this;
 	}
@@ -190,7 +191,7 @@ class PackageDocumentBuilder {
 	 */
 	private Element manifest() {
 		Element manifest = document.createElementNS(DEFAULT_NAMESPACE_URI, "manifest");
-		for (Rendition.Item item: rendition.getItems()) {
+		for (Manifest.Item item: rendition.getManifest()) {
 			manifest.appendChild(item(item));
 		}
 		return manifest;
@@ -201,7 +202,7 @@ class PackageDocumentBuilder {
 	 * @param resource the resource for which an item will be created.
 	 * @return created item element.
 	 */
-	private Element item(Rendition.Item item) {
+	private Element item(Manifest.Item item) {
 		String id = nextItemId();
 		this.identifiers.put(item, id);
 		
@@ -220,7 +221,7 @@ class PackageDocumentBuilder {
 		return element;
 	}
 	
-	private String itemProperties(Rendition.Item item) {
+	private String itemProperties(Manifest.Item item) {
 		List<String> properties = new ArrayList<>();
 		if (item.isCoverImage()) {
 			properties.add("cover-image");

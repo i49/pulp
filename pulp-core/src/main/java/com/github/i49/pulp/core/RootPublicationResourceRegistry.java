@@ -70,7 +70,7 @@ class RootPublicationResourceRegistry implements PublicationResourceRegistry {
 			URI baseURI = new URI(null, null, base, null);
 			return new ChildPublicationResourceRegistry(resourceMap, xmlService, baseURI);
 		} catch (URISyntaxException e) {
-			throw new EpubException(Messages.INVALID_PATHNAME(base), e);
+			throw new EpubException(Messages.INVALID_LOCATION(base), e);
 		}
 	}
 	

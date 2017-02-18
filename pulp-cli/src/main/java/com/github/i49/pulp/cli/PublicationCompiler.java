@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.github.i49.pulp.api.Epub;
+import com.github.i49.pulp.api.Manifest;
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
@@ -76,7 +77,8 @@ class PublicationCompiler {
 				return;
 			}
 			PublicationResource r = registry.builder(relativePath).source(uri).build();
-			Rendition.Item item = rendition.require(r);
+			Manifest manifest = rendition.getManifest();
+			Manifest.Item item = manifest.addItem(r);
 			if (checkContentDocument(relativePath)) {
 				documents.add(relativePath);
 			} else if (checkCoverImage(relativePath)){

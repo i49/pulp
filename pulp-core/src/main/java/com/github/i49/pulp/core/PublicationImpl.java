@@ -1,11 +1,15 @@
 package com.github.i49.pulp.core;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Publication;
+import com.github.i49.pulp.api.PublicationResourceRegistry;
 import com.github.i49.pulp.api.Rendition;
 
 /**
@@ -13,7 +17,7 @@ import com.github.i49.pulp.api.Rendition;
  */
 public class PublicationImpl implements Publication {
 	
-	private static final String DEFAULT_RENDITION_LOCATION = "EPUB/package.opf";
+	private static final URI DEFAULT_RENDITION_LOCATION = URI.create("EPUB/package.opf");
 	
 	private final RootPublicationResourceRegistry resourceRegistry;
 	private final List<Rendition> renditions = new ArrayList<>();
@@ -31,7 +35,7 @@ public class PublicationImpl implements Publication {
 	}
 	
 	@Override
-	public RootPublicationResourceRegistry getResourceRegistry() {
+	public PublicationResourceRegistry getResourceRegistry() {
 		return resourceRegistry;
 	}
 	
@@ -42,16 +46,25 @@ public class PublicationImpl implements Publication {
 	
 	@Override
 	public Rendition addRendition(String location) {
-		if (location == null) {
-			location = DEFAULT_RENDITION_LOCATION;
+		URI uri = DEFAULT_RENDITION_LOCATION;
+		if (location != null) {
+			try {
+				uri = new URI(null, null, location, null);
+			} catch (URISyntaxException e) {
+				throw new EpubException(Messages.INVALID_LOCATION(location), e);
+			}
 		}
-		Rendition rendition = new RenditionImpl(this, location);
-		this.renditions.add(rendition);
-		return rendition;
+		return addRendition(uri);
 	}
 
 	@Override
 	public Iterator<Rendition> iterator() {
 		return Collections.unmodifiableList(renditions).iterator();
+	}
+	
+	private Rendition addRendition(URI location) {
+		Rendition rendition = new RenditionImpl(this, location);
+		this.renditions.add(rendition);
+		return rendition;
 	}
 }
