@@ -17,8 +17,8 @@ public class Messages {
 		return localize("missing.publication.resource", location);
 	}
 	
-	static String DUPLICATE_PUBLICATION_RESOURCE(String pathname) {
-		return localize("duplicate.publication.resource", pathname);
+	static String DUPLICATE_PUBLICATION_RESOURCE(URI location) {
+		return localize("duplicate.publication.resource", location);
 	}
 
 	static String MISSING_MANIFEST_ITEM(URI location) {

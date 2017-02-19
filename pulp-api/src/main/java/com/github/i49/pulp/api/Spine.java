@@ -6,6 +6,12 @@ package com.github.i49.pulp.api;
 public interface Spine extends Iterable<Spine.Page> {
 
 	/**
+	 * Returns the number of pages bound to this spine.
+	 * @return the number of pages.
+	 */
+	int getNumberOfPages();
+	
+	/**
 	 * Returns the page specified by its index.
 	 * @param index the position of the page, which starts from zero.
 	 * @return the page at the specified position.

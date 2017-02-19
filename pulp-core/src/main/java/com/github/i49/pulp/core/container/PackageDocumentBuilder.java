@@ -5,6 +5,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -43,7 +44,7 @@ class PackageDocumentBuilder {
 	private final OffsetDateTime now;
 
 	private Document document;
-	private Map<Manifest.Item, String> identifiers = new HashMap<>();
+	private Map<Manifest.Item, String> itemIds = new HashMap<>();
 	private int nextNumber;
 	
 	/**
@@ -191,10 +192,19 @@ class PackageDocumentBuilder {
 	 */
 	private Element manifest() {
 		Element manifest = document.createElementNS(DEFAULT_NAMESPACE_URI, "manifest");
-		for (Manifest.Item item: rendition.getManifest()) {
+		for (Manifest.Item item: sortItems(rendition.getManifest())) {
 			manifest.appendChild(item(item));
 		}
 		return manifest;
+	}
+	
+	private Iterable<Manifest.Item> sortItems(Manifest manifest) {
+		List<Manifest.Item> items = new ArrayList<>();
+		for (Manifest.Item item: manifest) {
+			items.add(item);
+		}
+		Collections.sort(items, (x, y)->x.getLocation().compareTo(y.getLocation()));
+		return items;
 	}
 	
 	/**
@@ -204,7 +214,7 @@ class PackageDocumentBuilder {
 	 */
 	private Element item(Manifest.Item item) {
 		String id = nextItemId();
-		this.identifiers.put(item, id);
+		this.itemIds.put(item, id);
 		
 		URI href = this.packageBase.relativize(item.getLocation()); 
 		
@@ -251,7 +261,7 @@ class PackageDocumentBuilder {
 	 */
 	private Element itemref(Spine.Page page) {
 		Element itemref = document.createElementNS(DEFAULT_NAMESPACE_URI, "itemref");
-		String idref = this.identifiers.get(page.getItem());
+		String idref = this.itemIds.get(page.getItem());
 		itemref.setAttribute("idref", idref);
 		if (!page.isLinear()) {
 			itemref.setAttribute("linear", "no");

@@ -4,8 +4,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
-import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationResourceBuilder;
 import com.github.i49.pulp.api.PublicationResourceRegistry;
@@ -31,7 +32,7 @@ class RootPublicationResourceRegistry implements PublicationResourceRegistry {
 	@Override
 	public boolean contains(String location) {
 		if (location == null) {
-			return false;
+			throw new NullPointerException(Messages.PARAMETER_IS_NULL("location"));
 		}
 		return resourceMap.containsKey(resolve(location));
 	}
@@ -39,7 +40,7 @@ class RootPublicationResourceRegistry implements PublicationResourceRegistry {
 	@Override
 	public boolean contains(PublicationResource resource) {
 		if (resource == null) {
-			return false;
+			throw new NullPointerException(Messages.PARAMETER_IS_NULL("resource"));
 		}
 		return resourceMap.containsValue(resource);
 	}
@@ -47,30 +48,51 @@ class RootPublicationResourceRegistry implements PublicationResourceRegistry {
 	@Override
 	public PublicationResource get(String location) {
 		if (location == null) {
-			return null;
+			throw new NullPointerException(Messages.PARAMETER_IS_NULL("location"));
 		}
-		return resourceMap.get(resolve(location));
+		URI resolved = resolve(location);
+		PublicationResource resource = resourceMap.get(resolved);
+		if (resource == null) {
+			throw new NoSuchElementException(Messages.MISSING_PUBLICATION_RESOURCE(resolved));
+		}
+		return resource;
+	}
+
+	@Override
+	public Optional<PublicationResource> find(String location) {
+		if (location == null) {
+			throw new NullPointerException(Messages.PARAMETER_IS_NULL("location"));
+		}
+		return Optional.ofNullable(resourceMap.get(resolve(location)));
+	}
+	
+	@Override
+	public int getNumberOfResources() {
+		return resourceMap.size();
 	}
 	
 	@Override
 	public PublicationResourceBuilder builder(String location) {
 		if (location == null) {
-			throw new NullPointerException(Messages.PARAMETER_IS_NULL("identifier"));
+			throw new NullPointerException(Messages.PARAMETER_IS_NULL("location"));
 		}
-		URI absolute = resolve(location);
-		return new PublicationResourceBuilderImpl(absolute, location, this.xmlService);
+		URI resolved = resolve(location);
+		if (contains(location)) {
+			throw new IllegalArgumentException(Messages.DUPLICATE_PUBLICATION_RESOURCE(resolved));
+		}
+		return new PublicationResourceBuilderImpl(resolved, location, this.xmlService);
 	}
 	
 	@Override
 	public PublicationResourceRegistry getChildRegistry(String base) {
 		if (base == null) {
-			return this;
+			throw new NullPointerException(Messages.PARAMETER_IS_NULL("base"));
 		}
 		try {
 			URI baseURI = new URI(null, null, base, null);
 			return new ChildPublicationResourceRegistry(resourceMap, xmlService, baseURI);
 		} catch (URISyntaxException e) {
-			throw new EpubException(Messages.INVALID_LOCATION(base), e);
+			throw new IllegalArgumentException(Messages.INVALID_LOCATION(base), e);
 		}
 	}
 	

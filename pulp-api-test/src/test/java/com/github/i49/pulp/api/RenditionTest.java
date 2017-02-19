@@ -32,8 +32,11 @@ public class RenditionTest {
 			m.add(r.builder("cover.png").sourceDir(dir).build()).asCoverImage();
 			
 			Spine spine = rendition.getSpine();
-			spine.append(m.find("chapter01.xhtml"));
-			spine.append(m.find("chapter02.xhtml"));
+			spine.append(m.get("chapter01.xhtml"));
+			spine.append(m.get("chapter02.xhtml"));
+			
+			assertThat(m.getNumberOfItems(), equalTo(5));
+			assertThat(spine.getNumberOfPages(), equalTo(2));
 			
 			Path outputPath = Paths.get("target", "basic.zip");
 			try (PublicationWriter writer = Epub.createWriter(Files.newOutputStream(outputPath))) {

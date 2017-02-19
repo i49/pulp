@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Manifest;
@@ -73,6 +75,10 @@ public class RenditionImpl implements Rendition {
 		return spine;
 	}
 	
+	private URI resolve(String location) {
+		return this.location.resolve(location);
+	}
+	
 	/**
 	 * An implementation of {@code Manifest}.
 	 */
@@ -96,22 +102,45 @@ public class RenditionImpl implements Rendition {
 		}
 		
 		@Override
-		public Item find(String location) {
+		public Item get(String location) {
 			if (location == null) {
-				return null;
+				throw new NullPointerException(Messages.PARAMETER_IS_NULL("location"));
 			}
+			Item item = null;
 			PublicationResource resource = localRegistry.get(location);
-			if (resource == null) {
-				return null;
+			if (resource != null) {
+				item = items.get(resource);
 			}
-			return items.get(resource);
+			if (item == null) {
+				URI resolved = resolve(location);
+				throw new NoSuchElementException(Messages.MISSING_PUBLICATION_RESOURCE(resolved));
+			}
+			return item;
+		}
+		
+		@Override
+		public Optional<Item> find(String location) {
+			if (location == null) {
+				throw new NullPointerException(Messages.PARAMETER_IS_NULL("location"));
+			}
+			Item item = null;
+			PublicationResource resource = localRegistry.get(location);
+			if (resource != null) {
+				item = items.get(resource);
+			}
+			return Optional.ofNullable(item);
 		}
 
 		@Override
-		public Item getCoverImage() {
-			return coverImage;
+		public Optional<Item> findCoverImage() {
+			return Optional.ofNullable(coverImage);
 		}
 
+		@Override
+		public int getNumberOfItems() {
+			return items.size();
+		}
+	
 		@Override
 		public Item add(PublicationResource resource) {
 			validateResource(resource);
@@ -126,7 +155,7 @@ public class RenditionImpl implements Rendition {
 		@Override
 		public void remove(Item item) {
 			if (item == null) {
-				return;
+				throw new NullPointerException(Messages.PARAMETER_IS_NULL("item"));
 			}
 			items.remove(item.getResource());
 		}
@@ -191,6 +220,11 @@ public class RenditionImpl implements Rendition {
 			return Collections.unmodifiableList(pages).iterator();
 		}
 
+		@Override
+		public int getNumberOfPages() {
+			return pages.size();
+		}
+		
 		@Override
 		public Page get(int index) {
 			return pages.get(index);

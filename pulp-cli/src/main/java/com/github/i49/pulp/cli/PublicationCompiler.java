@@ -91,7 +91,7 @@ class PublicationCompiler {
 		
 		Spine spine = rendition.getSpine();
 		for (String document: documents) {
-			spine.append(manifest.find(document));
+			spine.append(manifest.get(document));
 		}
 	}
 	

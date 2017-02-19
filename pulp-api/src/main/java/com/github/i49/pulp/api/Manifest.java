@@ -1,6 +1,7 @@
 package com.github.i49.pulp.api;
 
 import java.net.URI;
+import java.util.Optional;
 
 /**
  * A set of publication resources required to render a rendition.
@@ -17,15 +18,31 @@ public interface Manifest extends Iterable<Manifest.Item> {
 	/**
 	 * Returns the specified item in this manifest
 	 * @param location the location of the publication resource assigned to the item.
-	 * @return the item if this manifest contains the specified resource, {@code null} otherwise.
+	 * @return the item found.
+	 * @exception NullPointerException if {@code location} is {@code null}.
+	 * @exception NoSuchElementException if this manifest does not contain the specified resource.
 	 */
-	Item find(String location);
+	Item get(String location);
+	
+	/**
+	 * Returns the specified item in this manifest
+	 * @param location the location of the publication resource assigned to the item.
+	 * @return the item if this manifest contains the specified resource, {@code null} otherwise.
+	 * @exception NullPointerException if {@code location} is {@code null}.
+	 */
+	Optional<Item> find(String location);
 	
 	/**
 	 * Returns the item used as a cover image for the rendition.
 	 * @return the item if this manifest has a cover image, {@code null} otherwise.
 	 */
-	Item getCoverImage();
+	Optional<Item> findCoverImage();
+	
+	/**
+	 * Returns the number of the items in this manifest.
+	 * @return the number of the items.
+	 */
+	int getNumberOfItems();
 
 	/**
 	 * Adds a publication resource to this manifest.
@@ -41,6 +58,7 @@ public interface Manifest extends Iterable<Manifest.Item> {
 	/**
 	 * Removes the specified manifest item from this manifest if present. 
 	 * @param item the manifest item to be removed from this manifest.
+	 * @exception NullPointerException if {@code item} is {@code null}.
 	 */
 	void remove(Item item);
 	
