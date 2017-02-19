@@ -13,12 +13,20 @@ public class Messages {
 		return localize("parameter.is.null", parameterName);
 	}
 	
-	static String MISSING_PUBLICATION_RESOURCE(URI identifier) {
-		return localize("missing.publication.resource", identifier);
+	static String MISSING_PUBLICATION_RESOURCE(URI location) {
+		return localize("missing.publication.resource", location);
 	}
 	
-	static String RESOURCE_ALREADY_EXISTS(String pathname) {
-		return localize("resource.already.exists", pathname);
+	static String DUPLICATE_PUBLICATION_RESOURCE(String pathname) {
+		return localize("duplicate.publication.resource", pathname);
+	}
+
+	static String MISSING_MANIFEST_ITEM(URI location) {
+		return localize("missing.manifest.item", location);
+	}
+	
+	static String DUPLICATE_MANIFEST_ITEM(URI location) {
+		return localize("duplicate.manifest.item", location);
 	}
 	
 	static String INVALID_RESOURCE(URI identifier) {

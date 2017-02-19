@@ -18,6 +18,7 @@ import org.w3c.dom.Element;
 import com.github.i49.pulp.api.Manifest;
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Rendition;
+import com.github.i49.pulp.api.Spine;
 import com.github.i49.pulp.core.XmlService;
 
 /**
@@ -56,8 +57,7 @@ class PackageDocumentBuilder {
 	
 	public PackageDocumentBuilder rendition(Rendition rendition) {
 		this.rendition = rendition;
-		URI packageLocation = URI.create(rendition.getLocation()); 
-		this.packageBase = packageLocation.resolve(".");
+		this.packageBase = rendition.getLocation().resolve(".");
 		return this;
 	}
 	
@@ -238,7 +238,7 @@ class PackageDocumentBuilder {
 	 */
 	private Element spine() {
 		Element spine = document.createElementNS(DEFAULT_NAMESPACE_URI, "spine");
-		for (Rendition.Page page: rendition.getPageList()) {
+		for (Spine.Page page: rendition.getSpine()) {
 			spine.appendChild(itemref(page));
 		}
 		return spine;
@@ -249,7 +249,7 @@ class PackageDocumentBuilder {
 	 * @param page the page to be added to the spine.
 	 * @return created itemref element.
 	 */
-	private Element itemref(Rendition.Page page) {
+	private Element itemref(Spine.Page page) {
 		Element itemref = document.createElementNS(DEFAULT_NAMESPACE_URI, "itemref");
 		String idref = this.identifiers.get(page.getItem());
 		itemref.setAttribute("idref", idref);

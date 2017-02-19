@@ -18,6 +18,7 @@ import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationResourceRegistry;
 import com.github.i49.pulp.api.Rendition;
+import com.github.i49.pulp.api.Spine;
 
 /**
  * A class to compile a publication.
@@ -69,6 +70,7 @@ class PublicationCompiler {
 		
 		List<String> documents = new ArrayList<>();
 		PublicationResourceRegistry registry = rendition.getResourceRegistry();
+		Manifest manifest = rendition.getManifest();
 	
 		Files.walk(this.sourceDir).filter(Files::isRegularFile).forEach(path->{
 			URI uri = path.toUri();
@@ -77,8 +79,7 @@ class PublicationCompiler {
 				return;
 			}
 			PublicationResource r = registry.builder(relativePath).source(uri).build();
-			Manifest manifest = rendition.getManifest();
-			Manifest.Item item = manifest.addItem(r);
+			Manifest.Item item = manifest.add(r);
 			if (checkContentDocument(relativePath)) {
 				documents.add(relativePath);
 			} else if (checkCoverImage(relativePath)){
@@ -88,8 +89,9 @@ class PublicationCompiler {
 		
 		sortDocuments(documents);
 		
+		Spine spine = rendition.getSpine();
 		for (String document: documents) {
-			rendition.getPageList().add(rendition.page(document));
+			spine.append(manifest.find(document));
 		}
 	}
 	

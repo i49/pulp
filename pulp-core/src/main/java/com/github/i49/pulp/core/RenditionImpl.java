@@ -15,6 +15,7 @@ import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationResourceRegistry;
 import com.github.i49.pulp.api.Rendition;
+import com.github.i49.pulp.api.Spine;
 import com.github.i49.pulp.api.Manifest.Item;
 
 /**
@@ -22,6 +23,7 @@ import com.github.i49.pulp.api.Manifest.Item;
  */
 public class RenditionImpl implements Rendition {
 
+	/* publication owing this rendition */
 	private final Publication publication;
 	private final PublicationResourceRegistry rootRegistry;
 	
@@ -29,10 +31,9 @@ public class RenditionImpl implements Rendition {
 	private final PublicationResourceRegistry localRegistry;
 	
 	private final MetadataImpl metadata = new MetadataImpl();
-	
+
 	private final ManifestImpl manifest = new ManifestImpl();
-	private final Map<URI, Page> pages;
-	private final List<Page> pageList;
+	private final SpineImpl spine = new SpineImpl();
 	
 	public RenditionImpl(Publication publication, URI location) {
 		this.publication = publication;
@@ -40,9 +41,6 @@ public class RenditionImpl implements Rendition {
 		
 		this.location = location;
 		this.localRegistry = rootRegistry.getChildRegistry(location.getPath());
-		
-		this.pages = new HashMap<>();
-		this.pageList = new ArrayList<>();
 	}
 	
 	@Override
@@ -51,8 +49,8 @@ public class RenditionImpl implements Rendition {
 	}
 	
 	@Override
-	public String getLocation() {
-		return location.getPath();
+	public URI getLocation() {
+		return location;
 	}
 	
 	@Override
@@ -71,35 +69,8 @@ public class RenditionImpl implements Rendition {
 	}
 	
 	@Override
-	public Page page(String pathname) {
-		if (pathname == null) {
-			throw new NullPointerException(Messages.PARAMETER_IS_NULL("pathaname"));
-		}
-		Page page = this.pages.get(pathname);
-		if (page == null) {
-			page = createPage(pathname);
-		}
-		return page;
-	}
-
-	@Override
-	public List<Page> getPageList() {
-		return pageList;
-	}
-	
-	private Page createPage(String location) {
-		URI resolved = resolve(location);
-		Item item = this.manifest.getItem(location);
-		if (item == null) {
-			throw new EpubException(Messages.MISSING_PUBLICATION_RESOURCE(resolved));
-		}
-		Page page = new PageImpl(item);
-		this.pages.put(resolved, page);
-		return page;
-	}
-	
-	private URI resolve(String pathname) {
-		return location.resolve(pathname);
+	public Spine getSpine() {
+		return spine;
 	}
 	
 	/**
@@ -108,6 +79,7 @@ public class RenditionImpl implements Rendition {
 	private class ManifestImpl implements Manifest {
 		
 		private final Map<PublicationResource, Item> items = new HashMap<>();
+		/* cover image of the rendition */
 		private Item coverImage;
 
 		@Override
@@ -116,30 +88,15 @@ public class RenditionImpl implements Rendition {
 		}
 
 		@Override
-		public Item addItem(PublicationResource resource) {
-			if (resource == null) {
-				return null;
-			} else if (!rootRegistry.contains(resource)) {
-				throw new EpubException(Messages.INVALID_RESOURCE(resource.getLocation()));
-			}
-			Item item = items.get(resource);
+		public boolean contains(Item item) {
 			if (item == null) {
-				item = new ItemImpl(resource);
-				items.put(resource, item);
+				return false;
 			}
-			return item;
+			return items.containsValue(item);
 		}
-
+		
 		@Override
-		public void removeItem(Item item) {
-			if (item == null) {
-				return;
-			}
-			items.remove(item.getResource());
-		}
-
-		@Override
-		public Item getItem(String location) {
+		public Item find(String location) {
 			if (location == null) {
 				return null;
 			}
@@ -153,6 +110,33 @@ public class RenditionImpl implements Rendition {
 		@Override
 		public Item getCoverImage() {
 			return coverImage;
+		}
+
+		@Override
+		public Item add(PublicationResource resource) {
+			validateResource(resource);
+			Item item = items.get(resource);
+			if (item == null) {
+				item = new ItemImpl(resource);
+				items.put(resource, item);
+			}
+			return item;
+		}
+
+		@Override
+		public void remove(Item item) {
+			if (item == null) {
+				return;
+			}
+			items.remove(item.getResource());
+		}
+		
+		private void validateResource(PublicationResource resource) {
+			if (resource == null) {
+				throw new NullPointerException(Messages.PARAMETER_IS_NULL("resource"));
+			} else if (!rootRegistry.contains(resource)) {
+				throw new EpubException(Messages.MISSING_PUBLICATION_RESOURCE(resource.getLocation()));
+			}
 		}
 	}
 	
@@ -194,7 +178,70 @@ public class RenditionImpl implements Rendition {
 		}
 	}
 	
-	private static class PageImpl implements Rendition.Page {
+	/**
+	 * An implementation of {@link Spine}.
+	 */
+	private class SpineImpl implements Spine {
+		
+		private final List<Spine.Page> pages = new ArrayList<>();
+		private final Map<Manifest.Item, Spine.Page> itemPageMap = new HashMap<>();
+
+		@Override
+		public Iterator<Page> iterator() {
+			return Collections.unmodifiableList(pages).iterator();
+		}
+
+		@Override
+		public Page get(int index) {
+			return pages.get(index);
+		}
+
+		@Override
+		public Page append(Item item) {
+			validateItem(item);
+			Page page = new PageImpl(item);
+			pages.add(page);
+			itemPageMap.put(item, page);
+			return page;
+		}
+
+		@Override
+		public Page insert(int index, Manifest.Item item) {
+			validateItem(item);
+			Page page = new PageImpl(item);
+			pages.add(index, page);
+			itemPageMap.put(item, page);
+			return page;
+		}
+	
+		@Override
+		public void remove(int index) {
+			Page page = pages.remove(index);
+			itemPageMap.remove(page.getItem());
+		}
+
+		@Override
+		public Page move(int index, int newIndex) {
+			Page page = pages.remove(index);
+			pages.add(newIndex, page);
+			return page;
+		}
+		
+		private void validateItem(Item item) {
+			if (item == null) {
+				throw new NullPointerException(Messages.PARAMETER_IS_NULL("item"));
+			} else if (!manifest.contains(item)) {
+				throw new IllegalArgumentException(Messages.MISSING_MANIFEST_ITEM(item.getLocation()));
+			} else if (itemPageMap.containsKey(item)) {
+				throw new IllegalArgumentException(Messages.DUPLICATE_MANIFEST_ITEM(item.getLocation()));
+			}
+		}
+	}
+	
+	/**
+	 * An implementation of {@link Spine.Page}.
+	 */
+	private static class PageImpl implements Spine.Page {
 
 		private final Item item;
 		private boolean linear;

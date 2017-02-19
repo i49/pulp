@@ -1,6 +1,6 @@
 package com.github.i49.pulp.api;
 
-import java.util.List;
+import java.net.URI;
 
 /**
  * A logical document entity consisting of a set of interrelated resources 
@@ -15,10 +15,12 @@ public interface Rendition {
 	Publication getPublication();
 
 	/**
-	 * Returns the location to the Package Document of this rendition.
-	 * @return the location to the Package Document of this rendition.
+	 * Returns the location of the Package Document for this rendition,
+	 * which is relative to the root directory of the EPUB container.
+	 * e.g., "EPUB/package.opf".
+	 * @return the relative URI of the Package Document, the path component of which has the location.
 	 */
-	String getLocation();
+	URI getLocation();
 
 	/**
 	 * Return the metadata of this rendition.
@@ -34,47 +36,15 @@ public interface Rendition {
 	PublicationResourceRegistry getResourceRegistry();
 
 	/**
-	 * Returns the manifest that carries a set of required publication resources.
+	 * Returns the manifest of this rendition that carries all publication resources
+	 * required to render the rendition. 
 	 * @return the manifest of this rendition.
 	 */
 	Manifest getManifest();
-	
+
 	/**
-	 * Returns the page of the given pathname if it exists, or newly created page if it does not exist.
-	 * @param pathname the pathname of the item assigned to the new page.
-	 * @return specified page.
-	 * @exception EpubException if the specified item does not exist.
+	 * Returns the spine of this rendition that binds the ordered pages of the rendition.
+	 * @return the spine of this rendition.
 	 */
-	Page page(String pathname);
-	
-	/**
-	 * Returns the ordered list of the pages presented to the readers of this rendition.
-	 * @return the ordered list of the pages.
-	 */
-	List<Page> getPageList();
-	
-	/**
-	 * A page bound to the spine of this rendition.
-	 */
-	public static interface Page {
-		
-		/**
-		 * Returns the item of this page.
-		 * @return the item of this page.
-		 */
-		Manifest.Item getItem();
-		
-		/**
-		 * Returns {@code true} if this page is considered primary.
-		 * @return {@code true} if this page is considered primary, {@code false} if considered auxiliary.
-		 */
-		boolean isLinear();
-		
-		/**
-		 * Sets the linearity of this page.
-		 * @param linear {@code true} if this page is considered primary, {@code false} otherwise.
-		 * @return this page.
-		 */
-		Page linear(boolean linear);
-	}
+	Spine getSpine();
 }

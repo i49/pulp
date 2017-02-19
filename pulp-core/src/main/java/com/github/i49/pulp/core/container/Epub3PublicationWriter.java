@@ -84,7 +84,7 @@ class Epub3PublicationWriter implements PublicationWriter {
 	private void writePackageDocument(Rendition rendition) throws IOException {
 		PackageDocumentBuilder builder = new PackageDocumentBuilder(xmlService); 
 		Document document = builder.rendition(rendition).build();
-		writeXmlDocument(rendition.getLocation(), document);
+		writeXmlDocument(rendition.getLocation().getPath(), document);
 	}
 
 	private void writeAllResources(Rendition rendition) throws IOException {

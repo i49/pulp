@@ -11,7 +11,9 @@ import java.net.URI;
 public interface PublicationResource {
 
 	/**
-	 * Returns the location of this resource inside or outside the EPUB container.
+	 * Returns the location of this resource, which is either inside or outside the EPUB container.
+	 * If the location points inside the container, it is relative to the root directory
+	 * of the container.
 	 * @return the location of this resource.
 	 */
 	URI getLocation();

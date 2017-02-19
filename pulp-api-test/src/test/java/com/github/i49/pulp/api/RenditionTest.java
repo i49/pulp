@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 import org.junit.Test;
 
@@ -26,15 +25,15 @@ public class RenditionTest {
 			Rendition rendition = publication.addRendition();
 			PublicationResourceRegistry r = rendition.getResourceRegistry();
 			Manifest m = rendition.getManifest();
-			m.addItem(r.builder("chapter01.xhtml").sourceDir(dir).build());
-			m.addItem(r.builder("chapter02.xhtml").sourceDir(dir).build());
-			m.addItem(r.builder("images/figure01.png").sourceDir(dir).build());
-			m.addItem(r.builder("css/stylesheet.css").sourceDir(dir).build());
-			m.addItem(r.builder("cover.png").sourceDir(dir).build()).asCoverImage();
+			m.add(r.builder("chapter01.xhtml").sourceDir(dir).build());
+			m.add(r.builder("chapter02.xhtml").sourceDir(dir).build());
+			m.add(r.builder("images/figure01.png").sourceDir(dir).build());
+			m.add(r.builder("css/stylesheet.css").sourceDir(dir).build());
+			m.add(r.builder("cover.png").sourceDir(dir).build()).asCoverImage();
 			
-			List<Rendition.Page> pages = rendition.getPageList();
-			pages.add(rendition.page("chapter01.xhtml"));
-			pages.add(rendition.page("chapter02.xhtml"));
+			Spine spine = rendition.getSpine();
+			spine.append(m.find("chapter01.xhtml"));
+			spine.append(m.find("chapter02.xhtml"));
 			
 			Path outputPath = Paths.get("target", "basic.zip");
 			try (PublicationWriter writer = Epub.createWriter(Files.newOutputStream(outputPath))) {

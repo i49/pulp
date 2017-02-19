@@ -50,7 +50,7 @@ class ContainerDocumentBuilder {
 	
 	private Element addRootfile(Rendition rendition) {
 		Element rootfile = document.createElementNS(DEFAULT_NAMESPACE_URI, "rootfile");
-		rootfile.setAttribute("full-path", rendition.getLocation());
+		rootfile.setAttribute("full-path", rendition.getLocation().getPath());
 		rootfile.setAttribute("media-type", PACKAGE_DOCUMENT_MEDIA_TYPE);
 		return rootfile;
 	}
