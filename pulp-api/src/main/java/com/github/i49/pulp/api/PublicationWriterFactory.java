@@ -3,7 +3,7 @@ package com.github.i49.pulp.api;
 import java.io.OutputStream;
 
 /**
- * A factory class to create {@link PublicationWriter} instances.
+ * A factory type for creating instances of {@link PublicationWriter}.
  */
 public interface PublicationWriterFactory {
 

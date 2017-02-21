@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URI;
 
 import com.github.i49.pulp.api.CoreMediaType;
+import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.PublicationResource;
 
 /**
@@ -37,7 +38,12 @@ class BasicPublicationResource implements PublicationResource {
 	
 	@Override
 	public InputStream openContent() throws IOException {
-		return getContent().openStream();
+		try {
+			return getContent().openStream();
+		} catch (Exception e) {
+			// TODO:
+			throw new EpubException("", e);
+		}
 	}
 
 	@Override

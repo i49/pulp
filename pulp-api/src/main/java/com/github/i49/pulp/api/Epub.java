@@ -1,5 +1,6 @@
 package com.github.i49.pulp.api;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.ServiceLoader;
@@ -30,8 +31,28 @@ public final class Epub {
 	}
 	
 	/**
+	 * Creates an instance of {@link PublicationReader} that can read a publication from the given input stream.
+	 * @param stream the stream from which the reader will read a publication.
+	 * @return created publication reader.
+	 * @exception NullPointerException if given {@code stream} is {@code null}.
+	 * @exception EpubException if API implementation is not found.
+	 */
+	public static PublicationReader createReader(InputStream stream) {
+		return createReaderFactory().createReader(stream);
+	}
+	
+	/**
+	 * Creates an instance of {@link PublicationReaderFactory} that can produce one or more {@link PublicationReader}s.
+	 * @return created publication reader factory.
+	 * @exception EpubException if API implementation is not found.
+	 */
+	public static PublicationReaderFactory createReaderFactory() {
+		return getProvider().createReaderFactory();
+	}
+
+	/**
 	 * Creates an instance of {@link PublicationWriter} that can write a publication to the given output stream.
-	 * @param stream the stream to which the writer will writes a publication.
+	 * @param stream the stream to which the writer will write a publication.
 	 * @return created publication writer.
 	 * @exception NullPointerException if given {@code stream} is {@code null}.
 	 * @exception EpubException if API implementation is not found.

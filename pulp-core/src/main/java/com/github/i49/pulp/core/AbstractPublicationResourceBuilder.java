@@ -4,10 +4,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.function.Supplier;
+
+import javax.xml.parsers.DocumentBuilder;
 
 import org.w3c.dom.Document;
 
@@ -20,16 +21,14 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 
 	private final URI location;
 	private final String localPath;
-	private final XmlService xmlService;
 	
 	private Supplier<InputStream> source;
 	private CoreMediaType mediaType;
 	
-	AbstractPublicationResourceBuilder(URI location, String localPath, XmlService xmlService) {
+	AbstractPublicationResourceBuilder(URI location, String localPath) {
 		this.location = location;
 		this.localPath = localPath;
 		this.mediaType = null;
-		this.xmlService = xmlService;
 	}
 
 	@Override
@@ -148,7 +147,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 		}
 		
 		@Override
-		public InputStream openStream() throws IOException {
+		public InputStream openStream() {
 			return source.get();
 		}
 	}
@@ -162,7 +161,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 		}
 
 		@Override
-		public InputStream openStream() throws IOException {
+		public InputStream openStream() throws Exception {
 			return getSerialized(getDocument());
 		}
 
@@ -182,37 +181,35 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 		}
 
 		@Override
-		public InputStream openStream() throws IOException {
+		public InputStream openStream() throws Exception {
 			return getSerialized(getDocument());
 		}
 
 		@Override
-		public Document getDocument() {
+		public Document getDocument() throws Exception {
 			if (this.document == null) {
 				this.document = readDocument();
 			}
 			return this.document;
 		}
 
-		private Document readDocument() {
+		private Document readDocument() throws Exception {
+			DocumentBuilder documentBuilder = XmlServices.newBuilder();
 			try (InputStream in = source.get()) {
-				return xmlService.readDocument(in);
-			} catch (IOException e) {
-				throw new UncheckedIOException(e);
+				return documentBuilder.parse(in);
 			}
 		}
 	}
 	
-	private InputStream getSerialized(Document document) {
+	private InputStream getSerialized(Document document) throws Exception {
 		if (document == null) {
 			return null;
 		}
+		DocumentSerializer serializer = XmlServices.newSerializer();
 		try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-			xmlService.writeDocument(out, document);
+			serializer.serialize(out, document);
 			out.flush();
 			return new ByteArrayInputStream(out.toByteArray());
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
 		}
 	}
 }

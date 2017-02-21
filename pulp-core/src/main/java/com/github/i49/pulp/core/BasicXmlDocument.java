@@ -5,6 +5,7 @@ import java.net.URI;
 import org.w3c.dom.Document;
 
 import com.github.i49.pulp.api.CoreMediaType;
+import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.XmlDocument;
 
 class BasicXmlDocument extends BasicPublicationResource implements XmlDocument {
@@ -15,7 +16,12 @@ class BasicXmlDocument extends BasicPublicationResource implements XmlDocument {
 
 	@Override
 	public Document getDocument() {
-		return getContent().getDocument();
+		try {
+			return getContent().getDocument();
+		} catch (Exception e) {
+			// TOOD:
+			throw new EpubException("", e);
+		}
 	}
 	
 	@Override

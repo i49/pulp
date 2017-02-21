@@ -4,5 +4,5 @@ import org.w3c.dom.Document;
 
 interface XmlContent extends Content {
 
-	Document getDocument();
+	Document getDocument() throws Exception;
 }

@@ -22,8 +22,8 @@ public class PublicationImpl implements Publication {
 	private final RootPublicationResourceRegistry resourceRegistry;
 	private final List<Rendition> renditions = new ArrayList<>();
 	
-	public PublicationImpl(XmlService xmlService) {
-		this.resourceRegistry = new RootPublicationResourceRegistry(xmlService);
+	public PublicationImpl() {
+		this.resourceRegistry = new RootPublicationResourceRegistry();
 	}
 
 	@Override

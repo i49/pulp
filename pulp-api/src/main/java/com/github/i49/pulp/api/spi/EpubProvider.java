@@ -1,6 +1,7 @@
 package com.github.i49.pulp.api.spi;
 
 import com.github.i49.pulp.api.Publication;
+import com.github.i49.pulp.api.PublicationReaderFactory;
 import com.github.i49.pulp.api.PublicationWriterFactory;
 
 /**
@@ -14,6 +15,12 @@ public interface EpubProvider {
 	 * @return an empty publication.
 	 */
 	Publication createPublication();
+
+	/**
+	 * Creates an instance of factory that can produce publication readers.
+	 * @return an instance of publication reader factory.
+	 */
+	PublicationReaderFactory createReaderFactory();
 
 	/**
 	 * Creates an instance of factory that can produce publication writers.

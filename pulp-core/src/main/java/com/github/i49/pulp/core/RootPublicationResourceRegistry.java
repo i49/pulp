@@ -17,16 +17,13 @@ import com.github.i49.pulp.api.PublicationResourceRegistry;
 class RootPublicationResourceRegistry implements PublicationResourceRegistry {
 
 	private final Map<URI, PublicationResource> resourceMap;
-	private final XmlService xmlService;
 	
-	public RootPublicationResourceRegistry(XmlService xmlService) {
+	public RootPublicationResourceRegistry() {
 		this.resourceMap = new HashMap<>();
-		this.xmlService = xmlService;
 	}
 	
-	private RootPublicationResourceRegistry(Map<URI, PublicationResource> resourceMap, XmlService xmlService) {
+	private RootPublicationResourceRegistry(Map<URI, PublicationResource> resourceMap) {
 		this.resourceMap = resourceMap;
-		this.xmlService = xmlService;
 	}
 
 	@Override
@@ -80,7 +77,7 @@ class RootPublicationResourceRegistry implements PublicationResourceRegistry {
 		if (contains(location)) {
 			throw new IllegalArgumentException(Messages.DUPLICATE_PUBLICATION_RESOURCE(resolved));
 		}
-		return new PublicationResourceBuilderImpl(resolved, location, this.xmlService);
+		return new PublicationResourceBuilderImpl(resolved, location);
 	}
 	
 	@Override
@@ -90,7 +87,7 @@ class RootPublicationResourceRegistry implements PublicationResourceRegistry {
 		}
 		try {
 			URI baseURI = new URI(null, null, base, null);
-			return new ChildPublicationResourceRegistry(resourceMap, xmlService, baseURI);
+			return new ChildPublicationResourceRegistry(resourceMap, baseURI);
 		} catch (URISyntaxException e) {
 			throw new IllegalArgumentException(Messages.INVALID_LOCATION(base), e);
 		}
@@ -114,8 +111,8 @@ class RootPublicationResourceRegistry implements PublicationResourceRegistry {
 	 */
 	private class PublicationResourceBuilderImpl extends AbstractPublicationResourceBuilder {
 
-		private PublicationResourceBuilderImpl(URI identifier, String localPath, XmlService xmlService) {
-			super(identifier, localPath, xmlService);
+		private PublicationResourceBuilderImpl(URI identifier, String localPath) {
+			super(identifier, localPath);
 		}
 
 		@Override
@@ -133,9 +130,8 @@ class RootPublicationResourceRegistry implements PublicationResourceRegistry {
 
 		public ChildPublicationResourceRegistry(
 				Map<URI, PublicationResource> resourceMap, 
-				XmlService xmlService,
 				URI base) {
-			super(resourceMap, xmlService);
+			super(resourceMap);
 			this.base = base;
 		}
 		

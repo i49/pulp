@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.xml.parsers.DocumentBuilder;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -20,7 +22,6 @@ import com.github.i49.pulp.api.Manifest;
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Rendition;
 import com.github.i49.pulp.api.Spine;
-import com.github.i49.pulp.core.XmlService;
 
 /**
  * A builder class to build a document carrying bibliographical and structural metadata 
@@ -38,7 +39,7 @@ class PackageDocumentBuilder {
 	
 	private static final DateTimeFormatter ISO8601_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	
-	private final XmlService xmlService;
+	private final DocumentBuilder documentBuilder;
 	private Rendition rendition;
 	private URI packageBase;
 	private final OffsetDateTime now;
@@ -50,8 +51,8 @@ class PackageDocumentBuilder {
 	/**
 	 * Construct this builder.
 	 */
-	public PackageDocumentBuilder(XmlService xmlService) {
-		this.xmlService = xmlService;
+	public PackageDocumentBuilder(DocumentBuilder documentBuilder) {
+		this.documentBuilder = documentBuilder;
 		this.now = OffsetDateTime.now();
 		this.nextNumber = 1;
 	}
@@ -67,7 +68,7 @@ class PackageDocumentBuilder {
 	 * @return built package document.
 	 */
 	public Document build() {
-		document = this.xmlService.createDocument();
+		document = this.documentBuilder.newDocument();
 
 		Element root = document.createElementNS(DEFAULT_NAMESPACE_URI, "package");
 		root.setAttribute("version", VERSION);

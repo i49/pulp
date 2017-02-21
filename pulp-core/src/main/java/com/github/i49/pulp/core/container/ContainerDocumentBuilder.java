@@ -1,24 +1,25 @@
 package com.github.i49.pulp.core.container;
 
+import javax.xml.parsers.DocumentBuilder;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.Rendition;
-import com.github.i49.pulp.core.XmlService;
 
 class ContainerDocumentBuilder {
 	
 	private static final String DEFAULT_NAMESPACE_URI = "urn:oasis:names:tc:opendocument:xmlns:container";
 	private static final String PACKAGE_DOCUMENT_MEDIA_TYPE = "application/oebps-package+xml";
 	
-	private final XmlService xmlService;
+	private final DocumentBuilder documentBuilder;
 	private Publication publication;
 	
 	private Document document;
 	
-	public ContainerDocumentBuilder(XmlService xmlService) {
-		this.xmlService = xmlService;
+	public ContainerDocumentBuilder(DocumentBuilder documentBuilder) {
+		this.documentBuilder = documentBuilder;
 	}
 	
 	public ContainerDocumentBuilder publication(Publication publication) {
@@ -27,7 +28,7 @@ class ContainerDocumentBuilder {
 	}
 	
 	public Document build() {
-		document = xmlService.createDocument();
+		document = documentBuilder.newDocument();
 		addRootElement();
 		return document;
 	}
