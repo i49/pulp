@@ -18,17 +18,23 @@ import com.github.i49.pulp.api.Rendition;
 public class PublicationImpl implements Publication {
 	
 	private static final URI DEFAULT_RENDITION_LOCATION = URI.create("EPUB/package.opf");
-	
-	private final RootPublicationResourceRegistry resourceRegistry;
+
+	// a list of renditions.
 	private final List<Rendition> renditions = new ArrayList<>();
+	private final RootPublicationResourceRegistry resourceRegistry;
 	
 	public PublicationImpl() {
 		this.resourceRegistry = new RootPublicationResourceRegistry();
 	}
 
 	@Override
+	public int getNumberOfRenditions() {
+		return renditions.size();
+	}
+	
+	@Override
 	public Rendition getDefaultRendition() {
-		if (renditions.size() == 0) {
+		if (getNumberOfRenditions() == 0) {
 			return null;
 		}
 		return renditions.get(0);

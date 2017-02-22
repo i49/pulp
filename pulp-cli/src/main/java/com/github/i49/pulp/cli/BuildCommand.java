@@ -60,7 +60,7 @@ public class BuildCommand extends Command {
 		builder.setDocumentOrder(this.order);
 		Publication publication = builder.compile();
 
-		try (PublicationWriter writer = Epub.createWriter(Files.newOutputStream(target))) {
+		try (PublicationWriter writer = Epub.createWriter(target)) {
 			writer.write(publication);
 		}
 	}

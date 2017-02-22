@@ -8,6 +8,12 @@ package com.github.i49.pulp.api;
 public interface Publication extends Iterable<Rendition> {
 	
 	/**
+	 * Returns the number of renditions in this publication.
+	 * @return the number of renditions in this publication.
+	 */
+	int getNumberOfRenditions();
+	
+	/**
 	 * Returns the default {@link Rendition} of this publication.
 	 * @return the default {@link Rendition} of this publication.
 	 */
@@ -28,7 +34,7 @@ public interface Publication extends Iterable<Rendition> {
 	
 	/**
 	 * Adds a new {@link Rendition} with the location of the Package Document in the container specified.
-	 * @param location the location of the Package Document that can be such as "EPUB/package.opf".
+	 * @param location the local location of the Package Document that can be such as "EPUB/package.opf".
 	 * @return created rendition.
 	 * @exception EpubException if specified {@code location} is invalid.
 	 */

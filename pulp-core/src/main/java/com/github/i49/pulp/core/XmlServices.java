@@ -21,7 +21,7 @@ public final class XmlServices {
 
 	// TransformerFactory for each thread.
 	private static final ThreadLocal<TransformerFactory> transformerFactory = 
-			ThreadLocal.withInitial(XmlServices::createTransformerFactory);
+			ThreadLocal.withInitial(TransformerFactory::newInstance);
 	
 	/**
 	 * Creates an new instance of {@link DocumentBuilder}.
@@ -60,10 +60,6 @@ public final class XmlServices {
 		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 		builderFactory.setNamespaceAware(true);
 		return builderFactory;
-	}
-
-	private static TransformerFactory createTransformerFactory() {
-		return TransformerFactory.newInstance();
 	}
 
 	private XmlServices() {

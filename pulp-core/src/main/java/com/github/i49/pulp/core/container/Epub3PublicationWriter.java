@@ -2,10 +2,8 @@ package com.github.i49.pulp.core.container;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.transform.TransformerException;
 
 import org.w3c.dom.Document;
 
@@ -23,17 +21,15 @@ import com.github.i49.pulp.core.XmlServices;
  */
 class Epub3PublicationWriter implements PublicationWriter {
 
-	private final Archiver archiver;
-	private boolean closed;
+	private final ContainerSaver saver;
 	private final DocumentBuilder documentBuilder;
 	private final DocumentSerializer documentSerializer;
 	
 	private static final String MIMETYPE = "application/epub+zip";
 	private static final int BUFFER_SIZE = 128 * 1024;
 	
-	public Epub3PublicationWriter(OutputStream stream) throws Exception {
-		this.archiver = new ZipArchiver(stream);
-		this.closed = false;
+	public Epub3PublicationWriter(ContainerSaver saver) {
+		this.saver = saver;
 		this.documentBuilder = XmlServices.newBuilder();
 		this.documentSerializer = XmlServices.newSerializer();
 	}
@@ -42,43 +38,41 @@ class Epub3PublicationWriter implements PublicationWriter {
 	public void write(Publication pub) {
 		try {
 			writeAll(pub);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new EpubException(e.getMessage(), e);
 		}
 	}
 
 	@Override
 	public void close() {
-		if (!this.closed) {
-			try {
-				this.archiver.close();
-				this.closed = true;
-			} catch (IOException e) {
-				throw new EpubException(e.getMessage(), e);
-			}
+		try {
+			this.saver.close();
+		} catch (IOException e) {
+			// TODO:
+			throw new EpubException(e.getMessage(), e);
 		}
 	}
 	
-	private void writeAll(Publication publication) throws IOException {
+	private void writeAll(Publication publication) throws Exception {
 		writeMimeType();
 		writeContainerDocument(publication);
 		writeAllRenditions(publication);
 	}
 	
-	private void writeAllRenditions(Publication publication) throws IOException {
+	private void writeAllRenditions(Publication publication) throws Exception {
 		for (Rendition rendition: publication) {
 			writeRendition(rendition);
 		}
 	}
 	
-	private void writeRendition(Rendition rendition) throws IOException {
+	private void writeRendition(Rendition rendition) throws Exception {
 		writePackageDocument(rendition);
 		writeAllResources(rendition);
 	}
 	
-	private void writeMimeType() throws IOException {
+	private void writeMimeType() throws Exception {
 		byte[] content = MIMETYPE.getBytes();
-		archiver.appendRaw("mimetype", content);
+		saver.save("mimetype", content);
 	}
 	
 	private void writeContainerDocument(Publication publication) {
@@ -93,32 +87,32 @@ class Epub3PublicationWriter implements PublicationWriter {
 		writeXmlDocument(rendition.getLocation().getPath(), document);
 	}
 
-	private void writeAllResources(Rendition rendition) throws IOException {
+	private void writeAllResources(Rendition rendition) throws Exception {
 		for (Manifest.Item item: rendition.getManifest()) {
 			writeResource(item);
 		}
 	}
 	
-	private void writeResource(Manifest.Item item) throws IOException {
+	private void writeResource(Manifest.Item item) throws Exception {
 		PublicationResource resource = item.getResource();
 		String entryName = resource.getLocation().getPath();
 		byte[] buffer = new byte[BUFFER_SIZE];
-		try (InputStream in = resource.openContent(); OutputStream out = archiver.append(entryName)) {
-			int len = 0;
-			while ((len = in.read(buffer)) != -1) {
-				out.write(buffer, 0, len);
-			}
-			out.flush();
+		try (InputStream in = resource.openContent()) {
+			saver.save(entryName, out->{
+				int len = 0;
+				while ((len = in.read(buffer)) != -1) {
+					out.write(buffer, 0, len);
+				}
+			});
 		}
 	}
 	
 	private void writeXmlDocument(String location, Document document) {
-		try (OutputStream stream = archiver.append(location)) {
-			documentSerializer.serialize(stream, document);
-		} catch (IOException e) {
-			// TODO:
-			throw new EpubException("", e);
-		} catch (TransformerException e) {
+		try {
+			saver.save(location, stream->{
+				documentSerializer.serialize(stream, document);
+			});
+		} catch (Exception e) {
 			// TODO:
 			throw new EpubException("", e);
 		}

@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -39,7 +38,7 @@ public class RenditionTest {
 			assertThat(spine.getNumberOfPages(), equalTo(2));
 			
 			Path outputPath = Paths.get("target", "basic.zip");
-			try (PublicationWriter writer = Epub.createWriter(Files.newOutputStream(outputPath))) {
+			try (PublicationWriter writer = Epub.createWriter(outputPath)) {
 				writer.write(publication);
 			}
 			
