@@ -8,8 +8,7 @@ import java.util.function.Supplier;
 /**
  * The builder type to build a {@link PublicationResource}.
  * The instances of this type can be obtained through 
- * {@link PublicationResourceBuilderFactory}.
- * 
+ * {@link PublicationResourceRegistry}.
  */
 public interface PublicationResourceBuilder {
 
@@ -22,7 +21,6 @@ public interface PublicationResourceBuilder {
 	
 	/**
 	 * Specifies the content of the resource with a path.
-	 * If the path specified is a directory, the resource pathname is appended to the path.
 	 * @param path the path from which the content will be read.
 	 * @return this builder.
 	 */
@@ -55,7 +53,7 @@ public interface PublicationResourceBuilder {
 	
 	/**
 	 * Builds a {@link PublicationResource}.
-	 * The built resource is registered with {@link PublicationResourceBuilderFactory}.
+	 * The built resource is registered with {@link PublicationResourceRegistry}.
 	 * @return built publication resource.
 	 */
 	PublicationResource build();

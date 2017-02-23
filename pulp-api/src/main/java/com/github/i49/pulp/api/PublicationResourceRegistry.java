@@ -1,6 +1,7 @@
 package com.github.i49.pulp.api;
 
 import java.util.Optional;
+import java.util.NoSuchElementException;
 
 /**
  * The registry that manages all publication resources available for a publication. 

@@ -2,12 +2,13 @@ package com.github.i49.pulp.api;
 
 import java.net.URI;
 import java.util.Optional;
+import java.util.NoSuchElementException;
 
 /**
  * A set of publication resources required to render a rendition.
  */
 public interface Manifest extends Iterable<Manifest.Item> {
-	
+
 	/**
 	 * Returns {@code true} if this manifest contains the specified item.
 	 * @param item the item to find.
