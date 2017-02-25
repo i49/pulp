@@ -23,7 +23,7 @@ public class PublicationWriterFactoryImpl implements PublicationWriterFactory {
 			throw new NullPointerException(Messages.PARAMETER_IS_NULL("path"));
 		}
 		try {
-			return new Epub3PublicationWriter(new WriteableZipContainer(path));
+			return new EpubPublicationWriter3(new WriteableZipContainer(path));
 		} catch (IOException e) {
 			// TODO 
 			throw new EpubException(e.getMessage(), e);
@@ -35,6 +35,6 @@ public class PublicationWriterFactoryImpl implements PublicationWriterFactory {
 		if (stream == null) {
 			throw new NullPointerException(Messages.PARAMETER_IS_NULL("stream"));
 		}
-		return new Epub3PublicationWriter(new WriteableZipContainer(stream));
+		return new EpubPublicationWriter3(new WriteableZipContainer(stream));
 	}
 }

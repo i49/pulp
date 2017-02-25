@@ -21,7 +21,7 @@ import com.github.i49.pulp.core.XmlServices;
 /**
  * Publication writer that is defined as EPUB3 specification.
  */
-class Epub3PublicationWriter implements PublicationWriter {
+class EpubPublicationWriter3 implements PublicationWriter {
 
 	private final WriteableContainer container;
 	private final DocumentBuilder documentBuilder;
@@ -30,7 +30,7 @@ class Epub3PublicationWriter implements PublicationWriter {
 	private static final String MIMETYPE = "application/epub+zip";
 	private static final int BUFFER_SIZE = 128 * 1024;
 	
-	public Epub3PublicationWriter(WriteableContainer saver) {
+	public EpubPublicationWriter3(WriteableContainer saver) {
 		this.container = saver;
 		this.documentBuilder = XmlServices.newBuilder();
 		this.documentSerializer = XmlServices.newSerializer();
@@ -78,8 +78,7 @@ class Epub3PublicationWriter implements PublicationWriter {
 	}
 	
 	private void writeContainerDocument(Publication publication) {
-		ContainerDocument.Builder builder = ContainerDocument.builder(documentBuilder); 
-		ContainerDocument document = builder.build(publication);
+		ContainerDocument document = ContainerDocument.create(documentBuilder, publication);
 		writeXmlDocument(AbstractContainer.CONTAINER_DOCUMENT_LOCATION, document.getDocument());
 	}
 

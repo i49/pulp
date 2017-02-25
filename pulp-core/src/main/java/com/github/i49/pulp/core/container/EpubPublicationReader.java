@@ -6,11 +6,11 @@ import java.io.InputStream;
 import javax.xml.parsers.DocumentBuilder;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationReader;
+import com.github.i49.pulp.api.Rendition;
 import com.github.i49.pulp.core.PublicationImpl;
 import com.github.i49.pulp.core.XmlServices;
 
@@ -26,7 +26,9 @@ public class EpubPublicationReader implements PublicationReader {
 
 	@Override
 	public Publication read() {
-		return parseContainerDocument();
+		Publication publication = createPublication();
+		addRenditions(publication);
+		return publication;
 	}
 
 	@Override
@@ -39,14 +41,21 @@ public class EpubPublicationReader implements PublicationReader {
 		}
 	}
 	
-	private Publication parseContainerDocument() {
-		Publication publication = new PublicationImpl();
-		ContainerDocument document = ContainerDocument.create(readXmlDocument(AbstractContainer.CONTAINER_DOCUMENT_LOCATION));
-		for (Element rootFile: document.getRootFiles()) {
-			String fullPath = rootFile.getAttribute("full-path");
-			String mediaType = rootFile.getAttribute("media-type");
+	protected Publication createPublication() {
+		return new PublicationImpl();
+	}
+	
+	private void addRenditions(Publication publication) {
+		Document document = readXmlDocument(AbstractContainer.CONTAINER_DOCUMENT_LOCATION);
+		ContainerDocument container = ContainerDocument.create(document);
+		container.addRenditions(publication);
+		for (Rendition rendition: publication) {
+			populateRendition(rendition);
 		}
-		return publication;
+	}
+	
+	private void populateRendition(Rendition rendition) {
+		Document document = readXmlDocument(rendition.getLocation().getPath());
 	}
 	
 	private Document readXmlDocument(String location) {

@@ -1,5 +1,7 @@
 package com.github.i49.pulp.core.container;
 
+import static com.github.i49.pulp.core.container.PackageDocument.*;
+
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -29,9 +31,6 @@ import com.github.i49.pulp.api.Spine;
  */
 class PackageDocumentBuilder {
 
-	private static final String DEFAULT_NAMESPACE_URI = "http://www.idpf.org/2007/opf";
-	private static final String DC_NAMESPACE_URI = "http://purl.org/dc/elements/1.1/";
-	
 	private static final String VERSION = "3.0";
 	private static final String UNIQUE_IDENTIFIER = "pub-id";
 	private static final String ID_PREFIX = "item";

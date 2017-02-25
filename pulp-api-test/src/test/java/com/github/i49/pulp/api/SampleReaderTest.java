@@ -23,7 +23,9 @@ public class SampleReaderTest {
 	@Test
 	public void accessible_epub_3() {
 		Publication p = read("accessible_epub_3.epub");
+		
 		assertThat(p, is(notNullValue()));
+		assertThat(p.getNumberOfRenditions(), is(1));
 	}
 	
 	protected Publication read(String filename) {
