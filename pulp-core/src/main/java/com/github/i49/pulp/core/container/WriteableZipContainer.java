@@ -1,5 +1,6 @@
 package com.github.i49.pulp.core.container;
 
+import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -8,23 +9,22 @@ import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-public class ZipContainerSaver implements ContainerSaver {
+public class WriteableZipContainer extends WriteableContainer {
 
-	private final Path path;
 	private final ZipOutputStream zstream;
 	
-	public ZipContainerSaver(Path path) throws IOException {
-		this.path = path;
+	public WriteableZipContainer(Path path) throws IOException {
+		super(path);
 		this.zstream = new ZipOutputStream(Files.newOutputStream(path));
 	}
 
-	public ZipContainerSaver(OutputStream stream) {
-		this.path = null;
+	public WriteableZipContainer(OutputStream stream) {
+		super(null);
 		this.zstream = new ZipOutputStream(stream);
 	}
 
 	@Override
-	public void save(String pathname, byte[] content) throws IOException {
+	public void writeItem(String pathname, byte[] content) throws IOException {
 		ZipEntry entry = new ZipEntry(pathname);
 		entry.setCrc(computeCRC(content));
 		entry.setSize(content.length);
@@ -36,13 +36,11 @@ public class ZipContainerSaver implements ContainerSaver {
 	}
 
 	@Override
-	public void save(String pathname, ThrowingConsumer<OutputStream> consumer) throws Exception {
+	public OutputStream openItemToWrite(String pathname) throws IOException {
 		ZipEntry entry = new ZipEntry(pathname);
 		entry.setMethod(ZipEntry.DEFLATED);
 		this.zstream.putNextEntry(entry);
-		consumer.accept(this.zstream);
-		this.zstream.closeEntry();
-		this.zstream.flush();
+		return new EntryOutputStream(this.zstream);
 	}
 
 	@Override
@@ -54,5 +52,19 @@ public class ZipContainerSaver implements ContainerSaver {
 		CRC32 crc = new CRC32();
 		crc.update(content);
 		return crc.getValue();
+	}
+	
+	private static class EntryOutputStream extends FilterOutputStream {
+
+		public EntryOutputStream(OutputStream out) {
+			super(out);
+		}
+
+		@Override
+		public void close() throws IOException {
+			ZipOutputStream stream = (ZipOutputStream)out;
+			stream.closeEntry();
+			stream.flush();
+		}
 	}
 }

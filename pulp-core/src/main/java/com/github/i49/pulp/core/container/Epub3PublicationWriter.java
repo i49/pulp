@@ -2,8 +2,10 @@ package com.github.i49.pulp.core.container;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.transform.TransformerException;
 
 import org.w3c.dom.Document;
 
@@ -21,15 +23,15 @@ import com.github.i49.pulp.core.XmlServices;
  */
 class Epub3PublicationWriter implements PublicationWriter {
 
-	private final ContainerSaver saver;
+	private final WriteableContainer container;
 	private final DocumentBuilder documentBuilder;
 	private final DocumentSerializer documentSerializer;
 	
 	private static final String MIMETYPE = "application/epub+zip";
 	private static final int BUFFER_SIZE = 128 * 1024;
 	
-	public Epub3PublicationWriter(ContainerSaver saver) {
-		this.saver = saver;
+	public Epub3PublicationWriter(WriteableContainer saver) {
+		this.container = saver;
 		this.documentBuilder = XmlServices.newBuilder();
 		this.documentSerializer = XmlServices.newSerializer();
 	}
@@ -46,7 +48,7 @@ class Epub3PublicationWriter implements PublicationWriter {
 	@Override
 	public void close() {
 		try {
-			this.saver.close();
+			this.container.close();
 		} catch (IOException e) {
 			// TODO:
 			throw new EpubException(e.getMessage(), e);
@@ -72,13 +74,13 @@ class Epub3PublicationWriter implements PublicationWriter {
 	
 	private void writeMimeType() throws Exception {
 		byte[] content = MIMETYPE.getBytes();
-		saver.save("mimetype", content);
+		container.writeItem(AbstractContainer.MIMETYPE_LOCATION, content);
 	}
 	
 	private void writeContainerDocument(Publication publication) {
-		ContainerDocumentBuilder builder = new ContainerDocumentBuilder(documentBuilder); 
-		Document document = builder.publication(publication).build();
-		writeXmlDocument("META-INF/container.xml", document);
+		ContainerDocument.Builder builder = ContainerDocument.builder(documentBuilder); 
+		ContainerDocument document = builder.build(publication);
+		writeXmlDocument(AbstractContainer.CONTAINER_DOCUMENT_LOCATION, document.getDocument());
 	}
 
 	private void writePackageDocument(Rendition rendition) {
@@ -93,28 +95,27 @@ class Epub3PublicationWriter implements PublicationWriter {
 		}
 	}
 	
-	private void writeResource(Manifest.Item item) throws Exception {
+	private void writeResource(Manifest.Item item) throws IOException {
 		PublicationResource resource = item.getResource();
-		String entryName = resource.getLocation().getPath();
+		String location = resource.getLocation().getPath();
 		byte[] buffer = new byte[BUFFER_SIZE];
-		try (InputStream in = resource.openContent()) {
-			saver.save(entryName, out->{
-				int len = 0;
-				while ((len = in.read(buffer)) != -1) {
-					out.write(buffer, 0, len);
-				}
-			});
+		try (InputStream in = resource.openContent(); OutputStream out = container.openItemToWrite(location)) {
+			int len = 0;
+			while ((len = in.read(buffer)) != -1) {
+				out.write(buffer, 0, len);
+			}
 		}
 	}
 	
 	private void writeXmlDocument(String location, Document document) {
-		try {
-			saver.save(location, stream->{
-				documentSerializer.serialize(stream, document);
-			});
-		} catch (Exception e) {
-			// TODO:
-			throw new EpubException("", e);
+		try (OutputStream out = container.openItemToWrite(location)) {
+			documentSerializer.serialize(out, document);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

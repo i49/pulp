@@ -1,6 +1,7 @@
 package com.github.i49.pulp.core.container;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -8,50 +9,37 @@ import java.nio.file.Path;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-public class ZipContainerLoader implements ContainerLoader {
+public class ReadableZipContainer extends ReadableContainer {
 	
 	private static final int BUFFER_SIZE = 128 * 1024;
 	
-	private final Path path;
 	private final ZipFile zip;
 	
-	public ZipContainerLoader(Path path) throws IOException {
-		this.path = path;
+	public ReadableZipContainer(Path path) throws IOException {
+		super(path);
 		this.zip = new ZipFile(path.toFile(), StandardCharsets.UTF_8);
 	}
 
 	@Override
-	public byte[] load(String location) {
-		ZipEntry entry = findEntry(location);
-		if (entry == null) {
-			return null;
-		}
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		try (InputStream in = this.zip.getInputStream(entry)) {
+	public byte[] readItem(String location) throws IOException {
+		try (InputStream in = openItemToRead(location)) {
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			byte[] buffer = new byte[BUFFER_SIZE];
 			int len = 0;
 			while ((len = in.read(buffer)) != -1) {
 				out.write(buffer, 0, len);
 			}
 			return out.toByteArray();
-		} catch (IOException e) {
-			// TODO:
-			return null;
 		}
 	}
 
 	@Override
-	public void load(String location, ThrowingConsumer<InputStream> consumer) {
+	public InputStream openItemToRead(String location) throws IOException {
 		ZipEntry entry = findEntry(location);
 		if (entry == null) {
-			return;
+			throw new FileNotFoundException(location);
 		}
-		try (InputStream in = this.zip.getInputStream(entry)) {
-			consumer.accept(in);
-		} catch (Exception e) {
-			// TODO
-			e.printStackTrace();
-		}
+		return this.zip.getInputStream(entry);
 	}
 	
 	@Override

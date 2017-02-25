@@ -21,7 +21,7 @@ public class PublicationReaderFactoryImpl implements PublicationReaderFactory {
 			throw new NullPointerException(Messages.PARAMETER_IS_NULL("path"));
 		}
 		try {
-			return new EpubPublicationReader(new ZipContainerLoader(path));
+			return new EpubPublicationReader(new ReadableZipContainer(path));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			return null;
