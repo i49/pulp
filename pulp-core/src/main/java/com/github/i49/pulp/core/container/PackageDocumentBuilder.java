@@ -1,7 +1,5 @@
 package com.github.i49.pulp.core.container;
 
-import static com.github.i49.pulp.core.container.PackageDocument.*;
-
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -29,7 +27,7 @@ import com.github.i49.pulp.api.Spine;
  * A builder class to build a document carrying bibliographical and structural metadata 
  * about a given publication.
  */
-class PackageDocumentBuilder {
+class PackageDocumentBuilder implements PackageDocumentProcessor {
 
 	private static final String VERSION = "3.0";
 	private static final String UNIQUE_IDENTIFIER = "pub-id";
@@ -69,7 +67,7 @@ class PackageDocumentBuilder {
 	public Document build() {
 		document = this.documentBuilder.newDocument();
 
-		Element root = document.createElementNS(DEFAULT_NAMESPACE_URI, "package");
+		Element root = document.createElementNS(NAMESPACE_URI, "package");
 		root.setAttribute("version", VERSION);
 		root.setAttribute("unique-identifier", UNIQUE_IDENTIFIER);
 	
@@ -94,7 +92,7 @@ class PackageDocumentBuilder {
 	private Element metadata() {
 		Metadata meta = rendition.getMetadata();
 
-		Element e = document.createElementNS(DEFAULT_NAMESPACE_URI, "metadata");
+		Element e = document.createElementNS(NAMESPACE_URI, "metadata");
 		e.setAttribute("xmlns:dc", DC_NAMESPACE_URI);
 
 		addIdentifier(e, meta);
@@ -191,7 +189,7 @@ class PackageDocumentBuilder {
 	 * @return created manifest element.
 	 */
 	private Element manifest() {
-		Element manifest = document.createElementNS(DEFAULT_NAMESPACE_URI, "manifest");
+		Element manifest = document.createElementNS(NAMESPACE_URI, "manifest");
 		for (Manifest.Item item: sortItems(rendition.getManifest())) {
 			manifest.appendChild(item(item));
 		}
@@ -218,7 +216,7 @@ class PackageDocumentBuilder {
 		
 		URI href = this.packageBase.relativize(item.getLocation()); 
 		
-		Element element = document.createElementNS(DEFAULT_NAMESPACE_URI, "item");
+		Element element = document.createElementNS(NAMESPACE_URI, "item");
 		element.setAttribute("id", id);
 		element.setAttribute("href", href.toString());
 		element.setAttribute("media-type", item.getResource().getMediaType().toString());
@@ -247,7 +245,7 @@ class PackageDocumentBuilder {
 	 * @return created spine element.
 	 */
 	private Element spine() {
-		Element spine = document.createElementNS(DEFAULT_NAMESPACE_URI, "spine");
+		Element spine = document.createElementNS(NAMESPACE_URI, "spine");
 		for (Spine.Page page: rendition.getSpine()) {
 			spine.appendChild(itemref(page));
 		}
@@ -260,7 +258,7 @@ class PackageDocumentBuilder {
 	 * @return created itemref element.
 	 */
 	private Element itemref(Spine.Page page) {
-		Element itemref = document.createElementNS(DEFAULT_NAMESPACE_URI, "itemref");
+		Element itemref = document.createElementNS(NAMESPACE_URI, "itemref");
 		String idref = this.itemIds.get(page.getItem());
 		itemref.setAttribute("idref", idref);
 		if (!page.isLinear()) {

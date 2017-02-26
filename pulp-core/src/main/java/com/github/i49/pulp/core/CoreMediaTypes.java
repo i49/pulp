@@ -8,7 +8,7 @@ final class CoreMediaTypes {
 
 	private static final EnumSet<CoreMediaType> xmlSet = EnumSet.of(
 			CoreMediaType.APPLICAIION_PLS_XML,
-			CoreMediaType.APPLICATION_NCX_XML,
+			CoreMediaType.APPLICATION_DTBNCX_XML,
 			CoreMediaType.APPLICATION_SMIL_XML,
 			CoreMediaType.APPLICATION_XHTML_XML,
 			CoreMediaType.IMAGE_SVG_XML);
@@ -33,7 +33,7 @@ final class CoreMediaTypes {
 			mediaType = CoreMediaType.APPLICATION_XHTML_XML;
 			break;
 		case "ncx":
-			mediaType = CoreMediaType.APPLICATION_NCX_XML;
+			mediaType = CoreMediaType.APPLICATION_DTBNCX_XML;
 			break;
 		case "otf":
 		case "ttf":

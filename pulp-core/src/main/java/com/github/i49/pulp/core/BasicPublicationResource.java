@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
-import com.github.i49.pulp.api.CoreMediaType;
 import com.github.i49.pulp.api.EpubException;
+import com.github.i49.pulp.api.MediaType;
 import com.github.i49.pulp.api.PublicationResource;
 
 /**
@@ -14,10 +14,10 @@ import com.github.i49.pulp.api.PublicationResource;
 class BasicPublicationResource implements PublicationResource {
 
 	private final URI location;
-	private final CoreMediaType mediaType;
+	private final MediaType mediaType;
 	private final Content content;
 	
-	public BasicPublicationResource(URI location, CoreMediaType mediaType, Content content) {
+	public BasicPublicationResource(URI location, MediaType mediaType, Content content) {
 		if (location == null || mediaType == null) {
 			throw new NullPointerException();
 		}
@@ -32,7 +32,7 @@ class BasicPublicationResource implements PublicationResource {
 	}
 	
 	@Override
-	public CoreMediaType getMediaType() {
+	public MediaType getMediaType() {
 		return mediaType;
 	}
 	

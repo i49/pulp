@@ -27,7 +27,6 @@ class EpubPublicationWriter3 implements PublicationWriter {
 	private final DocumentBuilder documentBuilder;
 	private final DocumentSerializer documentSerializer;
 	
-	private static final String MIMETYPE = "application/epub+zip";
 	private static final int BUFFER_SIZE = 128 * 1024;
 	
 	public EpubPublicationWriter3(WriteableContainer saver) {
@@ -73,13 +72,14 @@ class EpubPublicationWriter3 implements PublicationWriter {
 	}
 	
 	private void writeMimeType() throws Exception {
-		byte[] content = MIMETYPE.getBytes();
+		byte[] content = StandardMediaType.APPLICATION_EPUB_ZIP.toString().getBytes();
 		container.writeItem(AbstractContainer.MIMETYPE_LOCATION, content);
 	}
 	
 	private void writeContainerDocument(Publication publication) {
-		ContainerDocument document = ContainerDocument.create(documentBuilder, publication);
-		writeXmlDocument(AbstractContainer.CONTAINER_DOCUMENT_LOCATION, document.getDocument());
+		ContainerDocumentBuilder builder = new ContainerDocumentBuilder(documentBuilder);
+		Document document = builder.build(publication);
+		writeXmlDocument(AbstractContainer.CONTAINER_DOCUMENT_LOCATION, document);
 	}
 
 	private void writePackageDocument(Rendition rendition) {

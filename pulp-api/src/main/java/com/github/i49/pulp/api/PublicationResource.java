@@ -22,7 +22,7 @@ public interface PublicationResource {
 	 * Returns the media type of this resource.
 	 * @return the media type of this resource.
 	 */
-	CoreMediaType getMediaType();
+	MediaType getMediaType();
 	
 	/**
 	 * Opens a new {@link InputStream} providing the content of this resource. 

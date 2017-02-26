@@ -3,7 +3,7 @@ package com.github.i49.pulp.api;
 /**
  * The media type that specifies type and format of {@link PublicationResource}.
  */
-public enum CoreMediaType {
+public enum CoreMediaType implements MediaType {
 
 	IMAGE_GIF("image", "gif"),
 	IMAGE_JPEG("image", "jpeg"),
@@ -11,9 +11,9 @@ public enum CoreMediaType {
 	IMAGE_SVG_XML("image", "svg+xml"),
 
 	APPLICATION_XHTML_XML("application", "xhtml+xml"),
-	APPLICATION_NCX_XML("application", "x-dtbncx+xml"),
+	APPLICATION_DTBNCX_XML("application", "x-dtbncx+xml"),
 	APPLICATION_OPENTYPE("application", "vnd.ms-opentype"),
-	APPLICATION_WOFF_FONT("application", "font-woff"),
+	APPLICATION_FONT_WOFF("application", "font-woff"),
 	APPLICATION_SMIL_XML("application", "smil+xml"),
 	APPLICAIION_PLS_XML("application", "pls+xml"),
 	
@@ -38,16 +38,15 @@ public enum CoreMediaType {
 	}
 	
 	/**
-	 * Returns the type part of this media type.
-	 * @return the type part of this media type. 
+	 * {@inheritDoc}
 	 */
+	@Override
 	public String getType() {
 		return type;
 	}
 	
 	/**
-	 * Returns the subtype part of this media type.
-	 * @return the subtype part of this media type. 
+	 * {@inheritDoc}
 	 */
 	public String getSubtype() {
 		return subtype;

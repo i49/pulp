@@ -11,7 +11,7 @@ import com.github.i49.pulp.api.Rendition;
 /**
  * A builder class for building {@code ContainerDocument}.
  */
-public class ContainerDocumentBuilder {
+public class ContainerDocumentBuilder implements ContainerDocumentProcessor {
 
 	private static final String VERSION = "1.0";
 	
@@ -23,11 +23,11 @@ public class ContainerDocumentBuilder {
 		this.documentBuilder = documentBuilder;
 	}
 
-	public ContainerDocument build(Publication publication) {
+	public Document build(Publication publication) {
 		this.publication = publication;
 		this.document = this.documentBuilder.newDocument();
 		this.document.appendChild(container());
-		return ContainerDocument.create(this.document);
+		return this.document;
 	}
 	
 	/**
@@ -35,7 +35,7 @@ public class ContainerDocumentBuilder {
 	 * @return created element.
 	 */
 	private Element container() {
-		Element container = document.createElementNS(ContainerDocument.DEFAULT_NAMESPACE_URI, "container");
+		Element container = document.createElementNS(NAMESPACE_URI, "container");
 		container.setAttribute("version", VERSION);
 		container.appendChild(rootfiles());
 		return container;
@@ -46,7 +46,7 @@ public class ContainerDocumentBuilder {
 	 * @return created element.
 	 */
 	private Element rootfiles() {
-		Element rootfiles = document.createElementNS(ContainerDocument.DEFAULT_NAMESPACE_URI, "rootfiles");
+		Element rootfiles = document.createElementNS(NAMESPACE_URI, "rootfiles");
 		for (Rendition rendition: this.publication) {
 			rootfiles.appendChild(rootfile(rendition));
 		}
@@ -58,9 +58,9 @@ public class ContainerDocumentBuilder {
 	 * @return created element.
 	 */
 	private Element rootfile(Rendition rendition) {
-		Element rootfile = document.createElementNS(ContainerDocument.DEFAULT_NAMESPACE_URI, "rootfile");
+		Element rootfile = document.createElementNS(NAMESPACE_URI, "rootfile");
 		rootfile.setAttribute("full-path", rendition.getLocation().getPath());
-		rootfile.setAttribute("media-type", PackageDocument.MEDIA_TYPE);
+		rootfile.setAttribute("media-type", StandardMediaType.APPLICATION_OEBPS_PACKAGE_XML.toString());
 		return rootfile;
 	}
 }
