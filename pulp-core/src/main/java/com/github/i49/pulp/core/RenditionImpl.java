@@ -27,22 +27,19 @@ public class RenditionImpl implements Rendition {
 
 	/* publication owing this rendition */
 	private final Publication publication;
-	private final PublicationResourceRegistry rootRegistry;
 	
 	private final URI location;
-	private final PublicationResourceRegistry localRegistry;
+	private final PublicationResourceRegistry registry;
 	
 	private final MetadataImpl metadata = new MetadataImpl();
 
 	private final ManifestImpl manifest = new ManifestImpl();
 	private final SpineImpl spine = new SpineImpl();
 	
-	public RenditionImpl(Publication publication, URI location) {
+	public RenditionImpl(Publication publication, URI location, PublicationResourceRegistry registry) {
 		this.publication = publication;
-		this.rootRegistry = publication.getResourceRegistry();
-		
 		this.location = location;
-		this.localRegistry = rootRegistry.getChildRegistry(location.getPath());
+		this.registry = registry;
 	}
 	
 	@Override
@@ -62,7 +59,7 @@ public class RenditionImpl implements Rendition {
 
 	@Override
 	public PublicationResourceRegistry getResourceRegistry() {
-		return localRegistry;
+		return registry;
 	}
 	
 	@Override
@@ -104,10 +101,10 @@ public class RenditionImpl implements Rendition {
 		@Override
 		public Item get(String location) {
 			if (location == null) {
-				throw new NullPointerException(Messages.PARAMETER_IS_NULL("location"));
+				throw new NullPointerException(Messages.NULL_PARAMETER("location"));
 			}
 			Item item = null;
-			PublicationResource resource = localRegistry.get(location);
+			PublicationResource resource = registry.get(location);
 			if (resource != null) {
 				item = items.get(resource);
 			}
@@ -121,10 +118,10 @@ public class RenditionImpl implements Rendition {
 		@Override
 		public Optional<Item> find(String location) {
 			if (location == null) {
-				throw new NullPointerException(Messages.PARAMETER_IS_NULL("location"));
+				throw new NullPointerException(Messages.NULL_PARAMETER("location"));
 			}
 			Item item = null;
-			PublicationResource resource = localRegistry.get(location);
+			PublicationResource resource = registry.get(location);
 			if (resource != null) {
 				item = items.get(resource);
 			}
@@ -155,15 +152,15 @@ public class RenditionImpl implements Rendition {
 		@Override
 		public void remove(Item item) {
 			if (item == null) {
-				throw new NullPointerException(Messages.PARAMETER_IS_NULL("item"));
+				throw new NullPointerException(Messages.NULL_PARAMETER("item"));
 			}
 			items.remove(item.getResource());
 		}
 		
 		private void validateResource(PublicationResource resource) {
 			if (resource == null) {
-				throw new NullPointerException(Messages.PARAMETER_IS_NULL("resource"));
-			} else if (!rootRegistry.contains(resource)) {
+				throw new NullPointerException(Messages.NULL_PARAMETER("resource"));
+			} else if (!registry.contains(resource)) {
 				throw new EpubException(Messages.MISSING_PUBLICATION_RESOURCE(resource.getLocation()));
 			}
 		}
@@ -263,7 +260,7 @@ public class RenditionImpl implements Rendition {
 		
 		private void validateItem(Item item) {
 			if (item == null) {
-				throw new NullPointerException(Messages.PARAMETER_IS_NULL("item"));
+				throw new NullPointerException(Messages.NULL_PARAMETER("item"));
 			} else if (!manifest.contains(item)) {
 				throw new IllegalArgumentException(Messages.MISSING_MANIFEST_ITEM(item.getLocation()));
 			} else if (itemPageMap.containsKey(item)) {

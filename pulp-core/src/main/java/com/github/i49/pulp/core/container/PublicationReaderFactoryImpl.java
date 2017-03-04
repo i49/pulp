@@ -18,7 +18,7 @@ public class PublicationReaderFactoryImpl implements PublicationReaderFactory {
 	@Override
 	public PublicationReader createReader(Path path) {
 		if (path == null) {
-			throw new NullPointerException(Messages.PARAMETER_IS_NULL("path"));
+			throw new NullPointerException(Messages.NULL_PARAMETER("path"));
 		}
 		try {
 			return new EpubPublicationReader(new ReadableZipContainer(path));

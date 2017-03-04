@@ -4,11 +4,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Publication;
+import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationResourceRegistry;
 import com.github.i49.pulp.api.Rendition;
 
@@ -21,10 +24,12 @@ public class PublicationImpl implements Publication {
 
 	// a list of renditions.
 	private final List<Rendition> renditions = new ArrayList<>();
-	private final RootPublicationResourceRegistry resourceRegistry;
+	private final Map<URI, PublicationResource> resourceMap;
+	private final PublicationResourceRegistry resourceRegistry;
 	
 	public PublicationImpl() {
-		this.resourceRegistry = new RootPublicationResourceRegistry();
+		this.resourceMap = new HashMap<>();
+		this.resourceRegistry = createResourceRegistry(URI.create(""));
 	}
 
 	@Override
@@ -69,8 +74,13 @@ public class PublicationImpl implements Publication {
 	}
 	
 	private Rendition addRendition(URI location) {
-		Rendition rendition = new RenditionImpl(this, location);
+		PublicationResourceRegistry localRegistry = createResourceRegistry(location);
+		Rendition rendition = new RenditionImpl(this, location, localRegistry);
 		this.renditions.add(rendition);
 		return rendition;
+	}
+	
+	private PublicationResourceRegistry createResourceRegistry(URI baseURI) {
+		return new PublicationResourceRegistryImpl(this.resourceMap, baseURI);
 	}
 }

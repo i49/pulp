@@ -56,13 +56,4 @@ public interface PublicationResourceRegistry {
 	 * @exception IllegalArgumentException if resource to build already exists in this registry.
 	 */
 	PublicationResourceBuilder builder(String location);
-	
-	/**
-	 * Creates a child registry that resolves relative URIs against the specified base location.
-	 * @param base the base location that is used to resolve relative URIs. 
-	 * @return created child registry, never be {@code null}.
-	 * @exception NullPointerException if specified {@code base} is {@code null}.
-	 * @exception IllegalArgumentException if specified {@code base} is an invalid URI.
-	 */
-	PublicationResourceRegistry getChildRegistry(String base);
 }

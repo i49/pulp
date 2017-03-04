@@ -20,7 +20,7 @@ public class PublicationWriterFactoryImpl implements PublicationWriterFactory {
 	@Override
 	public PublicationWriter createWriter(Path path) {
 		if (path == null) {
-			throw new NullPointerException(Messages.PARAMETER_IS_NULL("path"));
+			throw new NullPointerException(Messages.NULL_PARAMETER("path"));
 		}
 		try {
 			return new EpubPublicationWriter3(new WriteableZipContainer(path));
@@ -33,7 +33,7 @@ public class PublicationWriterFactoryImpl implements PublicationWriterFactory {
 	@Override
 	public PublicationWriter createWriter(OutputStream stream) {
 		if (stream == null) {
-			throw new NullPointerException(Messages.PARAMETER_IS_NULL("stream"));
+			throw new NullPointerException(Messages.NULL_PARAMETER("stream"));
 		}
 		return new EpubPublicationWriter3(new WriteableZipContainer(stream));
 	}
