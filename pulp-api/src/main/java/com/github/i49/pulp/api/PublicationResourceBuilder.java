@@ -1,9 +1,7 @@
 package com.github.i49.pulp.api;
 
-import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Path;
-import java.util.function.Supplier;
 
 /**
  * The builder type to build a {@link PublicationResource}.
@@ -41,14 +39,24 @@ public interface PublicationResourceBuilder {
 	PublicationResourceBuilder source(byte[] bytes);
 	
 	/**
-	 * Specifies the supplier of the content for the resource.
-	 * @param supplier the supplier of {@link InputStream} that will produce the content.
+	 * Specifies the content source for the resource.
+	 * @param source the source of the content.
 	 * @return this builder.
 	 */
-	PublicationResourceBuilder source(Supplier<InputStream> supplier);
+	PublicationResourceBuilder source(ContentSource source);
 	
-	PublicationResourceBuilder sourceDir(Path base);
+	/**
+	 * Specifies the directory containing the content of the resource.
+	 * @param dir the path of the directory.
+	 * @return this builder.
+	 */
+	PublicationResourceBuilder sourceDir(Path dir);
 	
+	/**
+	 * Specifies the directory containing the content of the resource.
+	 * @param base the URI of the directory.
+	 * @return this builder.
+	 */
 	PublicationResourceBuilder sourceDir(URI base);
 	
 	/**

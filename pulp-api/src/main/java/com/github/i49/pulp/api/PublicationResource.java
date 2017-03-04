@@ -24,8 +24,12 @@ public interface PublicationResource {
 	 */
 	MediaType getMediaType();
 	
+	ContentSource getContentSource();
+	
+	void setContentSource(ContentSource source);
+	
 	/**
-	 * Opens a new {@link InputStream} providing the content of this resource. 
+	 * Opens a new {@link InputStream} that provides the content of this resource. 
 	 * @return a new input stream, which should be closed by the caller of this method.
 	 * @throws IOException if I/O error occurs.
 	 */

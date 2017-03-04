@@ -13,8 +13,8 @@ class BasicXhtmlDocument extends BasicXmlDocument implements XhtmlDocument {
 
 	public static final String NAMESPACE_URI = "http://www.w3.org/1999/xhtml";
 	
-	public BasicXhtmlDocument(URI location, XmlContent content) {
-		super(location, CoreMediaType.APPLICATION_XHTML_XML, content);
+	public BasicXhtmlDocument(URI location) {
+		super(location, CoreMediaType.APPLICATION_XHTML_XML);
 	}
 
 	@Override

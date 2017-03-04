@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
-import com.github.i49.pulp.api.EpubException;
+import com.github.i49.pulp.api.ContentSource;
 import com.github.i49.pulp.api.MediaType;
 import com.github.i49.pulp.api.PublicationResource;
 
@@ -15,15 +15,14 @@ class BasicPublicationResource implements PublicationResource {
 
 	private final URI location;
 	private final MediaType mediaType;
-	private final Content content;
+	private ContentSource source;
 	
-	public BasicPublicationResource(URI location, MediaType mediaType, Content content) {
+	public BasicPublicationResource(URI location, MediaType mediaType) {
 		if (location == null || mediaType == null) {
 			throw new NullPointerException();
 		}
 		this.location = location;
 		this.mediaType = mediaType;
-		this.content = content;
 	}
 
 	@Override
@@ -37,21 +36,25 @@ class BasicPublicationResource implements PublicationResource {
 	}
 	
 	@Override
+	public ContentSource getContentSource() {
+		return source;
+	}
+	
+	@Override
+	public void setContentSource(ContentSource source) {
+		this.source = source;
+	}
+	
+	@Override
 	public InputStream openContent() throws IOException {
-		try {
-			return getContent().openStream();
-		} catch (Exception e) {
-			// TODO:
-			throw new EpubException("", e);
+		if (this.source == null) {
+			throw new IllegalStateException();
 		}
+		return this.source.openSource(getLocation());
 	}
 
 	@Override
 	public String toString() {
 		return getLocation().toString();
-	}
-	
-	protected Content getContent() {
-		return content;
 	}
 }

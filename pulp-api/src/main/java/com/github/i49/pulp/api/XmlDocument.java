@@ -8,8 +8,14 @@ import org.w3c.dom.Document;
 public interface XmlDocument extends PublicationResource {
 
 	/**
-	 * Returns an XML document as the content of this resource.
+	 * Returns the content of this resource as an XML document.
 	 * @return an XML document.
 	 */
 	Document getDocument();
+	
+	/**
+	 * Assigns an XML document to this resource.
+	 * @param document the XML document to assign to this resource.
+	 */
+	void setDocument(Document document);
 }
