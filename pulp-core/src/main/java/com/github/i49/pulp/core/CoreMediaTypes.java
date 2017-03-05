@@ -79,7 +79,7 @@ final class CoreMediaTypes {
 			mediaType = CoreMediaType.TEXT_CSS;
 			break;
 		case "js":
-			mediaType = CoreMediaType.TEXT_JAVASCRIPT;
+			mediaType = CoreMediaType.APPLICATION_JAVASCRIPT;
 			break;
 		}
 		return mediaType;

@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.PublicationWriter;
 import com.github.i49.pulp.api.PublicationWriterFactory;
-import com.github.i49.pulp.core.Messages;
+import com.github.i49.pulp.core.NullArgumentException;
 
 /**
  * An implementation of {@link PublicationWriterFactory}.
@@ -20,20 +20,21 @@ public class PublicationWriterFactoryImpl implements PublicationWriterFactory {
 	@Override
 	public PublicationWriter createWriter(Path path) {
 		if (path == null) {
-			throw new NullPointerException(Messages.NULL_PARAMETER("path"));
+			throw new NullArgumentException("path");
 		}
+		WriteableContainer container = null;
 		try {
-			return new EpubPublicationWriter3(new WriteableZipContainer(path));
+			container = new WriteableZipContainer(path);
 		} catch (IOException e) {
-			// TODO 
-			throw new EpubException(e.getMessage(), e);
+			throw new EpubException(Messages.CONTAINER_NOT_WRITEABLE(path), e);
 		}
+		return new EpubPublicationWriter3(container);
 	}
 
 	@Override
 	public PublicationWriter createWriter(OutputStream stream) {
 		if (stream == null) {
-			throw new NullPointerException(Messages.NULL_PARAMETER("stream"));
+			throw new NullArgumentException("stream");
 		}
 		return new EpubPublicationWriter3(new WriteableZipContainer(stream));
 	}

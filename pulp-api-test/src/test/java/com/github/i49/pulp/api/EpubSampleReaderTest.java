@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import com.github.i49.pulp.api.Spine.Page;
 
-public class SampleReaderTest {
+public class EpubSampleReaderTest {
 
 	private static Path basePath;
 	
@@ -56,6 +56,24 @@ public class SampleReaderTest {
 		Spine s = r.getSpine();
 		assertThat(s.getNumberOfPages(), is(8));
 		assertLinearExcept(s, 0);
+	}
+	
+	@Test
+	public void read_childrens_literature() {
+		Publication p = read("childrens-literature.epub");
+		
+		testCommon(p);
+		
+		assertThat(p.getNumberOfRenditions(), is(1));
+
+		Rendition r = p.getDefaultRendition();
+
+		Manifest m = r.getManifest();
+		assertThat(m.getNumberOfItems(), is(7));
+
+		Spine s = r.getSpine();
+		assertThat(s.getNumberOfPages(), is(3));
+		assertLinearExcept(s);
 	}
 	
 	protected Publication read(String filename) {

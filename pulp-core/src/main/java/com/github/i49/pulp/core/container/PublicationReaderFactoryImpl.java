@@ -4,10 +4,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.function.Supplier;
 
+import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationReader;
 import com.github.i49.pulp.api.PublicationReaderFactory;
-import com.github.i49.pulp.core.Messages;
+import com.github.i49.pulp.core.NullArgumentException;
 
 /**
  * An implementation of {@link PublicationReaderFactory}.
@@ -27,13 +28,14 @@ public class PublicationReaderFactoryImpl implements PublicationReaderFactory {
 	@Override
 	public PublicationReader createReader(Path path) {
 		if (path == null) {
-			throw new NullPointerException(Messages.NULL_PARAMETER("path"));
+			throw new NullArgumentException("path");
 		}
+		ReadableContainer container = null;
 		try {
-			return new EpubPublicationReader(new ReadableZipContainer(path), this.supplier);
+			container = new ReadableZipContainer(path);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			return null;
+			throw new EpubException(Messages.CONTAINER_NOT_READABLE(path), e);
 		}
+		return new EpubPublicationReader(container, this.supplier);
 	}
 }

@@ -4,13 +4,13 @@ import java.net.URI;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
-public class Messages {
+final class Messages {
 
 	private static final String BUNDLE_BASE_NAME = Messages.class.getPackage().getName() + ".messages";
 	private static final ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_BASE_NAME);
 	
-	public static String NULL_PARAMETER(String parameterName) {
-		return localize("null.parameter", parameterName);
+	public static String NULL_ARGUMENT(String parameterName) {
+		return localize("null.argument", parameterName);
 	}
 	
 	public static String MISSING_PUBLICATION_RESOURCE(URI location) {

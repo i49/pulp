@@ -31,7 +31,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder ofType(MediaType mediaType) {
 		if (mediaType == null) {
-			throw new NullPointerException(Messages.NULL_PARAMETER("mediaType"));
+			throw new NullArgumentException("mediaType");
 		}
 		this.mediaType = mediaType;
 		return this;
@@ -40,7 +40,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder ofType(String value) {
 		if (value == null) {
-			throw new NullPointerException(Messages.NULL_PARAMETER("value"));
+			throw new NullArgumentException("value");
 		}
 		this.mediaType = typeRegistry.getMediaType(value);
 		return this;
@@ -49,7 +49,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder source(Path path) {
 		if (path == null) {
-			throw new NullPointerException(Messages.NULL_PARAMETER("path"));
+			throw new NullArgumentException("path");
 		}
 		return source(path.toUri());
 	}
@@ -57,7 +57,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder source(URI uri) {
 		if (uri == null) {
-			throw new NullPointerException(Messages.NULL_PARAMETER("uri"));
+			throw new NullArgumentException("uri");
 		}
 		return source((location)->uri.toURL().openStream());
 	}
@@ -65,7 +65,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder source(byte[] bytes) {
 		if (bytes == null) {
-			throw new NullPointerException(Messages.NULL_PARAMETER("bytes"));
+			throw new NullArgumentException("bytes");
 		}
 		return source((location)->new ByteArrayInputStream(bytes));
 	}
@@ -73,7 +73,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder source(ContentSource source) {
 		if (source == null) {
-			throw new NullPointerException(Messages.NULL_PARAMETER("source"));
+			throw new NullArgumentException("source");
 		}
 		this.source = source;
 		return this;
@@ -82,7 +82,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder sourceDir(Path dir) {
 		if (dir == null) {
-			throw new NullPointerException(Messages.NULL_PARAMETER("dir"));
+			throw new NullArgumentException("dir");
 		}
 		return sourceDir(dir.toUri());
 	}
@@ -90,7 +90,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder sourceDir(URI dir) {
 		if (dir == null) {
-			throw new NullPointerException(Messages.NULL_PARAMETER("dir"));
+			throw new NullArgumentException("dir");
 		}
 		return source(dir.resolve(localPath));
 	}

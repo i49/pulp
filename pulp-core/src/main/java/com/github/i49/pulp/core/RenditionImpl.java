@@ -101,7 +101,7 @@ public class RenditionImpl implements Rendition {
 		@Override
 		public Item get(String location) {
 			if (location == null) {
-				throw new NullPointerException(Messages.NULL_PARAMETER("location"));
+				throw new NullArgumentException("location");
 			}
 			Item item = null;
 			PublicationResource resource = registry.get(location);
@@ -118,7 +118,7 @@ public class RenditionImpl implements Rendition {
 		@Override
 		public Optional<Item> find(String location) {
 			if (location == null) {
-				throw new NullPointerException(Messages.NULL_PARAMETER("location"));
+				throw new NullArgumentException("location");
 			}
 			Item item = null;
 			PublicationResource resource = registry.get(location);
@@ -152,14 +152,14 @@ public class RenditionImpl implements Rendition {
 		@Override
 		public void remove(Item item) {
 			if (item == null) {
-				throw new NullPointerException(Messages.NULL_PARAMETER("item"));
+				throw new NullArgumentException("item");
 			}
 			items.remove(item.getResource());
 		}
 		
 		private void validateResource(PublicationResource resource) {
 			if (resource == null) {
-				throw new NullPointerException(Messages.NULL_PARAMETER("resource"));
+				throw new NullArgumentException("resource");
 			} else if (!registry.contains(resource)) {
 				throw new EpubException(Messages.MISSING_PUBLICATION_RESOURCE(resource.getLocation()));
 			}
@@ -260,7 +260,7 @@ public class RenditionImpl implements Rendition {
 		
 		private void validateItem(Item item) {
 			if (item == null) {
-				throw new NullPointerException(Messages.NULL_PARAMETER("item"));
+				throw new NullArgumentException("item");
 			} else if (!manifest.contains(item)) {
 				throw new IllegalArgumentException(Messages.MISSING_MANIFEST_ITEM(item.getLocation()));
 			} else if (itemPageMap.containsKey(item)) {

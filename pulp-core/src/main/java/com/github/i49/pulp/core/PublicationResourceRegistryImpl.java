@@ -27,7 +27,7 @@ class PublicationResourceRegistryImpl implements PublicationResourceRegistry {
 	@Override
 	public boolean contains(String location) {
 		if (location == null) {
-			throw new NullPointerException(Messages.NULL_PARAMETER("location"));
+			throw new NullArgumentException("location");
 		}
 		return resourceMap.containsKey(resolve(location));
 	}
@@ -35,7 +35,7 @@ class PublicationResourceRegistryImpl implements PublicationResourceRegistry {
 	@Override
 	public boolean contains(PublicationResource resource) {
 		if (resource == null) {
-			throw new NullPointerException(Messages.NULL_PARAMETER("resource"));
+			throw new NullArgumentException("resource");
 		}
 		return resourceMap.containsValue(resource);
 	}
@@ -43,7 +43,7 @@ class PublicationResourceRegistryImpl implements PublicationResourceRegistry {
 	@Override
 	public PublicationResource get(String location) {
 		if (location == null) {
-			throw new NullPointerException(Messages.NULL_PARAMETER("location"));
+			throw new NullArgumentException("location");
 		}
 		URI uri = resolve(location);
 		PublicationResource resource = resourceMap.get(uri);
@@ -56,7 +56,7 @@ class PublicationResourceRegistryImpl implements PublicationResourceRegistry {
 	@Override
 	public Optional<PublicationResource> find(String location) {
 		if (location == null) {
-			throw new NullPointerException(Messages.NULL_PARAMETER("location"));
+			throw new NullArgumentException("location");
 		}
 		return Optional.ofNullable(resourceMap.get(resolve(location)));
 	}
@@ -69,7 +69,7 @@ class PublicationResourceRegistryImpl implements PublicationResourceRegistry {
 	@Override
 	public PublicationResourceBuilder builder(String location) {
 		if (location == null) {
-			throw new NullPointerException(Messages.NULL_PARAMETER("location"));
+			throw new NullArgumentException("location");
 		}
 		URI uri = resolve(location);
 		if (contains(location)) {

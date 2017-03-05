@@ -1,7 +1,9 @@
 package com.github.i49.pulp.api;
 
 /**
- * The media type that specifies the type and the format of a resource.
+ * The MIME media type used to specify the type and the format of {@link PublicationResource}.
+ * 
+ * @see <a href="https://tools.ietf.org/html/rfc2046">RFC 2046</a>
  */
 public interface MediaType {
 

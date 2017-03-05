@@ -33,7 +33,7 @@ public final class Epub {
 	 * Creates an instance of {@link PublicationReader} that can read a publication from the given input stream.
 	 * @param path the location where the file to be read is located.
 	 * @return created publication reader.
-	 * @exception NullPointerException if given {@code path} is {@code null}.
+	 * @exception IllegalArgumentException if given {@code path} is {@code null}.
 	 * @exception EpubException if API implementation is not found.
 	 */
 	public static PublicationReader createReader(Path path) {
@@ -53,7 +53,7 @@ public final class Epub {
 	 * Creates an instance of {@link PublicationWriter} that can write a publication to the given output stream.
 	 * @param path the location where a publication will be stored by the writer.
 	 * @return created publication writer.
-	 * @exception NullPointerException if given {@code path} is {@code null}.
+	 * @exception IllegalArgumentException if given {@code path} is {@code null}.
 	 * @exception EpubException if API implementation is not found.
 	 */
 	public static PublicationWriter createWriter(Path path) {
