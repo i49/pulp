@@ -8,7 +8,7 @@ import com.github.i49.pulp.api.PublicationWriterFactory;
  * Service Provider Interface (SPI) to be implemented by API implementor.
  * This type is for internal use and the users of the API need not to care this interface.
  */
-public interface EpubProvider {
+public interface EpubServiceProvider {
 	
 	/**
 	 * Creates an empty publication.

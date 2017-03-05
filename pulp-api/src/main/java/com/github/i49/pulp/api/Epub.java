@@ -4,7 +4,7 @@ import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
-import com.github.i49.pulp.api.spi.EpubProvider;
+import com.github.i49.pulp.api.spi.EpubServiceProvider;
 
 /**
  * Factory class for creating EPUB processing objects.
@@ -70,28 +70,28 @@ public final class Epub {
 	}
 
 	/**
-	 * Thread-local service loader.
+	 * Thread-local loader class of {@link EpubServiceProvider}.
 	 */
-	private static class ThreadLocalLoader extends ThreadLocal<ServiceLoader<EpubProvider>> {
+	private static class ThreadLocalLoader extends ThreadLocal<ServiceLoader<EpubServiceProvider>> {
 
 		@Override
-		protected ServiceLoader<EpubProvider> initialValue() {
-			return ServiceLoader.load(EpubProvider.class);
+		protected ServiceLoader<EpubServiceProvider> initialValue() {
+			return ServiceLoader.load(EpubServiceProvider.class);
 		}
 	}
 	
-	private static final ThreadLocal<ServiceLoader<EpubProvider>> threadLoader = new ThreadLocalLoader();
+	private static final ThreadLocal<ServiceLoader<EpubServiceProvider>> threadLoader = new ThreadLocalLoader();
 	
 	/**
-	 * Returns the service provider of {@link EpubProvider}. 
+	 * Returns the service provider of {@link EpubServiceProvider}. 
 	 * @return found service provider.
 	 */
-	private static EpubProvider getProvider() {
-		Iterator<EpubProvider> it = threadLoader.get().iterator();
+	private static EpubServiceProvider getProvider() {
+		Iterator<EpubServiceProvider> it = threadLoader.get().iterator();
 		if (it.hasNext()) {
 			return it.next();
 		}
-		throw new EpubException("Implementation of EpubProvider is not found.");
+		throw new EpubException("Implementation of EpubServiceProvider is not found.");
 	}
 	
 	private Epub() {

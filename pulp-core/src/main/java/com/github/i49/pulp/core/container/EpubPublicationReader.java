@@ -4,6 +4,7 @@ import static com.github.i49.pulp.core.container.Elements.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.function.Supplier;
 
 import javax.xml.parsers.DocumentBuilder;
 
@@ -14,16 +15,17 @@ import org.xml.sax.SAXException;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationReader;
 import com.github.i49.pulp.api.Rendition;
-import com.github.i49.pulp.core.PublicationImpl;
 import com.github.i49.pulp.core.XmlServices;
 
 public class EpubPublicationReader implements PublicationReader {
 
 	private final ReadableContainer container;
+	private final Supplier<Publication> supplier;
 	private final DocumentBuilder documentBuilder;
 	
-	public EpubPublicationReader(ReadableContainer loader) {
+	public EpubPublicationReader(ReadableContainer loader, Supplier<Publication> supplier) {
 		this.container = loader;
+		this.supplier = supplier;
 		this.documentBuilder = XmlServices.newBuilder();
 	}
 
@@ -45,9 +47,9 @@ public class EpubPublicationReader implements PublicationReader {
 	protected Publication parseContainerDocument() {
 		Document document = readXmlDocument(AbstractContainer.CONTAINER_DOCUMENT_LOCATION);
 		Element rootElement = document.getDocumentElement();
-		Publication publication = new PublicationImpl();
 		ContainerDocumentParser parser = createContainerDocumentParser(rootElement);
 		if (parser != null) {
+			Publication publication = supplier.get();
 			parser.setPublication(publication, this::buildRendition);
 			parser.parse(rootElement);
 			return publication;

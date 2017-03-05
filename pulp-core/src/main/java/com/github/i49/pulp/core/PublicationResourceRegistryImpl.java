@@ -15,11 +15,13 @@ import com.github.i49.pulp.api.PublicationResourceRegistry;
 class PublicationResourceRegistryImpl implements PublicationResourceRegistry {
 
 	private final Map<URI, PublicationResource> resourceMap;
-	private final URI baseURI;
+	private final URI baseLocation;
+	private final MediaTypeRegistry typeRegistry;
 	
-	public PublicationResourceRegistryImpl(Map<URI, PublicationResource> resourceMap, URI baseURI) {
+	public PublicationResourceRegistryImpl(Map<URI, PublicationResource> resourceMap, MediaTypeRegistry typeRegistry, URI baseLocation) {
 		this.resourceMap = resourceMap;
-		this.baseURI = baseURI;
+		this.typeRegistry = typeRegistry;
+		this.baseLocation = baseLocation;
 	}
 	
 	@Override
@@ -82,7 +84,7 @@ class PublicationResourceRegistryImpl implements PublicationResourceRegistry {
 	 * @return resolved location as a URI.
 	 */
 	private URI resolve(String location) {
-		return this.baseURI.resolve(location); 
+		return this.baseLocation.resolve(location); 
 	}
 	
 	private void registerResource(PublicationResource resource) {
@@ -97,7 +99,7 @@ class PublicationResourceRegistryImpl implements PublicationResourceRegistry {
 	private class PublicationResourceBuilderImpl extends AbstractPublicationResourceBuilder {
 
 		private PublicationResourceBuilderImpl(URI location, String localPath) {
-			super(location, localPath);
+			super(location, localPath, typeRegistry);
 		}
 
 		@Override

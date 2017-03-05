@@ -3,27 +3,27 @@ package com.github.i49.pulp.core.provider;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationReaderFactory;
 import com.github.i49.pulp.api.PublicationWriterFactory;
-import com.github.i49.pulp.api.spi.EpubProvider;
+import com.github.i49.pulp.api.spi.EpubServiceProvider;
+import com.github.i49.pulp.core.MediaTypeRegistry;
 import com.github.i49.pulp.core.PublicationImpl;
 import com.github.i49.pulp.core.container.PublicationReaderFactoryImpl;
 import com.github.i49.pulp.core.container.PublicationWriterFactoryImpl;
 
 /**
- * An implementation of {@link EpubProvider} interface.
+ * An implementation of {@link EpubServiceProvider} interface.
  */
-public class EpubProviderImpl implements EpubProvider {
+public class EpubServiceProviderImpl implements EpubServiceProvider {
 	
-	public EpubProviderImpl() {
-	}
+	private final MediaTypeRegistry typeRegistry = new MediaTypeRegistry();
 	
 	@Override
 	public Publication createPublication() {
-		return new PublicationImpl();
+		return new PublicationImpl(typeRegistry);
 	}
 
 	@Override
 	public PublicationReaderFactory createReaderFactory() {
-		return new PublicationReaderFactoryImpl();
+		return new PublicationReaderFactoryImpl(this::createPublication);
 	}
 	
 	@Override

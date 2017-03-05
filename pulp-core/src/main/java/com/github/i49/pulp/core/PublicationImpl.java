@@ -22,12 +22,14 @@ public class PublicationImpl implements Publication {
 	
 	private static final URI DEFAULT_RENDITION_LOCATION = URI.create("EPUB/package.opf");
 
-	// a list of renditions.
-	private final List<Rendition> renditions = new ArrayList<>();
+	private final MediaTypeRegistry typeRegistry;
 	private final Map<URI, PublicationResource> resourceMap;
 	private final PublicationResourceRegistry resourceRegistry;
-	
-	public PublicationImpl() {
+	// a list of renditions.
+	private final List<Rendition> renditions = new ArrayList<>();
+
+	public PublicationImpl(MediaTypeRegistry typeRegistry) {
+		this.typeRegistry = typeRegistry;
 		this.resourceMap = new HashMap<>();
 		this.resourceRegistry = createResourceRegistry(URI.create(""));
 	}
@@ -80,7 +82,7 @@ public class PublicationImpl implements Publication {
 		return rendition;
 	}
 	
-	private PublicationResourceRegistry createResourceRegistry(URI baseURI) {
-		return new PublicationResourceRegistryImpl(this.resourceMap, baseURI);
+	private PublicationResourceRegistry createResourceRegistry(URI baseLocation) {
+		return new PublicationResourceRegistryImpl(this.resourceMap, this.typeRegistry, baseLocation);
 	}
 }

@@ -15,13 +15,16 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 
 	private final URI location;
 	private final String localPath;
+	private final MediaTypeRegistry typeRegistry;
 	
 	private ContentSource source;
 	private MediaType mediaType;
 	
-	AbstractPublicationResourceBuilder(URI location, String localPath) {
+	AbstractPublicationResourceBuilder(URI location, String localPath, MediaTypeRegistry typeRegistry) {
 		this.location = location;
 		this.localPath = localPath;
+		this.typeRegistry = typeRegistry;
+		
 		this.mediaType = null;
 	}
 
@@ -39,10 +42,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 		if (value == null) {
 			throw new NullPointerException(Messages.NULL_PARAMETER("value"));
 		}
-		this.mediaType = CoreMediaTypes.findMediaType(value);
-		if (this.mediaType == null) {
-			this.mediaType = ForeignMediaType.valueOf(value);
-		}
+		this.mediaType = typeRegistry.getMediaType(value);
 		return this;
 	}
 	
