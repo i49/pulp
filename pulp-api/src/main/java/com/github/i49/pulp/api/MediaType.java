@@ -16,4 +16,10 @@ public interface MediaType {
 	 * @return the subtype part of this media type. 
 	 */
 	String getSubtype();
+	
+	/**
+	 * Returns the string representation of this media type.
+	 * @return the string representation of this media type.
+	 */
+	String toString();
 }

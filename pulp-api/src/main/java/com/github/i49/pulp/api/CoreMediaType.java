@@ -53,8 +53,7 @@ public enum CoreMediaType implements MediaType {
 	}
 
 	/**
-	 * Returns the string representation of this media type.
-	 * @return the string representation of this media type.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {

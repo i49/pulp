@@ -1,7 +1,10 @@
-package com.github.i49.pulp.core.container;
+package com.github.i49.pulp.core;
 
 import com.github.i49.pulp.api.MediaType;
 
+/**
+ * Media types defined by IDPF.
+ */
 public enum StandardMediaType implements MediaType {
 	
 	APPLICATION_EPUB_ZIP("application", "epub+zip"),
@@ -33,11 +36,10 @@ public enum StandardMediaType implements MediaType {
 	}
 
 	/**
-	 * Return the string representation of this media type.
-	 * @return the string representation of this media type.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public String toString() {
-		return type + "/" + subtype;
+		return getType() + "/" + getSubtype();
 	}
 }

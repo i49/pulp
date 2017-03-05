@@ -6,6 +6,7 @@ import static com.github.i49.pulp.core.container.Elements.firstChildElement;
 import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.Rendition;
+import com.github.i49.pulp.core.StandardMediaType;
 
 /**
  * Parser of EPUB Container Document version 1.0.

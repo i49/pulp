@@ -23,6 +23,9 @@ public class MediaTypeRegistry {
 		for (MediaType type: CoreMediaType.values()) {
 			mediaTypes.put(type.toString(), type);
 		}
+		for (MediaType type: StandardMediaType.values()) {
+			mediaTypes.put(type.toString(), type);
+		}
 	}
 	
 	/**
@@ -52,7 +55,7 @@ public class MediaTypeRegistry {
 		mediaTypes.put(mediaType.toString(), mediaType);
 		return mediaType;
 	}
-	
+
 	/**
 	 * Generic implementation of {@link MediaType}.
 	 */
@@ -66,16 +69,25 @@ public class MediaTypeRegistry {
 			this.subtype = subtype.trim();
 		}
 		
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public String getType() {
 			return type;
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public String getSubtype() {
 			return subtype;
 		}
-	
+
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public String toString() {
 			return getType() + "/" + getSubtype();
