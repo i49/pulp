@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import com.github.i49.pulp.api.ContentSource;
 import com.github.i49.pulp.api.CoreMediaType;
 import com.github.i49.pulp.api.EpubException;
+import com.github.i49.pulp.api.MediaType;
 import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationResourceBuilder;
 
@@ -16,7 +17,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	private final String localPath;
 	
 	private ContentSource source;
-	private CoreMediaType mediaType;
+	private MediaType mediaType;
 	
 	AbstractPublicationResourceBuilder(URI location, String localPath) {
 		this.location = location;
@@ -25,15 +26,30 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	}
 
 	@Override
-	public PublicationResourceBuilder ofType(CoreMediaType mediaType) {
+	public PublicationResourceBuilder ofType(MediaType mediaType) {
+		if (mediaType == null) {
+			throw new NullPointerException(Messages.NULL_PARAMETER("mediaType"));
+		}
 		this.mediaType = mediaType;
 		return this;
 	}
 
 	@Override
+	public PublicationResourceBuilder ofType(String value) {
+		if (value == null) {
+			throw new NullPointerException(Messages.NULL_PARAMETER("value"));
+		}
+		this.mediaType = CoreMediaTypes.findMediaType(value);
+		if (this.mediaType == null) {
+			this.mediaType = ForeignMediaType.valueOf(value);
+		}
+		return this;
+	}
+	
+	@Override
 	public PublicationResourceBuilder source(Path path) {
 		if (path == null) {
-			return this;
+			throw new NullPointerException(Messages.NULL_PARAMETER("path"));
 		}
 		return source(path.toUri());
 	}
@@ -41,7 +57,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder source(URI uri) {
 		if (uri == null) {
-			return this;
+			throw new NullPointerException(Messages.NULL_PARAMETER("uri"));
 		}
 		return source((location)->uri.toURL().openStream());
 	}
@@ -49,13 +65,16 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder source(byte[] bytes) {
 		if (bytes == null) {
-			return this;
+			throw new NullPointerException(Messages.NULL_PARAMETER("bytes"));
 		}
 		return source((location)->new ByteArrayInputStream(bytes));
 	}
 	
 	@Override
 	public PublicationResourceBuilder source(ContentSource source) {
+		if (source == null) {
+			throw new NullPointerException(Messages.NULL_PARAMETER("source"));
+		}
 		this.source = source;
 		return this;
 	}
@@ -63,7 +82,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder sourceDir(Path dir) {
 		if (dir == null) {
-			return this;
+			throw new NullPointerException(Messages.NULL_PARAMETER("dir"));
 		}
 		return sourceDir(dir.toUri());
 	}
@@ -71,7 +90,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder sourceDir(URI dir) {
 		if (dir == null) {
-			return this;
+			throw new NullPointerException(Messages.NULL_PARAMETER("dir"));
 		}
 		return source(dir.resolve(localPath));
 	}
@@ -100,7 +119,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 		if (this.mediaType == null) {
 			this.mediaType = CoreMediaTypes.guessMediaType(localPath);
 			if (this.mediaType == null) {
-				throw new EpubException(Messages.UNKNOWN_MEDIA_TYPE(localPath));
+				throw new EpubException(Messages.MEDIA_TYPE_UNKNOWN(localPath));
 			}
 		}
 	}

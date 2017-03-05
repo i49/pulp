@@ -7,12 +7,21 @@ import com.github.i49.pulp.api.Rendition;
 /**
  * Parser interface for parsing a package document.
  */
-public interface PackageDocumentParser extends PackageDocumentProcessor {
+abstract class PackageDocumentParser implements PackageDocumentProcessor {
+	
+	protected Rendition rendition;
+	
+	/**
+	 * Assigns the rendition to build while parsing the document.
+	 * @param rendition the rendition to be built.
+	 */
+	void setRendition(Rendition rendition) {
+		this.rendition = rendition;
+	}
 
 	/**
 	 * Parses a package document.
 	 * @param rootElement the root element of the package document.
-	 * @param rendition the rendition to be built.
 	 */
-	void parse(Element rootElement, Rendition rendition);
+	abstract void parse(Element rootElement);
 }

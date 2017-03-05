@@ -37,8 +37,12 @@ public class Messages {
 		return localize("invalid.location", location);
 	}
 	
-	public static String UNKNOWN_MEDIA_TYPE(String pathname) {
-		return localize("unknown.media.type", pathname);
+	public static String MEDIA_TYPE_UNKNOWN(String pathname) {
+		return localize("media.type.unknown", pathname);
+	}
+
+	public static String MEDIA_TYPE_INVALID(String value) {
+		return localize("media.type.invalid", value);
 	}
 	
 	private static String localize(String key, Object... arguments) {

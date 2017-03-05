@@ -12,10 +12,18 @@ public interface PublicationResourceBuilder {
 
 	/**
 	 * Specifies the media type of the resource to build.
-	 * @param mediaType the media type of the resource.
+	 * @param mediaType the media type represented by an instance of {@link MediaType}.
 	 * @return this builder.
 	 */
-	PublicationResourceBuilder ofType(CoreMediaType mediaType);
+	PublicationResourceBuilder ofType(MediaType mediaType);
+	
+	/**
+	 * Specifies the media type of the resource to build.
+	 * @param value the string representation of the media type.
+	 * @return this builder.
+	 * @exception IllegalArgumentException if {@code value} is illegal or {@code null}.
+	 */
+	PublicationResourceBuilder ofType(String value);
 	
 	/**
 	 * Specifies the content of the resource with a path.
@@ -54,10 +62,10 @@ public interface PublicationResourceBuilder {
 	
 	/**
 	 * Specifies the directory containing the content of the resource.
-	 * @param base the URI of the directory.
+	 * @param dir the URI of the directory.
 	 * @return this builder.
 	 */
-	PublicationResourceBuilder sourceDir(URI base);
+	PublicationResourceBuilder sourceDir(URI dir);
 	
 	/**
 	 * Builds a {@link PublicationResource}.

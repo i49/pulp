@@ -57,6 +57,14 @@ public final class Elements {
 		return children;
 	}
 	
+	public static String getAttribute(Element e, String name, String defaultValue) {
+		if (e.hasAttribute(name)) {
+			return e.getAttribute(name);
+		} else {
+			return defaultValue;
+		}
+	}
+	
 	private Elements() {
 	}
 }
