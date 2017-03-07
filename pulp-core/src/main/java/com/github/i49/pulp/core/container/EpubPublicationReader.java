@@ -1,7 +1,6 @@
 package com.github.i49.pulp.core.container;
 
-import static com.github.i49.pulp.core.container.Elements.*;
-
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.function.Supplier;
@@ -12,6 +11,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+import com.github.i49.pulp.api.EpubException;
+import com.github.i49.pulp.api.EpubParsingException;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationReader;
 import com.github.i49.pulp.api.Rendition;
@@ -23,6 +24,8 @@ public class EpubPublicationReader implements PublicationReader {
 	private final Supplier<Publication> supplier;
 	private final DocumentBuilder documentBuilder;
 	
+	private String currentLocation;
+	
 	public EpubPublicationReader(ReadableContainer loader, Supplier<Publication> supplier) {
 		this.container = loader;
 		this.supplier = supplier;
@@ -31,7 +34,11 @@ public class EpubPublicationReader implements PublicationReader {
 
 	@Override
 	public Publication read() {
-		return parseContainerDocument();
+		try {
+			return parseContainerDocument();
+		} catch (Exception e) {
+			throw new EpubParsingException(e.getMessage(), e, currentLocation, container.getPath());
+		}
 	}
 
 	@Override
@@ -39,68 +46,47 @@ public class EpubPublicationReader implements PublicationReader {
 		try {
 			this.container.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new EpubException(Messages.containerNotCloseable(container.getPath()), e);
 		}
+	}
+	
+	protected Publication createPublication() {
+		return supplier.get();
 	}
 	
 	protected Publication parseContainerDocument() {
-		Document document = readXmlDocument(AbstractContainer.CONTAINER_DOCUMENT_LOCATION);
-		Element rootElement = document.getDocumentElement();
-		ContainerDocumentParser parser = createContainerDocumentParser(rootElement);
-		if (parser != null) {
-			Publication publication = supplier.get();
-			parser.setPublication(publication, this::buildRendition);
-			parser.parse(rootElement);
-			return publication;
-		} else {
-			return null;
-		}
-	}
-	
-	protected ContainerDocumentParser createContainerDocumentParser(Element rootElement) {
-		if (!matchElement(rootElement, "container" , ContainerDocumentParser.NAMESPACE_URI)) {
-			return null;
-		}
-		ContainerDocumentParser parser = null;
-		String version = rootElement.getAttribute("version");
-		if ("1.0".equals(version)) {
-			parser = new ContainerDocumentParser1();
-		}
-		return parser;
+		String location = AbstractContainer.CONTAINER_DOCUMENT_LOCATION;
+		Element rootElement = readXmlDocument(location);
+		ContainerDocumentParser parser = ContainerDocumentParser.create(rootElement);
+		Publication publication = createPublication();
+		parser.setPublication(publication, this::buildRendition);
+		parser.parse(rootElement);
+		return publication;
 	}
 	
 	protected void buildRendition(Rendition rendition) {
-		Document document = readXmlDocument(rendition.getLocation().getPath());
-		Element rootElement = document.getDocumentElement();
-		PackageDocumentParser parser = createPackageDocumentParser(rootElement);
-		if (parser != null) {
-			parser.setRendition(rendition);
-			parser.parse(rootElement);
-		}
+		String location = rendition.getLocation().getPath();
+		Element rootElement = readXmlDocument(location);
+		PackageDocumentParser parser = PackageDocumentParser.create(rootElement);
+		parser.setRendition(rendition);
+		parser.parse(rootElement);
 	}
 	
-	protected PackageDocumentParser createPackageDocumentParser(Element rootElement) {
-		if (!matchElement(rootElement, "package" , PackageDocumentParser.NAMESPACE_URI)) {
-			return null;
-		}
-		PackageDocumentParser parser = null;
-		String version = rootElement.getAttribute("version");
-		if ("3.0".equals(version)) {
-			parser = new PackageDocumentParser3();
-		}
-		return parser;
-	}
-	
-	private Document readXmlDocument(String location) {
+	private Element readXmlDocument(String location) {
+		setCurrentLocation(location);
 		try (InputStream in = container.openItemToRead(location)) {
-			return documentBuilder.parse(in);
+			Document document = documentBuilder.parse(in); 
+			return document.getDocumentElement();
+		} catch (FileNotFoundException e) {
+			throw new EpubException(Messages.containerEntryNotFound(location));
 		} catch (IOException e) {
-			// TODO
-			return null;
+			throw new EpubException(Messages.containerEntryNotReadable(location));
 		} catch (SAXException e) {
-			// TODO
-			return null;
+			throw new EpubException(Messages.xmlDocumentNotWellFormed(), e);
 		}
+	}
+
+	private void setCurrentLocation(String location) {
+		this.currentLocation = location;
 	}
 }

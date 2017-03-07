@@ -11,10 +11,6 @@ import org.w3c.dom.Node;
  */
 public final class Elements {
 
-	public static boolean matchElement(Element e, String localName, String namespaceURI) {
-		return localName.equals(e.getLocalName()) && namespaceURI.equals(e.getNamespaceURI()); 
-	}
-	
 	public static Element firstChildElement(Element e) {
 		Element child = null;
 		for (Node node = e.getFirstChild(); node != null; node = node.getNextSibling()) {
@@ -55,14 +51,6 @@ public final class Elements {
 			}
 		}
 		return children;
-	}
-	
-	public static String getAttribute(Element e, String name, String defaultValue) {
-		if (e.hasAttribute(name)) {
-			return e.getAttribute(name);
-		} else {
-			return defaultValue;
-		}
 	}
 	
 	private Elements() {

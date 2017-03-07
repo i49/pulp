@@ -1,6 +1,7 @@
 package com.github.i49.pulp.core.container;
 
 import static com.github.i49.pulp.core.container.Elements.*;
+import static com.github.i49.pulp.core.container.XmlElementAssertion.assertThat;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,27 +32,16 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 			return;
 		}
 		Element element = it.next();
-		if (matchElement(element, "metadata", NAMESPACE_URI)) {
-			parseMetadata(element);
-			if (!it.hasNext()) {
-				return;
-			}
-			element = it.next();
-		}
-		if (matchElement(element, "manifest", NAMESPACE_URI)) {
-			parseManifest(element);
-			if (!it.hasNext()) {
-				return;
-			}
-			element = it.next();
-		}
-		if (matchElement(element, "spine", NAMESPACE_URI)) {
-			parseSpine(element);
-			if (!it.hasNext()) {
-				return;
-			}
-			element = it.next();
-		}
+		assertThat(element).hasName("metadata", NAMESPACE_URI);
+		parseMetadata(element);
+
+		element = it.next();
+		assertThat(element).hasName("manifest", NAMESPACE_URI);
+		parseManifest(element);
+		element = it.next();
+
+		assertThat(element).hasName("spine", NAMESPACE_URI);
+		parseSpine(element);
 	}
 	
 	protected void parseMetadata(Element element) {
@@ -61,13 +51,13 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 		PublicationResourceRegistry registry = rendition.getResourceRegistry();
 		Manifest manifest = rendition.getManifest();
 		for (Element child: childElements(element, NAMESPACE_URI)) {
-			if (!child.getLocalName().equals("item")) {
-				// TODO
-				throw new EpubException("");
-			}
-			String id = getMandatoryAttribute(child, "id");
-			String location = getMandatoryAttribute(child, "href");
-			String mediaType = getMandatoryAttribute(child, "media-type");
+			assertThat(child).hasName("item", NAMESPACE_URI)
+			                 .hasNonEmptyAttribute("id")
+			                 .hasNonEmptyAttribute("href")
+			                 .hasNonEmptyAttribute("media-type");
+			String id = child.getAttribute("id");
+			String location = child.getAttribute("href");
+			String mediaType = child.getAttribute("media-type");
 			PublicationResource resource = registry.builder(location).ofType(mediaType).build();
 			Manifest.Item item = manifest.add(resource);
 			items.put(id, item);
@@ -77,11 +67,9 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 	protected void parseSpine(Element element) {
 		Spine spine = rendition.getSpine();
 		for (Element child: childElements(element, NAMESPACE_URI)) {
-			if (!child.getLocalName().equals("itemref")) {
-				// TODO
-				throw new EpubException("");
-			}
-			String idref = getMandatoryAttribute(child, "idref");
+			assertThat(child).hasName("itemref", NAMESPACE_URI)
+			                 .hasNonEmptyAttribute("idref");
+			String idref = child.getAttribute("idref");
 			Manifest.Item item = items.get(idref);
 			if (item == null) {
 				// TODO
@@ -92,14 +80,5 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 				page.linear(false);
 			}
 		}
-	}
-	
-	private String getMandatoryAttribute(Element element, String name) {
-		String value = element.getAttribute(name);
-		if (value == null || value.isEmpty()) {
-			// TODO
-			throw new EpubException("");
-		}
-		return value;
 	}
 }
