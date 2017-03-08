@@ -1,7 +1,7 @@
 package com.github.i49.pulp.core.container;
 
 import static com.github.i49.pulp.core.container.Elements.*;
-import static com.github.i49.pulp.core.container.XmlElementAssertion.assertThat;
+import static com.github.i49.pulp.core.container.XmlElementAssertion.assertOn;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,6 +14,7 @@ import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Manifest;
 import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationResourceRegistry;
+import com.github.i49.pulp.api.Rendition;
 import com.github.i49.pulp.api.Spine;
 import com.github.i49.pulp.api.Spine.Page;
 
@@ -22,25 +23,31 @@ import com.github.i49.pulp.api.Spine.Page;
  */
 class PackageDocumentParser3 extends PackageDocumentParser {
 	
+	private Rendition rendition;
 	private final Map<String, Manifest.Item> items = new HashMap<>();
 
+	public PackageDocumentParser3(Element rootElement) {
+		super(rootElement);
+	}
+
 	@Override
-	public void parse(Element rootElement) {
+	public void parse(Rendition rendition) {
+		this.rendition = rendition;
 		List<Element> children = childElements(rootElement, NAMESPACE_URI);
 		Iterator<Element> it = children.iterator();
 		if (!it.hasNext()) {
 			return;
 		}
 		Element element = it.next();
-		assertThat(element).hasName("metadata", NAMESPACE_URI);
+		assertOn(element).hasName("metadata", NAMESPACE_URI);
 		parseMetadata(element);
 
 		element = it.next();
-		assertThat(element).hasName("manifest", NAMESPACE_URI);
+		assertOn(element).hasName("manifest", NAMESPACE_URI);
 		parseManifest(element);
 		element = it.next();
 
-		assertThat(element).hasName("spine", NAMESPACE_URI);
+		assertOn(element).hasName("spine", NAMESPACE_URI);
 		parseSpine(element);
 	}
 	
@@ -51,7 +58,7 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 		PublicationResourceRegistry registry = rendition.getResourceRegistry();
 		Manifest manifest = rendition.getManifest();
 		for (Element child: childElements(element, NAMESPACE_URI)) {
-			assertThat(child).hasName("item", NAMESPACE_URI)
+			assertOn(child).hasName("item", NAMESPACE_URI)
 			                 .hasNonEmptyAttribute("id")
 			                 .hasNonEmptyAttribute("href")
 			                 .hasNonEmptyAttribute("media-type");
@@ -67,7 +74,7 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 	protected void parseSpine(Element element) {
 		Spine spine = rendition.getSpine();
 		for (Element child: childElements(element, NAMESPACE_URI)) {
-			assertThat(child).hasName("itemref", NAMESPACE_URI)
+			assertOn(child).hasName("itemref", NAMESPACE_URI)
 			                 .hasNonEmptyAttribute("idref");
 			String idref = child.getAttribute("idref");
 			Manifest.Item item = items.get(idref);

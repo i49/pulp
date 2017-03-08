@@ -1,6 +1,6 @@
 package com.github.i49.pulp.core.container;
 
-import static com.github.i49.pulp.core.container.XmlElementAssertion.assertThat;
+import static com.github.i49.pulp.core.container.XmlElementAssertion.assertOn;
 
 import org.w3c.dom.Element;
 
@@ -12,32 +12,32 @@ import com.github.i49.pulp.api.Rendition;
  */
 abstract class PackageDocumentParser implements PackageDocumentProcessor {
 	
-	protected Rendition rendition;
+	protected final Element rootElement;
 	
-	/**
-	 * Assigns the rendition to build while parsing the document.
-	 * @param rendition the rendition to be built.
-	 */
-	public void setRendition(Rendition rendition) {
-		this.rendition = rendition;
+	protected PackageDocumentParser(Element rootElement) {
+		this.rootElement = rootElement;
 	}
 
 	/**
 	 * Parses a package document.
-	 * @param rootElement the root element of the package document.
 	 */
-	public abstract void parse(Element rootElement);
+	public abstract void parse(Rendition rendition);
 	
+	/**
+	 * Creates a new parser.
+	 * @param rootElement the root element of the document.
+	 * @return created parser.
+	 */
 	public static PackageDocumentParser create(Element rootElement) {
 		
-		assertThat(rootElement)
+		assertOn(rootElement)
 			.hasName("package", NAMESPACE_URI)
 			.hasNonEmptyAttribute("version");
 
 		PackageDocumentParser parser = null;
 		String version = rootElement.getAttribute("version");
 		if ("3.0".equals(version)) {
-			parser = new PackageDocumentParser3();
+			parser = new PackageDocumentParser3(rootElement);
 		} else {
 			throw new EpubException(Messages.xmlDocumentVersionUnsupported(version));
 		}

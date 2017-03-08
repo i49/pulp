@@ -1,8 +1,8 @@
 package com.github.i49.pulp.core.container;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
 import java.util.function.Supplier;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -35,7 +35,7 @@ public class EpubPublicationReader implements PublicationReader {
 	@Override
 	public Publication read() {
 		try {
-			return parseContainerDocument();
+			return parseAll();
 		} catch (Exception e) {
 			throw new EpubParsingException(e.getMessage(), e, currentLocation, container.getPath());
 		}
@@ -50,39 +50,38 @@ public class EpubPublicationReader implements PublicationReader {
 		}
 	}
 	
+	protected Publication parseAll() throws IOException, SAXException {
+		Publication publication = createPublication();
+		Iterator<Rendition> it = parseContainerDocument(publication);
+		while (it.hasNext()) {
+			buildRendition(it.next());
+		}
+		return publication;
+	}
+	
 	protected Publication createPublication() {
 		return supplier.get();
 	}
 	
-	protected Publication parseContainerDocument() {
+	protected Iterator<Rendition> parseContainerDocument(Publication publication) throws IOException, SAXException {
 		String location = AbstractContainer.CONTAINER_DOCUMENT_LOCATION;
 		Element rootElement = readXmlDocument(location);
 		ContainerDocumentParser parser = ContainerDocumentParser.create(rootElement);
-		Publication publication = createPublication();
-		parser.setPublication(publication, this::buildRendition);
-		parser.parse(rootElement);
-		return publication;
+		return parser.parse(publication);
 	}
 	
-	protected void buildRendition(Rendition rendition) {
+	protected void buildRendition(Rendition rendition) throws IOException, SAXException {
 		String location = rendition.getLocation().getPath();
 		Element rootElement = readXmlDocument(location);
 		PackageDocumentParser parser = PackageDocumentParser.create(rootElement);
-		parser.setRendition(rendition);
-		parser.parse(rootElement);
+		parser.parse(rendition);
 	}
 	
-	private Element readXmlDocument(String location) {
+	private Element readXmlDocument(String location) throws IOException, SAXException {
 		setCurrentLocation(location);
 		try (InputStream in = container.openItemToRead(location)) {
 			Document document = documentBuilder.parse(in); 
 			return document.getDocumentElement();
-		} catch (FileNotFoundException e) {
-			throw new EpubException(Messages.containerEntryNotFound(location));
-		} catch (IOException e) {
-			throw new EpubException(Messages.containerEntryNotReadable(location));
-		} catch (SAXException e) {
-			throw new EpubException(Messages.xmlDocumentNotWellFormed(), e);
 		}
 	}
 

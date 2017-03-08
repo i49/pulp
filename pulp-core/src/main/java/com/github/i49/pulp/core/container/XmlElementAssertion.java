@@ -11,7 +11,7 @@ class XmlElementAssertion {
 
 	private final Element actual;
 
-	public static XmlElementAssertion assertThat(Element element) {
+	public static XmlElementAssertion assertOn(Element element) {
 		return new XmlElementAssertion(element);
 	}
 	
