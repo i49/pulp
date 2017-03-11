@@ -21,7 +21,7 @@ abstract class PackageDocumentParser implements PackageDocumentProcessor {
 	/**
 	 * Parses a package document.
 	 */
-	public abstract void parse(Rendition rendition);
+	public abstract void parseFor(Rendition rendition);
 	
 	/**
 	 * Creates a new parser.

@@ -27,7 +27,7 @@ class ContainerDocumentParser1 extends ContainerDocumentParser {
 	}
 
 	@Override
-	public Iterator<Rendition> parse(Publication publication) {
+	public Iterator<Rendition> parseFor(Publication publication) {
 		Element rootfiles = firstChildElement(rootElement, NAMESPACE_URI);
 		assertOn(rootfiles).hasName("rootfiles", NAMESPACE_URI);
 		for (Element rootfile: childElements(rootfiles, NAMESPACE_URI)) {

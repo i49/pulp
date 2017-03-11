@@ -18,7 +18,7 @@ abstract class ContainerDocumentParser implements ContainerDocumentProcessor {
 		this.rootElement = rootElement;
 	}
 	
-	public abstract Iterator<Rendition> parse(Publication publication);
+	public abstract Iterator<Rendition> parseFor(Publication publication);
 	
 	public static ContainerDocumentParser create(Element rootElement) {
 	

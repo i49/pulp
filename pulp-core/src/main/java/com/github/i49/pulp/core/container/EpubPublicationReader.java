@@ -67,14 +67,14 @@ public class EpubPublicationReader implements PublicationReader {
 		String location = AbstractContainer.CONTAINER_DOCUMENT_LOCATION;
 		Element rootElement = readXmlDocument(location);
 		ContainerDocumentParser parser = ContainerDocumentParser.create(rootElement);
-		return parser.parse(publication);
+		return parser.parseFor(publication);
 	}
 	
 	protected void buildRendition(Rendition rendition) throws IOException, SAXException {
 		String location = rendition.getLocation().getPath();
 		Element rootElement = readXmlDocument(location);
 		PackageDocumentParser parser = PackageDocumentParser.create(rootElement);
-		parser.parse(rendition);
+		parser.parseFor(rendition);
 	}
 	
 	private Element readXmlDocument(String location) throws IOException, SAXException {

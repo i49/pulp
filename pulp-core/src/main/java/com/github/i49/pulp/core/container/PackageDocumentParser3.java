@@ -31,7 +31,7 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 	}
 
 	@Override
-	public void parse(Rendition rendition) {
+	public void parseFor(Rendition rendition) {
 		this.rendition = rendition;
 		List<Element> children = childElements(rootElement, NAMESPACE_URI);
 		Iterator<Element> it = children.iterator();
