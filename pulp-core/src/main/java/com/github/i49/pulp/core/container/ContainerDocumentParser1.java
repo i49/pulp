@@ -28,7 +28,7 @@ class ContainerDocumentParser1 extends ContainerDocumentParser {
 
 	@Override
 	public Iterator<Rendition> parseFor(Publication publication) {
-		ElementIterator it = new ElementIterator(rootElement, NAMESPACE_URI);
+		Iterator<Element> it = ElementIterator.of(rootElement, NAMESPACE_URI);
 		if (!it.hasNext()) {
 			throw new EpubException("");
 		}
@@ -38,7 +38,7 @@ class ContainerDocumentParser1 extends ContainerDocumentParser {
 		
 	protected void parseRootfiles(Element rootfiles) {
 		assertOn(rootfiles).hasName("rootfiles", NAMESPACE_URI);
-		ElementIterator it = new ElementIterator(rootfiles, NAMESPACE_URI);
+		Iterator<Element> it = ElementIterator.of(rootfiles, NAMESPACE_URI);
 		while (it.hasNext()) {
 			parseRootfile(it.next());
 		}

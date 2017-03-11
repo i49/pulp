@@ -15,11 +15,15 @@ public class ElementIterator implements Iterator<Element> {
 	private int index;
 	private Element next;
 	
-	public ElementIterator(Element parent) {
-		this(parent, null);
+	public static Iterator<Element> of(Element parent) {
+		return new ElementIterator(parent, null);
+	}
+	
+	public static Iterator<Element> of(Element parent, String namespaceURI) {
+		return new ElementIterator(parent, namespaceURI);
 	}
 
-	public ElementIterator(Element parent, String namespaceURI) {
+	private ElementIterator(Element parent, String namespaceURI) {
 		this.nodeList = parent.getChildNodes();
 		this.namespaceURI = namespaceURI;
 		this.index = 0;

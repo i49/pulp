@@ -172,9 +172,11 @@ public class RenditionImpl implements Rendition {
 	private class ItemImpl implements Manifest.Item {
 		
 		private final PublicationResource resource;
+		private boolean scripted;
 		
 		private ItemImpl(PublicationResource resource) {
 			this.resource = resource;
+			this.scripted = false;
 		}
 
 		@Override
@@ -195,6 +197,17 @@ public class RenditionImpl implements Rendition {
 		@Override
 		public Item asCoverImage() {
 			manifest.coverImage = this;
+			return this;
+		}
+		
+		@Override
+		public boolean isScripted() {
+			return scripted;
+		}
+		
+		@Override
+		public Item scripted(boolean scripted) {
+			this.scripted = scripted;
 			return this;
 		}
 		

@@ -26,7 +26,7 @@ public class EpubSampleReaderTest {
 	public void read_accessible_epub_3() {
 		Publication p = read("accessible_epub_3.epub");
 		
-		testCommon(p);
+		assertCommon(p);
 		
 		assertThat(p.getNumberOfRenditions(), is(1));
 		
@@ -34,6 +34,7 @@ public class EpubSampleReaderTest {
 		
 		Manifest m = r.getManifest();
 		assertThat(m.getNumberOfItems(), is(35));
+		assertThat(m.get("covers/9781449328030_lrg.jpg").isCoverImage(), is(true));
 
 		Spine s = r.getSpine();
 		assertThat(s.getNumberOfPages(), is(22));
@@ -44,7 +45,7 @@ public class EpubSampleReaderTest {
 	public void read_cc_shared_culture() {
 		Publication p = read("cc-shared-culture.epub");
 		
-		testCommon(p);
+		assertCommon(p);
 		
 		assertThat(p.getNumberOfRenditions(), is(1));
 		
@@ -52,6 +53,8 @@ public class EpubSampleReaderTest {
 		
 		Manifest m = r.getManifest();
 		assertThat(m.getNumberOfItems(), is(21));
+		assertThat(m.get("images/326261902_3fa36f548d.jpg").isCoverImage(), is(true));
+		assertThat(m.get("xhtml/p20.xhtml").isScripted(), is(true));
 
 		Spine s = r.getSpine();
 		assertThat(s.getNumberOfPages(), is(8));
@@ -62,7 +65,7 @@ public class EpubSampleReaderTest {
 	public void read_childrens_literature() {
 		Publication p = read("childrens-literature.epub");
 		
-		testCommon(p);
+		assertCommon(p);
 		
 		assertThat(p.getNumberOfRenditions(), is(1));
 
@@ -70,6 +73,8 @@ public class EpubSampleReaderTest {
 
 		Manifest m = r.getManifest();
 		assertThat(m.getNumberOfItems(), is(7));
+		assertThat(m.get("images/cover.png").isCoverImage(), is(true));
+		assertThat(m.get("nav.xhtml").isScripted(), is(true));
 
 		Spine s = r.getSpine();
 		assertThat(s.getNumberOfPages(), is(3));
@@ -82,7 +87,7 @@ public class EpubSampleReaderTest {
 		return reader.read();
 	}
 	
-	protected void testCommon(Publication p) {
+	protected void assertCommon(Publication p) {
 		assertThat(p, is(notNullValue()));
 		
 		Rendition r = p.getDefaultRendition();
@@ -117,6 +122,5 @@ public class EpubSampleReaderTest {
 				assertThat(page.isLinear(), is(true));
 			}
 		}
-		
 	}
 }

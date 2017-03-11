@@ -93,5 +93,18 @@ public interface Manifest extends Iterable<Manifest.Item> {
 		 * @return this item.
 		 */
 		Item asCoverImage();
+		
+		/**
+		 * Returns {@code true} if this item is marked as scripted.
+		 * @return {@code true} if this item is marked as scripted, {@code false} otherwise.
+		 */
+		boolean isScripted();
+		
+		/**
+		 * Marks this item as scripted.
+		 * @param scripted {@code true} if this item is scripted, or {@code false} if not scripted.
+		 * @return this item.
+		 */
+		Item scripted(boolean scripted);
 	}
 }
