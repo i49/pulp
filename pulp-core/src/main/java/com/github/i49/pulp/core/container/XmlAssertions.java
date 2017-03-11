@@ -6,14 +6,13 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.EpubException;
-import com.github.i49.pulp.core.xml.AbstractAttr;
-import com.github.i49.pulp.core.xml.AbstractElement;
+import com.github.i49.pulp.core.xml.NominalAttr;
+import com.github.i49.pulp.core.xml.NominalElement;
 
 /**
  * Assertions on an XML element.
  */
 class XmlAssertions {
-	
 	
 	public static ElementAssertion assertOn(Element element) {
 		return new ElementAssertion(element);
@@ -52,56 +51,14 @@ class XmlAssertions {
 	}
 	
 	private static Element element(String localName, String namespaceURI) {
-		return new XmlElement(localName, namespaceURI);
+		return new NominalElement(localName, namespaceURI);
 	}
 
 	private static Attr attribute(String localName) {
-		return new XmlAttribute(localName, null);
+		return new NominalAttr(localName, null);
 	}
 
 	private static void failWithMessage(String message) {
 		throw new EpubException(message);
-	}
-
-	private static class XmlElement extends AbstractElement {
-		
-		private final String localName;
-		private final String namespaceURI;
-		
-		public XmlElement(String localName, String namespaceURI) {
-			this.localName = localName;
-			this.namespaceURI = namespaceURI;
-		}
-		
-		@Override
-		public String getLocalName() {
-			return localName;
-		}
-
-		@Override
-		public String getNamespaceURI() {
-			return namespaceURI;
-		}
-	}
-
-	private static class XmlAttribute extends AbstractAttr {
-
-		private final String localName;
-		private final String namespaceURI;
-
-		public XmlAttribute(String localName, String namespaceURI) {
-			this.localName = localName;
-			this.namespaceURI = namespaceURI;
-		}
-
-		@Override
-		public String getLocalName() {
-			return localName;
-		}
-
-		@Override
-		public String getNamespaceURI() {
-			return namespaceURI;
-		}
 	}
 }

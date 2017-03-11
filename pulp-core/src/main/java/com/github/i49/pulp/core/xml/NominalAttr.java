@@ -8,39 +8,44 @@ import org.w3c.dom.TypeInfo;
 /**
  * Blank implementation of {@link Attr}.
  */
-public class AbstractAttr extends AbstractNode implements Attr {
+public class NominalAttr extends NominalNode implements Attr {
 
+	public NominalAttr(String localName, String namespaceURI) {
+		super(localName, namespaceURI);
+	}
+	
 	@Override
 	public String getName() {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public boolean getSpecified() {
-		return false;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public String getValue() {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void setValue(String value) throws DOMException {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Element getOwnerElement() {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public TypeInfo getSchemaTypeInfo() {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public boolean isId() {
-		return false;
+		throw new UnsupportedOperationException();
 	}
 }

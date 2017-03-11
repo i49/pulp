@@ -1,11 +1,8 @@
 package com.github.i49.pulp.core.container;
 
-import static com.github.i49.pulp.core.container.Elements.*;
 import static com.github.i49.pulp.core.container.XmlAssertions.*;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.w3c.dom.Element;
@@ -17,6 +14,7 @@ import com.github.i49.pulp.api.PublicationResourceRegistry;
 import com.github.i49.pulp.api.Rendition;
 import com.github.i49.pulp.api.Spine;
 import com.github.i49.pulp.api.Spine.Page;
+import com.github.i49.pulp.core.xml.ElementIterator;
 
 /**
  * Parser of EPUB Package Document version 3.0.
@@ -33,8 +31,7 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 	@Override
 	public void parseFor(Rendition rendition) {
 		this.rendition = rendition;
-		List<Element> children = childElements(rootElement, NAMESPACE_URI);
-		Iterator<Element> it = children.iterator();
+		ElementIterator it = new ElementIterator(rootElement, NAMESPACE_URI);
 		if (!it.hasNext()) {
 			return;
 		}
@@ -57,7 +54,9 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 	protected void parseManifest(Element element) {
 		PublicationResourceRegistry registry = rendition.getResourceRegistry();
 		Manifest manifest = rendition.getManifest();
-		for (Element child: childElements(element, NAMESPACE_URI)) {
+		ElementIterator it = new ElementIterator(element, NAMESPACE_URI);
+		while (it.hasNext()) {
+			Element child = it.next();
 			assertOn(child).hasName("item", NAMESPACE_URI)
 			               .hasNonEmptyAttribute("id")
 			               .hasNonEmptyAttribute("href")
@@ -73,7 +72,9 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 	
 	protected void parseSpine(Element element) {
 		Spine spine = rendition.getSpine();
-		for (Element child: childElements(element, NAMESPACE_URI)) {
+		ElementIterator it = new ElementIterator(element, NAMESPACE_URI);
+		while (it.hasNext()) {
+			Element child = it.next();
 			assertOn(child).hasName("itemref", NAMESPACE_URI)
 			               .hasNonEmptyAttribute("idref");
 			String idref = child.getAttribute("idref");

@@ -1,7 +1,5 @@
 package com.github.i49.pulp.core.container;
 
-import static com.github.i49.pulp.core.container.Elements.childElements;
-import static com.github.i49.pulp.core.container.Elements.firstChildElement;
 import static com.github.i49.pulp.core.container.XmlAssertions.*;
 
 import java.util.ArrayList;
@@ -11,9 +9,11 @@ import java.util.NoSuchElementException;
 
 import org.w3c.dom.Element;
 
+import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.Rendition;
 import com.github.i49.pulp.core.StandardMediaType;
+import com.github.i49.pulp.core.xml.ElementIterator;
 
 /**
  * Parser of EPUB Container Document version 1.0.
@@ -28,16 +28,26 @@ class ContainerDocumentParser1 extends ContainerDocumentParser {
 
 	@Override
 	public Iterator<Rendition> parseFor(Publication publication) {
-		Element rootfiles = firstChildElement(rootElement, NAMESPACE_URI);
-		assertOn(rootfiles).hasName("rootfiles", NAMESPACE_URI);
-		for (Element rootfile: childElements(rootfiles, NAMESPACE_URI)) {
-			assertOn(rootfile).hasName("rootfile", NAMESPACE_URI);
-			parseRootFile(rootfile);
+		ElementIterator it = new ElementIterator(rootElement, NAMESPACE_URI);
+		if (!it.hasNext()) {
+			throw new EpubException("");
 		}
+		parseRootfiles(it.next());
 		return new RenditionIterator(publication);
 	}
+		
+	protected void parseRootfiles(Element rootfiles) {
+		assertOn(rootfiles).hasName("rootfiles", NAMESPACE_URI);
+		ElementIterator it = new ElementIterator(rootfiles, NAMESPACE_URI);
+		while (it.hasNext()) {
+			parseRootfile(it.next());
+		}
+	}
 	
-	protected void parseRootFile(Element rootfile) {
+	protected void parseRootfile(Element rootfile) {
+		assertOn(rootfile).hasName("rootfile", NAMESPACE_URI)
+		                  .hasNonEmptyAttribute("media-type")
+		                  .hasNonEmptyAttribute("full-path");
 		String mediaType = rootfile.getAttribute("media-type");
 		String expectedMediaType = StandardMediaType.APPLICATION_OEBPS_PACKAGE_XML.toString();
 		if (expectedMediaType.equals(mediaType)) {

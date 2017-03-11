@@ -10,186 +10,198 @@ import org.w3c.dom.UserDataHandler;
 /**
  * Blank implementation of {@link Node}.
  */
-public abstract class AbstractNode implements Node {
+public class NominalNode implements Node {
 
+	private final String localName;
+	private final String namespaceURI;
+	
+	public NominalNode(String localName, String namespaceURI) {
+		this.localName = localName;
+		this.namespaceURI = namespaceURI;
+	}
+	
 	@Override
 	public String getNodeName() {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public String getNodeValue() throws DOMException {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void setNodeValue(String nodeValue) throws DOMException {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public short getNodeType() {
-		return 0;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Node getParentNode() {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public NodeList getChildNodes() {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Node getFirstChild() {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Node getLastChild() {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Node getPreviousSibling() {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Node getNextSibling() {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public NamedNodeMap getAttributes() {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Document getOwnerDocument() {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Node insertBefore(Node newChild, Node refChild) throws DOMException {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Node replaceChild(Node newChild, Node oldChild) throws DOMException {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Node removeChild(Node oldChild) throws DOMException {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Node appendChild(Node newChild) throws DOMException {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public boolean hasChildNodes() {
-		return false;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Node cloneNode(boolean deep) {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void normalize() {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public boolean isSupported(String feature, String version) {
-		return false;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public String getNamespaceURI() {
-		return null;
+		return namespaceURI;
 	}
 
 	@Override
 	public String getPrefix() {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void setPrefix(String prefix) throws DOMException {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public String getLocalName() {
-		return null;
+		return localName;
 	}
 
 	@Override
 	public boolean hasAttributes() {
-		return false;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public String getBaseURI() {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public short compareDocumentPosition(Node other) throws DOMException {
-		return 0;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public String getTextContent() throws DOMException {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void setTextContent(String textContent) throws DOMException {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public boolean isSameNode(Node other) {
-		return false;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public String lookupPrefix(String namespaceURI) {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public boolean isDefaultNamespace(String namespaceURI) {
-		return false;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public String lookupNamespaceURI(String prefix) {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public boolean isEqualNode(Node arg) {
-		return false;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Object getFeature(String feature, String version) {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Object setUserData(String key, Object data, UserDataHandler handler) {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public Object getUserData(String key) {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 }
