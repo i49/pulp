@@ -1,5 +1,7 @@
 package com.github.i49.pulp.core.zip;
 
+import static com.github.i49.pulp.core.zip.Message.*;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -67,7 +69,7 @@ public class ZipLoader {
 		}
 		CentralDirectoryEntry entry = findEntry(entryName);
 		if (entry == null) {
-			throw new FileNotFoundException(entryName + " not found.");
+			throw new FileNotFoundException(ZIP_ENTRY_NOT_FOUND.format(entryName, getPath()));
 		}
 		InputStream stream = Files.newInputStream(this.path);
 		stream.skip(entry.getPosition());
