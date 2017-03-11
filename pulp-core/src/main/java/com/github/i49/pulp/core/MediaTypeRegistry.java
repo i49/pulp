@@ -36,7 +36,7 @@ public class MediaTypeRegistry {
 	 */
 	public synchronized MediaType getMediaType(String value) {
 		if (value == null) {
-			throw new NullArgumentException("value");
+			throw new IllegalArgumentException("value is null");
 		}
 		value = value.trim();
 		MediaType mediaType = mediaTypes.get(value);

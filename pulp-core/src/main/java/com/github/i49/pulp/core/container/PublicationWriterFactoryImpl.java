@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.PublicationWriter;
 import com.github.i49.pulp.api.PublicationWriterFactory;
-import com.github.i49.pulp.core.NullArgumentException;
 
 /**
  * An implementation of {@link PublicationWriterFactory}.
@@ -20,7 +19,7 @@ public class PublicationWriterFactoryImpl implements PublicationWriterFactory {
 	@Override
 	public PublicationWriter createWriter(Path path) {
 		if (path == null) {
-			throw new NullArgumentException("path");
+			throw new IllegalArgumentException("path is null");
 		}
 		WriteableContainer container = null;
 		try {
@@ -34,7 +33,7 @@ public class PublicationWriterFactoryImpl implements PublicationWriterFactory {
 	@Override
 	public PublicationWriter createWriter(OutputStream stream) {
 		if (stream == null) {
-			throw new NullArgumentException("stream");
+			throw new IllegalArgumentException("stream is null");
 		}
 		return new EpubPublicationWriter3(new WriteableZipContainer(stream));
 	}

@@ -9,7 +9,6 @@ import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationReader;
 import com.github.i49.pulp.api.PublicationReaderFactory;
-import com.github.i49.pulp.core.NullArgumentException;
 
 /**
  * An implementation of {@link PublicationReaderFactory}.
@@ -20,7 +19,7 @@ public class PublicationReaderFactoryImpl implements PublicationReaderFactory {
 	
 	/**
 	 * Constructs this factory.
-	 * @param supplier the supplier of {@link Publication} instances.
+	 * @param supplier the supplier of a {@link Publication} instance.
 	 */
 	public PublicationReaderFactoryImpl(Supplier<Publication> supplier) {
 		this.supplier = supplier;
@@ -29,7 +28,7 @@ public class PublicationReaderFactoryImpl implements PublicationReaderFactory {
 	@Override
 	public PublicationReader createReader(Path path) {
 		if (path == null) {
-			throw new NullArgumentException("path");
+			throw new IllegalArgumentException("path is null");
 		}
 		ReadableContainer container = null;
 		try {

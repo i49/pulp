@@ -31,7 +31,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder ofType(MediaType mediaType) {
 		if (mediaType == null) {
-			throw new NullArgumentException("mediaType");
+			throw new IllegalArgumentException("mediaType is null");
 		}
 		this.mediaType = mediaType;
 		return this;
@@ -40,7 +40,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder ofType(String value) {
 		if (value == null) {
-			throw new NullArgumentException("value");
+			throw new IllegalArgumentException("value is null");
 		}
 		this.mediaType = typeRegistry.getMediaType(value);
 		return this;
@@ -49,7 +49,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder source(Path path) {
 		if (path == null) {
-			throw new NullArgumentException("path");
+			throw new IllegalArgumentException("path is null");
 		}
 		return source(path.toUri());
 	}
@@ -57,7 +57,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder source(URI uri) {
 		if (uri == null) {
-			throw new NullArgumentException("uri");
+			throw new IllegalArgumentException("uri is null");
 		}
 		return source((location)->uri.toURL().openStream());
 	}
@@ -65,7 +65,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder source(byte[] bytes) {
 		if (bytes == null) {
-			throw new NullArgumentException("bytes");
+			throw new IllegalArgumentException("bytes is null");
 		}
 		return source((location)->new ByteArrayInputStream(bytes));
 	}
@@ -73,7 +73,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder source(ContentSource source) {
 		if (source == null) {
-			throw new NullArgumentException("source");
+			throw new IllegalArgumentException("source is null");
 		}
 		this.source = source;
 		return this;
@@ -82,7 +82,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder sourceDir(Path dir) {
 		if (dir == null) {
-			throw new NullArgumentException("dir");
+			throw new IllegalArgumentException("dir is null");
 		}
 		return sourceDir(dir.toUri());
 	}
@@ -90,7 +90,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	@Override
 	public PublicationResourceBuilder sourceDir(URI dir) {
 		if (dir == null) {
-			throw new NullArgumentException("dir");
+			throw new IllegalArgumentException("dir is null");
 		}
 		return source(dir.resolve(localPath));
 	}
