@@ -1,5 +1,7 @@
 package com.github.i49.pulp.core.container;
 
+import static com.github.i49.pulp.core.container.Message.*;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -34,9 +36,9 @@ public class PublicationReaderFactoryImpl implements PublicationReaderFactory {
 		try {
 			container = new ReadableZipContainer(path);
 		} catch (FileNotFoundException e) {
-			throw new EpubException(Messages.containerNotFound(path), e);
+			throw new EpubException(CONTAINER_NOT_FOUND.format(path), e);
 		} catch (IOException e) {
-			throw new EpubException(Messages.containerNotReadable(path), e);
+			throw new EpubException(CONTAINER_NOT_READABLE.format(path), e);
 		}
 		return new EpubPublicationReader(container, this.supplier);
 	}

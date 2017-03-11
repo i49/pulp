@@ -1,6 +1,7 @@
 package com.github.i49.pulp.core.container;
 
-import static com.github.i49.pulp.core.container.XmlElementAssertion.assertOn;
+import static com.github.i49.pulp.core.container.Message.*;
+import static com.github.i49.pulp.core.container.XmlAssertions.*;
 
 import java.util.Iterator;
 
@@ -31,7 +32,7 @@ abstract class ContainerDocumentParser implements ContainerDocumentProcessor {
 		if ("1.0".equals(version)) {
 			parser = new ContainerDocumentParser1(rootElement);
 		} else {
-			throw new EpubException(Messages.xmlDocumentVersionUnsupported(version));
+			throw new EpubException(XML_DOCUMENT_VERSION_UNSUPPORTED.format(version));
 		}
 		return parser;
 	}

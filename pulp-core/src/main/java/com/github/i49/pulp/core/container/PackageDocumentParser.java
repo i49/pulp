@@ -1,6 +1,7 @@
 package com.github.i49.pulp.core.container;
 
-import static com.github.i49.pulp.core.container.XmlElementAssertion.assertOn;
+import static com.github.i49.pulp.core.container.Message.*;
+import static com.github.i49.pulp.core.container.XmlAssertions.*;
 
 import org.w3c.dom.Element;
 
@@ -39,7 +40,7 @@ abstract class PackageDocumentParser implements PackageDocumentProcessor {
 		if ("3.0".equals(version)) {
 			parser = new PackageDocumentParser3(rootElement);
 		} else {
-			throw new EpubException(Messages.xmlDocumentVersionUnsupported(version));
+			throw new EpubException(XML_DOCUMENT_VERSION_UNSUPPORTED.format(version));
 		}
 		return parser;
 	}

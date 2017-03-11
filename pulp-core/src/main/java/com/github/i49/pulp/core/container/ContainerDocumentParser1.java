@@ -2,7 +2,7 @@ package com.github.i49.pulp.core.container;
 
 import static com.github.i49.pulp.core.container.Elements.childElements;
 import static com.github.i49.pulp.core.container.Elements.firstChildElement;
-import static com.github.i49.pulp.core.container.XmlElementAssertion.assertOn;
+import static com.github.i49.pulp.core.container.XmlAssertions.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;

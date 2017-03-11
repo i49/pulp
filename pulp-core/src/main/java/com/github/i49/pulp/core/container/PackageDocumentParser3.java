@@ -1,7 +1,7 @@
 package com.github.i49.pulp.core.container;
 
 import static com.github.i49.pulp.core.container.Elements.*;
-import static com.github.i49.pulp.core.container.XmlElementAssertion.assertOn;
+import static com.github.i49.pulp.core.container.XmlAssertions.*;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -59,9 +59,9 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 		Manifest manifest = rendition.getManifest();
 		for (Element child: childElements(element, NAMESPACE_URI)) {
 			assertOn(child).hasName("item", NAMESPACE_URI)
-			                 .hasNonEmptyAttribute("id")
-			                 .hasNonEmptyAttribute("href")
-			                 .hasNonEmptyAttribute("media-type");
+			               .hasNonEmptyAttribute("id")
+			               .hasNonEmptyAttribute("href")
+			               .hasNonEmptyAttribute("media-type");
 			String id = child.getAttribute("id");
 			String location = child.getAttribute("href");
 			String mediaType = child.getAttribute("media-type");
@@ -75,7 +75,7 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 		Spine spine = rendition.getSpine();
 		for (Element child: childElements(element, NAMESPACE_URI)) {
 			assertOn(child).hasName("itemref", NAMESPACE_URI)
-			                 .hasNonEmptyAttribute("idref");
+			               .hasNonEmptyAttribute("idref");
 			String idref = child.getAttribute("idref");
 			Manifest.Item item = items.get(idref);
 			if (item == null) {

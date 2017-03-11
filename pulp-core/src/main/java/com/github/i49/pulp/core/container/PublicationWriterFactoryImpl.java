@@ -25,7 +25,7 @@ public class PublicationWriterFactoryImpl implements PublicationWriterFactory {
 		try {
 			container = new WriteableZipContainer(path);
 		} catch (IOException e) {
-			throw new EpubException(Messages.containerNotWriteable(path), e);
+			throw new EpubException(Message.CONTAINER_NOT_WRITEABLE.format(path), e);
 		}
 		return new EpubPublicationWriter3(container);
 	}

@@ -1,5 +1,7 @@
 package com.github.i49.pulp.core.container;
 
+import static com.github.i49.pulp.core.container.Message.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -50,8 +52,7 @@ class EpubPublicationWriter3 implements PublicationWriter {
 		try {
 			this.container.close();
 		} catch (IOException e) {
-			// TODO:
-			throw new EpubException(e.getMessage(), e);
+			throw new EpubException(CONTAINER_NOT_CLOSEABLE.format(container.getPath()), e);
 		}
 	}
 	
