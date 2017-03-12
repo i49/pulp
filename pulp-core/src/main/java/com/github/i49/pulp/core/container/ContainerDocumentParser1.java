@@ -1,6 +1,6 @@
 package com.github.i49.pulp.core.container;
 
-import static com.github.i49.pulp.core.container.XmlAssertions.*;
+import static com.github.i49.pulp.core.xml.XmlAssertions.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -9,11 +9,10 @@ import java.util.NoSuchElementException;
 
 import org.w3c.dom.Element;
 
-import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.Rendition;
 import com.github.i49.pulp.core.StandardMediaType;
-import com.github.i49.pulp.core.xml.ElementIterator;
+import com.github.i49.pulp.core.xml.Nodes;
 
 /**
  * Parser of EPUB Container Document version 1.0.
@@ -28,17 +27,15 @@ class ContainerDocumentParser1 extends ContainerDocumentParser {
 
 	@Override
 	public Iterator<Rendition> parseFor(Publication publication) {
-		Iterator<Element> it = ElementIterator.of(rootElement, NAMESPACE_URI);
-		if (!it.hasNext()) {
-			throw new EpubException("");
-		}
+		assertOn(rootElement).contains("rootfiles");
+		Iterator<Element> it = Nodes.children(rootElement, NAMESPACE_URI);
 		parseRootfiles(it.next());
 		return new RenditionIterator(publication);
 	}
 		
 	protected void parseRootfiles(Element rootfiles) {
-		assertOn(rootfiles).hasName("rootfiles", NAMESPACE_URI);
-		Iterator<Element> it = ElementIterator.of(rootfiles, NAMESPACE_URI);
+		assertOn(rootfiles).hasName("rootfiles", NAMESPACE_URI).contains("rootfile");
+		Iterator<Element> it = Nodes.children(rootfiles, NAMESPACE_URI);
 		while (it.hasNext()) {
 			parseRootfile(it.next());
 		}

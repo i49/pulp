@@ -1,7 +1,7 @@
 package com.github.i49.pulp.core.container;
 
 import static com.github.i49.pulp.core.container.Message.*;
-import static com.github.i49.pulp.core.container.XmlAssertions.*;
+import static com.github.i49.pulp.core.xml.XmlAssertions.*;
 
 import java.util.Iterator;
 

@@ -10,7 +10,7 @@ import org.w3c.dom.UserDataHandler;
 /**
  * Blank implementation of {@link Node}.
  */
-public class NominalNode implements Node {
+public abstract class NominalNode implements Node {
 
 	private final String localName;
 	private final String namespaceURI;
@@ -32,11 +32,6 @@ public class NominalNode implements Node {
 
 	@Override
 	public void setNodeValue(String nodeValue) throws DOMException {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public short getNodeType() {
 		throw new UnsupportedOperationException();
 	}
 

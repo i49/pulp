@@ -1,5 +1,7 @@
 package com.github.i49.pulp.core.xml;
 
+import javax.xml.soap.Node;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
@@ -12,6 +14,11 @@ public class NominalAttr extends NominalNode implements Attr {
 
 	public NominalAttr(String localName, String namespaceURI) {
 		super(localName, namespaceURI);
+	}
+	
+	@Override
+	public short getNodeType() {
+		return Node.ATTRIBUTE_NODE;
 	}
 	
 	@Override

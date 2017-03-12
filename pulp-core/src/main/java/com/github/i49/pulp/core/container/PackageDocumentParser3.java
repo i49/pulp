@@ -1,7 +1,7 @@
 package com.github.i49.pulp.core.container;
 
 import static com.github.i49.pulp.core.container.Message.*;
-import static com.github.i49.pulp.core.container.XmlAssertions.*;
+import static com.github.i49.pulp.core.xml.XmlAssertions.*;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,8 +16,7 @@ import com.github.i49.pulp.api.PublicationResourceRegistry;
 import com.github.i49.pulp.api.Rendition;
 import com.github.i49.pulp.api.Spine;
 import com.github.i49.pulp.api.Spine.Page;
-import com.github.i49.pulp.core.xml.ElementIterator;
-import com.github.i49.pulp.core.xml.NominalElement;
+import com.github.i49.pulp.core.xml.Nodes;
 
 /**
  * Parser of EPUB Package Document version 3.0.
@@ -34,27 +33,20 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 	@Override
 	public void parseFor(Rendition rendition) {
 		this.rendition = rendition;
-		Iterator<Element> it = ElementIterator.of(rootElement, NAMESPACE_URI);
+		assertOn(rootElement).contains("metadata", "manifest", "spine");
 	
-		if (!it.hasNext()) {
-			throw new EpubException(XML_ELEMENT_MISSING.format(new NominalElement("metadata", NAMESPACE_URI)));
-		}
+		Iterator<Element> it = Nodes.children(rootElement, NAMESPACE_URI);
+
 		Element element = it.next();
-		assertOn(element).hasName("metadata", NAMESPACE_URI);
+		assertOn(element).hasName("metadata");
 		parseMetadata(element);
 
-		if (!it.hasNext()) {
-			throw new EpubException(XML_ELEMENT_MISSING.format(new NominalElement("manifest", NAMESPACE_URI)));
-		}
 		element = it.next();
-		assertOn(element).hasName("manifest", NAMESPACE_URI);
+		assertOn(element).hasName("manifest");
 		parseManifest(element);
 
-		if (!it.hasNext()) {
-			throw new EpubException(XML_ELEMENT_MISSING.format(new NominalElement("spine", NAMESPACE_URI)));
-		}
 		element = it.next();
-		assertOn(element).hasName("spine", NAMESPACE_URI);
+		assertOn(element).hasName("spine");
 		parseSpine(element);
 	}
 	
@@ -64,10 +56,10 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 	protected void parseManifest(Element element) {
 		PublicationResourceRegistry registry = rendition.getResourceRegistry();
 		Manifest manifest = rendition.getManifest();
-		Iterator<Element> it = ElementIterator.of(element, NAMESPACE_URI);
+		Iterator<Element> it = Nodes.children(element, NAMESPACE_URI);
 		while (it.hasNext()) {
 			Element child = it.next();
-			assertOn(child).hasName("item", NAMESPACE_URI)
+			assertOn(child).hasName("item")
 			               .hasNonEmptyAttribute("id")
 			               .hasNonEmptyAttribute("href")
 			               .hasNonEmptyAttribute("media-type");
@@ -97,10 +89,10 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 	
 	protected void parseSpine(Element element) {
 		Spine spine = rendition.getSpine();
-		Iterator<Element> it = ElementIterator.of(element, NAMESPACE_URI);
+		Iterator<Element> it = Nodes.children(element, NAMESPACE_URI);
 		while (it.hasNext()) {
 			Element child = it.next();
-			assertOn(child).hasName("itemref", NAMESPACE_URI)
+			assertOn(child).hasName("itemref")
 			               .hasNonEmptyAttribute("idref");
 			String idref = child.getAttribute("idref");
 			Manifest.Item item = items.get(idref);

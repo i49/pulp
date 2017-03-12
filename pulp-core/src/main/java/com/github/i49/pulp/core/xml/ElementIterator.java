@@ -7,7 +7,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class ElementIterator implements Iterator<Element> {
+class ElementIterator implements Iterator<Element> {
 
 	private final NodeList nodeList;
 	private final String namespaceURI;
@@ -15,15 +15,7 @@ public class ElementIterator implements Iterator<Element> {
 	private int index;
 	private Element next;
 	
-	public static Iterator<Element> of(Element parent) {
-		return new ElementIterator(parent, null);
-	}
-	
-	public static Iterator<Element> of(Element parent, String namespaceURI) {
-		return new ElementIterator(parent, namespaceURI);
-	}
-
-	private ElementIterator(Element parent, String namespaceURI) {
+	ElementIterator(Element parent, String namespaceURI) {
 		this.nodeList = parent.getChildNodes();
 		this.namespaceURI = namespaceURI;
 		this.index = 0;

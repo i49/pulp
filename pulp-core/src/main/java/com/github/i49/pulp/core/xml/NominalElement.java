@@ -1,5 +1,7 @@
 package com.github.i49.pulp.core.xml;
 
+import javax.xml.soap.Node;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
@@ -15,6 +17,11 @@ public class NominalElement extends NominalNode implements Element {
 		super(localName, namespaceURI);
 	}
 
+	@Override
+	public short getNodeType() {
+		return Node.ELEMENT_NODE;
+	}
+	
 	@Override
 	public String getTagName() {
 		throw new UnsupportedOperationException();
