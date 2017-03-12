@@ -34,10 +34,16 @@ public interface Manifest extends Iterable<Manifest.Item> {
 	Optional<Item> find(String location);
 	
 	/**
-	 * Returns the item used as a cover image for the rendition.
-	 * @return the item if this manifest has a cover image, {@code null} otherwise.
+	 * Returns the item used as the cover image for the rendition.
+	 * @return the item if this manifest has the cover image, {@code null} otherwise.
 	 */
 	Optional<Item> findCoverImage();
+	
+	/**
+	 * Returns the item used as the navigation document for the rendition.
+	 * @return the item if this manifest has the navigation document, {@code null} otherwise.
+	 */
+	Optional<Item> findNavigationDocument();
 	
 	/**
 	 * Returns the number of the items in this manifest.
@@ -84,15 +90,29 @@ public interface Manifest extends Iterable<Manifest.Item> {
 
 		/**
 		 * Returns {@code true} if this item is the cover image of the rendition.
-		 * @return {@code true} if this item is the cover image of the rendition, {@code false} otherwise. 
+		 * @return {@code true} if this item is the cover image, {@code false} otherwise. 
 		 */
 		boolean isCoverImage();
 		
 		/**
-		 * Uses this item as the cover image of the rendition.
+		 * Marks this item as the cover image of the rendition.
+		 * At most one item can be specified as a cover image.
 		 * @return this item.
 		 */
 		Item asCoverImage();
+		
+		/**
+		 * Returns {@code true} if this item is the navigation document of the rendition.
+		 * @return {@code true} if this item is the navigation document, {@code false} otherwise. 
+		 */
+		boolean isNavigation();
+		
+		/**
+		 * Marks this item as the navigation document of the rendition.
+		 * At most one item can be specified as a navigation document.
+		 * @return this item.
+		 */
+		Item asNavigation();
 		
 		/**
 		 * Returns {@code true} if this item is marked as scripted.

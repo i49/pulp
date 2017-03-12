@@ -88,6 +88,7 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 			if (value.equals("cover-image")) {
 				item.asCoverImage();
 			} else if (value.equals("nav")) {
+				item.asNavigation();
 			} else if (value.equals("scripted")) {
 				item.scripted(true);
 			}

@@ -1,6 +1,8 @@
 package com.github.i49.pulp.core;
 
 import java.net.URI;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -66,6 +68,11 @@ class PublicationResourceRegistryImpl implements PublicationResourceRegistry {
 		return resourceMap.size();
 	}
 	
+	@Override
+	public Iterator<PublicationResource> iterator() {
+		return Collections.unmodifiableMap(resourceMap).values().iterator();
+	}
+
 	@Override
 	public PublicationResourceBuilder builder(String location) {
 		if (location == null) {

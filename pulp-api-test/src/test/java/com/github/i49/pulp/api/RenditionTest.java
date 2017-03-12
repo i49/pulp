@@ -1,7 +1,6 @@
 package com.github.i49.pulp.api;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -34,15 +33,15 @@ public class RenditionTest {
 			spine.append(m.get("chapter01.xhtml"));
 			spine.append(m.get("chapter02.xhtml"));
 			
-			assertThat(m.getNumberOfItems(), equalTo(5));
-			assertThat(spine.getNumberOfPages(), equalTo(2));
+			assertThat(m.getNumberOfItems()).isEqualTo(5);
+			assertThat(spine.getNumberOfPages()).isEqualTo(2);
 			
 			Path outputPath = Paths.get("target", "basic.zip");
 			try (PublicationWriter writer = Epub.createWriter(outputPath)) {
 				writer.write(publication);
 			}
 			
-			assertThat(publication.getDefaultRendition(), is(rendition));
+			assertThat(publication.getDefaultRendition()).isEqualTo(rendition);
 		}
 	}
 	

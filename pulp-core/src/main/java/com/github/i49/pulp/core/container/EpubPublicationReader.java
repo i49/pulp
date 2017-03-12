@@ -13,10 +13,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+import com.github.i49.pulp.api.ContentSource;
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.EpubParsingException;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationReader;
+import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.Rendition;
 import com.github.i49.pulp.core.XmlServices;
 
@@ -58,6 +60,7 @@ public class EpubPublicationReader implements PublicationReader {
 		while (it.hasNext()) {
 			buildRendition(it.next());
 		}
+		updateContentSource(publication);
 		return publication;
 	}
 	
@@ -77,6 +80,13 @@ public class EpubPublicationReader implements PublicationReader {
 		Element rootElement = readXmlDocument(location);
 		PackageDocumentParser parser = PackageDocumentParser.create(rootElement);
 		parser.parseFor(rendition);
+	}
+	
+	protected void updateContentSource(Publication publication) {
+		ContentSource source = this.container.getContentSource();
+		for (PublicationResource resource: publication.getResourceRegistry()) {
+			resource.setContentSource(source);
+		}
 	}
 	
 	private Element readXmlDocument(String location) throws IOException, SAXException {

@@ -82,8 +82,10 @@ public class RenditionImpl implements Rendition {
 	private class ManifestImpl implements Manifest {
 		
 		private final Map<PublicationResource, Item> items = new HashMap<>();
-		/* cover image of the rendition */
+		// cover image of the rendition
 		private Item coverImage;
+		// navigation document of the rendition
+		private Item navigationDocument;
 
 		@Override
 		public Iterator<Item> iterator() {
@@ -131,6 +133,11 @@ public class RenditionImpl implements Rendition {
 		@Override
 		public Optional<Item> findCoverImage() {
 			return Optional.ofNullable(coverImage);
+		}
+		
+		@Override
+		public Optional<Item> findNavigationDocument() {
+			return Optional.ofNullable(navigationDocument);
 		}
 
 		@Override
@@ -197,6 +204,17 @@ public class RenditionImpl implements Rendition {
 		@Override
 		public Item asCoverImage() {
 			manifest.coverImage = this;
+			return this;
+		}
+		
+		@Override
+		public boolean isNavigation() {
+			return this == manifest.navigationDocument;
+		}
+		
+		@Override
+		public Item asNavigation() {
+			manifest.navigationDocument = this;
 			return this;
 		}
 		

@@ -24,14 +24,31 @@ public interface PublicationResource {
 	 */
 	MediaType getMediaType();
 	
+	/**
+	 * Returns the content source for this resource.
+	 * @return the content source for this resource, or {@code null} if no source is assigned.
+	 */
 	ContentSource getContentSource();
 	
+	/**
+	 * Assigns the content source that will provide initial content for this resource.
+	 * @param source the content source for this resource, can be {@code null}.
+	 */
 	void setContentSource(ContentSource source);
 	
 	/**
 	 * Opens a new {@link InputStream} that provides the content of this resource. 
 	 * @return a new input stream, which should be closed by the caller of this method.
-	 * @throws IOException if I/O error occurs.
+	 * @exception IllegalStateException if content source is not assigned.
+	 * @exception IOException if an I/O error has occurs.
 	 */
 	InputStream openContent() throws IOException;
+	
+	/**
+	 * Returns the content of this resource.
+	 * @return the content of this resource as a byte array.
+	 * @exception IllegalStateException if content source is not assigned.
+	 * @exception IOException if an I/O error has occurs.
+	 */
+	byte[] getContent() throws IOException;
 }

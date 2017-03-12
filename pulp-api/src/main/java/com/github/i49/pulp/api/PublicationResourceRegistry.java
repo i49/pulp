@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 /**
  * The registry that manages all publication resources available for a publication. 
  */
-public interface PublicationResourceRegistry {
+public interface PublicationResourceRegistry extends Iterable<PublicationResource> {
 
 	/**
 	 * Returns {@code true} if this registry contains the resource specified. 
