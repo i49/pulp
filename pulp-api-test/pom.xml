@@ -44,7 +44,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
               <excludes>
-                <exclude>**/SampleReaderTest.java</exclude>
+                <exclude>**/EpubSampleReaderTest.java</exclude>
               </excludes>
             </configuration>
           </plugin>
