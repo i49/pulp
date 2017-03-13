@@ -1,6 +1,6 @@
 package com.github.i49.pulp.core.zip;
 
-import static com.github.i49.pulp.core.zip.Message.*;
+import static com.github.i49.pulp.core.Messages.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -78,7 +78,7 @@ class ZipParser implements AutoCloseable {
 	public Map<String, CentralDirectoryEntry> parse() throws IOException {
 		CentralDirectoryEnd end = findCentralDirectoryEnd();
 		if (end == null) {
-			throw new ZipException(END_OF_CENTRAL_DIRECTORY_NOT_FOUND.format());
+			throw new ZipException(END_OF_CENTRAL_DIRECTORY_NOT_FOUND());
 		}
 		return parseCentralDirectory(end.centralDirectoryPosition, end.centralDirectoryLength);
 	}
@@ -135,7 +135,7 @@ class ZipParser implements AutoCloseable {
 			    buffer[pos + 1] != signature[1] ||
 			    buffer[pos + 2] != signature[2] ||
 			    buffer[pos + 3] != signature[3]) {
-				throw new ZipException(CENTRAL_DIRECTORY_ENTRY_BROKEN.format());
+				throw new ZipException(CENTRAL_DIRECTORY_ENTRY_BROKEN());
 			}
 			pos += parseCentralDirectoryEntry(ZipStructure.wrap(buffer, pos), entries);
 		}

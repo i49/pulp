@@ -93,6 +93,7 @@ public class EpubPublicationReader implements PublicationReader {
 		setCurrentLocation(location);
 		try (InputStream in = container.openItemToRead(location)) {
 			Document document = documentBuilder.parse(in); 
+			document.setDocumentURI(location);
 			return document.getDocumentElement();
 		}
 	}

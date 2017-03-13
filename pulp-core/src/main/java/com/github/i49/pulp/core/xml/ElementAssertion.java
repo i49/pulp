@@ -1,6 +1,6 @@
 package com.github.i49.pulp.core.xml;
 
-import static com.github.i49.pulp.core.xml.Message.*;
+import static com.github.i49.pulp.core.Messages.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -24,7 +24,7 @@ public class ElementAssertion extends AbstractAssertion {
 	
 	public ElementAssertion hasName(String localName, String namespaceURI) {
 		if (!match(actual, localName, namespaceURI)) {
-			failWithMessage(XML_ELEMENT_UNEXPECTED.format(actual.getLocalName(), localName));
+			failWithMessage(XML_ELEMENT_UNEXPECTED(getDocumentURI(), actual.getLocalName(), localName));
 		}
 		return this;
 	}
@@ -43,15 +43,14 @@ public class ElementAssertion extends AbstractAssertion {
 			}
 		}
 		if (elementSet.size() > 0) {
-			String missing = elementSet.iterator().next();
-			failWithMessage(XML_ELEMENT_MISSING.format(actual.getLocalName(), missing));
+			failWithMessage(XML_ELEMENT_MISSING(getDocumentURI(), actual.getLocalName(), elementSet));
 		}
 		return this;
 	}
 	
 	public ElementAssertion hasAttribute(String localName) {
 		if (!actual.hasAttribute(localName)) {
-			failWithMessage(XML_ATTRIBUTE_MISSING.format(actual.getLocalName(), localName));
+			failWithMessage(XML_ATTRIBUTE_MISSING(getDocumentURI(), actual.getLocalName(), localName));
 		}
 		return this;
 	}
@@ -60,7 +59,7 @@ public class ElementAssertion extends AbstractAssertion {
 		hasAttribute(localName);
 		String value = actual.getAttribute(localName);
 		if (value.isEmpty()) {
-			failWithMessage(XML_ATTRIBUTE_EMPTY.format(actual.getLocalName(), localName));
+			failWithMessage(XML_ATTRIBUTE_EMPTY(getDocumentURI(), actual.getLocalName(), localName));
 		}
 		return this;
 	}
@@ -74,5 +73,9 @@ public class ElementAssertion extends AbstractAssertion {
 		} else {
 			return namespaceURI.equals(node.getNamespaceURI());
 		}
+	}
+	
+	private String getDocumentURI() {
+		return actual.getOwnerDocument().getDocumentURI();
 	}
 }
