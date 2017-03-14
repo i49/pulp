@@ -62,9 +62,12 @@ public class PublicationImpl implements Publication {
 		URI uri = DEFAULT_RENDITION_LOCATION;
 		if (location != null) {
 			try {
-				uri = new URI(null, null, location, null);
+				uri = new URI(location);
 			} catch (URISyntaxException e) {
-				throw new EpubException(Messages.INVALID_LOCATION(location), e);
+				throw new EpubException(Messages.INVALID_RESOURCE_LOCATION(location), e);
+			}
+			if (uri.isAbsolute()) {
+				throw new EpubException(Messages.INVALID_RESOURCE_LOCATION(location));
 			}
 		}
 		return addRendition(uri);

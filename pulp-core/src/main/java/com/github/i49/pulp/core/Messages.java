@@ -32,16 +32,16 @@ public final class Messages {
 		return format("invalid.resource", identifier);
 	}
 	
-	public static String INVALID_LOCATION(String location) {
-		return format("invalid.location", location);
+	public static String INVALID_RESOURCE_LOCATION(String location) {
+		return format("INVALID_RESOURCE_LOCATION", location);
 	}
 	
 	public static String MEDIA_TYPE_UNKNOWN(String pathname) {
-		return format("media.type.unknown", pathname);
+		return format("MEDIA_TYPE_UNKNOWN", pathname);
 	}
 
 	public static String MEDIA_TYPE_INVALID(String value) {
-		return format("media.type.invalid", value);
+		return format("MEDIA_TYPE_INVALID", value);
 	}
 	
 	// core.xml package
