@@ -1,7 +1,6 @@
 package com.github.i49.pulp.core;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,7 +23,7 @@ public class PublicationImpl implements Publication {
 
 	private final MediaTypeRegistry typeRegistry;
 	private final Map<URI, PublicationResource> resourceMap;
-	private final PublicationResourceRegistry resourceRegistry;
+	private final PublicationResourceRegistryImpl resourceRegistry;
 	// a list of renditions.
 	private final List<Rendition> renditions = new ArrayList<>();
 
@@ -59,9 +58,12 @@ public class PublicationImpl implements Publication {
 	
 	@Override
 	public Rendition addRendition(String location) {
-		URI uri = normalizeRenditionLocation(location);
-		if (uri == null) {
-			throw new EpubException(Messages.INVALID_RESOURCE_LOCATION(location));
+		URI uri = DEFAULT_RENDITION_LOCATION;
+		if (location != null) {
+			uri = URI.create(location);
+			if (uri == null || !resourceRegistry.validateResourceLocation(uri)) {
+				throw new EpubException(Messages.INVALID_RESOURCE_LOCATION(location));
+			}
 		}
 		return addRendition(uri);
 	}
@@ -71,25 +73,6 @@ public class PublicationImpl implements Publication {
 		return Collections.unmodifiableList(renditions).iterator();
 	}
 	
-	private static URI normalizeRenditionLocation(String location) {
-		if (location == null) {
-			return DEFAULT_RENDITION_LOCATION;
-		}
-		try {
-			URI uri = new URI(location);
-			if (uri.isAbsolute()) {
-				return null;
-			}
-			String path = uri.getPath();
-			if (path.startsWith("/")) {
-				return null;
-			}
-			return uri;
-		} catch (URISyntaxException e) {
-			return null;
-		}
-	}
-	
 	private Rendition addRendition(URI location) {
 		PublicationResourceRegistry localRegistry = createResourceRegistry(location);
 		Rendition rendition = new RenditionImpl(this, location, localRegistry);
@@ -97,7 +80,7 @@ public class PublicationImpl implements Publication {
 		return rendition;
 	}
 	
-	private PublicationResourceRegistry createResourceRegistry(URI baseLocation) {
+	private PublicationResourceRegistryImpl createResourceRegistry(URI baseLocation) {
 		return new PublicationResourceRegistryImpl(this.resourceMap, this.typeRegistry, baseLocation);
 	}
 }

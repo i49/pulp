@@ -86,6 +86,36 @@ class PublicationResourceRegistryImpl implements PublicationResourceRegistry {
 	}
 	
 	/**
+	 * Validates the location of the resource.
+	 * @param location the location of the resource.
+	 * @return {@code true} if the specified location is valid.
+	 */
+	public boolean validateResourceLocation(URI location) {
+		if (location.isAbsolute()) {
+			return false;
+		}
+		String path = location.getPath();
+		for (String name: path.split("/")) {
+			if (name.isEmpty() || name.endsWith(".")) {
+				return false;
+			}
+			for (int i = 0; i < name.length(); i++) {
+				char c = name.charAt(i);
+				if (c == '\u0022' || c == '\u002A' || c == '\u003A' || c == '\u003C' ||
+					c == '\u003E' || c == '\u003F' || c == '\\' || c == '\u007F' ||
+					c <= '\u001F' ||  // C0 range
+					('\u0080' <= c && c <= '\u009F') || // C1 range
+					('\uE000' <= c && c <= '\uF8FF') || // Private Use Area
+					('\uFDD0' <= c && c <= '\uFDEF') || // Non characters in Arabic Presentation Forms-A
+					('\uFFF0' <= c && c <= '\uFFFF')) { // Specials
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	/**
 	 * Resolves the specified location against the base URI of this registry.
 	 * @param location the location to resolve.
 	 * @return resolved location as a URI.
