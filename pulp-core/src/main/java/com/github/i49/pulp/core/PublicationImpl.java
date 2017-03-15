@@ -59,16 +59,9 @@ public class PublicationImpl implements Publication {
 	
 	@Override
 	public Rendition addRendition(String location) {
-		URI uri = DEFAULT_RENDITION_LOCATION;
-		if (location != null) {
-			try {
-				uri = new URI(location);
-			} catch (URISyntaxException e) {
-				throw new EpubException(Messages.INVALID_RESOURCE_LOCATION(location), e);
-			}
-			if (uri.isAbsolute()) {
-				throw new EpubException(Messages.INVALID_RESOURCE_LOCATION(location));
-			}
+		URI uri = normalizeRenditionLocation(location);
+		if (uri == null) {
+			throw new EpubException(Messages.INVALID_RESOURCE_LOCATION(location));
 		}
 		return addRendition(uri);
 	}
@@ -76,6 +69,25 @@ public class PublicationImpl implements Publication {
 	@Override
 	public Iterator<Rendition> iterator() {
 		return Collections.unmodifiableList(renditions).iterator();
+	}
+	
+	private static URI normalizeRenditionLocation(String location) {
+		if (location == null) {
+			return DEFAULT_RENDITION_LOCATION;
+		}
+		try {
+			URI uri = new URI(location);
+			if (uri.isAbsolute()) {
+				return null;
+			}
+			String path = uri.getPath();
+			if (path.startsWith("/")) {
+				return null;
+			}
+			return uri;
+		} catch (URISyntaxException e) {
+			return null;
+		}
 	}
 	
 	private Rendition addRendition(URI location) {

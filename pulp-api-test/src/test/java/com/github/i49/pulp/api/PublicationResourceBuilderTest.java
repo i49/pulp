@@ -31,7 +31,7 @@ public class PublicationResourceBuilderTest {
 	}
 
 	@Test
-	public void unknowndMediaType() {
+	public void unknownMediaType() {
 		PublicationResourceBuilder builder = registry.builder("figure.unknown");
 		assertThatThrownBy(()->{
 			builder.build();
