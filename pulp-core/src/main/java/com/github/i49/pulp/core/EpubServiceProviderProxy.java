@@ -1,4 +1,4 @@
-package com.github.i49.pulp.core.provider;
+package com.github.i49.pulp.core;
 
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationReaderFactory;

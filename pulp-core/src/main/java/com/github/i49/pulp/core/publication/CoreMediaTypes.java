@@ -1,4 +1,4 @@
-package com.github.i49.pulp.core;
+package com.github.i49.pulp.core.publication;
 
 import java.util.EnumSet;
 

@@ -7,7 +7,7 @@ import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.Rendition;
-import com.github.i49.pulp.core.StandardMediaType;
+import com.github.i49.pulp.core.publication.StandardMediaType;
 
 /**
  * A builder class for building {@code ContainerDocument}.

@@ -11,7 +11,7 @@ import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.Rendition;
-import com.github.i49.pulp.core.StandardMediaType;
+import com.github.i49.pulp.core.publication.StandardMediaType;
 import com.github.i49.pulp.core.xml.Nodes;
 
 /**

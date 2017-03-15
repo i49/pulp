@@ -1,4 +1,4 @@
-package com.github.i49.pulp.core;
+package com.github.i49.pulp.core.publication;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -19,6 +19,7 @@ import com.github.i49.pulp.api.PublicationResourceRegistry;
 import com.github.i49.pulp.api.Rendition;
 import com.github.i49.pulp.api.Spine;
 import com.github.i49.pulp.api.Manifest.Item;
+import com.github.i49.pulp.core.Messages;
 
 /**
  * An implementation of {@link Rendition}.

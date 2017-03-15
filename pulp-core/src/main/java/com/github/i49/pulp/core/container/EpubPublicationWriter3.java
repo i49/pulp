@@ -17,9 +17,9 @@ import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationWriter;
 import com.github.i49.pulp.api.Rendition;
-import com.github.i49.pulp.core.DocumentSerializer;
-import com.github.i49.pulp.core.StandardMediaType;
-import com.github.i49.pulp.core.XmlServices;
+import com.github.i49.pulp.core.publication.DocumentSerializer;
+import com.github.i49.pulp.core.publication.StandardMediaType;
+import com.github.i49.pulp.core.xml.XmlServices;
 
 /**
  * Publication writer that is defined as EPUB3 specification.

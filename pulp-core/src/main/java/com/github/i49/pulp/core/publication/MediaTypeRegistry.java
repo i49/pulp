@@ -1,10 +1,11 @@
-package com.github.i49.pulp.core;
+package com.github.i49.pulp.core.publication;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.github.i49.pulp.api.CoreMediaType;
 import com.github.i49.pulp.api.MediaType;
+import com.github.i49.pulp.core.Messages;
 
 /**
  * The central registry of media types.

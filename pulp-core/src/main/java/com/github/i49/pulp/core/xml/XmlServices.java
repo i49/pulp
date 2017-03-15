@@ -1,4 +1,4 @@
-package com.github.i49.pulp.core;
+package com.github.i49.pulp.core.xml;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -9,6 +9,7 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 
 import com.github.i49.pulp.api.EpubException;
+import com.github.i49.pulp.core.publication.DocumentSerializer;
 
 /**
  * Utility class for creating XML services.

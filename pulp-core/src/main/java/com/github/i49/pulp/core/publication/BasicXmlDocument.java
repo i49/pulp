@@ -1,4 +1,4 @@
-package com.github.i49.pulp.core;
+package com.github.i49.pulp.core.publication;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,6 +15,7 @@ import org.xml.sax.SAXException;
 
 import com.github.i49.pulp.api.MediaType;
 import com.github.i49.pulp.api.XmlDocument;
+import com.github.i49.pulp.core.xml.XmlServices;
 
 class BasicXmlDocument extends BasicPublicationResource implements XmlDocument {
 

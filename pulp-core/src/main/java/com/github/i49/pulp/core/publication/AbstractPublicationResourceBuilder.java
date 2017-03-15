@@ -1,4 +1,4 @@
-package com.github.i49.pulp.core;
+package com.github.i49.pulp.core.publication;
 
 import java.io.ByteArrayInputStream;
 import java.net.URI;
@@ -10,6 +10,7 @@ import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.MediaType;
 import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationResourceBuilder;
+import com.github.i49.pulp.core.Messages;
 
 abstract class AbstractPublicationResourceBuilder implements PublicationResourceBuilder {
 
