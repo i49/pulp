@@ -84,9 +84,17 @@ public class PublicationTest {
 	}
 
 	@Test
-	public void addRendition_shouldThrowIfLocationContainingDotSegments() {
+	public void addRendition_shouldThrowIfLocationContainsDotSegments() {
 		assertThatThrownBy(()->{
 			publication.addRendition("../package.opf");
 		}).isInstanceOf(EpubException.class).hasMessageContaining("../package.opf");
+	}
+	
+	@Test
+	public void addRendition_shouldThrowIfRenditionAlreadyExists() {
+		assertThatThrownBy(()->{
+			publication.addRendition();
+			publication.addRendition();
+		}).isInstanceOf(EpubException.class).hasMessageContaining("EPUB/package.opf");
 	}
 }

@@ -120,7 +120,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 		if (this.mediaType == null) {
 			this.mediaType = CoreMediaTypes.guessMediaType(localPath);
 			if (this.mediaType == null) {
-				throw new EpubException(Messages.MEDIA_TYPE_UNKNOWN(localPath));
+				throw new EpubException(Messages.MEDIA_TYPE_NOT_DETECTED(localPath));
 			}
 		}
 	}

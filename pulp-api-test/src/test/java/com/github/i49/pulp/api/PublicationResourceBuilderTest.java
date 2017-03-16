@@ -17,21 +17,21 @@ public class PublicationResourceBuilderTest {
 	}
 	
 	@Test
-	public void coreMediaType() {
+	public void build_shouldAdoptSpecifiedCoreMediaType() {
 		PublicationResourceBuilder builder = registry.builder("title.xhtml");
 		PublicationResource r = builder.ofType(CoreMediaType.APPLICATION_XHTML_XML).build();
 		assertThat(r.getMediaType()).isEqualTo(CoreMediaType.APPLICATION_XHTML_XML);
 	}
 	
 	@Test
-	public void guessedMediaType() {
+	public void build_shouldGuessMediaType() {
 		PublicationResourceBuilder builder = registry.builder("title.xhtml");
 		PublicationResource r = builder.build();
 		assertThat(r.getMediaType()).isEqualTo(CoreMediaType.APPLICATION_XHTML_XML);
 	}
 
 	@Test
-	public void unknownMediaType() {
+	public void build_shouldThrowIfMediaTypeNotDetected() {
 		PublicationResourceBuilder builder = registry.builder("figure.unknown");
 		assertThatThrownBy(()->{
 			builder.build();
@@ -39,7 +39,7 @@ public class PublicationResourceBuilderTest {
 	}
 	
 	@Test
-	public void invalidMediaType() {
+	public void build_shouldThrowIfMediaTypeIsInvalid() {
 		PublicationResourceBuilder builder = registry.builder("title.xhtml");
 		assertThatThrownBy(()->{
 			builder.ofType("abc");

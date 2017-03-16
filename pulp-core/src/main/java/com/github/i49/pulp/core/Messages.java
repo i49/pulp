@@ -32,12 +32,16 @@ public final class Messages {
 		return format("invalid.resource", identifier);
 	}
 	
-	public static String INVALID_RESOURCE_LOCATION(String location) {
-		return format("INVALID_RESOURCE_LOCATION", location);
+	public static String RESOURCE_LOCATION_INVALID(String location) {
+		return format("RESOURCE_LOCATION_INVALID", location);
 	}
 	
-	public static String MEDIA_TYPE_UNKNOWN(String pathname) {
-		return format("MEDIA_TYPE_UNKNOWN", pathname);
+	public static String RENDITION_ALREADY_EXISTS(URI location) {
+		return format("RENDITION_ALREADY_EXISTS", location);
+	}
+	
+	public static String MEDIA_TYPE_NOT_DETECTED(String pathname) {
+		return format("MEDIA_TYPE_NOT_DETECTED", pathname);
 	}
 
 	public static String MEDIA_TYPE_INVALID(String value) {
@@ -46,6 +50,14 @@ public final class Messages {
 	
 	// core.xml package
 	
+	public static String XML_PARSER_MISCONFIGURED() {
+		return format("XML_PARSER_MISCONFIGURED");
+	}
+	
+	public static String XML_TRANSFORMER_MISCONFIGURED() {
+		return format("XML_TRANSFORMER_MISCONFIGURED");
+	}
+
 	public static String XML_ELEMENT_MISSING(String fileName, String parentName, Set<String> missing) {
 		return format("XML_ELEMENT_MISSING", fileName, element(parentName), elements(missing));
 	}

@@ -1,11 +1,10 @@
 package com.github.i49.pulp.core.publication;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.github.i49.pulp.api.EpubException;
@@ -25,8 +24,8 @@ public class PublicationImpl implements Publication {
 	private final MediaTypeRegistry typeRegistry;
 	private final Map<URI, PublicationResource> resourceMap;
 	private final PublicationResourceRegistryImpl resourceRegistry;
-	// a list of renditions.
-	private final List<Rendition> renditions = new ArrayList<>();
+	// renditions.
+	private final HashMap<URI, Rendition> renditions = new LinkedHashMap<>();
 
 	public PublicationImpl(MediaTypeRegistry typeRegistry) {
 		this.typeRegistry = typeRegistry;
@@ -44,7 +43,7 @@ public class PublicationImpl implements Publication {
 		if (getNumberOfRenditions() == 0) {
 			return null;
 		}
-		return renditions.get(0);
+		return renditions.values().iterator().next();
 	}
 	
 	@Override
@@ -62,8 +61,8 @@ public class PublicationImpl implements Publication {
 		URI uri = DEFAULT_RENDITION_LOCATION;
 		if (location != null) {
 			uri = URI.create(location);
-			if (uri == null || !resourceRegistry.validateResourceLocation(uri)) {
-				throw new EpubException(Messages.INVALID_RESOURCE_LOCATION(location));
+			if (uri == null || !resourceRegistry.validateLocalLocation(uri)) {
+				throw new EpubException(Messages.RESOURCE_LOCATION_INVALID(location));
 			}
 		}
 		return addRendition(uri);
@@ -71,13 +70,16 @@ public class PublicationImpl implements Publication {
 
 	@Override
 	public Iterator<Rendition> iterator() {
-		return Collections.unmodifiableList(renditions).iterator();
+		return Collections.unmodifiableCollection(renditions.values()).iterator();
 	}
 	
 	private Rendition addRendition(URI location) {
+		if (this.renditions.containsKey(location)) {
+			throw new EpubException(Messages.RENDITION_ALREADY_EXISTS(location));
+		}
 		PublicationResourceRegistry localRegistry = createResourceRegistry(location);
 		Rendition rendition = new RenditionImpl(this, location, localRegistry);
-		this.renditions.add(rendition);
+		this.renditions.put(location, rendition);
 		return rendition;
 	}
 	

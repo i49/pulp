@@ -9,6 +9,7 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 
 import com.github.i49.pulp.api.EpubException;
+import com.github.i49.pulp.core.Messages;
 import com.github.i49.pulp.core.publication.DocumentSerializer;
 
 /**
@@ -33,8 +34,7 @@ public final class XmlServices {
 		try {
 			return builderFactory.get().newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
-			// TODO:
-			throw new EpubException(e.getMessage(), e);
+			throw new EpubException(Messages.XML_PARSER_MISCONFIGURED(), e);
 		}
 	}
 	
@@ -52,8 +52,7 @@ public final class XmlServices {
 			t.setOutputProperty(OutputKeys.METHOD, "xml");
 			return new DocumentSerializer(t);
 		} catch (TransformerConfigurationException e) {
-			// TODO:
-			throw new EpubException(e.getMessage(), e);
+			throw new EpubException(Messages.XML_TRANSFORMER_MISCONFIGURED(), e);
 		}
 	}
 

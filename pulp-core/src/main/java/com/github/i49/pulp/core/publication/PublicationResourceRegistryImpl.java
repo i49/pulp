@@ -87,11 +87,11 @@ class PublicationResourceRegistryImpl implements PublicationResourceRegistry {
 	}
 	
 	/**
-	 * Validates the location of the resource.
+	 * Validates the location of the local resource.
 	 * @param location the location of the resource.
 	 * @return {@code true} if the specified location is valid.
 	 */
-	public boolean validateResourceLocation(URI location) {
+	public boolean validateLocalLocation(URI location) {
 		if (location.isAbsolute()) {
 			return false;
 		}
