@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URI;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.transform.TransformerException;
@@ -15,13 +14,14 @@ import org.xml.sax.SAXException;
 
 import com.github.i49.pulp.api.MediaType;
 import com.github.i49.pulp.api.XmlDocument;
+import com.github.i49.pulp.core.xml.DocumentSerializer;
 import com.github.i49.pulp.core.xml.XmlServices;
 
 class BasicXmlDocument extends BasicPublicationResource implements XmlDocument {
 
 	private Document document;
 	
-	public BasicXmlDocument(URI location, MediaType mediaType) {
+	public BasicXmlDocument(PublicationResourceLocation location, MediaType mediaType) {
 		super(location, mediaType);
 	}
 	

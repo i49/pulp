@@ -10,7 +10,6 @@ import javax.xml.transform.TransformerFactory;
 
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.core.Messages;
-import com.github.i49.pulp.core.publication.DocumentSerializer;
 
 /**
  * Utility class for creating XML services.

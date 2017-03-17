@@ -16,11 +16,11 @@ class BasicPublicationResource implements PublicationResource {
 
 	private static final int BUFFER_SIZE = 64 * 1024;
 
-	private final URI location;
+	private final PublicationResourceLocation location;
 	private final MediaType mediaType;
 	private ContentSource source;
 	
-	public BasicPublicationResource(URI location, MediaType mediaType) {
+	public BasicPublicationResource(PublicationResourceLocation location, MediaType mediaType) {
 		if (location == null || mediaType == null) {
 			throw new NullPointerException();
 		}
@@ -30,7 +30,7 @@ class BasicPublicationResource implements PublicationResource {
 
 	@Override
 	public URI getLocation() {
-		return location;
+		return location.toURI();
 	}
 	
 	@Override

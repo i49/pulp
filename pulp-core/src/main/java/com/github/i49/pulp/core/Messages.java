@@ -36,7 +36,7 @@ public final class Messages {
 		return format("RESOURCE_LOCATION_INVALID", location);
 	}
 	
-	public static String RENDITION_ALREADY_EXISTS(URI location) {
+	public static String RENDITION_ALREADY_EXISTS(String location) {
 		return format("RENDITION_ALREADY_EXISTS", location);
 	}
 	

@@ -14,14 +14,14 @@ import com.github.i49.pulp.core.Messages;
 
 abstract class AbstractPublicationResourceBuilder implements PublicationResourceBuilder {
 
-	private final URI location;
+	private final PublicationResourceLocation location;
 	private final String localPath;
 	private final MediaTypeRegistry typeRegistry;
 	
 	private ContentSource source;
 	private MediaType mediaType;
 	
-	AbstractPublicationResourceBuilder(URI location, String localPath, MediaTypeRegistry typeRegistry) {
+	AbstractPublicationResourceBuilder(PublicationResourceLocation location, String localPath, MediaTypeRegistry typeRegistry) {
 		this.location = location;
 		this.localPath = localPath;
 		this.typeRegistry = typeRegistry;

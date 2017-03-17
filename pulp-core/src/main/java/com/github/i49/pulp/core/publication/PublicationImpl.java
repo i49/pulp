@@ -58,14 +58,14 @@ public class PublicationImpl implements Publication {
 	
 	@Override
 	public Rendition addRendition(String location) {
-		URI uri = DEFAULT_RENDITION_LOCATION;
-		if (location != null) {
-			uri = URI.create(location);
-			if (uri == null || !resourceRegistry.validateLocalLocation(uri)) {
-				throw new EpubException(Messages.RESOURCE_LOCATION_INVALID(location));
-			}
+		if (location == null) {
+			throw new IllegalArgumentException("location is null");
 		}
-		return addRendition(uri);
+		PublicationResourceLocation resourceLocation = PublicationResourceLocation.create(location);
+		if (resourceLocation.isRemote()) {
+			throw new EpubException(Messages.RESOURCE_LOCATION_INVALID(location));
+		}
+		return addRendition(resourceLocation.toURI());
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class PublicationImpl implements Publication {
 	
 	private Rendition addRendition(URI location) {
 		if (this.renditions.containsKey(location)) {
-			throw new EpubException(Messages.RENDITION_ALREADY_EXISTS(location));
+			throw new EpubException(Messages.RENDITION_ALREADY_EXISTS(location.toString()));
 		}
 		PublicationResourceRegistry localRegistry = createResourceRegistry(location);
 		Rendition rendition = new RenditionImpl(this, location, localRegistry);

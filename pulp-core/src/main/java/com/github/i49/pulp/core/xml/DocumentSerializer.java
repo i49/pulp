@@ -1,4 +1,4 @@
-package com.github.i49.pulp.core.publication;
+package com.github.i49.pulp.core.xml;
 
 import java.io.IOException;
 import java.io.OutputStream;
