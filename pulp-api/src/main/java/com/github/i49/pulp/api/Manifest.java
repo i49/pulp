@@ -36,8 +36,8 @@ public interface Manifest extends Iterable<Manifest.Item> {
 	 * Returns the specified item in this manifest
 	 * @param location the location of the publication resource assigned to the item.
 	 * @return the item found.
-	 * @exception NullPointerException if {@code location} is {@code null}.
-	 * @exception NoSuchElementException if this manifest does not contain the specified resource.
+	 * @throws IllegalArgumentException if {@code location} is {@code null}.
+	 * @throws NoSuchElementException if this manifest does not contain the specified resource.
 	 */
 	Item get(String location);
 	
@@ -45,7 +45,7 @@ public interface Manifest extends Iterable<Manifest.Item> {
 	 * Returns the specified item in this manifest
 	 * @param location the location of the publication resource assigned to the item.
 	 * @return the item if this manifest contains the specified resource, {@code null} otherwise.
-	 * @exception NullPointerException if {@code location} is {@code null}.
+	 * @throws IllegalArgumentException if {@code location} is {@code null}.
 	 */
 	Optional<Item> find(String location);
 	
@@ -73,15 +73,15 @@ public interface Manifest extends Iterable<Manifest.Item> {
 	 * this method returns the item previously created by the resource.
 	 * @param resource the resource to be added, cannot be {@code null}.
 	 * @return an item of this manifest.
-	 * @exception NullPointerException if {@code resource} is {@code null}.
-	 * @exception EpubException if {@code resource} does not exists in the {@link PublicationResourceRegistry}.
+	 * @throws IllegalArgumentException if {@code resource} is {@code null}.
+	 * @throws EpubException if other resource already exists at the location of the resource in the publication.
 	 */
 	Item add(PublicationResource resource);
 	
 	/**
 	 * Removes the specified manifest item from this manifest if present. 
 	 * @param item the manifest item to be removed from this manifest.
-	 * @exception NullPointerException if {@code item} is {@code null}.
+	 * @throws IllegalArgumentException if {@code item} is {@code null}.
 	 */
 	void remove(Item item);
 	
