@@ -14,28 +14,28 @@ import com.github.i49.pulp.api.spi.EpubServiceProvider;
 public class EpubServiceProviderProxy implements EpubServiceProvider {
 
 	// The singleton of {@link EpubServiceProviderImpl} shared by all threads.
-	private static final EpubServiceProvider impl = new EpubServiceProviderImpl();
+	private static final EpubServiceProvider singleton = new EpubServiceProviderImpl();
 	
 	public EpubServiceProviderProxy() {
 	}
 
 	@Override
 	public Publication createPublication() {
-		return impl.createPublication();
+		return singleton.createPublication();
 	}
 
 	@Override
 	public PublicationReaderFactory createReaderFactory() {
-		return impl.createReaderFactory();
+		return singleton.createReaderFactory();
 	}
 
 	@Override
 	public PublicationWriterFactory createWriterFactory() {
-		return impl.createWriterFactory();
+		return singleton.createWriterFactory();
 	}
 
 	@Override
 	public PublicationResourceBuilderFactory createResourceBuilderFactory(URI baseURI) {
-		return impl.createResourceBuilderFactory(baseURI);
+		return singleton.createResourceBuilderFactory(baseURI);
 	}
 }

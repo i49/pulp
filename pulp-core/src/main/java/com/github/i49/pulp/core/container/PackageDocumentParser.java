@@ -1,12 +1,13 @@
 package com.github.i49.pulp.core.container;
 
-import static com.github.i49.pulp.core.container.Message.*;
 import static com.github.i49.pulp.core.xml.XmlAssertions.*;
 
 import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.EpubException;
+import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.Rendition;
+import com.github.i49.pulp.core.Messages;
 
 /**
  * Parser interface for parsing a package document.
@@ -22,7 +23,7 @@ abstract class PackageDocumentParser implements PackageDocumentProcessor {
 	/**
 	 * Parses a package document.
 	 */
-	public abstract void parseFor(Rendition rendition);
+	public abstract void parseFor(Rendition rendition, PublicationResourceBuilderFactory builderFactory);
 	
 	/**
 	 * Creates a new parser.
@@ -40,7 +41,7 @@ abstract class PackageDocumentParser implements PackageDocumentProcessor {
 		if ("3.0".equals(version)) {
 			parser = new PackageDocumentParser3(rootElement);
 		} else {
-			throw new EpubException(XML_DOCUMENT_VERSION_UNSUPPORTED.format(version));
+			throw new EpubException(Messages.XML_DOCUMENT_VERSION_UNSUPPORTED(version));
 		}
 		return parser;
 	}

@@ -1,11 +1,9 @@
 package com.github.i49.pulp.core.container;
 
-import static com.github.i49.pulp.core.container.Message.*;
-
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.Iterator;
-import java.util.function.Supplier;
 
 import javax.xml.parsers.DocumentBuilder;
 
@@ -19,20 +17,23 @@ import com.github.i49.pulp.api.EpubParsingException;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationReader;
 import com.github.i49.pulp.api.PublicationResource;
+import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.Rendition;
+import com.github.i49.pulp.api.spi.EpubServiceProvider;
+import com.github.i49.pulp.core.Messages;
 import com.github.i49.pulp.core.xml.XmlServices;
 
 public class EpubPublicationReader implements PublicationReader {
 
 	private final ReadableContainer container;
-	private final Supplier<Publication> supplier;
+	private final EpubServiceProvider provider;
 	private final DocumentBuilder documentBuilder;
 	
 	private String currentLocation;
 	
-	public EpubPublicationReader(ReadableContainer loader, Supplier<Publication> supplier) {
+	public EpubPublicationReader(ReadableContainer loader, EpubServiceProvider provider) {
 		this.container = loader;
-		this.supplier = supplier;
+		this.provider = provider;
 		this.documentBuilder = XmlServices.newBuilder();
 	}
 
@@ -50,7 +51,7 @@ public class EpubPublicationReader implements PublicationReader {
 		try {
 			this.container.close();
 		} catch (IOException e) {
-			throw new EpubException(CONTAINER_NOT_CLOSEABLE.format(container.getPath()), e);
+			throw new EpubException(Messages.CONTAINER_NOT_CLOSEABLE(container.getPath()), e);
 		}
 	}
 	
@@ -65,7 +66,11 @@ public class EpubPublicationReader implements PublicationReader {
 	}
 	
 	protected Publication createPublication() {
-		return supplier.get();
+		return provider.createPublication();
+	}
+	
+	protected PublicationResourceBuilderFactory createResourceBuilderFactory(URI location) {
+		return provider.createResourceBuilderFactory(location);
 	}
 	
 	protected Iterator<Rendition> parseContainerDocument(Publication publication) throws IOException, SAXException {
@@ -79,7 +84,7 @@ public class EpubPublicationReader implements PublicationReader {
 		String location = rendition.getLocation().getPath();
 		Element rootElement = readXmlDocument(location);
 		PackageDocumentParser parser = PackageDocumentParser.create(rootElement);
-		parser.parseFor(rendition);
+		parser.parseFor(rendition, createResourceBuilderFactory(rendition.getLocation()));
 	}
 	
 	protected void updateContentSource(Publication publication) {

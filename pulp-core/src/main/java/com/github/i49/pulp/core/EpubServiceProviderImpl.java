@@ -27,7 +27,7 @@ public class EpubServiceProviderImpl implements EpubServiceProvider {
 
 	@Override
 	public PublicationReaderFactory createReaderFactory() {
-		return new PublicationReaderFactoryImpl(this::createPublication);
+		return new PublicationReaderFactoryImpl(this);
 	}
 	
 	@Override

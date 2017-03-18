@@ -1,7 +1,5 @@
 package com.github.i49.pulp.core.container;
 
-import static com.github.i49.pulp.core.container.Message.*;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -17,6 +15,7 @@ import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationWriter;
 import com.github.i49.pulp.api.Rendition;
+import com.github.i49.pulp.core.Messages;
 import com.github.i49.pulp.core.publication.StandardMediaType;
 import com.github.i49.pulp.core.xml.DocumentSerializer;
 import com.github.i49.pulp.core.xml.XmlServices;
@@ -52,7 +51,7 @@ class EpubPublicationWriter3 implements PublicationWriter {
 		try {
 			this.container.close();
 		} catch (IOException e) {
-			throw new EpubException(CONTAINER_NOT_CLOSEABLE.format(container.getPath()), e);
+			throw new EpubException(Messages.CONTAINER_NOT_CLOSEABLE(container.getPath()), e);
 		}
 	}
 	

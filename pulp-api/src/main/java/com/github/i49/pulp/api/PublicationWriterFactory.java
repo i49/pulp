@@ -13,7 +13,7 @@ public interface PublicationWriterFactory {
 	 * @param path the location where a publication will be stored by the writer.
 	 * @return created instance of {@link PublicationWriter}.
 	 * @exception IllegalArgumentException if given {@code path} is {@code null}.
-	 * @exception EpubException if an I/O error occurred.
+	 * @exception EpubException if an I/O error has occurred.
 	 */
 	PublicationWriter createWriter(Path path);
 	

@@ -48,6 +48,36 @@ public final class Messages {
 		return format("MEDIA_TYPE_INVALID", value);
 	}
 	
+	// core.container package
+	
+	public static String CONTAINER_NOT_FOUND(Path path) {
+		return format("CONTAINER_NOT_FOUND", path);
+	}
+
+	public static String CONTAINER_NOT_READABLE(Path path) {
+		return format("CONTAINER_NOT_READABLE", path);
+	}
+	
+	public static String CONTAINER_NOT_WRITEABLE(Path path) {
+		return format("CONTAINER_NOT_WRITEABLE", path);
+	}
+	
+	public static String CONTAINER_NOT_CLOSEABLE(Path path) {
+		return format("CONTAINER_NOT_CLOSEABLE", path);
+	}
+	
+	public static String MANIFEST_ITEM_ID_MISSING(String id) {
+		return format("MANIFEST_ITEM_ID_MISSING", id);
+	}
+	
+	public static String XML_DOCUMENT_VERSION_UNSUPPORTED(String version) {
+		return format("XML_DOCUMENT_VERSION_UNSUPPORTED", version);
+	}
+	
+	public static String XML_DOCUMENT_NOT_WELL_FORMED() {
+		return format("XML_DOCUMENT_NOT_WELL_FORMED");
+	}
+	
 	// core.xml package
 	
 	public static String XML_PARSER_MISCONFIGURED() {

@@ -113,6 +113,11 @@ class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 		return resource;
 	}
 	
+	@Override
+	public String toString() {
+		return location.toString();
+	}
+	
 	private void updateMediaType() {
 		if (this.mediaType == null) {
 			this.mediaType = CoreMediaTypes.guessMediaType(localPath);

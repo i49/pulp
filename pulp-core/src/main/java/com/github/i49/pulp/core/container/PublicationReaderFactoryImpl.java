@@ -1,30 +1,28 @@
 package com.github.i49.pulp.core.container;
 
-import static com.github.i49.pulp.core.container.Message.*;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.function.Supplier;
 
 import com.github.i49.pulp.api.EpubException;
-import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationReader;
 import com.github.i49.pulp.api.PublicationReaderFactory;
+import com.github.i49.pulp.api.spi.EpubServiceProvider;
+import com.github.i49.pulp.core.Messages;
 
 /**
  * An implementation of {@link PublicationReaderFactory}.
  */
 public class PublicationReaderFactoryImpl implements PublicationReaderFactory {
 
-	private final Supplier<Publication> supplier;
+	private final EpubServiceProvider provider;
 	
 	/**
 	 * Constructs this factory.
-	 * @param supplier the supplier of a {@link Publication} instance.
+	 * @param provider the service provider.
 	 */
-	public PublicationReaderFactoryImpl(Supplier<Publication> supplier) {
-		this.supplier = supplier;
+	public PublicationReaderFactoryImpl(EpubServiceProvider provider) {
+		this.provider = provider;
 	}
 	
 	@Override
@@ -36,10 +34,10 @@ public class PublicationReaderFactoryImpl implements PublicationReaderFactory {
 		try {
 			container = new ReadableZipContainer(path);
 		} catch (FileNotFoundException e) {
-			throw new EpubException(CONTAINER_NOT_FOUND.format(path), e);
+			throw new EpubException(Messages.CONTAINER_NOT_FOUND(path), e);
 		} catch (IOException e) {
-			throw new EpubException(CONTAINER_NOT_READABLE.format(path), e);
+			throw new EpubException(Messages.CONTAINER_NOT_READABLE(path), e);
 		}
-		return new EpubPublicationReader(container, this.supplier);
+		return new EpubPublicationReader(container, this.provider);
 	}
 }

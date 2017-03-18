@@ -1,6 +1,5 @@
 package com.github.i49.pulp.core.container;
 
-import static com.github.i49.pulp.core.container.Message.*;
 import static com.github.i49.pulp.core.xml.XmlAssertions.*;
 
 import java.util.Iterator;
@@ -10,6 +9,7 @@ import org.w3c.dom.Element;
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.Rendition;
+import com.github.i49.pulp.core.Messages;
 
 abstract class ContainerDocumentParser implements ContainerDocumentProcessor {
 
@@ -32,7 +32,7 @@ abstract class ContainerDocumentParser implements ContainerDocumentProcessor {
 		if ("1.0".equals(version)) {
 			parser = new ContainerDocumentParser1(rootElement);
 		} else {
-			throw new EpubException(XML_DOCUMENT_VERSION_UNSUPPORTED.format(version));
+			throw new EpubException(Messages.XML_DOCUMENT_VERSION_UNSUPPORTED(version));
 		}
 		return parser;
 	}

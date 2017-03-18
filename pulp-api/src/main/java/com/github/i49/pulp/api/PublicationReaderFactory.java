@@ -12,7 +12,7 @@ public interface PublicationReaderFactory {
 	 * @param path the location where the file to be read is located.
 	 * @return created instance of {@link PublicationReader}.
 	 * @exception IllegalArgumentException if given {@code path} is {@code null}.
-	 * @exception EpubException if an I/O error occurred.
+	 * @exception EpubException if an I/O error has occurred.
 	 */
 	PublicationReader createReader(Path path);
 }

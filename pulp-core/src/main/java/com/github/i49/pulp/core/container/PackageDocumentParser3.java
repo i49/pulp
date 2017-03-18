@@ -1,6 +1,5 @@
 package com.github.i49.pulp.core.container;
 
-import static com.github.i49.pulp.core.container.Message.*;
 import static com.github.i49.pulp.core.xml.XmlAssertions.*;
 
 import java.util.HashMap;
@@ -9,7 +8,6 @@ import java.util.Map;
 
 import org.w3c.dom.Element;
 
-import com.github.i49.pulp.api.Epub;
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Manifest;
 import com.github.i49.pulp.api.PublicationResource;
@@ -17,6 +15,7 @@ import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.Rendition;
 import com.github.i49.pulp.api.Spine;
 import com.github.i49.pulp.api.Spine.Page;
+import com.github.i49.pulp.core.Messages;
 import com.github.i49.pulp.core.xml.Nodes;
 
 /**
@@ -32,7 +31,7 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 	}
 
 	@Override
-	public void parseFor(Rendition rendition) {
+	public void parseFor(Rendition rendition, PublicationResourceBuilderFactory factory) {
 		this.rendition = rendition;
 		assertOn(rootElement).contains("metadata", "manifest", "spine");
 	
@@ -44,7 +43,7 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 
 		element = it.next();
 		assertOn(element).hasName("manifest");
-		parseManifest(element);
+		parseManifest(element, factory);
 
 		element = it.next();
 		assertOn(element).hasName("spine");
@@ -54,8 +53,7 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 	protected void parseMetadata(Element element) {
 	}
 
-	protected void parseManifest(Element element) {
-		PublicationResourceBuilderFactory factory = Epub.createResourceBuilderFactory(rendition.getLocation());
+	protected void parseManifest(Element element, PublicationResourceBuilderFactory factory) {
 		Manifest manifest = rendition.getManifest();
 		Iterator<Element> it = Nodes.children(element, NAMESPACE_URI);
 		while (it.hasNext()) {
@@ -98,7 +96,7 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 			String idref = child.getAttribute("idref");
 			Manifest.Item item = items.get(idref);
 			if (item == null) {
-				throw new EpubException(MANIFEST_ITEM_NOT_FOUND.format(idref));
+				throw new EpubException(Messages.MANIFEST_ITEM_ID_MISSING(idref));
 			}
 			Page page = spine.append(item);
 			if ("no".equals(child.getAttribute("linear"))) {
