@@ -16,7 +16,7 @@ import com.github.i49.pulp.api.Manifest;
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
-import com.github.i49.pulp.api.PublicationResourceRegistry;
+import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.Rendition;
 import com.github.i49.pulp.api.Spine;
 
@@ -67,9 +67,10 @@ class PublicationCompiler {
 	}
 	
 	private void addResourcesToRendition(Rendition rendition) throws IOException {
+
 		
 		List<String> documents = new ArrayList<>();
-		PublicationResourceRegistry registry = rendition.getResourceRegistry();
+		PublicationResourceBuilderFactory factory = Epub.createResourceBuilderFactory(rendition.getLocation());
 		Manifest manifest = rendition.getManifest();
 	
 		Files.walk(this.sourceDir).filter(Files::isRegularFile).forEach(path->{
@@ -78,7 +79,7 @@ class PublicationCompiler {
 			if (shouldIgnore(relativePath)) {
 				return;
 			}
-			PublicationResource r = registry.builder(relativePath).source(uri).build();
+			PublicationResource r = factory.newBuilder(relativePath).source(uri).build();
 			Manifest.Item item = manifest.add(r);
 			if (checkContentDocument(relativePath)) {
 				documents.add(relativePath);

@@ -1,8 +1,12 @@
 package com.github.i49.pulp.api.spi;
 
+import java.net.URI;
+
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationReader;
 import com.github.i49.pulp.api.PublicationReaderFactory;
+import com.github.i49.pulp.api.PublicationResourceBuilder;
+import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.PublicationWriter;
 import com.github.i49.pulp.api.PublicationWriterFactory;
 
@@ -29,4 +33,12 @@ public interface EpubServiceProvider {
 	 * @return an instance of publication writer factory.
 	 */
 	PublicationWriterFactory createWriterFactory();
+
+	/**
+	 * Creates an instance of factory that can be used to produce {@link PublicationResourceBuilder}.
+	 * @param baseURI the base location to be used by the builders.
+	 * @return an instance of publication resource builder factory.
+	 * @throws IllegalArgumentException if given {@code baseURI} is {@code null}.
+	 */
+	PublicationResourceBuilderFactory createResourceBuilderFactory(URI baseURI);
 }

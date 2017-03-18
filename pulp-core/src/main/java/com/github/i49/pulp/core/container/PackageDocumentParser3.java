@@ -9,10 +9,11 @@ import java.util.Map;
 
 import org.w3c.dom.Element;
 
+import com.github.i49.pulp.api.Epub;
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Manifest;
 import com.github.i49.pulp.api.PublicationResource;
-import com.github.i49.pulp.api.PublicationResourceRegistry;
+import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.Rendition;
 import com.github.i49.pulp.api.Spine;
 import com.github.i49.pulp.api.Spine.Page;
@@ -54,7 +55,7 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 	}
 
 	protected void parseManifest(Element element) {
-		PublicationResourceRegistry registry = rendition.getResourceRegistry();
+		PublicationResourceBuilderFactory factory = Epub.createResourceBuilderFactory(rendition.getLocation());
 		Manifest manifest = rendition.getManifest();
 		Iterator<Element> it = Nodes.children(element, NAMESPACE_URI);
 		while (it.hasNext()) {
@@ -66,7 +67,7 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 			String id = child.getAttribute("id");
 			String location = child.getAttribute("href");
 			String mediaType = child.getAttribute("media-type");
-			PublicationResource resource = registry.builder(location).ofType(mediaType).build();
+			PublicationResource resource = factory.newBuilder(location).ofType(mediaType).build();
 			Manifest.Item item = manifest.add(resource);
 			if (child.hasAttribute("properties")) {
 				addProperties(item, child.getAttribute("properties"));

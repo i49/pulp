@@ -13,19 +13,29 @@ class PublicationResourceLocation {
 	
 	private final URI uri;
 	
-	public static PublicationResourceLocation create(String location) {
-		try {
-			return create(new URI(location));
-		} catch (URISyntaxException e) {
-			throw new EpubException(Messages.RESOURCE_LOCATION_INVALID(location));
-		}
-	}
-	
-	public static PublicationResourceLocation create(URI location) {
+	/**
+	 * Creates a new instance that points to the specified location.
+	 * @param location the URI of the resource.
+	 * @return created new instance.
+	 */
+	public static PublicationResourceLocation of(URI location) {
 		if (!validateLocation(location)) {
 			throw new EpubException(Messages.RESOURCE_LOCATION_INVALID(location.toString()));
 		}
 		return new PublicationResourceLocation(location);
+	}
+
+	public static PublicationResourceLocation ofLocal(String location) {
+		try {
+			URI uri = new URI(location);
+			if (uri.isAbsolute()) {
+				throw new EpubException(Messages.RESOURCE_LOCATION_NOT_LOCAL(location));
+			} else {
+				return of(uri);
+			}
+		} catch (URISyntaxException e) {
+			throw new EpubException(Messages.RESOURCE_LOCATION_INVALID(location), e);
+		}
 	}
 	
 	public boolean isLocal() {

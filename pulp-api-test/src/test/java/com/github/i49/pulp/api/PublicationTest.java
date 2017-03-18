@@ -70,30 +70,30 @@ public class PublicationTest {
 	}
 	
 	@Test
-	public void addRendition_shouldThrowIfLocationHasScheme() {
+	public void addRendition_shouldThrowExceptionIfLocationHasScheme() {
 		assertThatThrownBy(()->{
 			publication.addRendition("http://example.org/EPUB/package.opf");
 		}).isInstanceOf(EpubException.class).hasMessageContaining("http://example.org/EPUB/package.opf");
 	}
 
 	@Test
-	public void addRendition_shouldThrowIfLocationIsPathAbsolute() {
+	public void addRendition_shouldThrowExceptionIfLocationIsPathAbsolute() {
 		assertThatThrownBy(()->{
 			publication.addRendition("/EPUB/package.opf");
 		}).isInstanceOf(EpubException.class).hasMessageContaining("/EPUB/package.opf");
 	}
 
 	@Test
-	public void addRendition_shouldThrowIfLocationContainsDotSegments() {
+	public void addRendition_shouldThrowExceptionIfLocationContainsDotSegments() {
 		assertThatThrownBy(()->{
 			publication.addRendition("../package.opf");
 		}).isInstanceOf(EpubException.class).hasMessageContaining("../package.opf");
 	}
 	
 	@Test
-	public void addRendition_shouldThrowIfRenditionAlreadyExists() {
+	public void addRendition_shouldThrowExceptionIfRenditionAlreadyExists() {
+		publication.addRendition();
 		assertThatThrownBy(()->{
-			publication.addRendition();
 			publication.addRendition();
 		}).isInstanceOf(EpubException.class).hasMessageContaining("EPUB/package.opf");
 	}

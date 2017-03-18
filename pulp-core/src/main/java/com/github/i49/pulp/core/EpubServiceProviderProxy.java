@@ -1,7 +1,10 @@
 package com.github.i49.pulp.core;
 
+import java.net.URI;
+
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationReaderFactory;
+import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.PublicationWriterFactory;
 import com.github.i49.pulp.api.spi.EpubServiceProvider;
 
@@ -29,5 +32,10 @@ public class EpubServiceProviderProxy implements EpubServiceProvider {
 	@Override
 	public PublicationWriterFactory createWriterFactory() {
 		return impl.createWriterFactory();
+	}
+
+	@Override
+	public PublicationResourceBuilderFactory createResourceBuilderFactory(URI baseURI) {
+		return impl.createResourceBuilderFactory(baseURI);
 	}
 }

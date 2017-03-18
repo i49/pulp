@@ -12,32 +12,32 @@ public final class Messages {
 	private static final String BUNDLE_BASE_NAME = Messages.class.getPackage().getName() + ".messages";
 	private static final ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_BASE_NAME);
 
-	public static String MISSING_PUBLICATION_RESOURCE(URI location) {
-		return format("missing.publication.resource", location);
+	public static String RENDITION_ALREADY_EXISTS(String location) {
+		return format("RENDITION_ALREADY_EXISTS", location);
 	}
 	
-	public static String DUPLICATE_PUBLICATION_RESOURCE(URI location) {
-		return format("duplicate.publication.resource", location);
+	public static String MANIFEST_ITEM_MISSING(String location) {
+		return format("MANIFEST_ITEM_MISSING", location);
 	}
 
-	public static String MISSING_MANIFEST_ITEM(URI location) {
-		return format("missing.manifest.item", location);
+	public static String MANIFEST_ITEM_DUPLICATE(URI location) {
+		return format("MANIFEST_ITEM_DUPLICATE", location);
 	}
 	
-	public static String DUPLICATE_MANIFEST_ITEM(URI location) {
-		return format("duplicate.manifest.item", location);
+	public static String RESOURCE_ALREADY_EXISTS(URI location) {
+		return format("RESOURCE_ALREADY_EXISTS", location);
 	}
 	
-	public static String INVALID_RESOURCE(URI identifier) {
-		return format("invalid.resource", identifier);
+	public static String RESOURCE_MISSING(URI location) {
+		return format("RESOURCE_MISSING", location);
 	}
 	
 	public static String RESOURCE_LOCATION_INVALID(String location) {
 		return format("RESOURCE_LOCATION_INVALID", location);
 	}
-	
-	public static String RENDITION_ALREADY_EXISTS(String location) {
-		return format("RENDITION_ALREADY_EXISTS", location);
+
+	public static String RESOURCE_LOCATION_NOT_LOCAL(String location) {
+		return format("RESOURCE_LOCATION_NOT_LOCAL", location);
 	}
 	
 	public static String MEDIA_TYPE_NOT_DETECTED(String pathname) {

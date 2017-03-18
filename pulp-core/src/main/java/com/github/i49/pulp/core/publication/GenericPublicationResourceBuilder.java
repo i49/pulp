@@ -12,7 +12,7 @@ import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationResourceBuilder;
 import com.github.i49.pulp.core.Messages;
 
-abstract class AbstractPublicationResourceBuilder implements PublicationResourceBuilder {
+class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 
 	private final PublicationResourceLocation location;
 	private final String localPath;
@@ -21,7 +21,7 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 	private ContentSource source;
 	private MediaType mediaType;
 	
-	AbstractPublicationResourceBuilder(PublicationResourceLocation location, String localPath, MediaTypeRegistry typeRegistry) {
+	GenericPublicationResourceBuilder(PublicationResourceLocation location, String localPath, MediaTypeRegistry typeRegistry) {
 		this.location = location;
 		this.localPath = localPath;
 		this.typeRegistry = typeRegistry;
@@ -110,11 +110,8 @@ abstract class AbstractPublicationResourceBuilder implements PublicationResource
 		if (source != null) {
 			resource.setContentSource(source);
 		}
-		addResource(resource);
 		return resource;
 	}
-	
-	abstract protected void addResource(PublicationResource resource);
 	
 	private void updateMediaType() {
 		if (this.mediaType == null) {

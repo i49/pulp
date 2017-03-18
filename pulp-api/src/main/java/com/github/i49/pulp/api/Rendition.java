@@ -29,13 +29,6 @@ public interface Rendition {
 	Metadata getMetadata();
 	
 	/**
-	 * Returns the publication resource registry that resolves relative paths 
-	 * against the location of this rendition.
-	 * @return the publication resource registry.
-	 */
-	PublicationResourceRegistry getResourceRegistry();
-
-	/**
 	 * Returns the manifest of this rendition that carries all publication resources
 	 * required to render the rendition. 
 	 * @return the manifest of this rendition.

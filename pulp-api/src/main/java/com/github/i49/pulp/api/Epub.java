@@ -1,5 +1,6 @@
 package com.github.i49.pulp.api;
 
+import java.net.URI;
 import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.ServiceLoader;
@@ -23,7 +24,7 @@ public final class Epub {
 	/**
 	 * Creates an empty publication.
 	 * @return an empty publication.
-	 * @exception EpubException if API implementation is not found.
+	 * @throws EpubException if API implementation was not found.
 	 */
 	public static Publication createPublication() {
 		return getProvider().createPublication();
@@ -33,8 +34,8 @@ public final class Epub {
 	 * Creates an instance of {@link PublicationReader} that can read a publication from the given input stream.
 	 * @param path the location where the file to be read is located.
 	 * @return created publication reader.
-	 * @exception IllegalArgumentException if given {@code path} is {@code null}.
-	 * @exception EpubException if API implementation is not found.
+	 * @throws IllegalArgumentException if given {@code path} is {@code null}.
+	 * @throws EpubException if API implementation was not found.
 	 */
 	public static PublicationReader createReader(Path path) {
 		return createReaderFactory().createReader(path);
@@ -43,7 +44,7 @@ public final class Epub {
 	/**
 	 * Creates an instance of {@link PublicationReaderFactory} that can produce one or more {@link PublicationReader}s.
 	 * @return created publication reader factory.
-	 * @exception EpubException if API implementation is not found.
+	 * @throws EpubException if API implementation was not found.
 	 */
 	public static PublicationReaderFactory createReaderFactory() {
 		return getProvider().createReaderFactory();
@@ -53,8 +54,8 @@ public final class Epub {
 	 * Creates an instance of {@link PublicationWriter} that can write a publication to the given output stream.
 	 * @param path the location where a publication will be stored by the writer.
 	 * @return created publication writer.
-	 * @exception IllegalArgumentException if given {@code path} is {@code null}.
-	 * @exception EpubException if API implementation is not found.
+	 * @throws IllegalArgumentException if given {@code path} is {@code null}.
+	 * @throws EpubException if API implementation was not found.
 	 */
 	public static PublicationWriter createWriter(Path path) {
 		return createWriterFactory().createWriter(path);
@@ -63,12 +64,23 @@ public final class Epub {
 	/**
 	 * Creates an instance of {@link PublicationWriterFactory} that can produce one or more {@link PublicationWriter}s.
 	 * @return created publication writer factory.
-	 * @exception EpubException if API implementation is not found.
+	 * @throws EpubException if API implementation was not found.
 	 */
 	public static PublicationWriterFactory createWriterFactory() {
 		return getProvider().createWriterFactory();
 	}
 
+	/**
+	 * Creates an instance of {@link PublicationResourceBuilderFactory} that can be used to create {@link PublicationResourceBuilder}.
+	 * @param baseURI the base location to be used by the builders.
+	 * @return created publication resource builder factory.
+	 * @throws IllegalArgumentException if given {@code baseURI} is {@code null}.
+	 * @throws EpubException if API implementation was not found.
+	 */
+	public static PublicationResourceBuilderFactory createResourceBuilderFactory(URI baseURI) {
+		return getProvider().createResourceBuilderFactory(baseURI);
+	}
+	
 	/**
 	 * Thread-local loader class of {@link EpubServiceProvider}.
 	 */
@@ -85,13 +97,14 @@ public final class Epub {
 	/**
 	 * Returns the service provider of {@link EpubServiceProvider}. 
 	 * @return found service provider.
+	 * @throws EpubException if API implementation was not found.
 	 */
 	private static EpubServiceProvider getProvider() {
 		Iterator<EpubServiceProvider> it = threadLoader.get().iterator();
 		if (it.hasNext()) {
 			return it.next();
 		}
-		throw new EpubException("Implementation of EpubServiceProvider is not found.");
+		throw new EpubException("Implementation of EpubServiceProvider was not found.");
 	}
 	
 	private Epub() {

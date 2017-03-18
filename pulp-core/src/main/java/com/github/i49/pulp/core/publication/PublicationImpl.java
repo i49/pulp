@@ -5,12 +5,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.Set;
 
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
-import com.github.i49.pulp.api.PublicationResourceRegistry;
 import com.github.i49.pulp.api.Rendition;
 import com.github.i49.pulp.core.Messages;
 
@@ -21,16 +20,12 @@ public class PublicationImpl implements Publication {
 	
 	private static final URI DEFAULT_RENDITION_LOCATION = URI.create("EPUB/package.opf");
 
-	private final MediaTypeRegistry typeRegistry;
-	private final Map<URI, PublicationResource> resourceMap;
-	private final PublicationResourceRegistryImpl resourceRegistry;
+	private final PublicationResourceRegistry registry;
 	// renditions.
 	private final HashMap<URI, Rendition> renditions = new LinkedHashMap<>();
 
-	public PublicationImpl(MediaTypeRegistry typeRegistry) {
-		this.typeRegistry = typeRegistry;
-		this.resourceMap = new HashMap<>();
-		this.resourceRegistry = createResourceRegistry(URI.create(""));
+	public PublicationImpl() {
+		this.registry = new PublicationResourceRegistry();
 	}
 
 	@Override
@@ -47,11 +42,6 @@ public class PublicationImpl implements Publication {
 	}
 	
 	@Override
-	public PublicationResourceRegistry getResourceRegistry() {
-		return resourceRegistry;
-	}
-	
-	@Override
 	public Rendition addRendition() {
 		return addRendition(DEFAULT_RENDITION_LOCATION);
 	}
@@ -61,11 +51,13 @@ public class PublicationImpl implements Publication {
 		if (location == null) {
 			throw new IllegalArgumentException("location is null");
 		}
-		PublicationResourceLocation resourceLocation = PublicationResourceLocation.create(location);
-		if (resourceLocation.isRemote()) {
-			throw new EpubException(Messages.RESOURCE_LOCATION_INVALID(location));
-		}
+		PublicationResourceLocation resourceLocation = PublicationResourceLocation.ofLocal(location);
 		return addRendition(resourceLocation.toURI());
+	}
+
+	@Override
+	public Set<PublicationResource> getAllResources() {
+		return registry.getAllResources();
 	}
 
 	@Override
@@ -77,13 +69,8 @@ public class PublicationImpl implements Publication {
 		if (this.renditions.containsKey(location)) {
 			throw new EpubException(Messages.RENDITION_ALREADY_EXISTS(location.toString()));
 		}
-		PublicationResourceRegistry localRegistry = createResourceRegistry(location);
-		Rendition rendition = new RenditionImpl(this, location, localRegistry);
+		Rendition rendition = new RenditionImpl(this, location, this.registry);
 		this.renditions.put(location, rendition);
 		return rendition;
-	}
-	
-	private PublicationResourceRegistryImpl createResourceRegistry(URI baseLocation) {
-		return new PublicationResourceRegistryImpl(this.resourceMap, this.typeRegistry, baseLocation);
 	}
 }

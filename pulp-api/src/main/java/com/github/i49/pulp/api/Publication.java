@@ -1,5 +1,7 @@
 package com.github.i49.pulp.api;
 
+import java.util.Set;
+
 /**
  * A publication that represents a single intellectual or artistic work
  * such as book, magazine, newspaper, journal, office document and so on.
@@ -20,13 +22,6 @@ public interface Publication extends Iterable<Rendition> {
 	Rendition getDefaultRendition();
 	
 	/**
-	 * Returns the {@link PublicationResourceRegistry} that manages publication resources
-	 * for this publication.
-	 * @return the publication resource registry
-	 */
-	PublicationResourceRegistry getResourceRegistry();
-
-	/**
 	 * Adds a new {@link Rendition} sitting at the default location in the container.
 	 * @return created rendition.
 	 */
@@ -39,4 +34,10 @@ public interface Publication extends Iterable<Rendition> {
 	 * @exception EpubException if specified {@code location} is invalid.
 	 */
 	Rendition addRendition(String location);
+	
+	/**
+	 * Returns a set containing all resources required by this publication.
+	 * @return an immutable set of publication resources. 
+	 */
+	Set<PublicationResource> getAllResources();
 }

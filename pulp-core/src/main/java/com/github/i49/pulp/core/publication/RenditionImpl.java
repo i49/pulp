@@ -10,12 +10,10 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Manifest;
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationResource;
-import com.github.i49.pulp.api.PublicationResourceRegistry;
 import com.github.i49.pulp.api.Rendition;
 import com.github.i49.pulp.api.Spine;
 import com.github.i49.pulp.api.Manifest.Item;
@@ -59,11 +57,6 @@ public class RenditionImpl implements Rendition {
 	}
 
 	@Override
-	public PublicationResourceRegistry getResourceRegistry() {
-		return registry;
-	}
-	
-	@Override
 	public Manifest getManifest() {
 		return manifest;
 	}
@@ -106,14 +99,14 @@ public class RenditionImpl implements Rendition {
 			if (location == null) {
 				throw new IllegalArgumentException("location is null");
 			}
+			URI resolved = resolve(location);
 			Item item = null;
-			PublicationResource resource = registry.get(location);
+			PublicationResource resource = registry.get(resolved);
 			if (resource != null) {
 				item = items.get(resource);
 			}
 			if (item == null) {
-				URI resolved = resolve(location);
-				throw new NoSuchElementException(Messages.MISSING_PUBLICATION_RESOURCE(resolved));
+				throw new NoSuchElementException(Messages.MANIFEST_ITEM_MISSING(location));
 			}
 			return item;
 		}
@@ -123,8 +116,9 @@ public class RenditionImpl implements Rendition {
 			if (location == null) {
 				throw new IllegalArgumentException("location is null");
 			}
+			URI resolved = resolve(location);
 			Item item = null;
-			PublicationResource resource = registry.get(location);
+			PublicationResource resource = registry.get(resolved);
 			if (resource != null) {
 				item = items.get(resource);
 			}
@@ -148,7 +142,10 @@ public class RenditionImpl implements Rendition {
 	
 		@Override
 		public Item add(PublicationResource resource) {
-			validateResource(resource);
+			if (resource == null) {
+				throw new IllegalArgumentException("resource is null");
+			}
+			registry.register(resource);
 			Item item = items.get(resource);
 			if (item == null) {
 				item = new ItemImpl(resource);
@@ -163,14 +160,6 @@ public class RenditionImpl implements Rendition {
 				throw new IllegalArgumentException("item is null");
 			}
 			items.remove(item.getResource());
-		}
-		
-		private void validateResource(PublicationResource resource) {
-			if (resource == null) {
-				throw new IllegalArgumentException("resource is null");
-			} else if (!registry.contains(resource)) {
-				throw new EpubException(Messages.MISSING_PUBLICATION_RESOURCE(resource.getLocation()));
-			}
 		}
 	}
 	
@@ -294,9 +283,9 @@ public class RenditionImpl implements Rendition {
 			if (item == null) {
 				throw new IllegalArgumentException("item is null");
 			} else if (!manifest.contains(item)) {
-				throw new IllegalArgumentException(Messages.MISSING_MANIFEST_ITEM(item.getLocation()));
+				throw new IllegalArgumentException(Messages.MANIFEST_ITEM_MISSING(item.getLocation().toString()));
 			} else if (itemPageMap.containsKey(item)) {
-				throw new IllegalArgumentException(Messages.DUPLICATE_MANIFEST_ITEM(item.getLocation()));
+				throw new IllegalArgumentException(Messages.MANIFEST_ITEM_DUPLICATE(item.getLocation()));
 			}
 		}
 	}

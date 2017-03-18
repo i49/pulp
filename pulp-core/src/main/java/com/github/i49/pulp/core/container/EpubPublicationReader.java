@@ -84,7 +84,7 @@ public class EpubPublicationReader implements PublicationReader {
 	
 	protected void updateContentSource(Publication publication) {
 		ContentSource source = this.container.getContentSource();
-		for (PublicationResource resource: publication.getResourceRegistry()) {
+		for (PublicationResource resource: publication.getAllResources()) {
 			resource.setContentSource(source);
 		}
 	}
