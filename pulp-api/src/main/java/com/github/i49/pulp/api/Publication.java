@@ -16,6 +16,7 @@
 
 package com.github.i49.pulp.api;
 
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -45,9 +46,9 @@ public interface Publication extends Iterable<Rendition> {
 	
 	/**
 	 * Adds a new {@link Rendition} with the location of the Package Document in the container specified.
-	 * @param location the local location of the Package Document that can be such as "EPUB/package.opf".
+	 * @param location the local location of the Package Document. e.g. "EPUB/package.opf".
 	 * @return created rendition.
-	 * @exception EpubException if specified {@code location} is invalid.
+	 * @throws EpubException if specified {@code location} is invalid.
 	 */
 	Rendition addRendition(String location);
 	
@@ -56,4 +57,11 @@ public interface Publication extends Iterable<Rendition> {
 	 * @return an immutable set of publication resources. 
 	 */
 	Set<PublicationResource> getAllResources();
+	
+	/**
+	 * Returns an iterator that can iterate over all renditions in this publication.
+	 * @return an iterator over renditions.
+	 */
+	@Override
+	Iterator<Rendition> iterator();
 }

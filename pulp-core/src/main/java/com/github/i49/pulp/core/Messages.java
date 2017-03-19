@@ -36,8 +36,8 @@ public final class Messages {
 		return format("MANIFEST_ITEM_MISSING", location);
 	}
 
-	public static String MANIFEST_ITEM_DUPLICATE(URI location) {
-		return format("MANIFEST_ITEM_DUPLICATE", location);
+	public static String MANIFEST_ITEM_ALREADY_EXISTS_IN_SPINE(URI location) {
+		return format("MANIFEST_ITEM_ALREADY_EXISTS_IN_SPINE", location);
 	}
 	
 	public static String RESOURCE_ALREADY_EXISTS(URI location) {

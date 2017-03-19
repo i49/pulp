@@ -30,7 +30,7 @@ import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.core.Messages;
 
 /**
- * The registry that manages all resources used by a publication. 
+ * The registry that maintains all resources used by a publication. 
  */
 class PublicationResourceRegistry {
 

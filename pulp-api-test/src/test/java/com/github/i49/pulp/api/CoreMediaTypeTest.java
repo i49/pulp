@@ -20,17 +20,26 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.junit.Test;
 
+/**
+ * Unit tests for CoreMediaType type.
+ */
 public class CoreMediaTypeTest {
 
+	/* getType */
+	
 	@Test
 	public void getType_shouldReturnType() {
 		assertThat(CoreMediaType.IMAGE_PNG.getType()).isEqualTo("image");
 	}
 
+	/* getSubtype */
+	
 	@Test
 	public void getSubtype_shouldReturnSubtype() {
 		assertThat(CoreMediaType.IMAGE_PNG.getSubtype()).isEqualTo("png");
 	}
+
+	/* toString */
 	
 	@Test
 	public void toString_shouldReturnTypeAndSubtype() {

@@ -23,6 +23,9 @@ import java.net.URI;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Unit tests for Rendition type.
+ */
 public class RenditionTest {
 
 	private Publication publication;
@@ -33,27 +36,37 @@ public class RenditionTest {
 		publication = Epub.createPublication();
 		rendition = publication.addRendition("EPUB/package.opf");
 	}
+	
+	/* getPublication */
 
 	@Test
 	public void getPublication_shouldReturnPublication() {
 		assertThat(rendition.getPublication()).isEqualTo(publication);
 	}
+
+	/* getLocation */
 	
 	@Test
 	public void getLocation_shouldReturnLocation() {
 		assertThat(rendition.getLocation()).isEqualTo(URI.create("EPUB/package.opf"));
 	}
 
+	/* getMetadata */
+	
 	@Test
 	public void getMetadata_shouldReturnMetadata() {
 		assertThat(rendition.getMetadata()).isNotNull();
 	}
 
+	/* getManifest */
+	
 	@Test
 	public void getManifest_shouldReturnManifest() {
 		assertThat(rendition.getManifest()).isNotNull();
 	}
 
+	/* getSpine */
+	
 	@Test
 	public void getSpine_shouldReturnManifest() {
 		assertThat(rendition.getSpine()).isNotNull();

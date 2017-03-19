@@ -23,6 +23,9 @@ import java.net.URI;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Unit tests for PublicationResourceBuilder type.
+ */
 public class PublicationResourceBuilderTest {
 
 	private static final URI BASE_URI = URI.create("EPUB/package.opf");
@@ -33,6 +36,18 @@ public class PublicationResourceBuilderTest {
 	public void setUp() {
 		factory = Epub.createResourceBuilderFactory(BASE_URI);
 	}
+	
+	/* ofType */
+
+	@Test
+	public void ofType_shouldThrowExceptionIfMediaTypeInvalid() {
+		PublicationResourceBuilder builder = factory.newBuilder("chapter1.xhtml");
+		assertThatThrownBy(()->{
+			builder.ofType("xyz");
+		}).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("xyz");
+	}
+		
+	/* build */
 	
 	@Test
 	public void build_shouldAdoptSpecifiedCoreMediaType() {

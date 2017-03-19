@@ -24,6 +24,9 @@ import java.nio.file.Paths;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Unit tests for PublicationReaderFactory type.
+ */
 public class PublicationReaderFactoryTest {
 	
 	private PublicationReaderFactory factory;
@@ -32,6 +35,8 @@ public class PublicationReaderFactoryTest {
 	public void setUp() {
 		factory = Epub.createReaderFactory();
 	}
+	
+	/* createReader */
 	
 	@Test
 	public void createReader_shoudThrowExceptionIfPathNotExist() {

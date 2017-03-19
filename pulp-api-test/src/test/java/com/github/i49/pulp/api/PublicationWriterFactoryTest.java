@@ -24,6 +24,9 @@ import java.nio.file.Paths;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Unit tests for PublicationWriterFactory type.
+ */
 public class PublicationWriterFactoryTest {
 
 	private PublicationWriterFactory factory;
@@ -32,6 +35,8 @@ public class PublicationWriterFactoryTest {
 	public void setUp() {
 		factory = Epub.createWriterFactory();
 	}
+	
+	/* createWriter */
 	
 	@Test
 	public void createWriter_shouldCreateWriterWithPath() {

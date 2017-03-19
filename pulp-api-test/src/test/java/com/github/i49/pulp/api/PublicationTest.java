@@ -21,6 +21,9 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Unit tests for Publication type.
+ */
 public class PublicationTest {
 
 	private Publication publication;
@@ -29,7 +32,9 @@ public class PublicationTest {
 	public void setUp() {
 		publication = Epub.createPublication();
 	}
-	
+
+	/* getNumberOfRenditions */
+
 	@Test
 	public void getNumberOfRenditions_shouldReturnZero() {
 		assertThat(publication.getNumberOfRenditions()).isEqualTo(0);
@@ -47,6 +52,8 @@ public class PublicationTest {
 		publication.addRendition("another/package.opf");
 		assertThat(publication.getNumberOfRenditions()).isEqualTo(2);
 	}
+	
+	/* getDefaultRendition */
 	
 	@Test
 	public void getDefaultRendition_shoudlReturnNull() {
@@ -66,23 +73,26 @@ public class PublicationTest {
 		assertThat(publication.getDefaultRendition()).isEqualTo(first);
 	}
 	
-	@Test
-	public void iterator_shouldIterateRenditions() {
-		Rendition r1 = publication.addRendition();
-		Rendition r2 = publication.addRendition("another/package.opf");
-		assertThat(publication.iterator()).containsExactly(r1, r2);
-	}
+	/* addRendition() */
 	
 	@Test
-	public void addRendition_shouldAddDefaultRendition() {
+	public void addRendition_shouldAddRenditionAtDefaultLocation() {
 		Rendition r = publication.addRendition();
-		assertThat(r.getLocation().toString()).isEqualTo("EPUB/package.opf");
+		assertThat(r.getLocation()).hasToString("EPUB/package.opf");
 	}
+
+	/* addRendition(location) */
 
 	@Test
 	public void addRendition_shouldAddRenditionIfLocationIsValid() {
 		Rendition r = publication.addRendition("path/to/package.opf");
-		assertThat(r.getLocation().toString()).isEqualTo("path/to/package.opf");
+		assertThat(r.getLocation()).hasToString("path/to/package.opf");
+	}
+	
+	@Test
+	public void addRendition_shouldAddRenditionAtDefaultLocationIfLocationIsNull() {
+		Rendition r = publication.addRendition(null);
+		assertThat(r.getLocation()).hasToString("EPUB/package.opf");
 	}
 	
 	@Test
@@ -112,5 +122,36 @@ public class PublicationTest {
 		assertThatThrownBy(()->{
 			publication.addRendition();
 		}).isInstanceOf(EpubException.class).hasMessageContaining("EPUB/package.opf");
+	}
+
+	/* getAllResources */
+	
+	@Test
+	public void getAllResources_shouldReturnEmptySetByDefault() {
+		publication.addRendition();
+		assertThat(publication.getAllResources()).isEmpty();
+	}
+	
+	@Test
+	public void getAllResources_shouldReturnAddedResources() {
+		Rendition rendition = publication.addRendition();
+		PublicationResourceBuilderFactory factory = Epub.createResourceBuilderFactory(rendition.getLocation());
+		Manifest manifest = rendition.getManifest();
+		PublicationResource r1 = factory.newBuilder("chapter1.xhtml").build();
+		manifest.add(r1);
+		PublicationResource r2 = factory.newBuilder("chapter2.xhtml").build();
+		manifest.add(r2);
+		PublicationResource r3 = factory.newBuilder("images/figure1.png").build();
+		manifest.add(r3);
+		assertThat(publication.getAllResources()).containsOnly(r1, r2, r3);
+	}
+
+	/* iterator */
+
+	@Test
+	public void iterator_shouldIterateRenditions() {
+		Rendition r1 = publication.addRendition();
+		Rendition r2 = publication.addRendition("another/package.opf");
+		assertThat(publication.iterator()).containsExactly(r1, r2);
 	}
 }

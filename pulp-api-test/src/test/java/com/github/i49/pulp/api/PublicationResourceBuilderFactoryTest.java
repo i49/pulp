@@ -23,6 +23,9 @@ import java.net.URI;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Unit tests for PublicationResourceBuilderFactory type.
+ */
 public class PublicationResourceBuilderFactoryTest {
 
 	private static final URI BASE_URI = URI.create("EPUB/package.opf");
@@ -34,6 +37,8 @@ public class PublicationResourceBuilderFactoryTest {
 		factory = Epub.createResourceBuilderFactory(BASE_URI);
 	}
 
+	/* newBuilder */
+	
 	@Test
 	public void newBuilder_shouldCreateLocalResourceBuilder() {
 		PublicationResourceBuilder builder = factory.newBuilder("images/cover.png");

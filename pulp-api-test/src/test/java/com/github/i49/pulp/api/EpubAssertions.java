@@ -16,6 +16,13 @@
 
 package com.github.i49.pulp.api;
 
+import java.io.IOException;
+import java.util.Optional;
+
+import org.assertj.core.api.AbstractAssert;
+
+import com.github.i49.pulp.api.Spine.Page;
+
 /**
  * Custom assertions.
  */
@@ -27,7 +34,7 @@ public final class EpubAssertions {
 	 * @return created assertion.
 	 */
 	public static ManifestAssert assertThat(Manifest actual) {
-		return ManifestAssert.assertThat(actual);
+		return new ManifestAssert(actual);
 	}
 
 	/**
@@ -36,9 +43,78 @@ public final class EpubAssertions {
 	 * @return created assertion.
 	 */
 	public static SpineAssert assertThat(Spine actual) {
-		return SpineAssert.assertThat(actual);
+		return new SpineAssert(actual);
 	}
 	
 	private EpubAssertions() {
+	}
+
+	public static class ManifestAssert extends AbstractAssert<ManifestAssert, Manifest> {
+
+		private ManifestAssert(Manifest actual) {
+			super(actual, ManifestAssert.class);
+		}
+
+		public ManifestAssert hasItems(int expected) {
+			isNotNull();
+			if (actual.getNumberOfItems() != expected) {
+				failWithMessage("Expected nubmer of items to be <%d>, but was <%d>", expected, actual.getNumberOfItems());
+			}
+			return this;
+		}
+		
+		public ManifestAssert hasResource(String location, int length) {
+			isNotNull();
+			Optional<Manifest.Item> item = actual.find(location);
+			if (!item.isPresent()) {
+				failWithMessage("Manifest did not contain the resource at <%s>", location);
+			}
+			PublicationResource resource = item.get().getResource();
+			try {
+				byte[] content = resource.getContent();
+				if (content.length != length) {
+					failWithMessage("Expected content length to be <%d>, but was <%d>", length, content.length);
+				}
+			} catch (IOException e) {
+				failWithMessage("Failed to load content of resource at <%s>", location);
+			}
+			return this;
+		}
+	}
+
+	public static class SpineAssert extends AbstractAssert<SpineAssert, Spine> {
+
+		private SpineAssert(Spine actual) {
+			super(actual, SpineAssert.class);
+		}
+		
+		public SpineAssert hasPages(int expected) {
+			isNotNull();
+			if (actual.getNumberOfPages() != expected) {
+				failWithMessage("Expected nubmer of pages to be <%d>, but was <%d>", expected, actual.getNumberOfPages());
+			}
+			return this;
+		}
+		
+		public SpineAssert linearExcept(int... indices) {
+			isNotNull();
+
+			int next = 0;
+			for (int i = 0; i < actual.getNumberOfPages(); i++) {
+				Page page = actual.get(i);
+				if (next < indices.length && i == indices[next]) {
+					if (page.isLinear()) {
+						failWithMessage("Page at %d must be non-linear", i);
+					}
+					next++;
+				} else {
+					if (!page.isLinear()) {
+						failWithMessage("Page at %d must be linear", i);
+					}
+				}
+			}
+			
+			return this;
+		}
 	}
 }

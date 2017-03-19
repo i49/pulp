@@ -18,6 +18,7 @@ package com.github.i49.pulp.api;
 
 import java.net.URI;
 import java.util.Optional;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -27,8 +28,9 @@ public interface Manifest extends Iterable<Manifest.Item> {
 
 	/**
 	 * Returns {@code true} if this manifest contains the specified item.
-	 * @param item the item to find.
+	 * @param item the item to be checked. can be {@code null}.
 	 * @return {@code true} if this manifest contains the specified item, {@code false} otherwise.
+	 *                      if {@code item} is {@code null}, {@code false} will be returned.
 	 */
 	boolean contains(Item item);
 	
@@ -86,6 +88,13 @@ public interface Manifest extends Iterable<Manifest.Item> {
 	void remove(Item item);
 	
 	/**
+	 * Returns an iterator that can iterate over all items in this manifest.
+	 * @return an iterator over items.
+	 */
+	@Override
+	Iterator<Item> iterator();
+	
+	/**
 	 * An entry of the manifest that refers a publication resource
 	 * required by the rendition.
 	 */
@@ -98,9 +107,8 @@ public interface Manifest extends Iterable<Manifest.Item> {
 		PublicationResource getResource();
 		
 		/**
-		 * Returns the location of the publication resource,
-		 * which is an absolute URI or is relative to the root directory of the EPUB container.
-		 * @return the location of the publication resource.
+		 * Returns the location of this item that is an absolute URI or relative to the rendition.
+		 * @return the location of this item.
 		 */
 		URI getLocation();
 

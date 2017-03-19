@@ -114,14 +114,14 @@ class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 	
 	@Override
 	public PublicationResource build() {
-		updateMediaType();
+		final MediaType mediaType = getFinalMediaType();
 		PublicationResource resource = null;
 		if (mediaType == CoreMediaType.APPLICATION_XHTML_XML) {
 			resource = createXhtmlDocument();
 		} else if (CoreMediaTypes.checkTypeIsXml(mediaType)) {
-			resource = createXmlDocument();
+			resource = createXmlDocument(mediaType);
 		} else {
-			resource = createResource();
+			resource = createResource(mediaType);
 		}
 		if (source != null) {
 			resource.setContentSource(source);
@@ -134,20 +134,22 @@ class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 		return location.toString();
 	}
 	
-	private void updateMediaType() {
-		if (this.mediaType == null) {
-			this.mediaType = CoreMediaTypes.guessMediaType(localPath);
-			if (this.mediaType == null) {
+	private MediaType getFinalMediaType() {
+		MediaType mediaType = this.mediaType;
+		if (mediaType == null) {
+			mediaType = CoreMediaTypes.guessMediaType(localPath);
+			if (mediaType == null) {
 				throw new EpubException(Messages.MEDIA_TYPE_NOT_DETECTED(localPath));
 			}
 		}
+		return mediaType;
 	}
 	
-	protected PublicationResource createResource() {
+	protected PublicationResource createResource(MediaType mediaType) {
 		return new BasicPublicationResource(location, mediaType);
 	}
 	
-	protected PublicationResource createXmlDocument() {
+	protected PublicationResource createXmlDocument(MediaType mediaType) {
 		return new BasicXmlDocument(location, mediaType);
 	}
 	

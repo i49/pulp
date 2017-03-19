@@ -43,7 +43,9 @@ public class RenditionImpl implements Rendition {
 	/* publication owing this rendition */
 	private final Publication publication;
 	
+	/* the location of the package document */
 	private final URI location;
+	private final URI baseDir;
 	private final PublicationResourceRegistry registry;
 	
 	private final MetadataImpl metadata = new MetadataImpl();
@@ -51,9 +53,16 @@ public class RenditionImpl implements Rendition {
 	private final ManifestImpl manifest = new ManifestImpl();
 	private final SpineImpl spine = new SpineImpl();
 	
+	/**
+	 * Constructs this rendition.
+	 * @param publication the publication that owns this rendition.
+	 * @param location the location of the package document.
+	 * @param registry the registry that maintains all publication resources.
+	 */
 	public RenditionImpl(Publication publication, URI location, PublicationResourceRegistry registry) {
 		this.publication = publication;
 		this.location = location;
+		this.baseDir = location.resolve(".");
 		this.registry = registry;
 	}
 	
@@ -82,8 +91,22 @@ public class RenditionImpl implements Rendition {
 		return spine;
 	}
 	
+	/**
+	 * Resolves the location.
+	 * @param location the location to resolve.
+	 * @return a URI that is absolute or relative to the container root.
+	 */
 	private URI resolve(String location) {
 		return this.location.resolve(location);
+	}
+	
+	/**
+	 * Returns a relative URI to the location of this rendition.
+	 * @param location the original location.
+	 * @return a relative URI.
+	 */
+	private URI relativize(URI location) {
+		return this.baseDir.relativize(location);
 	}
 	
 	/**
@@ -91,23 +114,18 @@ public class RenditionImpl implements Rendition {
 	 */
 	private class ManifestImpl implements Manifest {
 		
-		private final Map<PublicationResource, Item> items = new HashMap<>();
+		private final Map<PublicationResource, Item> resourceItemMap = new HashMap<>();
 		// cover image of the rendition
 		private Item coverImage;
 		// navigation document of the rendition
 		private Item navigationDocument;
 
 		@Override
-		public Iterator<Item> iterator() {
-			return Collections.unmodifiableCollection(items.values()).iterator();
-		}
-
-		@Override
 		public boolean contains(Item item) {
 			if (item == null) {
 				return false;
 			}
-			return items.containsValue(item);
+			return resourceItemMap.containsValue(item);
 		}
 		
 		@Override
@@ -119,7 +137,7 @@ public class RenditionImpl implements Rendition {
 			Item item = null;
 			PublicationResource resource = registry.get(resolved);
 			if (resource != null) {
-				item = items.get(resource);
+				item = resourceItemMap.get(resource);
 			}
 			if (item == null) {
 				throw new NoSuchElementException(Messages.MANIFEST_ITEM_MISSING(location));
@@ -133,12 +151,13 @@ public class RenditionImpl implements Rendition {
 				throw new IllegalArgumentException("location is null");
 			}
 			URI resolved = resolve(location);
-			Item item = null;
-			PublicationResource resource = registry.get(resolved);
-			if (resource != null) {
-				item = items.get(resource);
+			Optional<PublicationResource> resource = registry.find(resolved);
+			if (resource.isPresent()) {
+				Item item = resourceItemMap.get(resource.get());
+				return Optional.ofNullable(item);
+			} else {
+				return Optional.empty();
 			}
-			return Optional.ofNullable(item);
 		}
 
 		@Override
@@ -153,7 +172,7 @@ public class RenditionImpl implements Rendition {
 
 		@Override
 		public int getNumberOfItems() {
-			return items.size();
+			return resourceItemMap.size();
 		}
 	
 		@Override
@@ -162,10 +181,9 @@ public class RenditionImpl implements Rendition {
 				throw new IllegalArgumentException("resource is null");
 			}
 			registry.register(resource);
-			Item item = items.get(resource);
+			Item item = resourceItemMap.get(resource);
 			if (item == null) {
-				item = new ItemImpl(resource);
-				items.put(resource, item);
+				item = addNewItem(resource);
 			}
 			return item;
 		}
@@ -175,7 +193,19 @@ public class RenditionImpl implements Rendition {
 			if (item == null) {
 				throw new IllegalArgumentException("item is null");
 			}
-			items.remove(item.getResource());
+			resourceItemMap.remove(item.getResource());
+		}
+
+		@Override
+		public Iterator<Item> iterator() {
+			return Collections.unmodifiableCollection(resourceItemMap.values()).iterator();
+		}
+		
+		private Item addNewItem(PublicationResource resource) {
+			URI location = relativize(resource.getLocation());
+			Item item = new ItemImpl(location, resource);
+			resourceItemMap.put(resource, item);
+			return item;
 		}
 	}
 	
@@ -184,10 +214,17 @@ public class RenditionImpl implements Rendition {
 	 */
 	private class ItemImpl implements Manifest.Item {
 		
+		private final URI location;
 		private final PublicationResource resource;
 		private boolean scripted;
 		
-		private ItemImpl(PublicationResource resource) {
+		/**
+		 * Constructs this item.
+		 * @param location the location of this item.
+		 * @param resource the publication resource referenced by this item.
+		 */
+		private ItemImpl(URI location, PublicationResource resource) {
+			this.location = location;
 			this.resource = resource;
 			this.scripted = false;
 		}
@@ -199,7 +236,7 @@ public class RenditionImpl implements Rendition {
 
 		@Override
 		public URI getLocation() {
-			return resource.getLocation();
+			return location;
 		}
 		
 		@Override
@@ -249,10 +286,6 @@ public class RenditionImpl implements Rendition {
 		private final List<Spine.Page> pages = new ArrayList<>();
 		private final Map<Manifest.Item, Spine.Page> itemPageMap = new HashMap<>();
 
-		@Override
-		public Iterator<Page> iterator() {
-			return Collections.unmodifiableList(pages).iterator();
-		}
 
 		@Override
 		public int getNumberOfPages() {
@@ -295,13 +328,18 @@ public class RenditionImpl implements Rendition {
 			return page;
 		}
 		
+		@Override
+		public Iterator<Page> iterator() {
+			return Collections.unmodifiableList(pages).iterator();
+		}
+
 		private void validateItem(Item item) {
 			if (item == null) {
 				throw new IllegalArgumentException("item is null");
 			} else if (!manifest.contains(item)) {
 				throw new IllegalArgumentException(Messages.MANIFEST_ITEM_MISSING(item.getLocation().toString()));
 			} else if (itemPageMap.containsKey(item)) {
-				throw new IllegalArgumentException(Messages.MANIFEST_ITEM_DUPLICATE(item.getLocation()));
+				throw new IllegalArgumentException(Messages.MANIFEST_ITEM_ALREADY_EXISTS_IN_SPINE(item.getLocation()));
 			}
 		}
 	}

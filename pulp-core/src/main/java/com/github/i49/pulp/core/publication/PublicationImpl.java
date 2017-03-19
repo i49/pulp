@@ -64,11 +64,14 @@ public class PublicationImpl implements Publication {
 	
 	@Override
 	public Rendition addRendition(String location) {
+		URI uri = null;
 		if (location == null) {
-			throw new IllegalArgumentException("location is null");
+			uri = DEFAULT_RENDITION_LOCATION;
+		} else {
+			PublicationResourceLocation resourceLocation = PublicationResourceLocation.ofLocal(location);
+			uri = resourceLocation.toURI();
 		}
-		PublicationResourceLocation resourceLocation = PublicationResourceLocation.ofLocal(location);
-		return addRendition(resourceLocation.toURI());
+		return addRendition(uri);
 	}
 
 	@Override
