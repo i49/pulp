@@ -143,7 +143,64 @@ public class PublicationTest {
 		manifest.add(r2);
 		PublicationResource r3 = factory.newBuilder("images/figure1.png").build();
 		manifest.add(r3);
-		assertThat(publication.getAllResources()).containsOnly(r1, r2, r3);
+		assertThat(publication.getAllResources()).containsExactlyInAnyOrder(r1, r2, r3);
+	}
+	
+	@Test
+	public void getAllResources_shouldNotReturnRemovedResource() {
+		Rendition rendition = publication.addRendition();
+		PublicationResourceBuilderFactory factory = Epub.createResourceBuilderFactory(rendition.getLocation());
+		Manifest manifest = rendition.getManifest();
+		PublicationResource r1 = factory.newBuilder("chapter1.xhtml").build();
+		@SuppressWarnings("unused")
+		Manifest.Item item1 = manifest.add(r1);
+		PublicationResource r2 = factory.newBuilder("chapter2.xhtml").build();
+		Manifest.Item item2 = manifest.add(r2);
+		PublicationResource r3 = factory.newBuilder("images/figure1.png").build();
+		@SuppressWarnings("unused")
+		Manifest.Item item3 = manifest.add(r3);
+		manifest.remove(item2);
+		assertThat(publication.getAllResources()).containsExactlyInAnyOrder(r1, r3);
+	}
+	
+	@Test
+	public void getAllResources_shouldReturnResourcesOfAllRenditions() {
+		Rendition rendition1 = publication.addRendition("first/package.opf");
+		PublicationResourceBuilderFactory f1 = Epub.createResourceBuilderFactory(rendition1.getLocation());
+		Rendition rendition2 = publication.addRendition("second/package.opf");
+		PublicationResourceBuilderFactory f2 = Epub.createResourceBuilderFactory(rendition2.getLocation());
+		
+		PublicationResource r1 = f1.newBuilder("chapter1.xhtml").build();
+		PublicationResource r2 = f1.newBuilder("chapter2.xhtml").build();
+		rendition1.getManifest().add(r1);
+		rendition1.getManifest().add(r2);
+		
+		PublicationResource r3 = f2.newBuilder("chapter1.xhtml").build();
+		rendition2.getManifest().add(r3);
+		rendition2.getManifest().add(r2); // shared with rendition1
+		
+		assertThat(publication.getAllResources()).containsExactlyInAnyOrder(r1, r2, r3);
+	}
+	
+	@Test
+	public void getAllResources_shouldReturnResourcesRemovedByOneRendition() {
+		Rendition rendition1 = publication.addRendition("first/package.opf");
+		PublicationResourceBuilderFactory f1 = Epub.createResourceBuilderFactory(rendition1.getLocation());
+		Rendition rendition2 = publication.addRendition("second/package.opf");
+		PublicationResourceBuilderFactory f2 = Epub.createResourceBuilderFactory(rendition2.getLocation());
+		
+		PublicationResource r1 = f1.newBuilder("chapter1.xhtml").build();
+		PublicationResource r2 = f1.newBuilder("chapter2.xhtml").build();
+		rendition1.getManifest().add(r1);
+		Manifest.Item item = rendition1.getManifest().add(r2);
+		
+		PublicationResource r3 = f2.newBuilder("chapter1.xhtml").build();
+		rendition2.getManifest().add(r3);
+		rendition2.getManifest().add(r2);
+		
+		rendition1.getManifest().remove(item);
+		
+		assertThat(publication.getAllResources()).containsExactlyInAnyOrder(r1, r2, r3);
 	}
 
 	/* iterator */

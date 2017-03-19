@@ -29,12 +29,13 @@ import org.junit.Test;
  */
 public class ManifestTest {
 
+	private Publication publication;
 	private PublicationResourceBuilderFactory factory;
 	private Manifest manifest;
 	
 	@Before
 	public void setUp() {
-		Publication publication = Epub.createPublication();
+		publication = Epub.createPublication();
 		Rendition rendition = publication.addRendition("EPUB/package.opf");
 		factory = Epub.createResourceBuilderFactory(rendition.getLocation());
 		manifest = rendition.getManifest();
@@ -79,15 +80,21 @@ public class ManifestTest {
 	/* find */
 
 	@Test
-	public void find_shouldReturnItemIfItemIsContained() {
+	public void find_shouldReturnItemIfManifestContainsIt() {
 		Manifest.Item item = manifest.add(factory.newBuilder("chapter1.xhtml").build());
 		Optional<Manifest.Item> found = manifest.find("chapter1.xhtml");
 		assertThat(found).hasValue(item);
 	}
 
 	@Test
-	public void find_shouldReturnNullIfItemIsNotContained() {
+	public void find_shouldReturnEmptyIfManifestDoesNotContainIt() {
 		Optional<Manifest.Item> found = manifest.find("chapter1.xhtml");
+		assertThat(found).isEmpty();
+	}
+
+	@Test
+	public void find_shouldReturnEmptyIfItemIsNull() {
+		Optional<Manifest.Item> found = manifest.find(null);
 		assertThat(found).isEmpty();
 	}
 	
@@ -141,26 +148,28 @@ public class ManifestTest {
 	
 	@Test
 	public void add_shouldAddItem() {
-		PublicationResource r = factory.newBuilder("chapter1.xhtml").build();
-		Manifest.Item item = manifest.add(r);
+		PublicationResource resource = factory.newBuilder("chapter1.xhtml").build();
+		Manifest.Item item = manifest.add(resource);
 		assertThat(item).isNotNull();
+		assertThat(publication.getAllResources()).contains(resource);
 	}
 	
 	@Test
-	public void add_shouldReturnSameItem() {
-		PublicationResource r = factory.newBuilder("chapter1.xhtml").build();
-		Manifest.Item first = manifest.add(r);
-		Manifest.Item second = manifest.add(r);
-		assertThat(first).isEqualTo(second);
+	public void add_shouldThrowExceptionIfResourceAlreadyAdded() {
+		PublicationResource resource = factory.newBuilder("chapter1.xhtml").build();
+		manifest.add(resource);
+		assertThatThrownBy(()->{
+			manifest.add(resource);
+		}).isInstanceOf(EpubException.class).hasMessageContaining("chapter1.xhtml");
 	}
 	
 	@Test
 	public void add_shouldThrowExceptionIfResourceAlreadyExists() {
-		PublicationResource r1 = factory.newBuilder("chapter1.xhtml").build();
-		PublicationResource r2 = factory.newBuilder("chapter1.xhtml").build();
-		manifest.add(r1);
+		PublicationResource resource1 = factory.newBuilder("chapter1.xhtml").build();
+		PublicationResource resource2 = factory.newBuilder("chapter1.xhtml").build();
+		manifest.add(resource1);
 		assertThatThrownBy(()->{
-			manifest.add(r2);
+			manifest.add(resource2);
 		}).isInstanceOf(EpubException.class).hasMessageContaining("chapter1.xhtml");
 	}
 	
@@ -168,21 +177,27 @@ public class ManifestTest {
 	
 	@Test
 	public void remove_shouldRemoveItem() {
-		PublicationResource r = factory.newBuilder("chapter1.xhtml").build();
-		Manifest.Item item = manifest.add(r);
+		PublicationResource resource = factory.newBuilder("chapter1.xhtml").build();
+		Manifest.Item item = manifest.add(resource);
 		assertThat(manifest.contains(item)).isTrue();
 		manifest.remove(item);
 		assertThat(manifest.contains(item)).isFalse();
+		assertThat(publication.getAllResources()).doesNotContain(resource);
 	}
 	
 	@Test
 	public void remove_shouldDoNothingIfItemIsNotAdded() {
-		PublicationResource r = factory.newBuilder("chapter1.xhtml").build();
-		Manifest.Item item = manifest.add(r);
+		PublicationResource resource = factory.newBuilder("chapter1.xhtml").build();
+		Manifest.Item item = manifest.add(resource);
 		manifest.remove(item);
 		manifest.remove(item);
 	}
 
+	@Test
+	public void remove_shouldDoNothingIfItemIsNull() {
+		manifest.remove(null);
+	}
+	
 	/* iterator */
 	
 	@Test

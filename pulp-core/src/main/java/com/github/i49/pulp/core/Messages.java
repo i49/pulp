@@ -28,6 +28,8 @@ public final class Messages {
 	private static final String BUNDLE_BASE_NAME = Messages.class.getPackage().getName() + ".messages";
 	private static final ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_BASE_NAME);
 
+	/* core.publication package */
+	
 	public static String RENDITION_ALREADY_EXISTS(String location) {
 		return format("RENDITION_ALREADY_EXISTS", location);
 	}
@@ -40,10 +42,14 @@ public final class Messages {
 		return format("MANIFEST_ITEM_ALREADY_EXISTS_IN_SPINE", location);
 	}
 	
-	public static String RESOURCE_ALREADY_EXISTS(URI location) {
-		return format("RESOURCE_ALREADY_EXISTS", location);
+	public static String RESOURCE_ALREADY_EXISTS_IN_PUBLICATION(URI location) {
+		return format("RESOURCE_ALREADY_EXISTS_IN_PUBLICATION", location);
 	}
 	
+	public static String RESOURCE_ALREADY_EXISTS_IN_MANIFEST(URI location) {
+		return format("RESOURCE_ALREADY_EXISTS_IN_MANIFEST", location);
+	}
+
 	public static String RESOURCE_MISSING(URI location) {
 		return format("RESOURCE_MISSING", location);
 	}
@@ -64,7 +70,7 @@ public final class Messages {
 		return format("MEDIA_TYPE_INVALID", value);
 	}
 	
-	// core.container package
+	/* core.container package */
 	
 	public static String CONTAINER_NOT_FOUND(Path path) {
 		return format("CONTAINER_NOT_FOUND", path);
@@ -94,7 +100,7 @@ public final class Messages {
 		return format("XML_DOCUMENT_NOT_WELL_FORMED");
 	}
 	
-	// core.xml package
+	/* core.xml package */
 	
 	public static String XML_PARSER_MISCONFIGURED() {
 		return format("XML_PARSER_MISCONFIGURED");
@@ -135,7 +141,7 @@ public final class Messages {
 		return elements.stream().map(Messages::element).collect(Collectors.joining(separator));
 	}
 	
-	// core.zip package
+	/* core.zip package */
 	
 	public static String END_OF_CENTRAL_DIRECTORY_NOT_FOUND() {
 		return format("END_OF_CENTRAL_DIRECTORY_NOT_FOUND");

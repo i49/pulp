@@ -34,14 +34,16 @@ import com.github.i49.pulp.core.Messages;
  */
 class PublicationResourceRegistry {
 
-	private final Set<PublicationResource> resources;
-	private final Map<URI, PublicationResource> locationMap;
+	private final Set<PublicationResource> resourceSet;
+	private final Set<PublicationResource> immutableSet;
+	private final Map<URI, Entry> locationMap;
 	
 	/**
-	 * Consructs this registry.
+	 * Constructs this registry.
 	 */
 	public PublicationResourceRegistry() {
-		this.resources = new HashSet<>();
+		this.resourceSet = new HashSet<>();
+		this.immutableSet = Collections.unmodifiableSet(this.resourceSet);
 		this.locationMap = new HashMap<>();
 	}
 	
@@ -50,33 +52,31 @@ class PublicationResourceRegistry {
 	 * @return the number of resources.
 	 */
 	public int getNumberOfResources() {
-		return resources.size();
+		return resourceSet.size();
 	}
 	
 	/**
 	 * Returns {@code true} if this registry contains the resource at the specified location. 
-	 * @param location the location of the resource.
-	 * @return {@code true} if it contains the resource, {@code false} otherwise.
-	 * @throws IllegalArgumentException if {@code location} is {@code null}.
+	 * @param location the location of the resource, can be {@code null}.
+	 * @return {@code true} if this registry contains the resource, {@code false} otherwise.
 	 */
 	public boolean contains(URI location) {
 		if (location == null) {
-			throw new IllegalArgumentException("location is null");
+			return false;
 		}
 		return locationMap.containsKey(location);
 	}
 	
 	/**
 	 * Returns {@code true} if this registry contains the resource specified. 
-	 * @param resource the resource to find.
-	 * @return {@code true} if it contains the resource, {@code false} otherwise.
-	 * @throws IllegalArgumentException if {@code resource} is {@code null}.
+	 * @param resource the resource to find, can be {@code null}.
+	 * @return {@code true} if this registry contains the resource, {@code false} otherwise.
 	 */
 	public boolean contains(PublicationResource resource) {
 		if (resource == null) {
-			throw new IllegalArgumentException("resource is null");
+			return false;
 		}
-		return resources.contains(resource);
+		return resourceSet.contains(resource);
 	}
 	
 	/**
@@ -90,24 +90,27 @@ class PublicationResourceRegistry {
 		if (location == null) {
 			throw new IllegalArgumentException("location is null");
 		}
-		PublicationResource resource = locationMap.get(location);
-		if (resource == null) {
+		Entry entry = locationMap.get(location);
+		if (entry == null) {
 			throw new NoSuchElementException(Messages.RESOURCE_MISSING(location));
 		}
-		return resource;
+		return entry.getResource();
 	}
 
 	/**
 	 * Finds the resource specified by its location in this registry.
-	 * @param location the location of the resource, cannot be {@code null}.
+	 * @param location the location of the resource.
 	 * @return the resource if this registry contains it, {@code null} otherwise.
-	 * @throws IllegalArgumentException if specified {@code location} is {@code null}.
 	 */
 	public Optional<PublicationResource> find(URI location) {
 		if (location == null) {
-			throw new IllegalArgumentException("location is null");
+			return Optional.empty();
 		}
-		return Optional.ofNullable(locationMap.get(location));
+		Entry entry = locationMap.get(location);
+		if (entry == null) {
+			return Optional.empty();
+		}
+		return Optional.of(entry.getResource());
 	}
 	
 	/**
@@ -119,19 +122,63 @@ class PublicationResourceRegistry {
 		if (resource == null) {
 			throw new IllegalArgumentException("resource is null");
 		}
-		if (contains(resource)) {
+		URI location = resource.getLocation();
+		Entry entry = locationMap.get(location);
+		if (entry == null) {
+			entry = new Entry(resource);
+			locationMap.put(location, entry);
+			resourceSet.add(resource);
+		} else {
+			if (entry.getResource() != resource) {
+				throw new EpubException(Messages.RESOURCE_ALREADY_EXISTS_IN_PUBLICATION(location));
+			}
+			entry.addReference();
+		}
+	}
+	
+	/**
+	 * Unregister a resource from this registry.
+	 * @param resource the resource to be removed.
+	 */
+	public void unregister(PublicationResource resource) {
+		if (resource == null || !resourceSet.contains(resource)) {
 			return;
 		}
 		URI location = resource.getLocation();
-		PublicationResource found = locationMap.get(location);
-		if (found != null) {
-			throw new EpubException(Messages.RESOURCE_ALREADY_EXISTS(location));
+		Entry entry = locationMap.get(location);
+		if (entry.removeReference() == 0) {
+			locationMap.remove(location);
+			resourceSet.remove(resource);
 		}
-		resources.add(resource);
-		locationMap.put(location, resource);
 	}
 	
 	public Set<PublicationResource> getAllResources() {
-		return Collections.unmodifiableSet(resources); 
+		return immutableSet;
+	}
+
+	/**
+	 * An entry of this registry.
+	 */
+	private static class Entry {
+		
+		private PublicationResource resource;
+		private int usingRenditions;
+		
+		private Entry(PublicationResource resource) {
+			this.resource = resource;
+			this.usingRenditions = 1;
+		}
+		
+		public PublicationResource getResource() {
+			return resource;
+		}
+		
+		public int addReference() {
+			return ++usingRenditions;
+		}
+
+		public int removeReference() {
+			return --usingRenditions;
+		}
 	}
 }

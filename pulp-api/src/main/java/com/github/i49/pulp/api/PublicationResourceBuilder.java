@@ -20,9 +20,8 @@ import java.net.URI;
 import java.nio.file.Path;
 
 /**
- * The builder type to build a {@link PublicationResource}.
- * The instances of this type can be obtained through 
- * {@link PublicationResourceRegistry}.
+ * The builder type to be used to build a {@link PublicationResource}.
+ * The instances of this type can be obtained through {@link PublicationResourceBuilderFactory}.
  */
 public interface PublicationResourceBuilder {
 
@@ -85,7 +84,6 @@ public interface PublicationResourceBuilder {
 	
 	/**
 	 * Builds a {@link PublicationResource}.
-	 * The built resource is registered with {@link PublicationResourceRegistry}.
 	 * @return built publication resource.
 	 */
 	PublicationResource build();

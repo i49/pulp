@@ -46,20 +46,20 @@ public interface Manifest extends Iterable<Manifest.Item> {
 	/**
 	 * Returns the specified item in this manifest
 	 * @param location the location of the publication resource assigned to the item.
-	 * @return the item if this manifest contains the specified resource, {@code null} otherwise.
-	 * @throws IllegalArgumentException if {@code location} is {@code null}.
+	 * @return the item if this manifest contains the specified resource, 
+	 *         or empty if this manifest does not contain it.
 	 */
 	Optional<Item> find(String location);
 	
 	/**
 	 * Returns the item used as the cover image for the rendition.
-	 * @return the item if this manifest has the cover image, {@code null} otherwise.
+	 * @return the item if this manifest has the cover image, empty otherwise.
 	 */
 	Optional<Item> findCoverImage();
 	
 	/**
 	 * Returns the item used as the navigation document for the rendition.
-	 * @return the item if this manifest has the navigation document, {@code null} otherwise.
+	 * @return the item if this manifest has the navigation document, empty otherwise.
 	 */
 	Optional<Item> findNavigationDocument();
 	
@@ -76,14 +76,14 @@ public interface Manifest extends Iterable<Manifest.Item> {
 	 * @param resource the resource to be added, cannot be {@code null}.
 	 * @return an item of this manifest.
 	 * @throws IllegalArgumentException if {@code resource} is {@code null}.
-	 * @throws EpubException if other resource already exists at the location of the resource in the publication.
+	 * @throws EpubException if specified {@code resource} already added to this manifest,
+	 *                       or other resource exists at the location in the publication.
 	 */
 	Item add(PublicationResource resource);
 	
 	/**
 	 * Removes the specified manifest item from this manifest if present. 
-	 * @param item the manifest item to be removed from this manifest.
-	 * @throws IllegalArgumentException if {@code item} is {@code null}.
+	 * @param item the manifest item to be removed from this manifest, can be {@code null}.
 	 */
 	void remove(Item item);
 	

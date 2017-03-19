@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Manifest;
 import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Publication;
@@ -148,7 +149,7 @@ public class RenditionImpl implements Rendition {
 		@Override
 		public Optional<Item> find(String location) {
 			if (location == null) {
-				throw new IllegalArgumentException("location is null");
+				return Optional.empty();
 			}
 			URI resolved = resolve(location);
 			Optional<PublicationResource> resource = registry.find(resolved);
@@ -179,21 +180,20 @@ public class RenditionImpl implements Rendition {
 		public Item add(PublicationResource resource) {
 			if (resource == null) {
 				throw new IllegalArgumentException("resource is null");
+			} else if (resourceItemMap.containsKey(resource)) {
+				throw new EpubException(Messages.RESOURCE_ALREADY_EXISTS_IN_MANIFEST(resource.getLocation()));
 			}
 			registry.register(resource);
-			Item item = resourceItemMap.get(resource);
-			if (item == null) {
-				item = addNewItem(resource);
-			}
-			return item;
+			return addNewItem(resource);
 		}
 
 		@Override
 		public void remove(Item item) {
-			if (item == null) {
-				throw new IllegalArgumentException("item is null");
+			if (item != null && resourceItemMap.containsValue(item)) {
+				PublicationResource resource = item.getResource();
+				resourceItemMap.remove(resource);
+				registry.unregister(resource);
 			}
-			resourceItemMap.remove(item.getResource());
 		}
 
 		@Override
