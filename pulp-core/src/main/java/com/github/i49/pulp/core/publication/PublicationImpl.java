@@ -34,7 +34,8 @@ import com.github.i49.pulp.core.Messages;
  */
 public class PublicationImpl implements Publication {
 	
-	private static final URI DEFAULT_RENDITION_LOCATION = URI.create("EPUB/package.opf");
+	private static final PublicationResourceLocation DEFAULT_RENDITION_LOCATION = 
+			PublicationResourceLocation.of("EPUB/package.opf");
 
 	private final PublicationResourceRegistry registry;
 	// renditions.
@@ -64,14 +65,11 @@ public class PublicationImpl implements Publication {
 	
 	@Override
 	public Rendition addRendition(String location) {
-		URI uri = null;
 		if (location == null) {
-			uri = DEFAULT_RENDITION_LOCATION;
+			return addRendition(DEFAULT_RENDITION_LOCATION);
 		} else {
-			PublicationResourceLocation resourceLocation = PublicationResourceLocation.ofLocal(location);
-			uri = resourceLocation.toURI();
+			return addRendition(PublicationResourceLocation.ofLocal(location));
 		}
-		return addRendition(uri);
 	}
 
 	@Override
@@ -84,12 +82,13 @@ public class PublicationImpl implements Publication {
 		return Collections.unmodifiableCollection(renditions.values()).iterator();
 	}
 	
-	private Rendition addRendition(URI location) {
-		if (this.renditions.containsKey(location)) {
+	private Rendition addRendition(PublicationResourceLocation location) {
+		URI uri = location.toURI();
+		if (this.renditions.containsKey(uri)) {
 			throw new EpubException(Messages.RENDITION_ALREADY_EXISTS(location.toString()));
 		}
 		Rendition rendition = new RenditionImpl(this, location, this.registry);
-		this.renditions.put(location, rendition);
+		this.renditions.put(uri, rendition);
 		return rendition;
 	}
 }

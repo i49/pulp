@@ -66,6 +66,14 @@ public class ManifestItemTest {
 		assertThat(item.getLocation()).isEqualTo(URI.create(location));
 	}
 	
+	@Test
+	public void getLocation_shouldReturnLocationOtherThanCurrentPackage() {
+		PublicationResource resource = factory.newBuilder("../other/chapter1.xhtml").build();
+		Manifest.Item item = manifest.add(resource);
+		assertThat(resource.getLocation()).isEqualTo(URI.create("other/chapter1.xhtml"));
+		assertThat(item.getLocation()).isEqualTo(URI.create("../other/chapter1.xhtml"));
+	}
+	
 	/* isCoverImage */
 	
 	@Test

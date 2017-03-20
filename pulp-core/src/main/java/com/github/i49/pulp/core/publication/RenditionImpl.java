@@ -45,8 +45,7 @@ public class RenditionImpl implements Rendition {
 	private final Publication publication;
 	
 	/* the location of the package document */
-	private final URI location;
-	private final URI baseDir;
+	private final PublicationResourceLocation location;
 	private final PublicationResourceRegistry registry;
 	
 	private final MetadataImpl metadata = new MetadataImpl();
@@ -60,10 +59,9 @@ public class RenditionImpl implements Rendition {
 	 * @param location the location of the package document.
 	 * @param registry the registry that maintains all publication resources.
 	 */
-	public RenditionImpl(Publication publication, URI location, PublicationResourceRegistry registry) {
+	public RenditionImpl(Publication publication, PublicationResourceLocation location, PublicationResourceRegistry registry) {
 		this.publication = publication;
 		this.location = location;
-		this.baseDir = location.resolve(".");
 		this.registry = registry;
 	}
 	
@@ -74,7 +72,7 @@ public class RenditionImpl implements Rendition {
 	
 	@Override
 	public URI getLocation() {
-		return location;
+		return location.toURI();
 	}
 	
 	@Override
@@ -95,19 +93,19 @@ public class RenditionImpl implements Rendition {
 	/**
 	 * Resolves the location.
 	 * @param location the location to resolve.
-	 * @return a URI that is absolute or relative to the container root.
+	 * @return a URI that is absolute with scheme or relative to the container root.
 	 */
 	private URI resolve(String location) {
 		return this.location.resolve(location);
 	}
 	
 	/**
-	 * Returns a relative URI to the location of this rendition.
-	 * @param location the original location.
+	 * Returns a URI relative to the location of the package document.
+	 * @param location the URI relative to the container root.
 	 * @return a relative URI.
 	 */
 	private URI relativize(URI location) {
-		return this.baseDir.relativize(location);
+		return this.location.relativize(location);
 	}
 	
 	/**

@@ -24,11 +24,30 @@ import com.github.i49.pulp.core.Messages;
 
 /**
  * A location of a publication resource.
+ * <p>There are two types of locations this class can handle.</p>
+ * <ol>
+ * <li>Absolute URI with explicit scheme.</li>
+ * <li>URI relative to the root of the ZIP container.</li>
+ * </ol>
  */
 class PublicationResourceLocation {
 	
 	private final URI uri;
 	
+	/**
+	 * Creates a new instance that points to the specified location.
+	 * @param location the URI of the resource represented by a string.
+	 * @return created new instance.
+	 */
+	public static PublicationResourceLocation of(String location) {
+		try {
+			URI uri = new URI(location);
+			return of(uri);
+		} catch (URISyntaxException e) {
+			throw new EpubException(Messages.RESOURCE_LOCATION_INVALID(location), e);
+		}
+	}
+
 	/**
 	 * Creates a new instance that points to the specified location.
 	 * @param location the URI of the resource.
@@ -40,7 +59,7 @@ class PublicationResourceLocation {
 		}
 		return new PublicationResourceLocation(location);
 	}
-
+	
 	public static PublicationResourceLocation ofLocal(String location) {
 		try {
 			URI uri = new URI(location);
@@ -60,6 +79,42 @@ class PublicationResourceLocation {
 	
 	public boolean isRemote() {
 		return uri.isAbsolute();
+	}
+	
+	public URI resolve(String uri) {
+		return this.uri.resolve(uri);
+	}
+	
+	public URI relativize(URI uri) {
+		if (uri.isAbsolute()) {
+			return uri;
+		}
+		URI thisURI = this.uri.resolve("."); 
+		URI thatURI = uri.normalize();
+		
+		String thisPath = thisURI.getPath();
+		String thatPath = thatURI.getPath();
+		
+		String[] thisParts = thisPath.split("/");
+		String[] thatParts = thatPath.split("/");
+		
+		int i = 0;
+		while (i < thisParts.length && i < thatParts.length && thisParts[i].equals(thatParts[i])) {
+			i++;
+		}
+		
+		StringBuilder b = new StringBuilder();
+		for (int j = i; j < thisParts.length; j++) {
+			b.append("../");
+		}
+		for (int j = i; j < thatParts.length; j++) {
+			if (j != i) {
+				b.append("/");
+			}
+			b.append(thatParts[j]);
+		}
+		
+		return URI.create(b.toString());
 	}
 	
 	public URI toURI() {
