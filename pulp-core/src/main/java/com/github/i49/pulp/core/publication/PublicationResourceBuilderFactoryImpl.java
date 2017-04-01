@@ -30,6 +30,11 @@ public class PublicationResourceBuilderFactoryImpl implements PublicationResourc
 		this.baseURI = baseURI;
 		this.typeRegistry = typeRegistry;
 	}
+	
+	@Override
+	public URI getBaseURI() {
+		return baseURI;
+	}
 
 	@Override
 	public PublicationResourceBuilder newBuilder(String location) {

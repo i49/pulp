@@ -9,6 +9,12 @@
 
   <artifactId>pulp-api-test</artifactId>
   <packaging>jar</packaging>
+  
+  <properties>
+    <pulp.impl.group>com.github.i49</pulp.impl.group>
+    <pulp.impl.artifact>pulp-core</pulp.impl.artifact>
+    <pulp.impl.version>${project.version}</pulp.impl.version>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -17,9 +23,9 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.github.i49</groupId>
-      <artifactId>pulp-core</artifactId>
-      <version>${project.version}</version>
+      <groupId>${pulp.impl.group}</groupId>
+      <artifactId>${pulp.impl.artifact}</artifactId>
+      <version>${pulp.impl.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>

@@ -16,11 +16,19 @@
 
 package com.github.i49.pulp.api;
 
+import java.net.URI;
+
 /**
  * The factory to be used to produce instances of {@link PublicationResourceBuilder}.
  */
 public interface PublicationResourceBuilderFactory {
 
+	/**
+	 * Returns the base URI of publication resources.
+	 * @return the base URI of publication resources.
+	 */
+	URI getBaseURI();
+	
 	/**
 	 * Creates a builder for building a publication resource located at the specified location.
 	 * @param location the location of the publication resource.
