@@ -62,4 +62,28 @@ public class PublicationReaderFactoryTest {
 			factory.createReader(path);
 		}).isInstanceOf(EpubException.class).hasMessageContaining("empty.epub");
 	}
+	
+	@Test
+	public void createReader_shouldThrowExceptionIfMimetypeIsMissing() {
+		Path path = BASE_PATH.resolve("mimetype-missing.epub");
+		assertThatThrownBy(()->{
+			factory.createReader(path);
+		}).isInstanceOf(EpubException.class).hasMessageContaining("mimetype-missing.epub");
+	}
+	
+	@Test
+	public void createReader_shouldThrowExceptionIfMimetypeIsWrong() {
+		Path path = BASE_PATH.resolve("mimetype-wrong.epub");
+		assertThatThrownBy(()->{
+			factory.createReader(path);
+		}).isInstanceOf(EpubException.class).hasMessageContaining("mimetype-wrong.epub");
+	}
+
+	@Test
+	public void createReader_shouldThrowExceptionIfMimetypeIsDirectory() {
+		Path path = BASE_PATH.resolve("mimetype-directory.epub");
+		assertThatThrownBy(()->{
+			factory.createReader(path);
+		}).isInstanceOf(EpubException.class).hasMessageContaining("mimetype-directory.epub");
+	}
 }

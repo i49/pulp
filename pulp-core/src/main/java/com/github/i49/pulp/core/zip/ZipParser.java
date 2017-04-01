@@ -24,36 +24,14 @@ import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.ZipException;
 
 /**
  * ZIP file parser.
  */
 class ZipParser implements AutoCloseable {
-
-	/**
-	 * Each entry of the Central Directory in ZIP file.
-	 */
-	static class CentralDirectoryEntry {
-		
-		private long position;
-		private String fileName;
-		
-		public CentralDirectoryEntry(String fileName, long position) {
-			this.fileName = fileName;
-			this.position = position;
-		}
-		
-		public long getPosition() {
-			return position;
-		}
-		
-		public String getFileName() {
-			return fileName;
-		}
-	}
 
 	/**
 	 * End of Central Directory in ZIP file.
@@ -95,11 +73,11 @@ class ZipParser implements AutoCloseable {
 
 	/**
 	 * Parses the central directory of a ZIP file.
-	 * @return the map of each entry in central directory. 
-	 * @throws ZipException if the file is not a valid ZIP file.
-	 * @throws IOException if I/O error has occurred.
+	 * @return the list of entries in the central directory. 
+	 * @throws ZipException if the parsed file was not a valid ZIP file.
+	 * @throws IOException if I/O error has occurred while reading the content of the file.
 	 */
-	public Map<String, CentralDirectoryEntry> parse() throws IOException {
+	public List<CentralDirectoryEntry> parse() throws IOException {
 		CentralDirectoryEnd end = findCentralDirectoryEnd();
 		if (end == null) {
 			throw new ZipException(END_OF_CENTRAL_DIRECTORY_NOT_FOUND());
@@ -149,8 +127,8 @@ class ZipParser implements AutoCloseable {
 		return end;
 	}
 	
-	private Map<String, CentralDirectoryEntry> parseCentralDirectory(long offset, long length) throws IOException {
-		Map<String, CentralDirectoryEntry> entries = new HashMap<>();
+	private List<CentralDirectoryEntry> parseCentralDirectory(long offset, long length) throws IOException {
+		List<CentralDirectoryEntry> entries = new ArrayList<>();
 		file.seek(offset);
 		int bufferSize = (int)length;
 		byte[] buffer = new byte[bufferSize];
@@ -169,14 +147,16 @@ class ZipParser implements AutoCloseable {
 		return entries;
 	}
 	
-	private int parseCentralDirectoryEntry(ZipStructure s, Map<String, CentralDirectoryEntry> entries) {
+	private int parseCentralDirectoryEntry(ZipStructure s, List<CentralDirectoryEntry> entries) {
+		long compressedSize = s.getUint32(20);
+		long uncompressedSize = s.getUint32(24);
 		int n = s.getUint16(28);
 		int m = s.getUint16(30);
 		int k = s.getUint16(32);
 		long position = s.getUint32(42);
 		String fileName = s.getString(46, n, this.charset); 
-		CentralDirectoryEntry entry = new CentralDirectoryEntry(fileName, position);
-		entries.put(entry.getFileName(), entry);
+		CentralDirectoryEntry entry = new CentralDirectoryEntry(fileName, position, compressedSize, uncompressedSize);
+		entries.add(entry);
 		return 46 + n + m + k;
 	}
 }

@@ -37,6 +37,7 @@ public class PublicationReaderFactoryImpl implements PublicationReaderFactory {
 	
 	/**
 	 * Constructs this factory.
+	 * 
 	 * @param provider the service provider.
 	 */
 	public PublicationReaderFactoryImpl(EpubServiceProvider provider) {
@@ -48,13 +49,26 @@ public class PublicationReaderFactoryImpl implements PublicationReaderFactory {
 		if (path == null) {
 			throw new IllegalArgumentException("path is null");
 		}
-		ReadableContainer container = null;
+		ReadableContainer container = openContainer(path);
+		return new EpubPublicationReader(container, this.provider);
+	}
+	
+	/**
+	 * Opens the abstract container at the specified path for reading.
+	 * 
+	 * @param path the path where the container exists.
+	 * @return opened abstract container.
+	 * @throws EpubException if a problem has occurred while opening the container.
+	 */
+	private ReadableContainer openContainer(Path path) {
 		try {
 			long size = Files.size(path);
 			if (size == 0) {
 				throw new EpubException(Messages.CONTAINER_EMPTY(path));
 			}
-			container = new ReadableZipContainer(path);
+			ReadableContainer container = new ReadableZipContainer(path);
+			container.validate();
+			return container;
 		} catch (FileNotFoundException e) {
 			throw new EpubException(Messages.CONTAINER_NOT_FOUND(path), e);
 		} catch (ZipException e) {
@@ -62,6 +76,5 @@ public class PublicationReaderFactoryImpl implements PublicationReaderFactory {
 		} catch (IOException e) {
 			throw new EpubException(Messages.CONTAINER_IO_FAILURE(path), e);
 		}
-		return new EpubPublicationReader(container, this.provider);
 	}
 }

@@ -31,6 +31,21 @@ public abstract class ReadableContainer extends AbstractContainer {
 		super(path);
 	}
 
+	/**
+	 * Validates the format of this container.
+	 * 
+	 * @throws EpubException if the format of this container has any problems.
+	 * @throws IOException if I/O error has occurred while reading the item.
+	 */
+	public abstract void validate() throws IOException;
+	
+	/**
+	 * Reads an item from this container.
+	 * 
+	 * @param location the location of the item in the container.
+	 * @return bytes read.
+	 * @throws IOException if I/O error has occurred while reading the item.
+	 */
 	public abstract byte[] readItem(String location) throws IOException;
 	
 	public abstract InputStream openItemToRead(String location) throws IOException;

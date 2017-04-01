@@ -88,6 +88,18 @@ public final class Messages {
 		return format("CONTAINER_CORRUPT", path);
 	}
 	
+	public static String CONTAINER_MIMETYPE_MISSING(Path path) {
+		return format("CONTAINER_MIMETYPE_MISSING", path);
+	}
+
+	public static String CONTAINER_MIMETYPE_MISLOCATED(Path path) {
+		return format("CONTAINER_MIMETYPE_MISLOCATED", path);
+	}
+	
+	public static String CONTAINER_MIMETYPE_UNEXPECTED(Path path, String mimetype) {
+		return format("CONTAINER_MIMETYPE_UNEXPECTED", path, mimetype);
+	}
+	
 	public static String MANIFEST_ITEM_ID_MISSING(String id) {
 		return format("MANIFEST_ITEM_ID_MISSING", id);
 	}

@@ -19,6 +19,10 @@ package com.github.i49.pulp.core.container;
 import java.io.Closeable;
 import java.nio.file.Path;
 
+/**
+ * The OCF Abstract Container that defines a file system model
+ * for the contents of the OCF ZIP Container. 
+ */
 public abstract class AbstractContainer implements Closeable {
 	
 	public static final String MIMETYPE_LOCATION = "mimetype";
@@ -34,6 +38,10 @@ public abstract class AbstractContainer implements Closeable {
 		this.path = path;
 	}
 	
+	/**
+	 * Returns the path of this container.
+	 * @return the path of this container.
+	 */
 	public Path getPath() {
 		return path;
 	}

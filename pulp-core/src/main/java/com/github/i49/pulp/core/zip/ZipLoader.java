@@ -24,11 +24,13 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipException;
 import java.util.zip.ZipInputStream;
-
-import com.github.i49.pulp.core.zip.ZipParser.CentralDirectoryEntry;
 
 /**
  * ZIP entry loader.
@@ -36,7 +38,8 @@ import com.github.i49.pulp.core.zip.ZipParser.CentralDirectoryEntry;
 public class ZipLoader {
 
 	private final Path path;
-	private Map<String, CentralDirectoryEntry> entries;
+	private final Map<String, CentralDirectoryEntry> entryMap;
+	private final List<CentralDirectoryEntry> orderedEntries;
 	
 	/**
 	 * Creates a new instance of this class.
@@ -51,16 +54,28 @@ public class ZipLoader {
 		if (path == null) {
 			throw new IllegalArgumentException("path is null.");
 		}
-		Map<String, CentralDirectoryEntry> entries = null;
+		List<CentralDirectoryEntry> entries = null;
 		try (ZipParser parser = new ZipParser(path, charset)) {
 			entries = parser.parse();
 		}
 		return new ZipLoader(path, entries);
 	}
 	
-	private ZipLoader(Path path, Map<String, CentralDirectoryEntry> entries) {
+	private ZipLoader(Path path, List<CentralDirectoryEntry> entries) {
 		this.path = path;
-		this.entries = entries;
+		this.entryMap = new HashMap<>();
+		for (CentralDirectoryEntry entry: entries) {
+			this.entryMap.put(entry.getFileName(), entry);
+		}
+		this.orderedEntries = new ArrayList<>(entries);
+		Collections.sort(this.orderedEntries, (e1, e2)->{
+			if (e1.getPosition() < e2.getPosition()) {
+				return -1;
+			} else if (e1.getPosition() > e2.getPosition()) {
+				return 1;
+			}
+			return 0;
+		});
 	}
 	
 	/**
@@ -69,6 +84,50 @@ public class ZipLoader {
 	 */
 	public Path getPath() {
 		return path;
+	}
+	
+	/**
+	 * Returns the total number of entries in the ZIP file.
+	 * @return the total number of entries in the ZIP file.
+	 */
+	public int getNumberOfEntries() {
+		return this.entryMap.size();
+	}
+	
+	/**
+	 * Returns whether the entry specified by name exists in the ZIP file or not. 
+	 * @param entryName the name of the entry.
+	 * @return {@code true} if the entry exists, {@code false} otherwise.
+	 */
+	public boolean findEntry(String entryName) {
+		return getEntry(entryName) != null;
+	}
+
+	public String getEntryName(int index) {
+		return getEntryAt(index).getFileName();
+	}
+
+	public byte[] load(String entryName) throws IOException {
+		if (entryName == null) {
+			throw new IllegalArgumentException("entryName is null.");
+		}
+		CentralDirectoryEntry entry = getEntry(entryName);
+		if (entry == null) {
+			throw new FileNotFoundException(ZIP_ENTRY_NOT_FOUND(entryName, getPath()));
+		}
+		final int contentSize = (int)entry.getUncompressedSize();
+		byte[] content = new byte[contentSize];
+		try (InputStream stream = openToLoad(entryName)) {
+			int offset = 0;
+			while (offset < content.length) {
+				int bytesRead = stream.read(content, offset, content.length - offset);
+				if (bytesRead < 0) {
+					break;
+				}
+				offset += bytesRead;
+			}
+		}
+		return content;
 	}
 	
 	/**
@@ -83,7 +142,7 @@ public class ZipLoader {
 		if (entryName == null) {
 			throw new IllegalArgumentException("entryName is null.");
 		}
-		CentralDirectoryEntry entry = findEntry(entryName);
+		CentralDirectoryEntry entry = getEntry(entryName);
 		if (entry == null) {
 			throw new FileNotFoundException(ZIP_ENTRY_NOT_FOUND(entryName, getPath()));
 		}
@@ -94,7 +153,14 @@ public class ZipLoader {
 		return zstream;
 	}
 	
-	private CentralDirectoryEntry findEntry(String entryName) {
-		return this.entries.get(entryName);
+	private CentralDirectoryEntry getEntry(String entryName) {
+		return this.entryMap.get(entryName);
+	}
+
+	private CentralDirectoryEntry getEntryAt(int index) {
+		if (index < 0 || index >= getNumberOfEntries()) {
+			throw new IndexOutOfBoundsException();
+		}
+		return this.orderedEntries.get(index);
 	}
 }
