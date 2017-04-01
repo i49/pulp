@@ -67,7 +67,7 @@ public class EpubPublicationReader implements PublicationReader {
 		try {
 			this.container.close();
 		} catch (IOException e) {
-			throw new EpubException(Messages.CONTAINER_NOT_CLOSEABLE(container.getPath()), e);
+			throw new EpubException(Messages.CONTAINER_IO_FAILURE(container.getPath()), e);
 		}
 	}
 	

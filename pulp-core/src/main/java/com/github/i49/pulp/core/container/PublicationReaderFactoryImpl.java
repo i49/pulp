@@ -18,7 +18,9 @@ package com.github.i49.pulp.core.container;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.zip.ZipException;
 
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.PublicationReader;
@@ -48,11 +50,17 @@ public class PublicationReaderFactoryImpl implements PublicationReaderFactory {
 		}
 		ReadableContainer container = null;
 		try {
+			long size = Files.size(path);
+			if (size == 0) {
+				throw new EpubException(Messages.CONTAINER_EMPTY(path));
+			}
 			container = new ReadableZipContainer(path);
 		} catch (FileNotFoundException e) {
 			throw new EpubException(Messages.CONTAINER_NOT_FOUND(path), e);
+		} catch (ZipException e) {
+			throw new EpubException(Messages.CONTAINER_CORRUPT(path), e);
 		} catch (IOException e) {
-			throw new EpubException(Messages.CONTAINER_NOT_READABLE(path), e);
+			throw new EpubException(Messages.CONTAINER_IO_FAILURE(path), e);
 		}
 		return new EpubPublicationReader(container, this.provider);
 	}

@@ -42,7 +42,7 @@ public class PublicationWriterFactoryImpl implements PublicationWriterFactory {
 		try {
 			container = new WriteableZipContainer(path);
 		} catch (IOException e) {
-			throw new EpubException(Messages.CONTAINER_NOT_WRITEABLE(path), e);
+			throw new EpubException(Messages.CONTAINER_IO_FAILURE(path), e);
 		}
 		return new EpubPublicationWriter3(container);
 	}

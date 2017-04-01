@@ -76,16 +76,16 @@ public final class Messages {
 		return format("CONTAINER_NOT_FOUND", path);
 	}
 
-	public static String CONTAINER_NOT_READABLE(Path path) {
-		return format("CONTAINER_NOT_READABLE", path);
+	public static String CONTAINER_IO_FAILURE(Path path) {
+		return format("CONTAINER_IO_FAILURE", path);
 	}
 	
-	public static String CONTAINER_NOT_WRITEABLE(Path path) {
-		return format("CONTAINER_NOT_WRITEABLE", path);
+	public static String CONTAINER_EMPTY(Path path) {
+		return format("CONTAINER_EMPTY", path);
 	}
-	
-	public static String CONTAINER_NOT_CLOSEABLE(Path path) {
-		return format("CONTAINER_NOT_CLOSEABLE", path);
+
+	public static String CONTAINER_CORRUPT(Path path) {
+		return format("CONTAINER_CORRUPT", path);
 	}
 	
 	public static String MANIFEST_ITEM_ID_MISSING(String id) {

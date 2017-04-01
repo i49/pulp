@@ -66,6 +66,8 @@ class ZipParser implements AutoCloseable {
 	private final Charset charset;
 	private final RandomAccessFile file;
 	
+	private static final int MIN_SIZE_OF_CENTRAL_DIRECTORY_END = 22;
+	
 	/**
 	 * Constructs this parser.
 	 * @param path the path of the ZIP file to parse.
@@ -91,6 +93,12 @@ class ZipParser implements AutoCloseable {
 		file.close();
 	}
 
+	/**
+	 * Parses the central directory of a ZIP file.
+	 * @return the map of each entry in central directory. 
+	 * @throws ZipException if the file is not a valid ZIP file.
+	 * @throws IOException if I/O error has occurred.
+	 */
 	public Map<String, CentralDirectoryEntry> parse() throws IOException {
 		CentralDirectoryEnd end = findCentralDirectoryEnd();
 		if (end == null) {
@@ -102,7 +110,10 @@ class ZipParser implements AutoCloseable {
 	private CentralDirectoryEnd findCentralDirectoryEnd() throws IOException {
 
 		final long fileLength = file.length();
-		int bufferSize = 64 * 1024 + 22;
+		if (fileLength < MIN_SIZE_OF_CENTRAL_DIRECTORY_END) {
+			return null;
+		}
+		int bufferSize = 64 * 1024 + MIN_SIZE_OF_CENTRAL_DIRECTORY_END;
 		if ((long)bufferSize > fileLength) {
 			bufferSize = (int)fileLength;
 		}

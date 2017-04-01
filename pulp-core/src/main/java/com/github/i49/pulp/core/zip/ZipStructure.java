@@ -84,7 +84,7 @@ class ZipStructure {
 	 * Retrieves an unsigned 8bit integer from this structure.
 	 * @param offset the relative position to the start of the structure.
 	 * @return retrieved value.
-	 * @exception IndexOutOfBoundsException if the position is out of the structure.
+	 * @throws IndexOutOfBoundsException if the position is out of the structure.
 	 */
 	public byte getUint8(int offset) {
 		if (offset < 0 || offset >= this.length) {
@@ -98,7 +98,7 @@ class ZipStructure {
 	 * Retrieves an unsigned 16bit integer from this structure.
 	 * @param offset the relative position to the start of the structure.
 	 * @return retrieved value.
-	 * @exception IndexOutOfBoundsException if the position is out of the structure.
+	 * @throws IndexOutOfBoundsException if the position is out of the structure.
 	 */
 	public int getUint16(int offset) {
 		if (offset < 0 || offset + 2 > this.length) {
@@ -114,7 +114,7 @@ class ZipStructure {
 	 * Retrieves an unsigned 32bit integer from this structure.
 	 * @param offset the relative position to the start of the structure.
 	 * @return retrieved value.
-	 * @exception IndexOutOfBoundsException if the position is out of the structure.
+	 * @throws IndexOutOfBoundsException if the position is out of the structure.
 	 */
 	public long getUint32(int offset) {
 		if (offset < 0 || offset + 4 > this.length) {
@@ -133,7 +133,7 @@ class ZipStructure {
 	 * @param offset the relative position to the start of the structure.
 	 * @param length the length of the string in this structure.
 	 * @return retrieved value.
-	 * @exception IndexOutOfBoundsException if the position is out of the structure.
+	 * @throws IndexOutOfBoundsException if the position is out of the structure.
 	 */
 	public String getString(int offset, int length) {
 		return getString(offset, length, StandardCharsets.UTF_8);
@@ -145,7 +145,7 @@ class ZipStructure {
 	 * @param length the length of the string in this structure.
 	 * @param charset the encoding of the string.
 	 * @return retrieved value.
-	 * @exception IndexOutOfBoundsException if the position is out of the structure.
+	 * @throws IndexOutOfBoundsException if the position is out of the structure.
 	 */
 	public String getString(int offset, int length, Charset charset) {
 		if (offset < 0 || offset + length > this.length) {

@@ -31,12 +31,14 @@ public class PublicationReaderFactoryTest {
 	
 	private PublicationReaderFactory factory;
 	
+	private static final Path BASE_PATH = Paths.get("target", "test-classes", "packed");
+	
 	@Before
 	public void setUp() {
 		factory = Epub.createReaderFactory();
 	}
 	
-	/* createReader */
+	/* createReader() */
 	
 	@Test
 	public void createReader_shoudThrowExceptionIfPathNotExist() {
@@ -44,5 +46,20 @@ public class PublicationReaderFactoryTest {
 		assertThatThrownBy(()->{
 			factory.createReader(path);
 		}).isInstanceOf(EpubException.class).hasMessageContaining("nonexistent.epub");
+	}
+	
+	@Test
+	public void createReader_shouldThrowExceptionIfPathIsNull() {
+		assertThatThrownBy(()->{
+			factory.createReader(null);
+		}).isInstanceOf(IllegalArgumentException.class);
+	}
+	
+	@Test
+	public void createReader_shouldThrowExceptionIfFileIsEmpty() {
+		Path path = BASE_PATH.resolve("empty.epub");
+		assertThatThrownBy(()->{
+			factory.createReader(path);
+		}).isInstanceOf(EpubException.class).hasMessageContaining("empty.epub");
 	}
 }
