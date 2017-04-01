@@ -27,6 +27,12 @@ import java.util.NoSuchElementException;
 public interface Manifest extends Iterable<Manifest.Item> {
 
 	/**
+	 * Returns the number of the items in this manifest.
+	 * @return the number of the items.
+	 */
+	int getNumberOfItems();
+
+	/**
 	 * Returns {@code true} if this manifest contains the specified item.
 	 * @param item the item to be checked. can be {@code null}.
 	 * @return {@code true} if this manifest contains the specified item, {@code false} otherwise.
@@ -63,12 +69,6 @@ public interface Manifest extends Iterable<Manifest.Item> {
 	 */
 	Optional<Item> findNavigationDocument();
 	
-	/**
-	 * Returns the number of the items in this manifest.
-	 * @return the number of the items.
-	 */
-	int getNumberOfItems();
-
 	/**
 	 * Adds a publication resource to this manifest.
 	 * If the resource specified already exists in this manifest, 

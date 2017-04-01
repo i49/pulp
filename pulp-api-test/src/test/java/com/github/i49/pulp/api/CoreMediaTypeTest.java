@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.Test;
 
 /**
- * Unit tests for CoreMediaType type.
+ * Unit tests for {@link CoreMediaType}.
  */
 public class CoreMediaTypeTest {
 

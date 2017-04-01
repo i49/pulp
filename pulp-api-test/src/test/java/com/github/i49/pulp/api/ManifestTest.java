@@ -25,7 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Unit tests for Manifest type.
+ * Unit tests for {@link Manifest}.
  */
 public class ManifestTest {
 
@@ -41,6 +41,20 @@ public class ManifestTest {
 		manifest = rendition.getManifest();
 	}
 
+	/* getNumberOfItems */
+
+	@Test
+	public void getNumberOfItems_shouldReturnZeroByDefault() {
+		assertThat(manifest.getNumberOfItems()).isEqualTo(0);
+	}
+	
+	@Test
+	public void getNumberOfItems_shouldReturnCorrectNumber() {
+		manifest.add(factory.newBuilder("chapter1.xhtml").build());
+		manifest.add(factory.newBuilder("chapter2.xhtml").build());
+		assertThat(manifest.getNumberOfItems()).isEqualTo(2);
+	}
+	
 	/* contains */
 	
 	@Test
@@ -130,20 +144,6 @@ public class ManifestTest {
 		assertThat(found).isEmpty();
 	}
 	
-	/* getNumberOfItems */
-
-	@Test
-	public void getNumberOfItems_shouldReturnZeroByDefault() {
-		assertThat(manifest.getNumberOfItems()).isEqualTo(0);
-	}
-	
-	@Test
-	public void getNumberOfItems_shouldReturnCorrectNumber() {
-		manifest.add(factory.newBuilder("chapter1.xhtml").build());
-		manifest.add(factory.newBuilder("chapter2.xhtml").build());
-		assertThat(manifest.getNumberOfItems()).isEqualTo(2);
-	}
-
 	/* add */
 	
 	@Test

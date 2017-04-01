@@ -24,7 +24,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Unit tests for Manifest.Item type.
+ * Unit tests for {@link Manifest.Item}.
  */
 public class ManifestItemTest {
 

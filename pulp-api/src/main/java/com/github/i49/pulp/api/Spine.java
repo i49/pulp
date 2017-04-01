@@ -31,7 +31,7 @@ public interface Spine extends Iterable<Spine.Page> {
 	 * Returns the page specified by its index.
 	 * @param index the position of the page, which starts from zero.
 	 * @return the page at the specified position.
-	 * @exception IndexOutOfBoundsException if the {@code index} is out of range. 
+	 * @throws IndexOutOfBoundsException if the {@code index} is out of range. 
 	 */
 	Page get(int index);
 	
@@ -39,9 +39,8 @@ public interface Spine extends Iterable<Spine.Page> {
 	 * Creates a new page on this spine and appends it to the list of pages.
 	 * @param item the manifest item rendered by the page. 
 	 * @return created page.
-	 * @exception NullPointerException if specified {@code item} is null.
-	 * @exception IllegalArgumentException if specified {@code item} is already assigned to a page
-	 *            or it is not in the manifest.
+	 * @throws IllegalArgumentException if specified {@code item} is already assigned to a page
+	 *            or it is not in the manifest or {@code null}.
 	 */
 	Page append(Manifest.Item item);
 	
@@ -51,10 +50,9 @@ public interface Spine extends Iterable<Spine.Page> {
 	 * @param index the position of the new page, which starts from zero.
 	 * @param item the manifest item rendered by the page. 
 	 * @return created page.
-	 * @exception NullPointerException if specified {@code item} is null.
-	 * @exception IllegalArgumentException if specified {@code item} is already assigned to a page
-	 *            or it is not in the manifest.
-	 * @exception IndexOutOfBoundsException if the {@code index} is out of range. 
+	 * @throws IllegalArgumentException if specified {@code item} is already assigned to a page
+	 *            or it is not in the manifest or {@code null}.
+	 * @throws IndexOutOfBoundsException if the {@code index} is out of range. 
 	 */
 	Page insert(int index, Manifest.Item item);
 	

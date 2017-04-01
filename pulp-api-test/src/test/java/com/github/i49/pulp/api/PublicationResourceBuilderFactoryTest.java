@@ -24,7 +24,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Unit tests for PublicationResourceBuilderFactory type.
+ * Unit tests for {@link PublicationResourceBuilderFactory}.
  */
 public class PublicationResourceBuilderFactoryTest {
 

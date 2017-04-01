@@ -27,6 +27,8 @@ import org.junit.Test;
  */
 public class EpubTest {
 
+	/* createPublication */
+	
 	@Test
 	public void createPublication_shouldCreateEmptyPublication() {
 		Publication p = Epub.createPublication();
@@ -34,10 +36,19 @@ public class EpubTest {
 		assertThat(p.getDefaultRendition()).isNull();
 	}
 	
+	/* createResourceBuilderFactory */
+	
 	@Test
 	public void createResourceBuilderFactory_shouldCreateValidResourceBuilderFactory() {
 		URI baseURI = URI.create("EPUB/package.opf");
 		PublicationResourceBuilderFactory f = Epub.createResourceBuilderFactory(baseURI);
 		assertThat(f.getBaseURI()).isEqualTo(URI.create("EPUB/package.opf"));
+	}
+	
+	@Test
+	public void createResourceBuilderFactory_shouldThrowExceptionIfBaseURIIsNull() {
+		assertThatThrownBy(()->{
+			Epub.createResourceBuilderFactory(null);
+		}).isInstanceOf(IllegalArgumentException.class);
 	}
 }

@@ -22,7 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Unit tests for Publication type.
+ * Unit tests for {@link Publication}.
  */
 public class PublicationTest {
 

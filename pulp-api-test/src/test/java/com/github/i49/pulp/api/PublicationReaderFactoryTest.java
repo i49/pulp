@@ -25,7 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Unit tests for PublicationReaderFactory type.
+ * Unit tests for {@link PublicationReaderFactory}.
  */
 public class PublicationReaderFactoryTest {
 	

@@ -24,7 +24,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Unit tests for Rendition type.
+ * Unit tests for {@link Rendition}.
  */
 public class RenditionTest {
 
