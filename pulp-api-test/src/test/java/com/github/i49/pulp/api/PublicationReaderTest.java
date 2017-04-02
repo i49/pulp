@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Iterator;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +45,39 @@ public class PublicationReaderTest {
 	}
 	
 	/* read() */
+	
+	@Test
+	public void read_shouldReadPublicationOfSingleRendition() {
+		Path path = pathTo("normal-single-rendition.epub");
+		PublicationReader reader = factory.createReader(path);
+		Publication publication = reader.read();
+		
+		assertThat(publication).isNotNull();
+		assertThat(publication.getNumberOfRenditions()).isEqualTo(1);
+		
+		Rendition rendition = publication.getDefaultRendition();
+		assertThat(rendition.getManifest()).hasItems(3);
+		assertThat(rendition.getSpine()).hasPages(2);
+	}
+
+	@Test
+	public void read_shouldReadPublicationOfMultipleRenditions() {
+		Path path = pathTo("normal-multiple-renditions.epub");
+		PublicationReader reader = factory.createReader(path);
+		Publication publication = reader.read();
+		
+		assertThat(publication).isNotNull();
+		assertThat(publication.getNumberOfRenditions()).isEqualTo(2);
+		
+		Iterator<Rendition> it = publication.iterator();
+		Rendition first = it.next();
+		assertThat(first.getManifest()).hasItems(3);
+		assertThat(first.getSpine()).hasPages(2);
+		
+		Rendition second = it.next();
+		assertThat(second.getManifest()).hasItems(4);
+		assertThat(second.getSpine()).hasPages(3);
+	}
 	
 	@Test
 	public void read_shouldThrowExceptionIfContainerXmlIsMissing() {
@@ -73,7 +107,7 @@ public class PublicationReaderTest {
 	
 	@Test
 	public void read_shouldThrowExceptionIfContainerXmlHasWrongRootElement() {
-		Path path = pathTo("container-wrong-root.epub");
+		Path path = pathTo("container-unrecognized.epub");
 		PublicationReader reader = factory.createReader(path);
 		Throwable thrown = catchThrowable(()->{
 			reader.read();
@@ -94,6 +128,58 @@ public class PublicationReaderTest {
 		assertThat(thrown).isInstanceOf(EpubParsingException.class);
 		assertThat((EpubParsingException)thrown)
 			.hasLocation("META-INF/container.xml")
+			.hasContainerPath(path);
+	}
+	
+	@Test
+	public void read_shouldThrowExceptionIfPackageDocumentIsMissing() {
+		Path path = pathTo("package-missing.epub");
+		PublicationReader reader = factory.createReader(path);
+		Throwable thrown = catchThrowable(()->{
+			reader.read();
+		});
+		assertThat(thrown).isInstanceOf(EpubParsingException.class);
+		assertThat((EpubParsingException)thrown)
+			.hasLocation("EPUB/nonexistent.opf")
+			.hasContainerPath(path);
+	}
+
+	@Test
+	public void read_shouldThrowExceptionIfPackageDocumentIsEmpty() {
+		Path path = pathTo("package-empty.epub");
+		PublicationReader reader = factory.createReader(path);
+		Throwable thrown = catchThrowable(()->{
+			reader.read();
+		});
+		assertThat(thrown).isInstanceOf(EpubParsingException.class);
+		assertThat((EpubParsingException)thrown)
+			.hasLocation("EPUB/empty.opf")
+			.hasContainerPath(path);
+	}
+
+	@Test
+	public void read_shouldThrowExceptionIfPackageDocumentHasUnrecognizedRootElement() {
+		Path path = pathTo("package-unrecognized.epub");
+		PublicationReader reader = factory.createReader(path);
+		Throwable thrown = catchThrowable(()->{
+			reader.read();
+		});
+		assertThat(thrown).isInstanceOf(EpubParsingException.class);
+		assertThat((EpubParsingException)thrown)
+			.hasLocation("EPUB/package.opf")
+			.hasContainerPath(path);
+	}
+
+	@Test
+	public void read_shouldThrowExceptionIfPackageDocumentHasUnsupportedVersion() {
+		Path path = pathTo("package-unsupported.epub");
+		PublicationReader reader = factory.createReader(path);
+		Throwable thrown = catchThrowable(()->{
+			reader.read();
+		});
+		assertThat(thrown).isInstanceOf(EpubParsingException.class);
+		assertThat((EpubParsingException)thrown)
+			.hasLocation("EPUB/package.opf")
 			.hasContainerPath(path);
 	}
 }

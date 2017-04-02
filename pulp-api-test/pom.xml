@@ -11,9 +11,9 @@
   <packaging>jar</packaging>
   
   <properties>
-    <pulp.impl.group>com.github.i49</pulp.impl.group>
-    <pulp.impl.artifact>pulp-core</pulp.impl.artifact>
-    <pulp.impl.version>${project.version}</pulp.impl.version>
+    <api.impl.group>com.github.i49</api.impl.group>
+    <api.impl.artifact>pulp-core</api.impl.artifact>
+    <api.impl.version>${project.version}</api.impl.version>
   </properties>
 
   <dependencies>
@@ -23,9 +23,9 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>${pulp.impl.group}</groupId>
-      <artifactId>${pulp.impl.artifact}</artifactId>
-      <version>${pulp.impl.version}</version>
+      <groupId>${api.impl.group}</groupId>
+      <artifactId>${api.impl.artifact}</artifactId>
+      <version>${api.impl.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>

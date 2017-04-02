@@ -15,17 +15,19 @@ function pack() {
   cd ..
 }
 
-pushd src/test/epub
-
 rm -f empty.epub
 touch empty.epub
 
 pack container-empty
 pack container-missing
+pack container-unrecognized
 pack container-unsupported
-pack container-wrong-root
 pack mimetype-directory
 pack mimetype-missing
 pack mimetype-wrong
-
-popd
+pack normal-multiple-renditions
+pack normal-single-rendition
+pack package-empty
+pack package-missing
+pack package-unrecognized
+pack package-unsupported
