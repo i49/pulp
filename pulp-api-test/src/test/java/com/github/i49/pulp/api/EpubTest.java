@@ -36,6 +36,22 @@ public class EpubTest {
 		assertThat(p.getDefaultRendition()).isNull();
 	}
 	
+	/* createReaderFactory() */
+	
+	@Test
+	public void createReaderFactory_shouldCreateReaderFactory() {
+		PublicationReaderFactory factory = Epub.createReaderFactory();
+		assertThat(factory).isNotNull();
+	}
+	
+	/* createWriterFactory() */
+
+	@Test
+	public void createWriterFactory_shouldCreateWriterFactory() {
+		PublicationWriterFactory factory = Epub.createWriterFactory();
+		assertThat(factory).isNotNull();
+	}
+	
 	/* createResourceBuilderFactory() */
 	
 	@Test

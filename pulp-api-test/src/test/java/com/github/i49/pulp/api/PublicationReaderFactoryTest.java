@@ -29,9 +29,9 @@ import org.junit.Test;
  */
 public class PublicationReaderFactoryTest {
 	
+	private static final Path BASE_PATH = Paths.get("target", "epub");
+
 	private PublicationReaderFactory factory;
-	
-	private static final Path BASE_PATH = Paths.get("target", "test-classes", "packed");
 	
 	@Before
 	public void setUp() {

@@ -17,9 +17,11 @@
 package com.github.i49.pulp.api;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Optional;
 
 import org.assertj.core.api.AbstractAssert;
+import org.assertj.core.api.AbstractThrowableAssert;
 
 import com.github.i49.pulp.api.Spine.Page;
 
@@ -30,6 +32,7 @@ public final class EpubAssertions {
 
 	/**
 	 * Provides assertion on an instance of {@link Manifest}. 
+	 * 
 	 * @param actual the actual instance of {@link Manifest}. 
 	 * @return created assertion.
 	 */
@@ -39,6 +42,7 @@ public final class EpubAssertions {
 
 	/**
 	 * Provides assertion on an instance of {@link Spine}. 
+	 * 
 	 * @param actual the actual instance of {@link Spine}. 
 	 * @return created assertion.
 	 */
@@ -46,6 +50,16 @@ public final class EpubAssertions {
 		return new SpineAssert(actual);
 	}
 	
+	/**
+	 * Provides assertion on an instance of {@link EpubParsingExceptionAssert}. 
+	 * 
+	 * @param actual the actual instance of {@link EpubParsingExceptionAssert}. 
+	 * @return created assertion.
+	 */
+	public static EpubParsingExceptionAssert assertThat(EpubParsingException actual) {
+		return new EpubParsingExceptionAssert(actual);
+	}
+ 	
 	private EpubAssertions() {
 	}
 
@@ -114,6 +128,31 @@ public final class EpubAssertions {
 				}
 			}
 			
+			return this;
+		}
+	}
+	
+	public static class EpubParsingExceptionAssert extends AbstractThrowableAssert<EpubParsingExceptionAssert, EpubParsingException> {
+
+		public EpubParsingExceptionAssert(EpubParsingException actual) {
+			super(actual, EpubParsingExceptionAssert.class);
+		}
+		
+		public EpubParsingExceptionAssert hasLocation(String expected) {
+			isNotNull();
+			String location = actual.getLocation();
+			if (!expected.equals(location)) {
+				failWithMessage("Expected location to be <%s>, but was <%s>", expected, location);
+			}
+			return this;
+		}
+		
+		public EpubParsingExceptionAssert hasContainerPath(Path expected) {
+			isNotNull();
+			Path path = actual.getContainerPath();
+			if (!expected.equals(path)) {
+				failWithMessage("Expected path to be <%s>, but was <%s>", expected, path);
+			}
 			return this;
 		}
 	}

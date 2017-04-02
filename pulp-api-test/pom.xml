@@ -38,6 +38,35 @@
     </dependency>
   </dependencies>
   
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.0.2</version>
+        <executions>
+          <execution>
+            <id>copy-publications</id>
+            <phase>process-test-resources</phase>
+            <goals>
+              <goal>testResources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/epub</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/src/test/epub</directory>
+                  <includes>
+                    <include>*.epub</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  
   <profiles>
     <profile>
       <id>test-basic</id>
