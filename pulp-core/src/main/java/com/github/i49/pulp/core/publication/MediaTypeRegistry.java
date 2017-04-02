@@ -49,7 +49,7 @@ public class MediaTypeRegistry {
 	 * Returns an instance of {@link MediaType} by parsing the supplied string.
 	 * @param value the media type string.
 	 * @return the instance of {@link MediaType}.
-	 * @exception IllegalArgumentException if {@code value} cannot be parsed or is {@code null}.
+	 * @throws IllegalArgumentException if {@code value} cannot be parsed or is {@code null}.
 	 */
 	public synchronized MediaType getMediaType(String value) {
 		if (value == null) {

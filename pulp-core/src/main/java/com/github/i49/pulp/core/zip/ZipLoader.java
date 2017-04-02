@@ -43,12 +43,13 @@ public class ZipLoader {
 	
 	/**
 	 * Creates a new instance of this class.
+	 * 
 	 * @param path the path to the ZIP file.
-	 * @param charset the charset to be used to decode the ZIP entry name.
+	 * @param charset the character set to be used to decode the ZIP entry name.
 	 * @return newly created instance of this class.
-	 * @exception IllegalArgumentException if {@code path} is {@code null}.
-	 * @exception IOException if an I/O error has occurred.
-	 * @exception ZipException if a ZIP format error has occurred.
+	 * @throws IllegalArgumentException if {@code path} is {@code null}.
+	 * @throws IOException if an I/O error has occurred.
+	 * @throws ZipException if a ZIP format error has occurred.
 	 */
 	public static ZipLoader create(Path path, Charset charset) throws IOException {
 		if (path == null) {
@@ -61,6 +62,12 @@ public class ZipLoader {
 		return new ZipLoader(path, entries);
 	}
 	
+	/**
+	 * Constructs this loader.
+	 * 
+	 * @param path the path to the ZIP file.
+	 * @param entries the list of entries in Central Directory of the ZIP file.
+	 */
 	private ZipLoader(Path path, List<CentralDirectoryEntry> entries) {
 		this.path = path;
 		this.entryMap = new HashMap<>();
@@ -80,6 +87,7 @@ public class ZipLoader {
 	
 	/**
 	 * Returns the path of the ZIP file.
+	 * 
 	 * @return the path of the ZIP file.
 	 */
 	public Path getPath() {
@@ -88,6 +96,7 @@ public class ZipLoader {
 	
 	/**
 	 * Returns the total number of entries in the ZIP file.
+	 * 
 	 * @return the total number of entries in the ZIP file.
 	 */
 	public int getNumberOfEntries() {
@@ -95,26 +104,39 @@ public class ZipLoader {
 	}
 	
 	/**
-	 * Returns whether the entry specified by name exists in the ZIP file or not. 
+	 * Returns whether the entry specified by name exists in the ZIP file or not.
+	 *  
 	 * @param entryName the name of the entry.
 	 * @return {@code true} if the entry exists, {@code false} otherwise.
 	 */
 	public boolean findEntry(String entryName) {
-		return getEntry(entryName) != null;
+		return getNullableEntry(entryName) != null;
 	}
 
+	/**
+	 * Returns the name of the ZIP entry located at specified index.
+	 * 
+	 * @param index the index of the entry.
+	 * @return the name of the entry.
+	 */
 	public String getEntryName(int index) {
 		return getEntryAt(index).getFileName();
 	}
 
+	/**
+	 * Loads the content of the ZIP entry.
+	 * 
+	 * @param entryName the name of the entry.
+	 * @return loaded bytes.
+	 * @throws IllegalArgumentException if {@code entryName} is {@code null}.
+	 * @throws FileNotFoundException if the specified entry was not found in the ZIP file.
+	 * @throws IOException if an I/O error has occurred.
+	 */
 	public byte[] load(String entryName) throws IOException {
 		if (entryName == null) {
 			throw new IllegalArgumentException("entryName is null.");
 		}
 		CentralDirectoryEntry entry = getEntry(entryName);
-		if (entry == null) {
-			throw new FileNotFoundException(ZIP_ENTRY_NOT_FOUND(entryName, getPath()));
-		}
 		final int contentSize = (int)entry.getUncompressedSize();
 		byte[] content = new byte[contentSize];
 		try (InputStream stream = openToLoad(entryName)) {
@@ -132,20 +154,18 @@ public class ZipLoader {
 	
 	/**
 	 * Opens a new {@link InputStream} to load an entry of ZIP file.
+	 * 
 	 * @param entryName the filename of the entry to load.
-	 * @return newly created {@link InputStream}.
-	 * @exception IllegalArgumentException if {@code entryName} is {@code null}.
-	 * @exception FileNotFoundException if the specified entry was not found in the ZIP file.
-	 * @exception IOException if an I/O error has occurred.
+	 * @return newly created {@link InputStream} that must be closed by the caller.
+	 * @throws IllegalArgumentException if {@code entryName} is {@code null}.
+	 * @throws FileNotFoundException if the specified entry was not found in the ZIP file.
+	 * @throws IOException if an I/O error has occurred.
 	 */
 	public InputStream openToLoad(String entryName) throws IOException {
 		if (entryName == null) {
 			throw new IllegalArgumentException("entryName is null.");
 		}
 		CentralDirectoryEntry entry = getEntry(entryName);
-		if (entry == null) {
-			throw new FileNotFoundException(ZIP_ENTRY_NOT_FOUND(entryName, getPath()));
-		}
 		InputStream stream = Files.newInputStream(this.path);
 		stream.skip(entry.getPosition());
 		ZipInputStream zstream = new ZipInputStream(stream);
@@ -153,7 +173,15 @@ public class ZipLoader {
 		return zstream;
 	}
 	
-	private CentralDirectoryEntry getEntry(String entryName) {
+	private CentralDirectoryEntry getEntry(String entryName) throws FileNotFoundException {
+		CentralDirectoryEntry entry = getNullableEntry(entryName);
+		if (entry == null) {
+			throw new FileNotFoundException(ZIP_ENTRY_NOT_FOUND(entryName, getPath()));
+		}
+		return entry;
+	}
+	
+	private CentralDirectoryEntry getNullableEntry(String entryName) {
 		return this.entryMap.get(entryName);
 	}
 

@@ -26,18 +26,20 @@ public interface PublicationWriterFactory {
 
 	/**
 	 * Creates an instance of {@link PublicationWriter}.
+	 * 
 	 * @param path the location where a publication will be stored by the writer.
 	 * @return created instance of {@link PublicationWriter}.
-	 * @exception IllegalArgumentException if given {@code path} is {@code null}.
-	 * @exception EpubException if an I/O error has occurred.
+	 * @throws IllegalArgumentException if given {@code path} is {@code null}.
+	 * @throws EpubException if an I/O error has occurred.
 	 */
 	PublicationWriter createWriter(Path path);
 	
 	/**
 	 * Creates an instance of {@link PublicationWriter}.
+	 * 
 	 * @param stream the stream to which a publication will be written.
 	 * @return created instance of {@link PublicationWriter}.
-	 * @exception IllegalArgumentException if given {@code stream} is {@code null}.
+	 * @throws IllegalArgumentException if given {@code stream} is {@code null}.
 	 */
 	PublicationWriter createWriter(OutputStream stream);
 }

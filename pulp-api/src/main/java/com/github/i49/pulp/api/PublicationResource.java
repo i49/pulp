@@ -54,17 +54,19 @@ public interface PublicationResource {
 	
 	/**
 	 * Opens a new {@link InputStream} that provides the content of this resource. 
+	 * 
 	 * @return a new input stream, which should be closed by the caller of this method.
-	 * @exception IllegalStateException if content source is not assigned.
-	 * @exception IOException if an I/O error has occurs.
+	 * @throws IllegalStateException if content source is not assigned.
+	 * @throws IOException if an I/O error has occurs.
 	 */
 	InputStream openContent() throws IOException;
 	
 	/**
 	 * Returns the content of this resource.
+	 * 
 	 * @return the content of this resource as a byte array.
-	 * @exception IllegalStateException if content source is not assigned.
-	 * @exception IOException if an I/O error has occurs.
+	 * @throws IllegalStateException if content source is not assigned.
+	 * @throws IOException if an I/O error has occurs.
 	 */
 	byte[] getContent() throws IOException;
 }

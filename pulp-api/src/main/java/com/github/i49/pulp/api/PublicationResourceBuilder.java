@@ -36,7 +36,7 @@ public interface PublicationResourceBuilder {
 	 * Specifies the media type of the resource to build.
 	 * @param value the string representation of the media type.
 	 * @return this builder.
-	 * @exception IllegalArgumentException if {@code value} is illegal or {@code null}.
+	 * @throws IllegalArgumentException if {@code value} is illegal or {@code null}.
 	 */
 	PublicationResourceBuilder ofType(String value);
 	

@@ -23,14 +23,17 @@ public interface PublicationReader  extends Closeable {
 
 	/**
 	 * Closes this reader and frees any resources associated with this reader.
-	 * @exception EpubException if an I/O error has occurred.
+	 * 
+	 * @throws EpubException if an I/O error has occurred.
 	 */
+	@Override
 	void close();
 	
 	/**
 	 * Reads a publication.
+	 * 
 	 * @return the publication read by this reader.
-	 * @exception EpubException if the publication cannot be read due to some error such as {@link IOException}.
+	 * @throws EpubException if the publication cannot be read due to some error such as {@link IOException}.
 	 */
 	Publication read();
 }

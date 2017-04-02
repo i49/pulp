@@ -43,7 +43,7 @@ public final class XmlServices {
 	/**
 	 * Creates an new instance of {@link DocumentBuilder}.
 	 * @return created instance of {@link DocumentBuilder}, which is not thread-safe.
-	 * @exception EpubException if a configuration error occurs.
+	 * @throws EpubException if a configuration error occurs.
 	 */
 	public static DocumentBuilder newBuilder() {
 		try {
@@ -56,7 +56,7 @@ public final class XmlServices {
 	/**
 	 * Creates an new instance of {@link DocumentSerializer}.
 	 * @return created instance of {@link DocumentSerializer}, which is not thread-safe.
-	 * @exception EpubException if a configuration error occurs.
+	 * @throws EpubException if a configuration error occurs.
 	 */
 	public static DocumentSerializer newSerializer() {
 		try {
