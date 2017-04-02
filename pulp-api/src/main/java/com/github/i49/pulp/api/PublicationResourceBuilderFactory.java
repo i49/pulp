@@ -33,8 +33,7 @@ public interface PublicationResourceBuilderFactory {
 	 * Creates a builder for building a publication resource located at the specified location.
 	 * @param location the location of the publication resource.
 	 * @return created resource builder, never be {@code null}.
-	 * @throws IllegalArgumentException if {@code location} is {@code null}.
-	 * @throws EpubException if {@code location} is an invalid location.
+	 * @throws IllegalArgumentException if {@code location} is not a valid location or {@code null}.
 	 */
 	PublicationResourceBuilder newBuilder(String location);
 }

@@ -55,7 +55,7 @@ public class PublicationResourceBuilderFactoryTest {
 	public void newBuilder_shouldThrowExceptionIfLocalLocationIsInvalid() {
 		assertThatThrownBy(()->{
 			factory.newBuilder("../../images/cover.png");
-		}).isInstanceOf(EpubException.class);
+		}).isInstanceOf(IllegalArgumentException.class);
 	}
 	
 	@Test
@@ -68,6 +68,6 @@ public class PublicationResourceBuilderFactoryTest {
 	public void newBuilder_shouldThrowExceptionIfRemoteLocationIsOpaque() {
 		assertThatThrownBy(()->{
 			factory.newBuilder("http:./images/cover.png");
-		}).isInstanceOf(EpubException.class);
+		}).isInstanceOf(IllegalArgumentException.class);
 	}
 }

@@ -27,7 +27,7 @@ import org.junit.Test;
  */
 public class EpubTest {
 
-	/* createPublication */
+	/* createPublication() */
 	
 	@Test
 	public void createPublication_shouldCreateEmptyPublication() {
@@ -36,7 +36,7 @@ public class EpubTest {
 		assertThat(p.getDefaultRendition()).isNull();
 	}
 	
-	/* createResourceBuilderFactory */
+	/* createResourceBuilderFactory() */
 	
 	@Test
 	public void createResourceBuilderFactory_shouldCreateValidResourceBuilderFactory() {
@@ -50,5 +50,21 @@ public class EpubTest {
 		assertThatThrownBy(()->{
 			Epub.createResourceBuilderFactory(null);
 		}).isInstanceOf(IllegalArgumentException.class);
+	}
+	
+	@Test
+	public void createResourceBuilderFactory_shouldThrowExceptionIfBaseURIIsRemote() {
+		URI baseURI = URI.create("http://example.org/package.opf");
+		assertThatThrownBy(()->{
+			Epub.createResourceBuilderFactory(baseURI);
+		}).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("http://example.org/package.opf");
+	}
+
+	@Test
+	public void createResourceBuilderFactory_shouldThrowExceptionIfBaseURIIsNotPathRootless() {
+		URI baseURI = URI.create("/EPUB/package.opf");
+		assertThatThrownBy(()->{
+			Epub.createResourceBuilderFactory(baseURI);
+		}).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("/EPUB/package.opf");
 	}
 }

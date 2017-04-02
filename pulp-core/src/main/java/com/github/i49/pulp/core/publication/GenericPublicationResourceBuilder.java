@@ -114,7 +114,7 @@ class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 	
 	@Override
 	public PublicationResource build() {
-		final MediaType mediaType = getFinalMediaType();
+		final MediaType mediaType = determineMediaType();
 		PublicationResource resource = null;
 		if (mediaType == CoreMediaType.APPLICATION_XHTML_XML) {
 			resource = createXhtmlDocument();
@@ -134,7 +134,12 @@ class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 		return location.toString();
 	}
 	
-	private MediaType getFinalMediaType() {
+	/**
+	 * Determines the final media type of the resource to create.
+	 * 
+	 * @return determined media type.
+	 */
+	private MediaType determineMediaType() {
 		MediaType mediaType = this.mediaType;
 		if (mediaType == null) {
 			mediaType = CoreMediaTypes.guessMediaType(localPath);

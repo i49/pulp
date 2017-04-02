@@ -58,7 +58,7 @@ public final class Messages {
 		return format("RESOURCE_LOCATION_INVALID", location);
 	}
 
-	public static String RESOURCE_LOCATION_NOT_LOCAL(String location) {
+	public static String RESOURCE_LOCATION_NOT_LOCAL(URI location) {
 		return format("RESOURCE_LOCATION_NOT_LOCAL", location);
 	}
 	

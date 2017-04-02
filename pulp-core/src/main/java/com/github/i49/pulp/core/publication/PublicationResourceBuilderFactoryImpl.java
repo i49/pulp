@@ -23,17 +23,17 @@ import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
 
 public class PublicationResourceBuilderFactoryImpl implements PublicationResourceBuilderFactory {
 	
-	private final URI baseURI;
+	private final PublicationResourceLocation baseURI;
 	private final MediaTypeRegistry typeRegistry;
 	
 	public PublicationResourceBuilderFactoryImpl(URI baseURI, MediaTypeRegistry typeRegistry) {
-		this.baseURI = baseURI;
+		this.baseURI = PublicationResourceLocation.ofLocal(baseURI);
 		this.typeRegistry = typeRegistry;
 	}
 	
 	@Override
 	public URI getBaseURI() {
-		return baseURI;
+		return baseURI.toURI();
 	}
 
 	@Override
@@ -45,6 +45,12 @@ public class PublicationResourceBuilderFactoryImpl implements PublicationResourc
 		return new GenericPublicationResourceBuilder(resolved, location, this.typeRegistry);
 	}
 	
+	/**
+	 * Resolves the location of the publication resource to create.
+	 * 
+	 * @param location the relative location of the publication resource.
+	 * @return resolved location.
+	 */
 	private PublicationResourceLocation resolve(String location) {
 		URI uri = this.baseURI.resolve(location); 
 		return PublicationResourceLocation.of(uri);

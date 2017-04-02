@@ -88,9 +88,10 @@ public final class Epub {
 
 	/**
 	 * Creates an instance of {@link PublicationResourceBuilderFactory} that can be used to create {@link PublicationResourceBuilder}.
-	 * @param baseURI the base location to be used by the builders.
+	 *
+	 * @param baseURI the base location to be used by the builders, must be a valid local location.
 	 * @return created publication resource builder factory.
-	 * @throws IllegalArgumentException if given {@code baseURI} is {@code null}.
+	 * @throws IllegalArgumentException if given {@code baseURI} is not a valid local location or {@code null}.
 	 * @throws EpubException if API implementation was not found.
 	 */
 	public static PublicationResourceBuilderFactory createResourceBuilderFactory(URI baseURI) {

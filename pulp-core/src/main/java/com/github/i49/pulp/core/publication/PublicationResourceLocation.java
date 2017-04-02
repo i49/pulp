@@ -19,11 +19,11 @@ package com.github.i49.pulp.core.publication;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.core.Messages;
 
 /**
  * A location of a publication resource.
+ * 
  * <p>There are two types of locations this class can handle.</p>
  * <ol>
  * <li>Absolute URI with explicit scheme.</li>
@@ -36,47 +36,79 @@ class PublicationResourceLocation {
 	
 	/**
 	 * Creates a new instance that points to the specified location.
+	 * 
 	 * @param location the URI of the resource represented by a string.
 	 * @return created new instance.
+	 * @throws IllegalArgumentException if specified location is not valid.
 	 */
 	public static PublicationResourceLocation of(String location) {
 		try {
 			URI uri = new URI(location);
 			return of(uri);
 		} catch (URISyntaxException e) {
-			throw new EpubException(Messages.RESOURCE_LOCATION_INVALID(location), e);
+			throw new IllegalArgumentException(Messages.RESOURCE_LOCATION_INVALID(location), e);
 		}
 	}
 
 	/**
-	 * Creates a new instance that points to the specified location.
+	 * Creates a new instance that points to the specified URI.
+	 * 
 	 * @param location the URI of the resource.
 	 * @return created new instance.
+	 * @throws IllegalArgumentException if specified location is not valid.
 	 */
 	public static PublicationResourceLocation of(URI location) {
 		if (!validateLocation(location)) {
-			throw new EpubException(Messages.RESOURCE_LOCATION_INVALID(location.toString()));
+			throw new IllegalArgumentException(Messages.RESOURCE_LOCATION_INVALID(location.toString()));
 		}
 		return new PublicationResourceLocation(location);
 	}
 	
+	/**
+	 * Creates a new instance that points to the location inside the EPUB container.
+	 * 
+	 * @param location the URI of the resource represented by a string.
+	 * @return created new instance.
+	 * @throws IllegalArgumentException if specified location is not a valid local location.
+	 */
 	public static PublicationResourceLocation ofLocal(String location) {
 		try {
 			URI uri = new URI(location);
-			if (uri.isAbsolute()) {
-				throw new EpubException(Messages.RESOURCE_LOCATION_NOT_LOCAL(location));
-			} else {
-				return of(uri);
-			}
+			return ofLocal(uri);
 		} catch (URISyntaxException e) {
-			throw new EpubException(Messages.RESOURCE_LOCATION_INVALID(location), e);
+			throw new IllegalArgumentException(Messages.RESOURCE_LOCATION_INVALID(location), e);
 		}
 	}
 	
+	/**
+	 * Creates a new instance that points to the location inside the EPUB container.
+	 * 
+	 * @param location the URI of the resource.
+	 * @return created new instance.
+	 * @throws IllegalArgumentException if specified location is not a valid local location.
+	 */
+	public static PublicationResourceLocation ofLocal(URI location) {
+		if (location.isAbsolute()) {
+			throw new IllegalArgumentException(Messages.RESOURCE_LOCATION_NOT_LOCAL(location));
+		} else {
+			return of(location);
+		}
+	}
+	
+	/**
+	 * Returns whether this location points inside the EPUB container or not.
+	 * 
+	 * @return {@code true} if this location points inside the EPUB container, {@code false} otherwise.
+	 */
 	public boolean isLocal() {
 		return !isRemote();
 	}
 	
+	/**
+	 * Returns whether this location points outside the EPUB container or not.
+	 * 
+	 * @return {@code true} if this location points outside the EPUB container, {@code false} otherwise.
+	 */
 	public boolean isRemote() {
 		return uri.isAbsolute();
 	}
@@ -126,10 +158,21 @@ class PublicationResourceLocation {
 		return uri.toString();
 	}
 	
+	/**
+	 * Constructs this location.
+	 * 
+	 * @param uri the URI representing this location, must be valid.
+	 */
 	private PublicationResourceLocation(URI uri) {
 		this.uri= uri;
 	}
 	
+	/**
+	 * Validates the location of resources.
+	 * 
+	 * @param uri the location of the resource.
+	 * @return {@code true} if specified location is a valid location.
+	 */
 	private static boolean validateLocation(URI uri) {
 		if (uri.isAbsolute()) {
 			return validateRemoteLocation(uri);
@@ -138,14 +181,21 @@ class PublicationResourceLocation {
 		}
 	}
 	
+	/**
+	 * Validates the remote location of resources.
+	 * 
+	 * @param uri the location of the resource.
+	 * @return {@code true} if specified location is a valid remote location.
+	 */
 	private static boolean validateRemoteLocation(URI uri) {
 		return !uri.isOpaque();
 	}
 	
 	/**
 	 * Validates the local location of resources.
+	 * 
 	 * @param uri the location of the resource.
-	 * @return {@code true} if the specified location is valid.
+	 * @return {@code true} if specified location is a valid local location.
 	 */
 	private static boolean validateLocalLocation(URI uri) {
 		String path = uri.getPath();

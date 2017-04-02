@@ -33,7 +33,7 @@ public class PublicationTest {
 		publication = Epub.createPublication();
 	}
 
-	/* getNumberOfRenditions */
+	/* getNumberOfRenditions() */
 
 	@Test
 	public void getNumberOfRenditions_shouldReturnZero() {
@@ -53,7 +53,7 @@ public class PublicationTest {
 		assertThat(publication.getNumberOfRenditions()).isEqualTo(2);
 	}
 	
-	/* getDefaultRendition */
+	/* getDefaultRendition() */
 	
 	@Test
 	public void getDefaultRendition_shoudlReturnNull() {
@@ -99,21 +99,21 @@ public class PublicationTest {
 	public void addRendition_shouldThrowExceptionIfLocationHasScheme() {
 		assertThatThrownBy(()->{
 			publication.addRendition("http://example.org/EPUB/package.opf");
-		}).isInstanceOf(EpubException.class).hasMessageContaining("http://example.org/EPUB/package.opf");
+		}).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("http://example.org/EPUB/package.opf");
 	}
 
 	@Test
 	public void addRendition_shouldThrowExceptionIfLocationIsPathAbsolute() {
 		assertThatThrownBy(()->{
 			publication.addRendition("/EPUB/package.opf");
-		}).isInstanceOf(EpubException.class).hasMessageContaining("/EPUB/package.opf");
+		}).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("/EPUB/package.opf");
 	}
 
 	@Test
 	public void addRendition_shouldThrowExceptionIfLocationContainsDotSegments() {
 		assertThatThrownBy(()->{
 			publication.addRendition("../package.opf");
-		}).isInstanceOf(EpubException.class).hasMessageContaining("../package.opf");
+		}).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("../package.opf");
 	}
 	
 	@Test
@@ -124,7 +124,7 @@ public class PublicationTest {
 		}).isInstanceOf(EpubException.class).hasMessageContaining("EPUB/package.opf");
 	}
 
-	/* getAllResources */
+	/* getAllResources() */
 	
 	@Test
 	public void getAllResources_shouldReturnEmptySetByDefault() {
@@ -230,7 +230,7 @@ public class PublicationTest {
 		assertThat(publication.getAllResources()).containsExactlyInAnyOrder(r1, r3);
 	}
 
-	/* iterator */
+	/* iterator() */
 
 	@Test
 	public void iterator_shouldIterateRenditions() {

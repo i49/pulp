@@ -48,7 +48,7 @@ public interface Publication extends Iterable<Rendition> {
 	 * Adds a new {@link Rendition} with the location of the Package Document in the container specified.
 	 * @param location the local location of the Package Document. e.g. "EPUB/package.opf".
 	 * @return created rendition.
-	 * @throws EpubException if specified {@code location} is invalid.
+	 * @throws IllegalArgumentException if specified {@code location} is invalid.
 	 */
 	Rendition addRendition(String location);
 	
