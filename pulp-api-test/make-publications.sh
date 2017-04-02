@@ -1,23 +1,31 @@
 #!/bin/bash
 
-function epub() {
+set -e
+
+function pack() {
+  rm -f $1.epub
+  echo "Generating $1.epub..."
   cd $1
-  zip -0 ../$1.epub mimetype
-  zip -r ../$1.epub . -x mimetype
+  if [ -e mimetype ]; then
+    zip -0 ../$1.epub mimetype
+  fi
+  if [ "$(find . -not -name '.' -not -name 'mimetype')" ]; then
+    zip -r ../$1.epub . -x mimetype
+  fi
   cd ..
 }
 
 pushd src/test/epub
 
-rm *.epub
+rm -f empty.epub
+touch empty.epub
 
-epub container-empty
-epub container-missing
-epub container-unsupported
-epub container-wrong-root
-epub mimetype-wrong
-
-(cd mimetype-directory; zip -r ../mimetype-directory.epub .)
-(cd mimetype-missing; zip -r ../mimetype-missing.epub . -i .)
+pack container-empty
+pack container-missing
+pack container-unsupported
+pack container-wrong-root
+pack mimetype-directory
+pack mimetype-missing
+pack mimetype-wrong
 
 popd
