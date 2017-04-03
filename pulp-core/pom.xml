@@ -11,7 +11,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.github.i49</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>pulp-api</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -20,5 +20,36 @@
       <artifactId>junit</artifactId>
     </dependency>
   </dependencies>
+  
+  <profiles>
+    <profile>
+      <id>test-samples</id>
+      <activation>
+        <property>
+          <name>env.EPUB3_SAMPLES_HOME</name>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>${project.groupId}</groupId>
+          <artifactId>pulp-api-test-samples</artifactId>
+          <version>${project.version}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <dependenciesToScan>
+                <dependency>${project.groupId}:pulp-api-test-samples</dependency>
+              </dependenciesToScan>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   
 </project>

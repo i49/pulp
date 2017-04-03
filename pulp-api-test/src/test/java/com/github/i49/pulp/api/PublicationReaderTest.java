@@ -16,7 +16,7 @@
 
 package com.github.i49.pulp.api;
 
-import static com.github.i49.pulp.api.EpubAssertions.*;
+import static com.github.i49.pulp.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.nio.file.Path;
@@ -56,8 +56,8 @@ public class PublicationReaderTest {
 		assertThat(publication.getNumberOfRenditions()).isEqualTo(1);
 		
 		Rendition rendition = publication.getDefaultRendition();
-		assertThat(rendition.getManifest()).hasItems(3);
-		assertThat(rendition.getSpine()).hasPages(2);
+		assertThat(rendition.getManifest().getNumberOfItems()).isEqualTo(3);
+		assertThat(rendition.getSpine().getNumberOfPages()).isEqualTo(2);
 	}
 
 	@Test
@@ -71,12 +71,12 @@ public class PublicationReaderTest {
 		
 		Iterator<Rendition> it = publication.iterator();
 		Rendition first = it.next();
-		assertThat(first.getManifest()).hasItems(3);
-		assertThat(first.getSpine()).hasPages(2);
+		assertThat(first.getManifest().getNumberOfItems()).isEqualTo(3);
+		assertThat(first.getSpine().getNumberOfPages()).isEqualTo(2);
 		
 		Rendition second = it.next();
-		assertThat(second.getManifest()).hasItems(4);
-		assertThat(second.getSpine()).hasPages(3);
+		assertThat(second.getManifest().getNumberOfItems()).isEqualTo(4);
+		assertThat(second.getSpine().getNumberOfPages()).isEqualTo(3);
 	}
 	
 	@Test
