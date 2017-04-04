@@ -28,7 +28,6 @@ public class PublicationBuildTest {
 	
 	private static final Path BASE_PATH = Paths.get("target", "test-classes", "unpacked");
 	
-	@Test
 	public void buildBasic() throws IOException {
 		
 		Path dir = pathToDir("basic");

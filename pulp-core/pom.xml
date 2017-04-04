@@ -16,10 +16,55 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>pulp-api-test</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>pulp-api-test-samples</artifactId>
+        <version>${project.version}</version>
+        <scope>test</scope>
+      </dependency>
   </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>pulp-api-test</artifactId>
+                  <version>${project.version}</version>
+                  <includes>epub/*</includes>
+                  <type>jar</type>
+                  <outputDirectory>${project.build.directory}/test-classes</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <dependenciesToScan>
+            <dependency>${project.groupId}:pulp-api-test</dependency>
+          </dependenciesToScan>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
   
   <profiles>
     <profile>
@@ -29,20 +74,13 @@
           <name>env.EPUB3_SAMPLES_HOME</name>
         </property>
       </activation>
-      <dependencies>
-        <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>pulp-api-test-samples</artifactId>
-          <version>${project.version}</version>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
       <build>
         <plugins>
           <plugin>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
               <dependenciesToScan>
+                <dependency>${project.groupId}:pulp-api-test</dependency>
                 <dependency>${project.groupId}:pulp-api-test-samples</dependency>
               </dependenciesToScan>
             </configuration>
