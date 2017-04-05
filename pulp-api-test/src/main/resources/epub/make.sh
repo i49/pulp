@@ -2,21 +2,24 @@
 
 set -e
 
+SCRIPT_PATH=$(realpath $0)
+EPUB_DIR=$(dirname $SCRIPT_PATH)
+
 function pack() {
-  rm -f $1.epub
+  rm -f ${EPUB_DIR}/$1.epub
   echo "Generating $1.epub..."
   cd $1
   if [ -e mimetype ]; then
-    zip -0 ../$1.epub mimetype
+    zip -0 ${EPUB_DIR}/$1.epub mimetype
   fi
   if [ "$(find . -not -name '.' -not -name 'mimetype')" ]; then
-    zip -r ../$1.epub . -x mimetype
+    zip -r ${EPUB_DIR}/$1.epub . -x mimetype
   fi
   cd ..
 }
 
-rm -f empty.epub
-touch empty.epub
+rm -f ${EPUB_DIR}/empty.epub
+touch ${EPUB_DIR}/empty.epub
 
 pack container-empty
 pack container-missing

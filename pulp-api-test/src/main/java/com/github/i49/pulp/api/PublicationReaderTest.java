@@ -20,7 +20,6 @@ import static com.github.i49.pulp.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Iterator;
 
 import org.junit.Before;
@@ -31,8 +30,6 @@ import org.junit.Test;
  */
 public class PublicationReaderTest {
 
-	private static final Path BASE_PATH = Paths.get("target", "test-classes", "epub");
-
 	private PublicationReaderFactory factory;
 	
 	@Before
@@ -40,8 +37,8 @@ public class PublicationReaderTest {
 		factory = Epub.createReaderFactory();
 	}
 	
-	private Path pathTo(String path) {
-		return BASE_PATH.resolve(path);
+	private Path pathTo(String filename) {
+		return EpubPaths.get(filename);
 	}
 	
 	/* read() */

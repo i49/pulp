@@ -62,6 +62,9 @@
           <dependenciesToScan>
             <dependency>${project.groupId}:pulp-api-test</dependency>
           </dependenciesToScan>
+          <systemPropertyVariables>
+            <epub.dir>${project.build.testOutputDirectory}/epub</epub.dir>
+          </systemPropertyVariables>
         </configuration>
       </plugin>
     </plugins>
