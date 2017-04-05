@@ -18,13 +18,13 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>pulp-api-test</artifactId>
+      <artifactId>pulp-api-tests</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>pulp-api-test-samples</artifactId>
+        <artifactId>pulp-api-tests-with-samples</artifactId>
         <version>${project.version}</version>
         <scope>test</scope>
       </dependency>
@@ -45,7 +45,7 @@
               <artifactItems>
                 <artifactItem>
                   <groupId>${project.groupId}</groupId>
-                  <artifactId>pulp-api-test</artifactId>
+                  <artifactId>pulp-api-tests</artifactId>
                   <version>${project.version}</version>
                   <includes>epub/**/*</includes>
                   <type>jar</type>
@@ -84,8 +84,8 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
               <dependenciesToScan>
-                <dependency>${project.groupId}:pulp-api-test</dependency>
-                <dependency>${project.groupId}:pulp-api-test-samples</dependency>
+                <dependency>${project.groupId}:pulp-api-tests</dependency>
+                <dependency>${project.groupId}:pulp-api-tests-with-samples</dependency>
               </dependenciesToScan>
             </configuration>
           </plugin>
