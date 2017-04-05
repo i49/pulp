@@ -48,7 +48,7 @@ public class PublicationReaderTest {
 	
 	@Test
 	public void read_shouldReadPublicationOfSingleRendition() {
-		Path path = pathTo("normal-single-rendition.epub");
+		Path path = pathTo("valid-single-rendition.epub");
 		PublicationReader reader = factory.createReader(path);
 		Publication publication = reader.read();
 		
@@ -56,13 +56,13 @@ public class PublicationReaderTest {
 		assertThat(publication.getNumberOfRenditions()).isEqualTo(1);
 		
 		Rendition rendition = publication.getDefaultRendition();
-		assertThat(rendition.getManifest().getNumberOfItems()).isEqualTo(3);
+		assertThat(rendition.getManifest().getNumberOfItems()).isEqualTo(6);
 		assertThat(rendition.getSpine().getNumberOfPages()).isEqualTo(2);
 	}
 
 	@Test
 	public void read_shouldReadPublicationOfMultipleRenditions() {
-		Path path = pathTo("normal-multiple-renditions.epub");
+		Path path = pathTo("valid-multiple-renditions.epub");
 		PublicationReader reader = factory.createReader(path);
 		Publication publication = reader.read();
 		

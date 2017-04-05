@@ -10,6 +10,9 @@
 <item href="nav.xhtml" id="nav" media-type="application/xhtml+xml" properties="nav" />
 <item href="chapter1.xhtml" id="item1" media-type="application/xhtml+xml" />
 <item href="chapter2.xhtml" id="item2" media-type="application/xhtml+xml" />
+<item href="css/stylesheet.css" id="style" media-type="application/xhtml+xml" />
+<item href="images/figure1.jpg" id="fig" media-type="image/jpeg" />
+<item href="cover.png" id="cover" media-type="image/png" properties="cover-image" />
 </manifest>
 <spine>
 <itemref idref="item1"/>

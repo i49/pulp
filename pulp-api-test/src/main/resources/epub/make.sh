@@ -25,9 +25,9 @@ pack container-unsupported
 pack mimetype-directory
 pack mimetype-missing
 pack mimetype-wrong
-pack normal-multiple-renditions
-pack normal-single-rendition
 pack package-empty
 pack package-missing
 pack package-unrecognized
 pack package-unsupported
+pack valid-multiple-renditions
+pack valid-single-rendition
