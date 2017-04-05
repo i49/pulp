@@ -33,8 +33,11 @@
         <directory>src/main/resources</directory>
         <includes>
           <include>epub/*.epub</include>
-          <include>epub/valid-*/**/*</include>
+          <include>expanded/**/*</include>
         </includes>
+        <excludes>
+          <exclude>**/*.sh</exclude>
+        </excludes>
       </resource>
     </resources>
   </build>

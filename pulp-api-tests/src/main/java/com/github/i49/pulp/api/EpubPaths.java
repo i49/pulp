@@ -20,19 +20,30 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 final class EpubPaths {
-
-	private static final Path BASE_PATH = findBasePath();
 	
-	private static Path findBasePath() {
-		String epubDir = System.getProperty("epub.dir");
-		if (epubDir == null) {
-			return Paths.get("target", "classes", "epub");
-		} else {
-			return Paths.get(epubDir);
+	private static final Path DEFAULT_BASE_PATH = Paths.get("target", "classes");
+	private static final Path EPUB_PATH;
+	private static final Path EXPANDED_PATH;
+
+	static {
+		Path base = determineResourcesPath();
+		EPUB_PATH = base.resolve("epub");
+		EXPANDED_PATH = base.resolve("expanded");
+	}
+
+	private static Path determineResourcesPath() {
+		String basePath = System.getProperty("test.resources.path");
+		if (basePath == null) {
+			return DEFAULT_BASE_PATH;
 		}
+		return Paths.get(basePath);
 	}
 	
 	public static Path get(String name) {
-		return BASE_PATH.resolve(name);
+		if (name.endsWith(".epub")) {
+			return EPUB_PATH.resolve(name);
+		} else {
+			return EXPANDED_PATH.resolve(name);
+		}
 	}
 }
