@@ -5,10 +5,11 @@
     <groupId>com.github.i49</groupId>
     <artifactId>pulp-parent</artifactId>
     <version>0.1.0-SNAPSHOT</version>
+    <relativePath>../pulp-parent</relativePath>
   </parent>
 
   <artifactId>pulp-core</artifactId>
-
+  
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
@@ -36,7 +37,7 @@
         <executions>
           <execution>
             <id>unpack</id>
-            <phase>process-resources</phase>
+            <phase>process-test-resources</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
@@ -46,9 +47,9 @@
                   <groupId>${project.groupId}</groupId>
                   <artifactId>pulp-api-test</artifactId>
                   <version>${project.version}</version>
-                  <includes>epub/*</includes>
+                  <includes>epub/**/*</includes>
                   <type>jar</type>
-                  <outputDirectory>${project.build.directory}/test-classes</outputDirectory>
+                  <outputDirectory>${project.build.testOutputDirectory}</outputDirectory>
                 </artifactItem>
               </artifactItems>
             </configuration>

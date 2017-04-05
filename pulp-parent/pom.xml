@@ -13,12 +13,12 @@
   </properties>
 
   <modules>
-    <module>pulp-api</module>
-    <module>pulp-api-test</module>
-    <module>pulp-api-test-samples</module>
-    <module>pulp-core</module>
-    <module>pulp-cli</module>
-    <module>pulp-distribution</module>
+    <module>../pulp-api</module>
+    <module>../pulp-api-test</module>
+    <module>../pulp-api-test-samples</module>
+    <module>../pulp-core</module>
+    <module>../pulp-cli</module>
+    <module>../pulp-distribution</module>
   </modules>
   
   <dependencyManagement>
@@ -37,6 +37,7 @@
   </dependencyManagement>
   
   <build>
+    <defaultGoal>install</defaultGoal>
     <pluginManagement>
       <plugins>
         <plugin>
@@ -52,8 +53,40 @@
           <version>2.4</version>
         </plugin>
         <plugin>
+          <artifactId>maven-resource-plugin</artifactId>
+          <version>3.0.2</version>
+        </plugin>
+        <plugin>
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>2.10.3</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <versionRange>[3.0.0,)</versionRange>
+                    <goals>
+                      <goal>unpack</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
