@@ -73,6 +73,7 @@ public interface Manifest extends Iterable<Manifest.Item> {
 	 * Adds a publication resource to this manifest.
 	 * If the resource specified already exists in this manifest, 
 	 * this method returns the item previously created by the resource.
+	 * 
 	 * @param resource the resource to be added, cannot be {@code null}.
 	 * @return an item of this manifest.
 	 * @throws IllegalArgumentException if {@code resource} is {@code null}.
@@ -83,9 +84,12 @@ public interface Manifest extends Iterable<Manifest.Item> {
 	
 	/**
 	 * Removes the specified manifest item from this manifest if present. 
-	 * @param item the manifest item to be removed from this manifest, can be {@code null}.
+	 * 
+	 * @param item the manifest item to be removed from this manifest, cannot be {@code null}.
+	 * @return {@code true} if this manifest contained the specified item.
+	 * @throws IllegalArgumentException if {@code item} is {@code null}.
 	 */
-	void remove(Item item);
+	boolean remove(Item item);
 	
 	/**
 	 * Returns an iterator that can iterate over all items in this manifest.

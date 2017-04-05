@@ -41,7 +41,7 @@ public class ManifestTest {
 		manifest = rendition.getManifest();
 	}
 
-	/* getNumberOfItems */
+	/* getNumberOfItems() */
 
 	@Test
 	public void getNumberOfItems_shouldReturnZeroByDefault() {
@@ -55,7 +55,7 @@ public class ManifestTest {
 		assertThat(manifest.getNumberOfItems()).isEqualTo(2);
 	}
 	
-	/* contains */
+	/* contains() */
 	
 	@Test
 	public void contains_shouldReturnTrueIfItemIsAdded() {
@@ -75,7 +75,7 @@ public class ManifestTest {
 		assertThat(manifest.contains(null)).isFalse();
 	}
 
-	/* get */
+	/* get() */
 	
 	@Test
 	public void get_shouldReturnItemIfItemIsContained() {
@@ -91,7 +91,7 @@ public class ManifestTest {
 		}).isInstanceOf(NoSuchElementException.class).hasMessageContaining("chapter1.xhtml");
 	}
 	
-	/* find */
+	/* find() */
 
 	@Test
 	public void find_shouldReturnItemIfManifestContainsIt() {
@@ -112,7 +112,7 @@ public class ManifestTest {
 		assertThat(found).isEmpty();
 	}
 	
-	/* findCoverImage */
+	/* findCoverImage() */
 	
 	@Test
 	public void findCoverImage_shouldReturnItemIfFound() {
@@ -128,7 +128,7 @@ public class ManifestTest {
 		assertThat(found).isEmpty();
 	}
 
-	/* findNavigationDocument */
+	/* findNavigationDocument() */
 	
 	@Test
 	public void findNavigationDocument_shouldReturnItemIfFound() {
@@ -144,7 +144,7 @@ public class ManifestTest {
 		assertThat(found).isEmpty();
 	}
 	
-	/* add */
+	/* add() */
 	
 	@Test
 	public void add_shouldAddOneItem() {
@@ -192,14 +192,16 @@ public class ManifestTest {
 		}).isInstanceOf(EpubException.class).hasMessageContaining("chapter1.xhtml");
 	}
 	
-	/* remove */
+	/* remove() */
 	
 	@Test
 	public void remove_shouldRemoveItem() {
 		PublicationResource r = factory.newBuilder("chapter1.xhtml").build();
 		Manifest.Item i = manifest.add(r);
 		assertThat(manifest.contains(i)).isTrue();
-		manifest.remove(i);
+		boolean result = manifest.remove(i);
+		
+		assertThat(result).isTrue();
 		assertThat(manifest.contains(i)).isFalse();
 		assertThat(publication.getAllResources()).doesNotContain(r);
 	}
@@ -214,8 +216,9 @@ public class ManifestTest {
 		Manifest.Item i3 = manifest.add(r3);
 
 		// Removes only the second item.
-		manifest.remove(i2);
+		boolean result = manifest.remove(i2);
 		
+		assertThat(result).isTrue();
 		assertThat(manifest.contains(i1)).isTrue();
 		assertThat(manifest.contains(i2)).isFalse();
 		assertThat(manifest.contains(i3)).isTrue();
@@ -227,16 +230,18 @@ public class ManifestTest {
 	public void remove_shouldDoNothingIfItemIsNotAdded() {
 		PublicationResource resource = factory.newBuilder("chapter1.xhtml").build();
 		Manifest.Item item = manifest.add(resource);
-		manifest.remove(item);
-		manifest.remove(item);
+		assertThat(manifest.remove(item)).isTrue();
+		assertThat(manifest.remove(item)).isFalse();
 	}
 
 	@Test
-	public void remove_shouldDoNothingIfItemIsNull() {
-		manifest.remove(null);
+	public void remove_shouldThrowIllegalArgumentExceptionIfItemIsNull() {
+		assertThatThrownBy(()->{
+			manifest.remove(null);
+		}).isInstanceOf(IllegalArgumentException.class);
 	}
 	
-	/* iterator */
+	/* iterator() */
 	
 	@Test
 	public void iterator_shouldReturnIterator() {

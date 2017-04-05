@@ -130,7 +130,7 @@ public class RenditionImpl implements Rendition {
 		@Override
 		public Item get(String location) {
 			if (location == null) {
-				throw new IllegalArgumentException("location is null");
+				throw new IllegalArgumentException("\"location\" must not be null");
 			}
 			URI resolved = resolve(location);
 			Item item = null;
@@ -177,7 +177,7 @@ public class RenditionImpl implements Rendition {
 		@Override
 		public Item add(PublicationResource resource) {
 			if (resource == null) {
-				throw new IllegalArgumentException("resource is null");
+				throw new IllegalArgumentException("\"resource\" must not be null");
 			} else if (resourceItemMap.containsKey(resource)) {
 				throw new EpubException(Messages.RESOURCE_ALREADY_EXISTS_IN_MANIFEST(resource.getLocation()));
 			}
@@ -186,12 +186,16 @@ public class RenditionImpl implements Rendition {
 		}
 
 		@Override
-		public void remove(Item item) {
-			if (item != null && resourceItemMap.containsValue(item)) {
-				PublicationResource resource = item.getResource();
-				resourceItemMap.remove(resource);
-				registry.unregister(resource);
+		public boolean remove(Item item) {
+			if (item == null) {
+				throw new IllegalArgumentException("\"item\" must not be null");
+			} else if (!resourceItemMap.containsValue(item)) {
+				return false;
 			}
+			PublicationResource resource = item.getResource();
+			resourceItemMap.remove(resource);
+			registry.unregister(resource);
+			return true;
 		}
 
 		@Override
@@ -305,7 +309,7 @@ public class RenditionImpl implements Rendition {
 		}
 
 		@Override
-		public Page insert(int index, Manifest.Item item) {
+		public Page insert(int index, Item item) {
 			validateItem(item);
 			Page page = new PageImpl(item);
 			pages.add(index, page);
@@ -333,7 +337,7 @@ public class RenditionImpl implements Rendition {
 
 		private void validateItem(Item item) {
 			if (item == null) {
-				throw new IllegalArgumentException("item is null");
+				throw new IllegalArgumentException("\"item\" must not be null");
 			} else if (!manifest.contains(item)) {
 				throw new IllegalArgumentException(Messages.MANIFEST_ITEM_MISSING(item.getLocation().toString()));
 			} else if (itemPageMap.containsKey(item)) {

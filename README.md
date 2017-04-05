@@ -25,8 +25,9 @@ All prerequisites necessary to build the project are listed below:
 - Apache Maven 3.3 or higher
 
 ### Building with Maven
-The following commands build and install all modules of this project into your local Maven repository.
+The following commands build and install all modules provided by this project into your local Maven repository.
 ```bash
+$ cd <where you place local git repositories>
 $ git clone https://github.com/i49/pulp.git
 $ cd pulp/pulp-parent
 $ mvn install
