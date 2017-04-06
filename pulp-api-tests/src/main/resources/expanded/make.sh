@@ -30,6 +30,7 @@ pack mimetype-directory
 pack mimetype-missing
 pack mimetype-wrong
 pack package-empty
+pack package-item-missing
 pack package-missing
 pack package-unrecognized
 pack package-unsupported

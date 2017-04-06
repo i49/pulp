@@ -179,4 +179,19 @@ public class PublicationReaderTest {
 			.hasLocation("EPUB/package.opf")
 			.hasContainerPath(path);
 	}
+
+	@Test
+	public void read_shouldThrowExceptionIfPackageItemIsMissing() {
+		Path path = pathTo("package-item-missing.epub");
+		PublicationReader reader = factory.createReader(path);
+		Throwable thrown = catchThrowable(()->{
+			reader.read();
+		});
+		assertThat(thrown)
+			.isInstanceOf(EpubParsingException.class)
+			.hasMessageContaining("itemMissing");
+		assertThat((EpubParsingException)thrown)
+			.hasLocation("EPUB/package.opf")
+			.hasContainerPath(path);
+	}
 }
