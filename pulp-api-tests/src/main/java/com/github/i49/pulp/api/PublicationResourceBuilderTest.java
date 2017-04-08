@@ -37,7 +37,7 @@ public class PublicationResourceBuilderTest {
 		factory = Epub.createResourceBuilderFactory(BASE_URI);
 	}
 	
-	/* ofType */
+	/* ofType() */
 
 	@Test
 	public void ofType_shouldThrowExceptionIfMediaTypeInvalid() {
@@ -47,7 +47,7 @@ public class PublicationResourceBuilderTest {
 		}).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("xyz");
 	}
 		
-	/* build */
+	/* build() */
 	
 	@Test
 	public void build_shouldAdoptSpecifiedCoreMediaType() {
