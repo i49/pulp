@@ -30,24 +30,42 @@ public interface PublicationResource {
 	 * Returns the location of this resource, which is either inside or outside the EPUB container.
 	 * If the location points inside the container, it is relative to the root directory
 	 * of the container.
+	 * 
 	 * @return the location of this resource.
 	 */
 	URI getLocation();
 	
 	/**
+	 * Returns whether this resource exists in the container or not.
+	 * 
+	 * @return {@code true} if this resource exists in the container, {@code false} otherwise.
+	 */
+	boolean isLocal();
+	
+	/**
+	 * Returns whether this resource exists outside of the container or not.
+	 * 
+	 * @return {@code true} if this resource exists outside of the container, {@code false} otherwise.
+	 */
+	boolean isRemote();
+	
+	/**
 	 * Returns the media type of this resource.
+	 * 
 	 * @return the media type of this resource.
 	 */
 	MediaType getMediaType();
 	
 	/**
 	 * Returns the content source for this resource.
+	 * 
 	 * @return the content source for this resource, or {@code null} if no source is assigned.
 	 */
 	ContentSource getContentSource();
 	
 	/**
 	 * Assigns the content source that will provide initial content for this resource.
+	 * 
 	 * @param source the content source for this resource, can be {@code null}.
 	 */
 	void setContentSource(ContentSource source);
@@ -57,7 +75,7 @@ public interface PublicationResource {
 	 * 
 	 * @return a new input stream, which should be closed by the caller of this method.
 	 * @throws IllegalStateException if content source is not assigned.
-	 * @throws IOException if an I/O error has occurs.
+	 * @throws IOException if an I/O error has occurred.
 	 */
 	InputStream openContent() throws IOException;
 	
@@ -66,7 +84,7 @@ public interface PublicationResource {
 	 * 
 	 * @return the content of this resource as a byte array.
 	 * @throws IllegalStateException if content source is not assigned.
-	 * @throws IOException if an I/O error has occurs.
+	 * @throws IOException if an I/O error has occurred.
 	 */
 	byte[] getContent() throws IOException;
 }

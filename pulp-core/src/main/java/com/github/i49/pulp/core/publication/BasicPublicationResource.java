@@ -50,6 +50,16 @@ class BasicPublicationResource implements PublicationResource {
 	}
 	
 	@Override
+	public boolean isLocal() {
+		return location.isLocal();
+	}
+	
+	@Override
+	public boolean isRemote() {
+		return !isLocal();
+	}
+	
+	@Override
 	public MediaType getMediaType() {
 		return mediaType;
 	}

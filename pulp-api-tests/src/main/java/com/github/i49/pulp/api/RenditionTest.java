@@ -37,35 +37,49 @@ public class RenditionTest {
 		rendition = publication.addRendition("EPUB/package.opf");
 	}
 	
-	/* getPublication */
+	/* getPublication() */
 
 	@Test
 	public void getPublication_shouldReturnPublication() {
 		assertThat(rendition.getPublication()).isEqualTo(publication);
 	}
 
-	/* getLocation */
+	/* getLocation() */
 	
 	@Test
 	public void getLocation_shouldReturnLocation() {
 		assertThat(rendition.getLocation()).isEqualTo(URI.create("EPUB/package.opf"));
 	}
+	
+	/* resolve() */
+	
+	@Test
+	public void resolve_shouldResolveSiblingLocation() {
+		URI resolved = rendition.resolve("chapter1.xhtml");
+		assertThat(resolved).isEqualTo(URI.create("EPUB/chapter1.xhtml"));
+	}
 
-	/* getMetadata */
+	@Test
+	public void resolve_shouldResolveParentLocation() {
+		URI resolved = rendition.resolve("../other/chapter1.xhtml");
+		assertThat(resolved).isEqualTo(URI.create("other/chapter1.xhtml"));
+	}
+	
+	/* getMetadata() */
 	
 	@Test
 	public void getMetadata_shouldReturnMetadata() {
 		assertThat(rendition.getMetadata()).isNotNull();
 	}
 
-	/* getManifest */
+	/* getManifest() */
 	
 	@Test
 	public void getManifest_shouldReturnManifest() {
 		assertThat(rendition.getManifest()).isNotNull();
 	}
 
-	/* getSpine */
+	/* getSpine() */
 	
 	@Test
 	public void getSpine_shouldReturnManifest() {

@@ -55,6 +55,7 @@ public class RenditionImpl implements Rendition {
 	
 	/**
 	 * Constructs this rendition.
+	 * 
 	 * @param publication the publication that owns this rendition.
 	 * @param location the location of the package document.
 	 * @param registry the registry that maintains all publication resources.
@@ -76,6 +77,14 @@ public class RenditionImpl implements Rendition {
 	}
 	
 	@Override
+	public URI resolve(String location) {
+		if (location == null) {
+			throw new IllegalStateException("\"location\" must not be null");
+		}
+		return this.location.resolve(location);
+	}
+	
+	@Override
 	public Metadata getMetadata() {
 		return metadata;
 	}
@@ -88,15 +97,6 @@ public class RenditionImpl implements Rendition {
 	@Override
 	public Spine getSpine() {
 		return spine;
-	}
-	
-	/**
-	 * Resolves the location.
-	 * @param location the location to resolve.
-	 * @return a URI that is absolute with scheme or relative to the container root.
-	 */
-	private URI resolve(String location) {
-		return this.location.resolve(location);
 	}
 	
 	/**

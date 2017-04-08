@@ -81,6 +81,7 @@ class PublicationResourceRegistry {
 	
 	/**
 	 * Returns the resource specified by its location.
+	 * 
 	 * @param location the location of the resource, cannot be {@code null}.
 	 * @return found resource, never be {@code null}.
 	 * @throws IllegalArgumentException if specified {@code location} is {@code null}.

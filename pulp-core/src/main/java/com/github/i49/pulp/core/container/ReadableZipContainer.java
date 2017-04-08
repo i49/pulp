@@ -67,6 +67,11 @@ public class ReadableZipContainer extends ReadableContainer {
 	}
 	
 	@Override
+	public boolean contains(String location) {
+		return loader.findEntry(location);
+	}
+	
+	@Override
 	public byte[] readItem(String location) throws IOException {
 		try (InputStream in = loader.openToLoad(location)) {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -85,7 +90,8 @@ public class ReadableZipContainer extends ReadableContainer {
 	}
 	
 	@Override
-	public ContentSource getContentSource() {
+	public ContentSource getContentSource(String location) {
+		// Returns a shared source.
 		return contentSource;
 	}
 	

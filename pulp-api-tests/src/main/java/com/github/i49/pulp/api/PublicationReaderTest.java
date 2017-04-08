@@ -194,4 +194,19 @@ public class PublicationReaderTest {
 			.hasLocation("EPUB/package.opf")
 			.hasContainerPath(path);
 	}
+
+	@Test
+	public void read_shouldThrowExceptionIfPackageResourceIsMissing() {
+		Path path = pathTo("package-resource-missing.epub");
+		PublicationReader reader = factory.createReader(path);
+		Throwable thrown = catchThrowable(()->{
+			reader.read();
+		});
+		assertThat(thrown)
+			.isInstanceOf(EpubParsingException.class)
+			.hasMessageContaining("missing.png");
+		assertThat((EpubParsingException)thrown)
+			.hasLocation("EPUB/package.opf")
+			.hasContainerPath(path);
+	}
 }

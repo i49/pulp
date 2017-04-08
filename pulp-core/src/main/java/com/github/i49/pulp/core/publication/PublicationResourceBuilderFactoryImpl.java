@@ -39,7 +39,7 @@ public class PublicationResourceBuilderFactoryImpl implements PublicationResourc
 	@Override
 	public PublicationResourceBuilder newBuilder(String location) {
 		if (location == null) {
-			throw new IllegalArgumentException("location is null");
+			throw new IllegalArgumentException("location must not be null");
 		}
 		PublicationResourceLocation resolved = resolve(location);
 		return new GenericPublicationResourceBuilder(resolved, location, this.typeRegistry);

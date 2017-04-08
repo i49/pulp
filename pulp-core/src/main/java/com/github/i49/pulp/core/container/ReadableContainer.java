@@ -39,6 +39,8 @@ public abstract class ReadableContainer extends AbstractContainer {
 	 */
 	public abstract void validate() throws IOException;
 	
+	public abstract boolean contains(String location);
+	
 	/**
 	 * Reads an item from this container.
 	 * 
@@ -50,5 +52,5 @@ public abstract class ReadableContainer extends AbstractContainer {
 	
 	public abstract InputStream openItemToRead(String location) throws IOException;
 	
-	public abstract ContentSource getContentSource();
+	public abstract ContentSource getContentSource(String location);
 }

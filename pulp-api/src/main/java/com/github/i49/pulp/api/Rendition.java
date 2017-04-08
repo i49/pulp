@@ -25,34 +25,48 @@ import java.net.URI;
 public interface Rendition {
 	
 	/**
-	 * Return the publication that this rendition belongs to.
-	 * @return the publication.
+	 * Return the publication that contains this rendition.
+	 * 
+	 * @return the publication containing this rendition, never be {@code null}.
 	 */
 	Publication getPublication();
 
 	/**
-	 * Returns the location of the Package Document for this rendition,
+	 * Returns the location of the Package Document of this rendition,
 	 * which is relative to the root directory of the EPUB container.
 	 * e.g., "EPUB/package.opf".
-	 * @return the relative URI of the Package Document, the path component of which has the location.
+	 * 
+	 * @return the relative URI of the Package Document, which path component holds the actual location.
 	 */
 	URI getLocation();
+	
+	/**
+	 * Resolves the given location which is relative to the Package Document of this rendition.
+	 * 
+	 * @param location the location relative to the Package Document of this rendition. 
+	 * @return resolved URI which is relative to the root directory of the EPUB container.
+	 * @throws IllegalStateException if given {@code location} is {@code null}.
+	 */
+	URI resolve(String location);
 
 	/**
 	 * Return the metadata of this rendition.
+	 * 
 	 * @return the metadata of this rendition.
 	 */
 	Metadata getMetadata();
 	
 	/**
 	 * Returns the manifest of this rendition that carries all publication resources
-	 * required to render the rendition. 
+	 * necessary to render this rendition properly. 
+	 * 
 	 * @return the manifest of this rendition.
 	 */
 	Manifest getManifest();
 
 	/**
-	 * Returns the spine of this rendition that binds the ordered pages of the rendition.
+	 * Returns the spine of this rendition that binds the ordered pages of this rendition.
+	 * 
 	 * @return the spine of this rendition.
 	 */
 	Spine getSpine();

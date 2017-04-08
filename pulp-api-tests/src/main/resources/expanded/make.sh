@@ -32,6 +32,7 @@ pack mimetype-wrong
 pack package-empty
 pack package-item-missing
 pack package-missing
+pack package-resource-missing
 pack package-unrecognized
 pack package-unsupported
 pack valid-multiple-renditions

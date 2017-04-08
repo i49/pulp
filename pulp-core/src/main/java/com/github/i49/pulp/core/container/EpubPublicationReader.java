@@ -27,14 +27,17 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import com.github.i49.pulp.api.ContentSource;
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.EpubParsingException;
+import com.github.i49.pulp.api.Manifest.Item;
+import com.github.i49.pulp.api.Metadata;
 import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationReader;
 import com.github.i49.pulp.api.PublicationResource;
+import com.github.i49.pulp.api.PublicationResourceBuilder;
 import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.Rendition;
+import com.github.i49.pulp.api.Spine.Page;
 import com.github.i49.pulp.api.spi.EpubServiceProvider;
 import com.github.i49.pulp.core.Messages;
 import com.github.i49.pulp.core.xml.XmlServices;
@@ -74,10 +77,12 @@ public class EpubPublicationReader implements PublicationReader {
 	protected Publication parseAll() throws IOException, SAXException {
 		Publication publication = createPublication();
 		Iterator<Rendition> it = parseContainerDocument(publication);
+		PublicationBuilderImpl builder = new PublicationBuilderImpl(publication);
 		while (it.hasNext()) {
-			buildRendition(it.next());
+			Rendition rendition = it.next();
+			builder.setCurrentRendition(rendition);
+			buildRendition(rendition, builder);
 		}
-		updateContentSource(publication);
 		return publication;
 	}
 	
@@ -96,18 +101,11 @@ public class EpubPublicationReader implements PublicationReader {
 		return parser.parseFor(publication);
 	}
 	
-	protected void buildRendition(Rendition rendition) throws IOException, SAXException {
+	protected void buildRendition(Rendition rendition, PublicationBuilder builder) throws IOException, SAXException {
 		String location = rendition.getLocation().getPath();
 		Element rootElement = readXmlDocument(location);
-		PackageDocumentParser parser = PackageDocumentParser.create(rootElement);
-		parser.parseFor(rendition, createResourceBuilderFactory(rendition.getLocation()));
-	}
-	
-	protected void updateContentSource(Publication publication) {
-		ContentSource source = this.container.getContentSource();
-		for (PublicationResource resource: publication.getAllResources()) {
-			resource.setContentSource(source);
-		}
+		PackageDocumentParser parser = PackageDocumentParser.create(rootElement, builder);
+		parser.parse();
 	}
 	
 	private Element readXmlDocument(String location) throws IOException, SAXException {
@@ -121,5 +119,54 @@ public class EpubPublicationReader implements PublicationReader {
 
 	private void setCurrentLocation(String location) {
 		this.currentLocation = location;
+	}
+	
+	/**
+	 * A builder implementation for the parsers to build a publication.
+	 */
+	private class PublicationBuilderImpl implements PublicationBuilder {
+		
+		@SuppressWarnings("unused")
+		private Publication publication;
+		private Rendition rendition;
+		private PublicationResourceBuilderFactory builderFactory;
+		
+		public PublicationBuilderImpl(Publication publication) {
+			this.publication = publication;
+		}
+		
+		public void setCurrentRendition(Rendition rendition) {
+			this.rendition = rendition;
+			this.builderFactory = provider.createResourceBuilderFactory(rendition.getLocation());
+		}
+
+		@Override
+		public Metadata getMetadata() {
+			return rendition.getMetadata();
+		}
+
+		@Override
+		public Item addResource(String location, String mediaType) {
+			URI resolved = rendition.resolve(location);
+			PublicationResourceBuilder builder = builderFactory.newBuilder(location);
+			builder.ofType(mediaType);
+			if (resolved.isAbsolute()) {
+				builder.source(resolved);
+			} else {
+				String path = resolved.getPath();
+				if (container.contains(path)) {
+					builder.source(container.getContentSource(path));
+				} else {
+					throw new EpubException(Messages.RESOURCE_MISSING(resolved));
+				}
+			}
+			PublicationResource resource = builder.build();
+			return rendition.getManifest().add(resource);
+		}
+
+		@Override
+		public Page addPage(Item item) {
+			return rendition.getSpine().append(item);
+		}
 	}
 }

@@ -26,10 +26,6 @@ import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Manifest;
-import com.github.i49.pulp.api.PublicationResource;
-import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
-import com.github.i49.pulp.api.Rendition;
-import com.github.i49.pulp.api.Spine;
 import com.github.i49.pulp.api.Spine.Page;
 import com.github.i49.pulp.core.Messages;
 import com.github.i49.pulp.core.xml.Nodes;
@@ -39,16 +35,15 @@ import com.github.i49.pulp.core.xml.Nodes;
  */
 class PackageDocumentParser3 extends PackageDocumentParser {
 	
-	private Rendition rendition;
 	private final Map<String, Manifest.Item> items = new HashMap<>();
 
-	public PackageDocumentParser3(Element rootElement) {
-		super(rootElement);
+	public PackageDocumentParser3(Element rootElement, PublicationBuilder builder) {
+		super(rootElement, builder);
 	}
 
 	@Override
-	public void parseFor(Rendition rendition, PublicationResourceBuilderFactory factory) {
-		this.rendition = rendition;
+	public void parse() {
+
 		assertOn(rootElement).contains("metadata", "manifest", "spine");
 	
 		Iterator<Element> it = Nodes.children(rootElement, NAMESPACE_URI);
@@ -59,7 +54,7 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 
 		element = it.next();
 		assertOn(element).hasName("manifest");
-		parseManifest(element, factory);
+		parseManifest(element);
 
 		element = it.next();
 		assertOn(element).hasName("spine");
@@ -69,8 +64,7 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 	protected void parseMetadata(Element element) {
 	}
 
-	protected void parseManifest(Element element, PublicationResourceBuilderFactory factory) {
-		Manifest manifest = rendition.getManifest();
+	protected void parseManifest(Element element) {
 		Iterator<Element> it = Nodes.children(element, NAMESPACE_URI);
 		while (it.hasNext()) {
 			Element child = it.next();
@@ -81,8 +75,7 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 			String id = child.getAttribute("id");
 			String location = child.getAttribute("href");
 			String mediaType = child.getAttribute("media-type");
-			PublicationResource resource = factory.newBuilder(location).ofType(mediaType).build();
-			Manifest.Item item = manifest.add(resource);
+			Manifest.Item item = this.builder.addResource(location, mediaType);
 			if (child.hasAttribute("properties")) {
 				addProperties(item, child.getAttribute("properties"));
 			}
@@ -103,7 +96,6 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 	}
 	
 	protected void parseSpine(Element element) {
-		Spine spine = rendition.getSpine();
 		Iterator<Element> it = Nodes.children(element, NAMESPACE_URI);
 		while (it.hasNext()) {
 			Element child = it.next();
@@ -114,7 +106,7 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 			if (item == null) {
 				throw new EpubException(Messages.MANIFEST_ITEM_ID_MISSING(idref));
 			}
-			Page page = spine.append(item);
+			Page page = this.builder.addPage(item);
 			if ("no".equals(child.getAttribute("linear"))) {
 				page.linear(false);
 			}
