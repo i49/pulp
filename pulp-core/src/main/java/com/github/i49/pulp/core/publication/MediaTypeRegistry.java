@@ -16,6 +16,7 @@
 
 package com.github.i49.pulp.core.publication;
 
+import static com.github.i49.pulp.api.CoreMediaType.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +33,21 @@ public class MediaTypeRegistry {
 
 	private final Map<String, MediaType> mediaTypes = new HashMap<>();
 	
+	@SuppressWarnings("serial")
+	private final Map<String, MediaType> extensionMap = new HashMap<String, MediaType>() {{
+		put("xhtml", APPLICATION_XHTML_XML);
+		put("ncx", APPLICATION_DTBNCX_XML);
+		put("otf", APPLICATION_OPENTYPE);
+		put("ttf", APPLICATION_OPENTYPE);
+		put("gif", IMAGE_GIF);
+		put("jpg", IMAGE_JPEG);
+		put("jpeg", IMAGE_JPEG);
+		put("png", IMAGE_PNG);
+		put("svg", IMAGE_SVG_XML);
+		put("css", TEXT_CSS);
+		put("js", APPLICATION_JAVASCRIPT);
+	}};
+	
 	/**
 	 * Constructs this registry.
 	 */
@@ -47,6 +63,7 @@ public class MediaTypeRegistry {
 	
 	/**
 	 * Returns an instance of {@link MediaType} by parsing the supplied string.
+	 * 
 	 * @param value the media type string.
 	 * @return the instance of {@link MediaType}.
 	 * @throws IllegalArgumentException if {@code value} cannot be parsed or is {@code null}.
@@ -61,6 +78,29 @@ public class MediaTypeRegistry {
 			mediaType = addMediaType(value);
 		}
 		return mediaType;
+	}
+	
+	/**
+	 * Guesses media type from a file extension.
+	 * 
+	 * @param name the pathname of the resource.
+	 * @return the media type found or {@code null} otherwise.
+	 */
+	public MediaType guessMediaType(String name) {
+		if (name == null) {
+			throw new IllegalArgumentException("\"name\" must not be null");
+		}
+		int lastIndex = name.lastIndexOf(".");
+		if (lastIndex < 0) {
+			return null;
+		}
+		String extension = name.substring(lastIndex + 1).toLowerCase();
+		return extensionMap.get(extension);
+	}
+	
+	public boolean checkIfTypeIsXml(MediaType mediaType) {
+		String subtype = mediaType.getSubtype();
+		return subtype.equals("xml") || subtype.endsWith("+xml");
 	}
 	
 	private MediaType addMediaType(String value) {

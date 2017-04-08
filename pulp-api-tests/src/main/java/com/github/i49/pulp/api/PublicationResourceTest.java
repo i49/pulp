@@ -53,14 +53,14 @@ public class PublicationResourceTest {
 	/* isLocal() */
 	
 	@Test
-	public void isLocal_shouldReturnTrueWhenLocal() {
+	public void isLocal_shouldReturnTrueForLocalResource() {
 		// local location
 		PublicationResource resource = newBuilder("chapter1.xhtml").build();
 		assertThat(resource.isLocal()).isTrue();
 	}
 
 	@Test
-	public void isLocal_shouldReturnFalseWhenRemote() {
+	public void isLocal_shouldReturnFalseForRemoteResource() {
 		// remote location
 		PublicationResource resource = newBuilder("http://example.org/chapter1.xhtml").build();
 		assertThat(resource.isLocal()).isFalse();
@@ -69,16 +69,72 @@ public class PublicationResourceTest {
 	/* isRemote() */
 
 	@Test
-	public void isRemote_shouldReturnTrueWhenRemote() {
+	public void isRemote_shouldReturnTrueForRemoteResource() {
 		// remote location
 		PublicationResource resource = newBuilder("http://example.org/chapter1.xhtml").build();
 		assertThat(resource.isRemote()).isTrue();
 	}
 
 	@Test
-	public void isRemote_shouldReturnFalseWhenLocal() {
+	public void isRemote_shouldReturnFalseForLocalResource() {
 		// local location
 		PublicationResource resource = newBuilder("chapter1.xhtml").build();
 		assertThat(resource.isRemote()).isFalse();
+	}
+	
+	/* getMediaType */
+	
+	@Test
+	public void getMediaType_shouldReturnCoreMediaType() {
+		PublicationResource resource = newBuilder("chapter1.xhtml")
+				.ofType(CoreMediaType.APPLICATION_XHTML_XML)
+				.build();
+		assertThat(resource.getMediaType()).isEqualTo(CoreMediaType.APPLICATION_XHTML_XML);
+	}
+	
+	@Test
+	public void getMediaType_shouldReturnForeignMediaType() {
+		PublicationResource resource = newBuilder("chapter1.pdf")
+				.ofType("application/pdf")
+				.build();
+		MediaType mediaType = resource.getMediaType();
+		assertThat(mediaType.getType()).isEqualTo("application");
+		assertThat(mediaType.getSubtype()).isEqualTo("pdf");
+	}
+
+	/* isNative() */
+
+	@Test
+	public void isNative_shouldReturnTrueForCoreMediaTypeResource() {
+		PublicationResource resource = newBuilder("chapter1.xhtml")
+				.ofType(CoreMediaType.APPLICATION_XHTML_XML)
+				.build();
+		assertThat(resource.isNative()).isTrue();
+	}
+
+	@Test
+	public void isNative_shouldReturnFalseForForeignResource() {
+		PublicationResource resource = newBuilder("chapter1.pdf")
+				.ofType("application/pdf")
+				.build();
+		assertThat(resource.isNative()).isFalse();
+	}
+	
+	/* isForeign() */
+
+	@Test
+	public void isForeign_shouldReturnTrueForForeignResource() {
+		PublicationResource resource = newBuilder("chapter1.pdf")
+				.ofType("application/pdf")
+				.build();
+		assertThat(resource.isForeign()).isTrue();
+	}
+	
+	@Test
+	public void isForeign_shouldReturnFalseForCoreMediaTypeResource() {
+		PublicationResource resource = newBuilder("chapter1.xhtml")
+				.ofType(CoreMediaType.APPLICATION_XHTML_XML)
+				.build();
+		assertThat(resource.isForeign()).isFalse();
 	}
 }

@@ -28,9 +28,10 @@ public interface ContentSource {
 
 	/**
 	 * Opens this content source for a {@link PublicationResource}.
+	 * 
 	 * @param location the location of the resource using the content.
 	 * @return {@link InputStream} that must be closed by the caller of this method.
-	 * @throws IOException if an I/O error occurs.
+	 * @throws IOException if an I/O error has occurred.
 	 * @see PublicationResource#getLocation()
 	 */
 	InputStream openSource(URI location) throws IOException;

@@ -37,15 +37,19 @@ public interface PublicationResource {
 	
 	/**
 	 * Returns whether this resource exists in the container or not.
+	 * This method must return the opposite result to calling {@link #isRemote()}.
 	 * 
 	 * @return {@code true} if this resource exists in the container, {@code false} otherwise.
+	 * @see #isRemote()
 	 */
 	boolean isLocal();
 	
 	/**
 	 * Returns whether this resource exists outside of the container or not.
+	 * This method must return the opposite result to calling {@link #isLocal()}.
 	 * 
 	 * @return {@code true} if this resource exists outside of the container, {@code false} otherwise.
+	 * @see #isLocal()
 	 */
 	boolean isRemote();
 	
@@ -55,6 +59,25 @@ public interface PublicationResource {
 	 * @return the media type of this resource.
 	 */
 	MediaType getMediaType();
+	
+	/**
+	 * Returns whether this resource is Core Media Type Resource or not.
+	 * This method must return the opposite result to calling {@link #isForeign()}.
+	 * 
+	 * @return {@code true} if this resource is Core Media Type Resource, {@code false} otherwise.
+	 * @see #isForeign()
+	 */
+	boolean isNative();
+	
+	/**
+	 * Returns whether this resource is Foreign Resource or not.
+	 * A publication resource is <i>foreign</i> if it is not Core Media Type Resource.
+	 * This method must return the opposite result to calling {@link #isNative()}.
+	 * 
+	 * @return {@code true} if this resource is Foreign Resource, {@code false} otherwise.
+	 * @see #isNative()
+	 */
+	boolean isForeign();
 	
 	/**
 	 * Returns the content source for this resource.

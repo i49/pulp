@@ -20,8 +20,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.EnumSet;
 
 import com.github.i49.pulp.api.ContentSource;
+import com.github.i49.pulp.api.CoreMediaType;
 import com.github.i49.pulp.api.MediaType;
 import com.github.i49.pulp.api.PublicationResource;
 
@@ -30,6 +32,7 @@ import com.github.i49.pulp.api.PublicationResource;
  */
 class BasicPublicationResource implements PublicationResource {
 
+	private static final EnumSet<CoreMediaType> CORE_MEDIA_TYPES = EnumSet.allOf(CoreMediaType.class);
 	private static final int BUFFER_SIZE = 64 * 1024;
 
 	private final PublicationResourceLocation location;
@@ -62,6 +65,16 @@ class BasicPublicationResource implements PublicationResource {
 	@Override
 	public MediaType getMediaType() {
 		return mediaType;
+	}
+	
+	@Override
+	public boolean isNative() {
+		return CORE_MEDIA_TYPES.contains(getMediaType());
+	}
+	
+	@Override
+	public boolean isForeign() {
+		return !isNative();
 	}
 	
 	@Override

@@ -118,7 +118,7 @@ class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 		PublicationResource resource = null;
 		if (mediaType == CoreMediaType.APPLICATION_XHTML_XML) {
 			resource = createXhtmlDocument();
-		} else if (CoreMediaTypes.checkTypeIsXml(mediaType)) {
+		} else if (typeRegistry.checkIfTypeIsXml(mediaType)) {
 			resource = createXmlDocument(mediaType);
 		} else {
 			resource = createResource(mediaType);
@@ -142,7 +142,7 @@ class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 	private MediaType determineMediaType() {
 		MediaType mediaType = this.mediaType;
 		if (mediaType == null) {
-			mediaType = CoreMediaTypes.guessMediaType(localPath);
+			mediaType = typeRegistry.guessMediaType(localPath);
 			if (mediaType == null) {
 				throw new EpubException(Messages.MEDIA_TYPE_NOT_DETECTED(localPath));
 			}
