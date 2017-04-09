@@ -71,8 +71,11 @@ public class ManifestTest {
 	}
 	
 	@Test
-	public void contains_shouldReturnFalseIfItemIsNull() {
-		assertThat(manifest.contains(null)).isFalse();
+	public void contains_shouldThrowExceptionIfItemIsNull() {
+		Throwable thrown = catchThrowable(()->{
+			manifest.contains(null);
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
 	}
 
 	/* get() */
@@ -109,38 +112,6 @@ public class ManifestTest {
 	@Test
 	public void find_shouldReturnEmptyIfItemIsNull() {
 		Optional<Manifest.Item> found = manifest.find(null);
-		assertThat(found).isEmpty();
-	}
-	
-	/* findCoverImage() */
-	
-	@Test
-	public void findCoverImage_shouldReturnItemIfFound() {
-		PublicationResource r = factory.newBuilder("cover.png").build();
-		Manifest.Item item = manifest.add(r).asCoverImage();
-		Optional<Manifest.Item> found = manifest.findCoverImage();
-		assertThat(found).hasValue(item);
-	}
-
-	@Test
-	public void findCoverImage_shouldReturnNullIfNotFound() {
-		Optional<Manifest.Item> found = manifest.findCoverImage();
-		assertThat(found).isEmpty();
-	}
-
-	/* findNavigationDocument() */
-	
-	@Test
-	public void findNavigationDocument_shouldReturnItemIfFound() {
-		PublicationResource r = factory.newBuilder("nav.xhtml").build();
-		Manifest.Item item = manifest.add(r).asNavigation();
-		Optional<Manifest.Item> found = manifest.findNavigationDocument();
-		assertThat(found).hasValue(item);
-	}
-
-	@Test
-	public void findNavigationDocument_shouldReturnNullfNotFound() {
-		Optional<Manifest.Item> found = manifest.findNavigationDocument();
 		assertThat(found).isEmpty();
 	}
 	
@@ -248,5 +219,69 @@ public class ManifestTest {
 		Manifest.Item item1 = manifest.add(factory.newBuilder("chapter1.xhtml").build());
 		Manifest.Item item2 = manifest.add(factory.newBuilder("chapter2.xhtml").build());
 		assertThat(manifest.iterator()).containsExactlyInAnyOrder(item1, item2);
+	}
+	
+	/* hasCoverImage() */
+	
+	@Test
+	public void hasCoverImage_returnTrueIfContainingCoverImage() {
+		PublicationResource r = factory.newBuilder("cover.png").build();
+		manifest.add(r).asCoverImage();
+		assertThat(manifest.hasCoverImage()).isTrue();
+	}
+	
+	@Test
+	public void hasCoverImage_returnFalseIfNotContainingCoverImage() {
+		assertThat(manifest.hasCoverImage()).isFalse();
+	}
+
+	/* getCoverImage() */
+	
+	@Test
+	public void getCoverImage_shouldReturnItemIfFound() {
+		PublicationResource r = factory.newBuilder("cover.png").build();
+		Manifest.Item item = manifest.add(r).asCoverImage();
+		Manifest.Item found = manifest.getCoverImage();
+		assertThat(found).isSameAs(item);
+	}
+
+	@Test
+	public void getCoverImage_shouldReturnNullIfNotFound() {
+		Throwable thrown = catchThrowable(()->{
+			manifest.getCoverImage();
+		});
+		assertThat(thrown).isInstanceOf(NoSuchElementException.class);
+	}
+
+	/* hasNavigationDocument() */
+	
+	@Test
+	public void hasNavigationDocument_returnTrueIfContainingNavigationDocument() {
+		PublicationResource r = factory.newBuilder("nav.xhtml").build();
+		manifest.add(r).asNavigation();
+		assertThat(manifest.hasNavigationDocument()).isTrue();
+	}
+
+	@Test
+	public void hasNavigationDocument_returnFalseIfNotContainingNavigationDocument() {
+		assertThat(manifest.hasNavigationDocument()).isFalse();
+	}
+	
+	/* getNavigationDocument() */
+	
+	@Test
+	public void getNavigationDocument_shouldReturnItemIfFound() {
+		PublicationResource r = factory.newBuilder("nav.xhtml").build();
+		Manifest.Item item = manifest.add(r).asNavigation();
+		Manifest.Item found = manifest.getNavigationDocument();
+		assertThat(found).isSameAs(item);
+	}
+
+	@Test
+	public void findNavigationDocument_shouldReturnNullfNotFound() {
+		Throwable thrown = catchThrowable(()->{
+			manifest.getNavigationDocument();
+		});
+		assertThat(thrown).isInstanceOf(NoSuchElementException.class);
 	}
 }

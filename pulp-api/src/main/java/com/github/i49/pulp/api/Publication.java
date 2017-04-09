@@ -29,25 +29,29 @@ import java.util.Set;
 public interface Publication extends Iterable<Rendition> {
 	
 	/**
-	 * Returns the number of renditions in this publication.
+	 * Returns the number of renditions that consists of this publication.
+	 * 
 	 * @return the number of renditions in this publication.
 	 */
 	int getNumberOfRenditions();
 	
 	/**
 	 * Returns the default {@link Rendition} of this publication.
+	 * 
 	 * @return the default {@link Rendition} of this publication.
 	 */
 	Rendition getDefaultRendition();
 	
 	/**
 	 * Adds a new {@link Rendition} sitting at the default location in the container.
+	 * 
 	 * @return created rendition.
 	 */
 	Rendition addRendition();
 	
 	/**
 	 * Adds a new {@link Rendition} with the location of the Package Document in the container specified.
+	 * 
 	 * @param location the local location of the Package Document. e.g. "EPUB/package.opf".
 	 * @return created rendition.
 	 * @throws IllegalArgumentException if specified {@code location} is invalid.
@@ -70,7 +74,7 @@ public interface Publication extends Iterable<Rendition> {
 	Set<PublicationResource> getAllResources();
 	
 	/**
-	 * Returns whether this publication contains a resource at the specified location. 
+	 * Returns whether this publication contains a resource at the specified location or not. 
 	 * 
 	 * @param location the URI relative to the root directory of the container such as "EPUB/chapter1.xhtml".  
 	 * @return {@code true} if this publication contains the resource, {@code false} otherwise.
@@ -79,7 +83,7 @@ public interface Publication extends Iterable<Rendition> {
 	boolean containsResource(URI location);
 	
 	/**
-	 * Returns the resource at the specified location.
+	 * Returns the resource at the specified location in this publication. 
 	 * 
 	 * @param location the URI relative to the root directory of the container such as "EPUB/chapter1.xhtml".  
 	 * @return the resource found at the specified location. 

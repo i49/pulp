@@ -120,9 +120,14 @@ public class RenditionImpl implements Rendition {
 		private Item navigationDocument;
 
 		@Override
+		public int getNumberOfItems() {
+			return resourceItemMap.size();
+		}
+	
+		@Override
 		public boolean contains(Item item) {
 			if (item == null) {
-				return false;
+				throw new IllegalArgumentException("\"item\" must not be null");
 			}
 			return resourceItemMap.containsValue(item);
 		}
@@ -160,21 +165,6 @@ public class RenditionImpl implements Rendition {
 		}
 
 		@Override
-		public Optional<Item> findCoverImage() {
-			return Optional.ofNullable(coverImage);
-		}
-		
-		@Override
-		public Optional<Item> findNavigationDocument() {
-			return Optional.ofNullable(navigationDocument);
-		}
-
-		@Override
-		public int getNumberOfItems() {
-			return resourceItemMap.size();
-		}
-	
-		@Override
 		public Item add(PublicationResource resource) {
 			if (resource == null) {
 				throw new IllegalArgumentException("\"resource\" must not be null");
@@ -203,6 +193,34 @@ public class RenditionImpl implements Rendition {
 			return Collections.unmodifiableCollection(resourceItemMap.values()).iterator();
 		}
 		
+		@Override
+		public boolean hasCoverImage() {
+			return coverImage != null;	
+		}
+		
+		@Override
+		public Item getCoverImage() {
+			if (hasCoverImage()) {
+				return coverImage;
+			} else {
+				throw new NoSuchElementException();
+			}
+		}
+		
+		@Override
+		public boolean hasNavigationDocument() {
+			return navigationDocument != null;
+		}
+		
+		@Override
+		public Item getNavigationDocument() {
+			if (hasNavigationDocument()) {
+				return navigationDocument;
+			} else {
+				throw new NoSuchElementException();
+			}
+		}
+
 		private Item addNewItem(PublicationResource resource) {
 			URI location = relativize(resource.getLocation());
 			Item item = new ItemImpl(location, resource);
