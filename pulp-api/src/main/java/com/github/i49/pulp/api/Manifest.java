@@ -77,13 +77,13 @@ public interface Manifest extends Iterable<Manifest.Item> {
 	/**
 	 * Returns an iterator that can iterate over all items in this manifest.
 	 * 
-	 * @return an iterator over items.
+	 * @return an iterator over instances of {@link Item}.
 	 */
 	@Override
 	Iterator<Item> iterator();
 	
 	/**
-	 * Returns the specified item in this manifest
+	 * Returns the specified item in this manifest.
 	 * 
 	 * @param location the location of the publication resource assigned to the item.
 	 * @return the item if this manifest contains the specified resource, 
@@ -100,9 +100,11 @@ public interface Manifest extends Iterable<Manifest.Item> {
 	
 	/**
 	 * Returns the item used as the cover image for the rendition.
+	 * This method can be called safely in case that {@link #hasCoverImage()} returns {@code true}.
 	 * 
-	 * @return the item used as the cover image.
-	 * @throws NoSuchElementException if this manifest does not contain the specified resource.
+	 * @return the {@link Item} used as the cover image.
+	 * @throws NoSuchElementException if this manifest does not have the cover image.
+	 * @see #hasCoverImage()
 	 */
 	Item getCoverImage();
 
@@ -115,9 +117,11 @@ public interface Manifest extends Iterable<Manifest.Item> {
 	
 	/**
 	 * Returns the item used as the navigation document for the rendition.
+	 * This method can be called safely in case that {@link #hasNavigationDocument()} returns {@code true}.
 	 * 
-	 * @return the item used as the navigation document.
-	 * @throws NoSuchElementException if this manifest does not contain the specified resource.
+	 * @return the {@link Item} used as the navigation document.
+	 * @throws NoSuchElementException if this manifest does not have the navigation document.
+	 * @see #hasNavigationDocument()
 	 */
 	Item getNavigationDocument();
 

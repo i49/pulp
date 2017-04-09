@@ -32,11 +32,11 @@ public interface Rendition {
 	Publication getPublication();
 
 	/**
-	 * Returns the location of the Package Document of this rendition,
-	 * which is relative to the root directory of the EPUB container.
+	 * Returns the location of the package document of this rendition,
+	 * which is relative to the root directory of the container.
 	 * e.g., "EPUB/package.opf".
 	 * 
-	 * @return the relative URI of the Package Document, which path component holds the actual location.
+	 * @return the relative URI of the package document, which path component holds the actual location.
 	 */
 	URI getLocation();
 	
@@ -45,7 +45,7 @@ public interface Rendition {
 	 * 
 	 * @param location the location relative to the Package Document of this rendition. 
 	 * @return resolved URI which is relative to the root directory of the EPUB container.
-	 * @throws IllegalStateException if given {@code location} is {@code null}.
+	 * @throws IllegalArgumentException if given {@code location} is {@code null}.
 	 */
 	URI resolve(String location);
 

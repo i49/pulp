@@ -76,19 +76,23 @@ public interface Publication extends Iterable<Rendition> {
 	/**
 	 * Returns whether this publication contains a resource at the specified location or not. 
 	 * 
-	 * @param location the URI relative to the root directory of the container such as "EPUB/chapter1.xhtml".  
-	 * @return {@code true} if this publication contains the resource, {@code false} otherwise.
-	 * @throws IllegalArgumentException if {@code location} is {@code null}.
+	 * @param location the URI relative to the root directory of the container such as "EPUB/chapter1.xhtml",  
+	 *                 this must be path-rootless form.  
+	 * @return {@code true} if this publication contains the resource at the specified location, {@code false} otherwise.
+	 * @throws IllegalArgumentException if given {@code location} is {@code null}.
 	 */
 	boolean containsResource(URI location);
 	
 	/**
-	 * Returns the resource at the specified location in this publication. 
+	 * Returns the publication resource at the specified location in this publication. 
+	 * This method can be called safely in case that {@link #containsResource(URI)} returns {@code true}.
 	 * 
-	 * @param location the URI relative to the root directory of the container such as "EPUB/chapter1.xhtml".  
-	 * @return the resource found at the specified location. 
-	 * @throws IllegalArgumentException if {@code location} is {@code null}.
-	 * @throws NoSuchElementException if the resource does not exist at the specified location.
+	 * @param location the URI relative to the root directory of the container such as "EPUB/chapter1.xhtml",
+	 *                 this must be path-rootless form.  
+	 * @return the {@link PublicationResource} found at the specified location, never be {@code null}. 
+	 * @throws IllegalArgumentException if given {@code location} is {@code null}.
+	 * @throws NoSuchElementException if this publication does not contain any resource at the specified location.
+	 * @see #containsResource(URI)
 	 */
 	PublicationResource getResource(URI location);
 }
