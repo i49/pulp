@@ -86,5 +86,5 @@ public interface Publication extends Iterable<Rendition> {
 	 * @throws IllegalArgumentException if {@code location} is {@code null}.
 	 * @throws NoSuchElementException if the resource does not exist at the specified location.
 	 */
-	PublicationResource getResourceAt(URI location);
+	PublicationResource getResource(URI location);
 }

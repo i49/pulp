@@ -75,6 +75,25 @@ public class PublicationReaderTest {
 		assertThat(second.getManifest().getNumberOfItems()).isEqualTo(4);
 		assertThat(second.getSpine().getNumberOfPages()).isEqualTo(3);
 	}
+
+	@Test
+	public void read_shouldReadPublicationOfMultipleRenditionsSharingResources() {
+		Path path = pathTo("valid-sharing-resources.epub");
+		PublicationReader reader = factory.createReader(path);
+		Publication publication = reader.read();
+		
+		assertThat(publication).isNotNull();
+		assertThat(publication.getNumberOfRenditions()).isEqualTo(2);
+		
+		Iterator<Rendition> it = publication.iterator();
+		Rendition first = it.next();
+		assertThat(first.getManifest().getNumberOfItems()).isEqualTo(3);
+		assertThat(first.getSpine().getNumberOfPages()).isEqualTo(2);
+		
+		Rendition second = it.next();
+		assertThat(second.getManifest().getNumberOfItems()).isEqualTo(4);
+		assertThat(second.getSpine().getNumberOfPages()).isEqualTo(3);
+	}
 	
 	@Test
 	public void read_shouldThrowExceptionIfContainerXmlIsMissing() {

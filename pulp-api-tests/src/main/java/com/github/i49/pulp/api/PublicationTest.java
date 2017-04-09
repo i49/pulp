@@ -273,14 +273,14 @@ public class PublicationTest {
 		manifest.add(resource);
 		
 		URI location = URI.create("EPUB/chapter1.xhtml");
-		assertThat(publication.getResourceAt(location)).isSameAs(resource);
+		assertThat(publication.getResource(location)).isSameAs(resource);
 	}
 	
 	@Test
 	public void getResourceAt_shouldThrowExceptionIfResourceNotFound() {
 		URI location = URI.create("EPUB/chapter1.xhtml");
 		Throwable thrown = catchThrowable(()->{
-			publication.getResourceAt(location);
+			publication.getResource(location);
 		});
 		assertThat(thrown).isInstanceOf(NoSuchElementException.class)
 			.hasMessageContaining(location.getPath());

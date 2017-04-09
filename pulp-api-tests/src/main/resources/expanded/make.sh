@@ -36,4 +36,5 @@ pack package-resource-missing
 pack package-unrecognized
 pack package-unsupported
 pack valid-multiple-renditions
+pack valid-sharing-resources
 pack valid-single-rendition

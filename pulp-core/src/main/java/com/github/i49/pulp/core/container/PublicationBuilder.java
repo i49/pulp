@@ -25,9 +25,22 @@ import com.github.i49.pulp.api.Spine;
  */
 interface PublicationBuilder {
 	
-	Metadata getMetadata();
+	Metadata getMetadateToBuild();
 	
-	Manifest.Item addResource(String location, String mediaType);
+	/**
+	 * Adds a publication resource to the current rendition.
+	 * 
+	 * @param href the resource location relative to the package document of the current rendition.
+	 * @param mediaType the media type of the resource.
+	 * @return added item of the rendition manifest.
+	 */
+	Manifest.Item addManifestItem(String href, String mediaType);
 	
-	Spine.Page addPage(Manifest.Item item);
+	/**
+	 * Appends a page to the current rendition.
+	 *  
+	 * @param item the item that hold the reference to the publication resource presented on the page.
+	 * @return added page of the rendition.
+	 */
+	Spine.Page addSpinePage(Manifest.Item item);
 }

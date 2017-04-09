@@ -35,6 +35,9 @@ import com.github.i49.pulp.core.xml.Nodes;
  */
 class PackageDocumentParser3 extends PackageDocumentParser {
 	
+	/*
+	 * Map object for mapping item ids to items.
+	 */
 	private final Map<String, Manifest.Item> items = new HashMap<>();
 
 	public PackageDocumentParser3(Element rootElement, PublicationBuilder builder) {
@@ -73,13 +76,13 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 			               .hasNonEmptyAttribute("href")
 			               .hasNonEmptyAttribute("media-type");
 			String id = child.getAttribute("id");
-			String location = child.getAttribute("href");
+			String href = child.getAttribute("href");
 			String mediaType = child.getAttribute("media-type");
-			Manifest.Item item = this.builder.addResource(location, mediaType);
+			Manifest.Item item = this.builder.addManifestItem(href, mediaType);
 			if (child.hasAttribute("properties")) {
 				addProperties(item, child.getAttribute("properties"));
 			}
-			items.put(id, item);
+			registerItemWithMap(id, item);
 		}
 	}
 	
@@ -106,10 +109,18 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 			if (item == null) {
 				throw new EpubException(Messages.MANIFEST_ITEM_ID_MISSING(idref));
 			}
-			Page page = this.builder.addPage(item);
+			Page page = this.builder.addSpinePage(item);
 			if ("no".equals(child.getAttribute("linear"))) {
 				page.linear(false);
 			}
+		}
+	}
+	
+	private void registerItemWithMap(String id, Manifest.Item item) {
+		if (items.containsKey(id)) {
+			throw new EpubException(Messages.MANIFEST_ITEM_ID_DUPLICATED(id));
+		} else {
+			items.put(id, item);
 		}
 	}
 }

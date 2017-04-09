@@ -37,8 +37,9 @@ public class PublicationImpl implements Publication {
 	private static final PublicationResourceLocation DEFAULT_RENDITION_LOCATION = 
 			PublicationResourceLocation.of("EPUB/package.opf");
 
+	// The registry of publication resources.
 	private final PublicationResourceRegistry registry;
-	// renditions.
+	// Renditions.
 	private final HashMap<URI, Rendition> renditions = new LinkedHashMap<>();
 
 	public PublicationImpl() {
@@ -91,7 +92,7 @@ public class PublicationImpl implements Publication {
 	}
 	
 	@Override
-	public PublicationResource getResourceAt(URI location) {
+	public PublicationResource getResource(URI location) {
 		if (location == null) {
 			throw new IllegalArgumentException("\"location\" must not be null");
 		}

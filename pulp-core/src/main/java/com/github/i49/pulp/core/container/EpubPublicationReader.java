@@ -126,7 +126,6 @@ public class EpubPublicationReader implements PublicationReader {
 	 */
 	private class PublicationBuilderImpl implements PublicationBuilder {
 		
-		@SuppressWarnings("unused")
 		private Publication publication;
 		private Rendition rendition;
 		private PublicationResourceBuilderFactory builderFactory;
@@ -141,32 +140,44 @@ public class EpubPublicationReader implements PublicationReader {
 		}
 
 		@Override
-		public Metadata getMetadata() {
+		public Metadata getMetadateToBuild() {
 			return rendition.getMetadata();
 		}
 
 		@Override
-		public Item addResource(String location, String mediaType) {
-			URI resolved = rendition.resolve(location);
-			PublicationResourceBuilder builder = builderFactory.newBuilder(location);
-			builder.ofType(mediaType);
-			if (resolved.isAbsolute()) {
-				builder.source(resolved);
-			} else {
-				String path = resolved.getPath();
-				if (container.contains(path)) {
-					builder.source(container.getContentSource(path));
-				} else {
-					throw new EpubException(Messages.RESOURCE_MISSING(resolved));
-				}
-			}
-			PublicationResource resource = builder.build();
+		public Item addManifestItem(String href, String mediaType) {
+			PublicationResource resource = getResource(href, mediaType);
 			return rendition.getManifest().add(resource);
 		}
 
 		@Override
-		public Page addPage(Item item) {
+		public Page addSpinePage(Item item) {
 			return rendition.getSpine().append(item);
+		}
+		
+		private PublicationResource getResource(String href, String mediaType) {
+			URI location = rendition.resolve(href);
+			if (publication.containsResource(location)) {
+				return publication.getResource(location);
+			} else {
+				return buildResource(location, href, mediaType);
+			}
+		}
+		
+		private PublicationResource buildResource(URI location, String href, String mediaType) {
+			PublicationResourceBuilder builder = builderFactory.newBuilder(href);
+			builder.ofType(mediaType);
+			if (location.isAbsolute()) {
+				builder.source(location);
+			} else {
+				String path = location.getPath();
+				if (container.contains(path)) {
+					builder.source(container.getContentSource(path));
+				} else {
+					throw new EpubException(Messages.RESOURCE_MISSING(location));
+				}
+			}
+			return builder.build();
 		}
 	}
 }

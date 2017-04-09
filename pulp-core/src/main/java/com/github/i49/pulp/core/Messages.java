@@ -104,6 +104,10 @@ public final class Messages {
 		return format("MANIFEST_ITEM_ID_MISSING", id);
 	}
 	
+	public static String MANIFEST_ITEM_ID_DUPLICATED(String id) {
+		return format("MANIFEST_ITEM_ID_DUPLICATED", id);
+	}
+	
 	public static String XML_DOCUMENT_VERSION_UNSUPPORTED(String version) {
 		return format("XML_DOCUMENT_VERSION_UNSUPPORTED", version);
 	}
