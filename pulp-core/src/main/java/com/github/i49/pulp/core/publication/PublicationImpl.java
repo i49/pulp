@@ -60,15 +60,15 @@ public class PublicationImpl implements Publication {
 	
 	@Override
 	public Rendition addRendition() {
-		return addRendition(DEFAULT_RENDITION_LOCATION);
+		return createRendition(DEFAULT_RENDITION_LOCATION);
 	}
 	
 	@Override
 	public Rendition addRendition(String location) {
 		if (location == null) {
-			return addRendition(DEFAULT_RENDITION_LOCATION);
+			return createRendition(DEFAULT_RENDITION_LOCATION);
 		} else {
-			return addRendition(PublicationResourceLocation.ofLocal(location));
+			return createRendition(PublicationResourceLocation.ofLocal(location));
 		}
 	}
 
@@ -82,7 +82,23 @@ public class PublicationImpl implements Publication {
 		return Collections.unmodifiableCollection(renditions.values()).iterator();
 	}
 	
-	private Rendition addRendition(PublicationResourceLocation location) {
+	@Override
+	public boolean containsResource(URI location) {
+		if (location == null) {
+			throw new IllegalArgumentException("\"location\" must not be null");
+		}
+		return this.registry.contains(location);
+	}
+	
+	@Override
+	public PublicationResource getResourceAt(URI location) {
+		if (location == null) {
+			throw new IllegalArgumentException("\"location\" must not be null");
+		}
+		return this.registry.getAt(location);
+	}
+	
+	private Rendition createRendition(PublicationResourceLocation location) {
 		URI uri = location.toURI();
 		if (this.renditions.containsKey(uri)) {
 			throw new EpubException(Messages.RENDITION_ALREADY_EXISTS(location.toString()));

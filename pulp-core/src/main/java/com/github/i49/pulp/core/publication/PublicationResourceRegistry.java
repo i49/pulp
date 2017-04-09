@@ -87,9 +87,9 @@ class PublicationResourceRegistry {
 	 * @throws IllegalArgumentException if specified {@code location} is {@code null}.
 	 * @throws NoSuchElementException if this registry does not contains the resource.
 	 */
-	public PublicationResource get(URI location) {
+	public PublicationResource getAt(URI location) {
 		if (location == null) {
-			throw new IllegalArgumentException("location is null");
+			throw new IllegalArgumentException("\"location\" must not be null");
 		}
 		Entry entry = locationMap.get(location);
 		if (entry == null) {

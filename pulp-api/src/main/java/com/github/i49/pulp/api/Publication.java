@@ -16,7 +16,9 @@
 
 package com.github.i49.pulp.api;
 
+import java.net.URI;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
@@ -53,15 +55,36 @@ public interface Publication extends Iterable<Rendition> {
 	Rendition addRendition(String location);
 	
 	/**
+	 * Returns an iterator that can iterate over all renditions in this publication.
+	 * 
+	 * @return an iterator over renditions.
+	 */
+	@Override
+	Iterator<Rendition> iterator();
+
+	/**
 	 * Returns a set containing all resources required by this publication.
+	 * 
 	 * @return an immutable set of publication resources. 
 	 */
 	Set<PublicationResource> getAllResources();
 	
 	/**
-	 * Returns an iterator that can iterate over all renditions in this publication.
-	 * @return an iterator over renditions.
+	 * Returns whether this publication contains a resource at the specified location. 
+	 * 
+	 * @param location the URI relative to the root directory of the container such as "EPUB/chapter1.xhtml".  
+	 * @return {@code true} if this publication contains the resource, {@code false} otherwise.
+	 * @throws IllegalArgumentException if {@code location} is {@code null}.
 	 */
-	@Override
-	Iterator<Rendition> iterator();
+	boolean containsResource(URI location);
+	
+	/**
+	 * Returns the resource at the specified location.
+	 * 
+	 * @param location the URI relative to the root directory of the container such as "EPUB/chapter1.xhtml".  
+	 * @return the resource found at the specified location. 
+	 * @throws IllegalArgumentException if {@code location} is {@code null}.
+	 * @throws NoSuchElementException if the resource does not exist at the specified location.
+	 */
+	PublicationResource getResourceAt(URI location);
 }

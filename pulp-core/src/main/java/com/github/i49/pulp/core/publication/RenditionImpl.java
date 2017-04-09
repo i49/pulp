@@ -134,7 +134,7 @@ public class RenditionImpl implements Rendition {
 			}
 			URI resolved = resolve(location);
 			Item item = null;
-			PublicationResource resource = registry.get(resolved);
+			PublicationResource resource = registry.getAt(resolved);
 			if (resource != null) {
 				item = resourceItemMap.get(resource);
 			}

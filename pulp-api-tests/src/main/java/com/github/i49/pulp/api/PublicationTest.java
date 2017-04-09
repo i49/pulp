@@ -18,6 +18,9 @@ package com.github.i49.pulp.api;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.net.URI;
+import java.util.NoSuchElementException;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -122,6 +125,15 @@ public class PublicationTest {
 		assertThatThrownBy(()->{
 			publication.addRendition();
 		}).isInstanceOf(EpubException.class).hasMessageContaining("EPUB/package.opf");
+	}
+
+	/* iterator() */
+
+	@Test
+	public void iterator_shouldIterateRenditions() {
+		Rendition r1 = publication.addRendition();
+		Rendition r2 = publication.addRendition("another/package.opf");
+		assertThat(publication.iterator()).containsExactly(r1, r2);
 	}
 
 	/* getAllResources() */
@@ -229,13 +241,48 @@ public class PublicationTest {
 		
 		assertThat(publication.getAllResources()).containsExactlyInAnyOrder(r1, r3);
 	}
-
-	/* iterator() */
+	
+	/* containsResource() */
+	
+	@Test
+	public void containsResource_shouldReturnTrueIfContainingTheResource() {
+		Rendition rendition = publication.addRendition();
+		PublicationResourceBuilderFactory factory = Epub.createResourceBuilderFactory(rendition.getLocation());
+		Manifest manifest = rendition.getManifest();
+		PublicationResource resource = factory.newBuilder("chapter1.xhtml").build();
+		manifest.add(resource);
+		
+		URI location = URI.create("EPUB/chapter1.xhtml");
+		assertThat(publication.containsResource(location)).isTrue();
+	}
 
 	@Test
-	public void iterator_shouldIterateRenditions() {
-		Rendition r1 = publication.addRendition();
-		Rendition r2 = publication.addRendition("another/package.opf");
-		assertThat(publication.iterator()).containsExactly(r1, r2);
+	public void containsResource_shouldReturnFalseIfNotContainingTheResource() {
+		URI location = URI.create("EPUB/chapter1.xhtml");
+		assertThat(publication.containsResource(location)).isFalse();
+	}
+	
+	/* getResourceAt() */
+
+	@Test
+	public void getResourceAt_shouldReturnResourceFound() {
+		Rendition rendition = publication.addRendition();
+		PublicationResourceBuilderFactory factory = Epub.createResourceBuilderFactory(rendition.getLocation());
+		Manifest manifest = rendition.getManifest();
+		PublicationResource resource = factory.newBuilder("chapter1.xhtml").build();
+		manifest.add(resource);
+		
+		URI location = URI.create("EPUB/chapter1.xhtml");
+		assertThat(publication.getResourceAt(location)).isSameAs(resource);
+	}
+	
+	@Test
+	public void getResourceAt_shouldThrowExceptionIfResourceNotFound() {
+		URI location = URI.create("EPUB/chapter1.xhtml");
+		Throwable thrown = catchThrowable(()->{
+			publication.getResourceAt(location);
+		});
+		assertThat(thrown).isInstanceOf(NoSuchElementException.class)
+			.hasMessageContaining(location.getPath());
 	}
 }
