@@ -41,9 +41,11 @@ public final class XmlServices {
 			ThreadLocal.withInitial(TransformerFactory::newInstance);
 	
 	/**
-	 * Creates an new instance of {@link DocumentBuilder}.
+	 * Creates a new instance of {@link DocumentBuilder}.
+	 * This method is thread-safe.
+	 * 
 	 * @return created instance of {@link DocumentBuilder}, which is not thread-safe.
-	 * @throws EpubException if a configuration error occurs.
+	 * @throws EpubException if a configuration error has occurred.
 	 */
 	public static DocumentBuilder newBuilder() {
 		try {
@@ -54,9 +56,11 @@ public final class XmlServices {
 	}
 	
 	/**
-	 * Creates an new instance of {@link DocumentSerializer}.
+	 * Creates a new instance of {@link DocumentSerializer}.
+	 * This method is thread-safe.
+	 * 
 	 * @return created instance of {@link DocumentSerializer}, which is not thread-safe.
-	 * @throws EpubException if a configuration error occurs.
+	 * @throws EpubException if a configuration error has occurred.
 	 */
 	public static DocumentSerializer newSerializer() {
 		try {

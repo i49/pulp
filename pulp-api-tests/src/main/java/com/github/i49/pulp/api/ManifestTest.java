@@ -19,7 +19,6 @@ package com.github.i49.pulp.api;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -55,7 +54,7 @@ public class ManifestTest {
 		assertThat(manifest.getNumberOfItems()).isEqualTo(2);
 	}
 	
-	/* contains() */
+	/* contains(Item) */
 	
 	@Test
 	public void contains_shouldReturnTrueIfItemIsAdded() {
@@ -73,7 +72,34 @@ public class ManifestTest {
 	@Test
 	public void contains_shouldThrowExceptionIfItemIsNull() {
 		Throwable thrown = catchThrowable(()->{
-			manifest.contains(null);
+			Manifest.Item item = null;
+			manifest.contains(item);
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+
+	/* contains(String) */
+
+	@Test
+	public void contains_shouldReturnTrueIfItemExistsAtLocation() {
+		String location = "chapter1.xhtml";
+		manifest.add(factory.newBuilder(location).build());
+		assertThat(manifest.contains(location)).isTrue();
+	}
+
+	@Test
+	public void contains_shouldReturnFalseIfItemDoesNotExistAtLocation() {
+		String location = "chapter1.xhtml";
+		Manifest.Item item = manifest.add(factory.newBuilder(location).build());
+		manifest.remove(item);
+		assertThat(manifest.contains(location)).isFalse();
+	}
+	
+	@Test
+	public void contains_shouldThrowExceptionIfLocationIsNull() {
+		Throwable thrown = catchThrowable(()->{
+			String location = null;
+			manifest.contains(location);
 		});
 		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
 	}
@@ -92,27 +118,6 @@ public class ManifestTest {
 			@SuppressWarnings("unused")
 			Manifest.Item item = manifest.get("chapter1.xhtml");
 		}).isInstanceOf(NoSuchElementException.class).hasMessageContaining("chapter1.xhtml");
-	}
-	
-	/* find() */
-
-	@Test
-	public void find_shouldReturnItemIfManifestContainsIt() {
-		Manifest.Item item = manifest.add(factory.newBuilder("chapter1.xhtml").build());
-		Optional<Manifest.Item> found = manifest.find("chapter1.xhtml");
-		assertThat(found).hasValue(item);
-	}
-
-	@Test
-	public void find_shouldReturnEmptyIfManifestDoesNotContainIt() {
-		Optional<Manifest.Item> found = manifest.find("chapter1.xhtml");
-		assertThat(found).isEmpty();
-	}
-
-	@Test
-	public void find_shouldReturnEmptyIfItemIsNull() {
-		Optional<Manifest.Item> found = manifest.find(null);
-		assertThat(found).isEmpty();
 	}
 	
 	/* add() */

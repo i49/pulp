@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.api.Manifest;
@@ -79,7 +78,7 @@ public class RenditionImpl implements Rendition {
 	@Override
 	public URI resolve(String location) {
 		if (location == null) {
-			throw new IllegalStateException("\"location\" must not be null");
+			throw new IllegalArgumentException("\"location\" must not be null");
 		}
 		return this.location.resolve(location);
 	}
@@ -133,13 +132,25 @@ public class RenditionImpl implements Rendition {
 		}
 		
 		@Override
-		public Item get(String location) {
+		public boolean contains(String location) {
 			if (location == null) {
 				throw new IllegalArgumentException("\"location\" must not be null");
 			}
 			URI resolved = resolve(location);
+			if (!registry.contains(resolved)) {
+				return false;
+			}
+			PublicationResource resource = registry.get(resolved);
+			return resourceItemMap.containsKey(resource);
+		}
+		
+		@Override
+		public Item get(String location) {
+			if (location == null) {
+				throw new IllegalArgumentException("\"location\" must not be null");
+			}
 			Item item = null;
-			PublicationResource resource = registry.getAt(resolved);
+			PublicationResource resource = registry.get(resolve(location));
 			if (resource != null) {
 				item = resourceItemMap.get(resource);
 			}
@@ -149,21 +160,6 @@ public class RenditionImpl implements Rendition {
 			return item;
 		}
 		
-		@Override
-		public Optional<Item> find(String location) {
-			if (location == null) {
-				return Optional.empty();
-			}
-			URI resolved = resolve(location);
-			Optional<PublicationResource> resource = registry.find(resolved);
-			if (resource.isPresent()) {
-				Item item = resourceItemMap.get(resource.get());
-				return Optional.ofNullable(item);
-			} else {
-				return Optional.empty();
-			}
-		}
-
 		@Override
 		public Item add(PublicationResource resource) {
 			if (resource == null) {

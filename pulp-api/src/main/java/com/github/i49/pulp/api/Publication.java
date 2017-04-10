@@ -16,7 +16,6 @@
 
 package com.github.i49.pulp.api;
 
-import java.net.URI;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -76,23 +75,23 @@ public interface Publication extends Iterable<Rendition> {
 	/**
 	 * Returns whether this publication contains a resource at the specified location or not. 
 	 * 
-	 * @param location the URI relative to the root directory of the container such as "EPUB/chapter1.xhtml",  
+	 * @param location the path relative to the root directory of the container such as "EPUB/chapter1.xhtml",  
 	 *                 this must be path-rootless form.  
 	 * @return {@code true} if this publication contains the resource at the specified location, {@code false} otherwise.
-	 * @throws IllegalArgumentException if given {@code location} is {@code null}.
+	 * @throws IllegalArgumentException if given {@code location} is {@code null} or invalid.
 	 */
-	boolean containsResource(URI location);
+	boolean containsResource(String location);
 	
 	/**
 	 * Returns the publication resource at the specified location in this publication. 
-	 * This method can be called safely in case that {@link #containsResource(URI)} returns {@code true}.
+	 * This method can be called safely in case that {@link #containsResource(String)} returns {@code true}.
 	 * 
-	 * @param location the URI relative to the root directory of the container such as "EPUB/chapter1.xhtml",
+	 * @param location the path relative to the root directory of the container such as "EPUB/chapter1.xhtml",
 	 *                 this must be path-rootless form.  
 	 * @return the {@link PublicationResource} found at the specified location, never be {@code null}. 
-	 * @throws IllegalArgumentException if given {@code location} is {@code null}.
+	 * @throws IllegalArgumentException if given {@code location} is {@code null} or invalid.
 	 * @throws NoSuchElementException if this publication does not contain any resource at the specified location.
-	 * @see #containsResource(URI)
+	 * @see #containsResource(String)
 	 */
-	PublicationResource getResource(URI location);
+	PublicationResource getResource(String location);
 }

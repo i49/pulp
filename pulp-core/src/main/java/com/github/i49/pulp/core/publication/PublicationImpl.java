@@ -84,7 +84,7 @@ public class PublicationImpl implements Publication {
 	}
 	
 	@Override
-	public boolean containsResource(URI location) {
+	public boolean containsResource(String location) {
 		if (location == null) {
 			throw new IllegalArgumentException("\"location\" must not be null");
 		}
@@ -92,11 +92,11 @@ public class PublicationImpl implements Publication {
 	}
 	
 	@Override
-	public PublicationResource getResource(URI location) {
+	public PublicationResource getResource(String location) {
 		if (location == null) {
 			throw new IllegalArgumentException("\"location\" must not be null");
 		}
-		return this.registry.getAt(location);
+		return this.registry.get(location);
 	}
 	
 	private Rendition createRendition(PublicationResourceLocation location) {

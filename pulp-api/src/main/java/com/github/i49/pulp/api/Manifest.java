@@ -17,7 +17,6 @@
 package com.github.i49.pulp.api;
 
 import java.net.URI;
-import java.util.Optional;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -34,18 +33,27 @@ public interface Manifest extends Iterable<Manifest.Item> {
 	int getNumberOfItems();
 
 	/**
-	 * Returns {@code true} if this manifest contains the specified item.
+	 * Checks if this manifest contains the specified item.
 	 * 
-	 * @param item the item to be checked. can be {@code null}.
+	 * @param item the item to be checked. cannot be {@code null}.
 	 * @return {@code true} if this manifest contains the specified item, {@code false} otherwise.
-	 * @throws IllegalArgumentException if {@code location} is {@code null}.
+	 * @throws IllegalArgumentException if {@code item} is {@code null}.
 	 */
 	boolean contains(Item item);
 	
 	/**
+	 * Checks if this manifest contains the item at the specified location.
+	 * 
+	 * @param location the item location relative to the publication document, cannot be {@code null}.
+	 * @return {@code true} if this manifest contains the specified item, {@code false} otherwise.
+	 * @throws IllegalArgumentException if {@code location} is {@code null}.
+	 */
+	boolean contains(String location);
+	
+	/**
 	 * Returns the specified item in this manifest
 	 * 
-	 * @param location the location of the publication resource assigned to the item.
+	 * @param location the item location relative to the publication document, cannot be {@code null}.
 	 * @return the item found.
 	 * @throws IllegalArgumentException if {@code location} is {@code null}.
 	 * @throws NoSuchElementException if this manifest does not contain the specified resource.
@@ -81,15 +89,6 @@ public interface Manifest extends Iterable<Manifest.Item> {
 	 */
 	@Override
 	Iterator<Item> iterator();
-	
-	/**
-	 * Returns the specified item in this manifest.
-	 * 
-	 * @param location the location of the publication resource assigned to the item.
-	 * @return the item if this manifest contains the specified resource, 
-	 *         or empty if this manifest does not contain it.
-	 */
-	Optional<Item> find(String location);
 	
 	/**
 	 * Returns whether this manifest has the cover image or not.

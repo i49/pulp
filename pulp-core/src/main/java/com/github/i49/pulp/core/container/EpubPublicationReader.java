@@ -157,8 +157,9 @@ public class EpubPublicationReader implements PublicationReader {
 		
 		private PublicationResource getResource(String href, String mediaType) {
 			URI location = rendition.resolve(href);
-			if (publication.containsResource(location)) {
-				return publication.getResource(location);
+			String path = location.getPath();
+			if (publication.containsResource(path)) {
+				return publication.getResource(path);
 			} else {
 				return buildResource(location, href, mediaType);
 			}

@@ -18,7 +18,6 @@ package com.github.i49.pulp.api;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.net.URI;
 import java.util.NoSuchElementException;
 
 import org.junit.Before;
@@ -252,14 +251,12 @@ public class PublicationTest {
 		PublicationResource resource = factory.newBuilder("chapter1.xhtml").build();
 		manifest.add(resource);
 		
-		URI location = URI.create("EPUB/chapter1.xhtml");
-		assertThat(publication.containsResource(location)).isTrue();
+		assertThat(publication.containsResource("EPUB/chapter1.xhtml")).isTrue();
 	}
 
 	@Test
 	public void containsResource_shouldReturnFalseIfNotContainingTheResource() {
-		URI location = URI.create("EPUB/chapter1.xhtml");
-		assertThat(publication.containsResource(location)).isFalse();
+		assertThat(publication.containsResource("EPUB/chapter1.xhtml")).isFalse();
 	}
 	
 	/* getResourceAt() */
@@ -272,17 +269,16 @@ public class PublicationTest {
 		PublicationResource resource = factory.newBuilder("chapter1.xhtml").build();
 		manifest.add(resource);
 		
-		URI location = URI.create("EPUB/chapter1.xhtml");
-		assertThat(publication.getResource(location)).isSameAs(resource);
+		assertThat(publication.getResource("EPUB/chapter1.xhtml")).isSameAs(resource);
 	}
 	
 	@Test
 	public void getResourceAt_shouldThrowExceptionIfResourceNotFound() {
-		URI location = URI.create("EPUB/chapter1.xhtml");
+		String location = "EPUB/chapter1.xhtml";
 		Throwable thrown = catchThrowable(()->{
 			publication.getResource(location);
 		});
 		assertThat(thrown).isInstanceOf(NoSuchElementException.class)
-			.hasMessageContaining(location.getPath());
+			.hasMessageContaining(location);
 	}
 }

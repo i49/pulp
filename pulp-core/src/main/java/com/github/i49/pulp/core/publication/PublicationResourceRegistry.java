@@ -17,12 +17,12 @@
 package com.github.i49.pulp.core.publication;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.Set;
 
 import com.github.i49.pulp.api.EpubException;
@@ -54,43 +54,63 @@ class PublicationResourceRegistry {
 	public int getNumberOfResources() {
 		return resourceSet.size();
 	}
+
+	/**
+	 * Checks if this registry contains the resource at the specified location.
+	 *  
+	 * @param location the location of the resource, cannot be {@code null}.
+	 * @return {@code true} if this registry contains the resource, {@code false} otherwise.
+	 */
+	public boolean contains(String location) {
+		try {
+			return contains(new URI(location));
+		} catch (URISyntaxException e) {
+			throw new IllegalArgumentException(Messages.RESOURCE_LOCATION_INVALID(location), e);
+		}
+	}
 	
 	/**
-	 * Returns {@code true} if this registry contains the resource at the specified location. 
-	 * @param location the location of the resource, can be {@code null}.
+	 * Checks if this registry contains the resource at the specified location.
+	 *  
+	 * @param location the location of the resource, cannot be {@code null}.
 	 * @return {@code true} if this registry contains the resource, {@code false} otherwise.
 	 */
 	public boolean contains(URI location) {
-		if (location == null) {
-			return false;
-		}
 		return locationMap.containsKey(location);
 	}
 	
 	/**
-	 * Returns {@code true} if this registry contains the resource specified. 
-	 * @param resource the resource to find, can be {@code null}.
+	 * Checks if this registry contains the resource specified. 
+	 * @param resource the resource to check, cannot be {@code null}.
 	 * @return {@code true} if this registry contains the resource, {@code false} otherwise.
 	 */
 	public boolean contains(PublicationResource resource) {
-		if (resource == null) {
-			return false;
-		}
 		return resourceSet.contains(resource);
+	}
+
+	/**
+	 * Returns the resource specified by its location.
+	 * 
+	 * @param location the location relative to the root directory of the container, cannot be {@code null}.
+	 * @return found resource, never be {@code null}.
+	 * @throws NoSuchElementException if this registry does not contains the resource at the location.
+	 */
+	public PublicationResource get(String location) {
+		try {
+			return get(new URI(location));
+		} catch (URISyntaxException e) {
+			throw new IllegalArgumentException(Messages.RESOURCE_LOCATION_INVALID(location), e);
+		}
 	}
 	
 	/**
 	 * Returns the resource specified by its location.
 	 * 
-	 * @param location the location of the resource, cannot be {@code null}.
+	 * @param location the location relative to the root directory of the container, cannot be {@code null}.
 	 * @return found resource, never be {@code null}.
-	 * @throws IllegalArgumentException if specified {@code location} is {@code null}.
-	 * @throws NoSuchElementException if this registry does not contains the resource.
+	 * @throws NoSuchElementException if this registry does not contains the resource at the location.
 	 */
-	public PublicationResource getAt(URI location) {
-		if (location == null) {
-			throw new IllegalArgumentException("\"location\" must not be null");
-		}
+	public PublicationResource get(URI location) {
 		Entry entry = locationMap.get(location);
 		if (entry == null) {
 			throw new NoSuchElementException(Messages.RESOURCE_MISSING(location));
@@ -98,22 +118,6 @@ class PublicationResourceRegistry {
 		return entry.getResource();
 	}
 
-	/**
-	 * Finds the resource specified by its location in this registry.
-	 * @param location the location of the resource.
-	 * @return the resource if this registry contains it, {@code null} otherwise.
-	 */
-	public Optional<PublicationResource> find(URI location) {
-		if (location == null) {
-			return Optional.empty();
-		}
-		Entry entry = locationMap.get(location);
-		if (entry == null) {
-			return Optional.empty();
-		}
-		return Optional.of(entry.getResource());
-	}
-	
 	/**
 	 * Registers the resource with this registry.
 	 * @param resource the publication resource to be registered.
