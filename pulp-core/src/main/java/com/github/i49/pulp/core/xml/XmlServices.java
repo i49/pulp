@@ -24,6 +24,10 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+
 import com.github.i49.pulp.api.EpubException;
 import com.github.i49.pulp.core.Messages;
 
@@ -40,6 +44,8 @@ public final class XmlServices {
 	private static final ThreadLocal<TransformerFactory> transformerFactory = 
 			ThreadLocal.withInitial(TransformerFactory::newInstance);
 	
+	private static final DefaultSaxErrorHandler DEFAULT_SAX_ERROR_HANDLER = new DefaultSaxErrorHandler();
+	
 	/**
 	 * Creates a new instance of {@link DocumentBuilder}.
 	 * This method is thread-safe.
@@ -49,7 +55,9 @@ public final class XmlServices {
 	 */
 	public static DocumentBuilder newBuilder() {
 		try {
-			return builderFactory.get().newDocumentBuilder();
+			DocumentBuilder builder = builderFactory.get().newDocumentBuilder();
+			builder.setErrorHandler(DEFAULT_SAX_ERROR_HANDLER);
+			return builder;
 		} catch (ParserConfigurationException e) {
 			throw new EpubException(Messages.XML_PARSER_MISCONFIGURED(), e);
 		}
@@ -82,5 +90,26 @@ public final class XmlServices {
 	}
 
 	private XmlServices() {
+	}
+	
+	/**
+	 * Default implementation of {@link ErrorHandler}.
+	 * This class prevents the parser from printing messages to the stderr.
+	 */
+	private static class DefaultSaxErrorHandler implements ErrorHandler {
+
+		@Override
+		public void warning(SAXParseException exception) throws SAXException {
+		}
+
+		@Override
+		public void error(SAXParseException exception) throws SAXException {
+			throw exception;
+		}
+
+		@Override
+		public void fatalError(SAXParseException exception) throws SAXException {
+			throw exception;
+		}
 	}
 }
