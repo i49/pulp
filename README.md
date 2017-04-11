@@ -7,15 +7,15 @@ Pulp project provides Java API for EPUB processing and its implementation.
 
 This project is composed of the following modules.
 
-Modules                     |Description
-----------------------------|-------------------------------------------
-pulp-api                    |Java API for EPUB processing
-pulp-api-tests              |Unit tests for the API implementation
-pulp-api-tests-with-samples |Testing with IDPF EPUB3 samples
-pulp-core                   |Reference implementation of the API
-pulp-cli                    |Command line utility built on the API
-pulp-distribution           |Distribution file generator
-pulp-parent                 |Common settings for all other modules above
+Modules                     |Description                                 |Status
+----------------------------|--------------------------------------------|---------
+pulp-api                    |Java API for EPUB processing                |Pre-alpha
+pulp-api-tests              |Unit tests for the API implementation       |-   
+pulp-api-tests-with-samples |Testing with IDPF EPUB3 samples             |-
+pulp-core                   |Reference implementation of the API         |Pre-alpha
+pulp-cli                    |Command line utility built on the API       |Pre-alpha
+pulp-distribution           |Distribution file generator                 |-
+pulp-parent                 |Common settings for all other modules above |-
 
 ## How To Build
 
