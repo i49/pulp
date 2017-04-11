@@ -122,6 +122,19 @@ public class PublicationReaderTest {
 	}
 	
 	@Test
+	public void read_shouldThrowExceptionIfContainerXmlIsNotWellFormed() {
+		Path path = pathTo("container-not-well-formed.epub");
+		PublicationReader reader = factory.createReader(path);
+		Throwable thrown = catchThrowable(()->{
+			reader.read();
+		});
+		assertThat(thrown).isInstanceOf(EpubParsingException.class);
+		assertThat((EpubParsingException)thrown)
+			.hasLocation("META-INF/container.xml")
+			.hasContainerPath(path);
+	}
+
+	@Test
 	public void read_shouldThrowExceptionIfContainerXmlHasWrongRootElement() {
 		Path path = pathTo("container-unrecognized.epub");
 		PublicationReader reader = factory.createReader(path);
@@ -173,6 +186,19 @@ public class PublicationReaderTest {
 			.hasContainerPath(path);
 	}
 
+	@Test
+	public void read_shouldThrowExceptionIfPackageDocumentIsNotWellFormed() {
+		Path path = pathTo("package-not-well-formed.epub");
+		PublicationReader reader = factory.createReader(path);
+		Throwable thrown = catchThrowable(()->{
+			reader.read();
+		});
+		assertThat(thrown).isInstanceOf(EpubParsingException.class);
+		assertThat((EpubParsingException)thrown)
+			.hasLocation("EPUB/package.opf")
+			.hasContainerPath(path);
+	}
+	
 	@Test
 	public void read_shouldThrowExceptionIfPackageDocumentHasUnrecognizedRootElement() {
 		Path path = pathTo("package-unrecognized.epub");
