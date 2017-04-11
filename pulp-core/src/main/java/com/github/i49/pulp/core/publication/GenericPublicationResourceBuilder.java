@@ -28,6 +28,9 @@ import com.github.i49.pulp.api.PublicationResource;
 import com.github.i49.pulp.api.PublicationResourceBuilder;
 import com.github.i49.pulp.core.Messages;
 
+/**
+ * A generic implementation of {@link PublicationResourceBuilder}
+ */
 class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 
 	private final PublicationResourceLocation location;
@@ -48,7 +51,7 @@ class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 	@Override
 	public PublicationResourceBuilder ofType(MediaType mediaType) {
 		if (mediaType == null) {
-			throw new IllegalArgumentException("mediaType is null");
+			throw new IllegalArgumentException("\"mediaType\" must not be null");
 		}
 		this.mediaType = mediaType;
 		return this;
@@ -57,16 +60,21 @@ class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 	@Override
 	public PublicationResourceBuilder ofType(String value) {
 		if (value == null) {
-			throw new IllegalArgumentException("value is null");
+			throw new IllegalArgumentException("\"value\" must not be null");
 		}
 		this.mediaType = typeRegistry.getMediaType(value);
 		return this;
 	}
 	
 	@Override
+	public PublicationResourceBuilder empty() {
+		return source(EmptyContentSource.getInstance());
+	}
+	
+	@Override
 	public PublicationResourceBuilder source(Path path) {
 		if (path == null) {
-			throw new IllegalArgumentException("path is null");
+			throw new IllegalArgumentException("\"path\" must not be null");
 		}
 		return source(path.toUri());
 	}
@@ -74,7 +82,7 @@ class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 	@Override
 	public PublicationResourceBuilder source(URI uri) {
 		if (uri == null) {
-			throw new IllegalArgumentException("uri is null");
+			throw new IllegalArgumentException("\"uri\" must not be null");
 		}
 		return source((location)->uri.toURL().openStream());
 	}
@@ -82,7 +90,7 @@ class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 	@Override
 	public PublicationResourceBuilder source(byte[] bytes) {
 		if (bytes == null) {
-			throw new IllegalArgumentException("bytes is null");
+			throw new IllegalArgumentException("\"bytes\" must not be null");
 		}
 		return source((location)->new ByteArrayInputStream(bytes));
 	}
@@ -90,7 +98,7 @@ class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 	@Override
 	public PublicationResourceBuilder source(ContentSource source) {
 		if (source == null) {
-			throw new IllegalArgumentException("source is null");
+			throw new IllegalArgumentException("\"source\" must not be null");
 		}
 		this.source = source;
 		return this;

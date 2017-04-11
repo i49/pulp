@@ -18,6 +18,7 @@ package com.github.i49.pulp.api;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.io.IOException;
 import java.net.URI;
 
 import org.junit.Before;
@@ -46,7 +47,26 @@ public class PublicationResourceBuilderTest {
 			builder.ofType("xyz");
 		}).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("xyz");
 	}
-		
+	
+	/* empty() */
+	
+	@Test
+	public void empty_shouldProvideEmptyContent() throws IOException {
+		PublicationResourceBuilder builder = factory.newBuilder("stylesheet.css");
+		PublicationResource r = builder.empty().build();
+		assertThat(r.getContent()).hasSize(0);
+	}
+	
+	/* source(byte[]) */
+	
+	@Test
+	public void source_shouldProvideByteArrayContent() throws IOException {
+		byte[] content = "h1 {}".getBytes();
+		PublicationResourceBuilder builder = factory.newBuilder("stylesheet.css");
+		PublicationResource r = builder.source(content).build();
+		assertThat(r.getContent()).containsExactly(content);		
+	}
+	
 	/* build() */
 	
 	@Test

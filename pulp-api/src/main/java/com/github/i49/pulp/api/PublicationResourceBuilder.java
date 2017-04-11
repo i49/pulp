@@ -27,44 +27,59 @@ public interface PublicationResourceBuilder {
 
 	/**
 	 * Specifies the media type of the resource to build.
+	 * 
 	 * @param mediaType the media type represented by an instance of {@link MediaType}.
 	 * @return this builder.
+	 * @throws IllegalArgumentException if {@code mediaType} is {@code null}.
 	 */
 	PublicationResourceBuilder ofType(MediaType mediaType);
 	
 	/**
-	 * Specifies the media type of the resource to build.
-	 * @param value the string representation of the media type.
+	 * Specifies the media type of the resource to build by a string representation.
+	 * 
+	 * @param value the string representation of the media type, such as "image/png".
 	 * @return this builder.
 	 * @throws IllegalArgumentException if {@code value} is illegal or {@code null}.
 	 */
 	PublicationResourceBuilder ofType(String value);
 	
 	/**
-	 * Specifies the content of the resource with a path.
-	 * @param path the path from which the content will be read.
+	 * Specifies that the initial content of the resource should be empty.
+	 * 
+	 * @return this builder.
+	 */
+	PublicationResourceBuilder empty();
+	
+	/**
+	 * Specifies the initial content of the resource with a path.
+	 * 
+	 * @param path the path from which the initial content of the resource will be read.
 	 * @return this builder.
 	 */
 	PublicationResourceBuilder source(Path path);
 
 	/**
-	 * Specifies the content of the resource with a URI.
-	 * @param uri the URI from which the content will be read.
+	 * Specifies the initial content of the resource with a URI.
+	 * 
+	 * @param uri the URI from which the initial content of the resource will be read.
 	 * @return this builder.
 	 */
 	PublicationResourceBuilder source(URI uri);
 	
 	/**
-	 * Specifies the content of the resource with a byte array.
-	 * @param bytes the byte array to be used as the content of the resource.
+	 * Specifies the initial content of the resource with a byte array.
+	 * 
+	 * @param bytes the byte array to be used as the initial content of the resource.
 	 * @return this builder.
 	 */
 	PublicationResourceBuilder source(byte[] bytes);
 	
 	/**
-	 * Specifies the content source for the resource.
-	 * @param source the source of the content.
+	 * Specifies the initial content of the resource with {@link ContentSource} interface.
+	 * 
+	 * @param source the content provider for the resource.
 	 * @return this builder.
+	 * @see ContentSource
 	 */
 	PublicationResourceBuilder source(ContentSource source);
 	
@@ -84,6 +99,7 @@ public interface PublicationResourceBuilder {
 	
 	/**
 	 * Builds a {@link PublicationResource}.
+	 * 
 	 * @return built publication resource.
 	 */
 	PublicationResource build();
