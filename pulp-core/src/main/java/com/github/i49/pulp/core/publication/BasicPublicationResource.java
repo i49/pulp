@@ -84,6 +84,9 @@ class BasicPublicationResource implements PublicationResource {
 	
 	@Override
 	public void setContentSource(ContentSource source) {
+		if (source == null) {
+			throw new IllegalArgumentException("\"source\" must not be null");
+		}
 		this.source = source;
 	}
 	

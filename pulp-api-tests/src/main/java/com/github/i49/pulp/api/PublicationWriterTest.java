@@ -51,14 +51,17 @@ public class PublicationWriterTest {
 
 		Publication publication = Epub.createPublication();
 		Rendition rendition = publication.addRendition();
+		
 		PublicationResourceBuilderFactory f = Epub.createResourceBuilderFactory(rendition.getLocation());
+		f.setSourcePath(sourcePath);
+		
 		Manifest m = rendition.getManifest();
-		m.add(f.newBuilder("chapter1.xhtml").sourceDir(sourcePath).build());
-		m.add(f.newBuilder("chapter2.xhtml").sourceDir(sourcePath).build());
-		m.add(f.newBuilder("nav.xhtml").sourceDir(sourcePath).build()).asNavigation();
-		m.add(f.newBuilder("images/figure1.jpg").sourceDir(sourcePath).build());
-		m.add(f.newBuilder("css/stylesheet.css").sourceDir(sourcePath).build());
-		m.add(f.newBuilder("cover.png").sourceDir(sourcePath).build()).asCoverImage();
+		m.add(f.newBuilder("chapter1.xhtml").build());
+		m.add(f.newBuilder("chapter2.xhtml").build());
+		m.add(f.newBuilder("nav.xhtml").build()).asNavigation();
+		m.add(f.newBuilder("images/figure1.jpg").build());
+		m.add(f.newBuilder("css/stylesheet.css").build());
+		m.add(f.newBuilder("cover.png").build()).asCoverImage();
 		
 		Spine spine = rendition.getSpine();
 		spine.append(m.get("chapter1.xhtml"));

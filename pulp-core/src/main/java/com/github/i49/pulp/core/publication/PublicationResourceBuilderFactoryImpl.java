@@ -17,14 +17,18 @@
 package com.github.i49.pulp.core.publication;
 
 import java.net.URI;
+import java.nio.file.Path;
 
 import com.github.i49.pulp.api.PublicationResourceBuilder;
 import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
 
 public class PublicationResourceBuilderFactoryImpl implements PublicationResourceBuilderFactory {
 	
+	private static final Path[] NO_PATHS = new Path[0];
+	
 	private final PublicationResourceLocation baseURI;
 	private final MediaTypeRegistry typeRegistry;
+	private Path[] sourcePath = NO_PATHS;
 	
 	public PublicationResourceBuilderFactoryImpl(URI baseURI, MediaTypeRegistry typeRegistry) {
 		this.baseURI = PublicationResourceLocation.ofLocal(baseURI);
@@ -35,14 +39,27 @@ public class PublicationResourceBuilderFactoryImpl implements PublicationResourc
 	public URI getBaseURI() {
 		return baseURI.toURI();
 	}
+	
+	@Override
+	public void setSourcePath(Path... paths) {
+		if (paths == null) {
+			throw new IllegalArgumentException("\"paths\" must not be null");
+		}
+		for (Path path: paths) {
+			if (path == null) {
+				throw new IllegalArgumentException("\"paths\" cannot contain null");
+			}
+		}
+		this.sourcePath = paths;
+	}
 
 	@Override
 	public PublicationResourceBuilder newBuilder(String location) {
 		if (location == null) {
-			throw new IllegalArgumentException("location must not be null");
+			throw new IllegalArgumentException("\"location\" must not be null");
 		}
 		PublicationResourceLocation resolved = resolve(location);
-		return new GenericPublicationResourceBuilder(resolved, location, this.typeRegistry);
+		return new GenericPublicationResourceBuilder(resolved, location, this.sourcePath, this.typeRegistry);
 	}
 	
 	/**

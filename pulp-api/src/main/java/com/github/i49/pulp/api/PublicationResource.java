@@ -82,14 +82,15 @@ public interface PublicationResource {
 	/**
 	 * Returns the content source for this resource.
 	 * 
-	 * @return the content source for this resource, or {@code null} if no source is assigned.
+	 * @return the content source for this resource, never be {@code null}.
 	 */
 	ContentSource getContentSource();
 	
 	/**
 	 * Assigns the content source that will provide initial content for this resource.
 	 * 
-	 * @param source the content source for this resource, can be {@code null}.
+	 * @param source the content source for this resource, cannot be {@code null}.
+	 * @throws IllegalArgumentException if source is {@code null}.
 	 */
 	void setContentSource(ContentSource source);
 	
@@ -97,7 +98,6 @@ public interface PublicationResource {
 	 * Opens a new {@link InputStream} that provides the content of this resource. 
 	 * 
 	 * @return a new input stream, which should be closed by the caller of this method.
-	 * @throws IllegalStateException if content source is not assigned.
 	 * @throws IOException if an I/O error has occurred.
 	 */
 	InputStream openContent() throws IOException;
@@ -106,7 +106,6 @@ public interface PublicationResource {
 	 * Returns the content of this resource.
 	 * 
 	 * @return the content of this resource as a byte array.
-	 * @throws IllegalStateException if content source is not assigned.
 	 * @throws IOException if an I/O error has occurred.
 	 */
 	byte[] getContent() throws IOException;

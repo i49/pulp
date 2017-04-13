@@ -49,6 +49,7 @@ class PublicationResourceRegistry {
 	
 	/**
 	 * Returns the number of resources registered with this registry.
+	 * 
 	 * @return the number of resources.
 	 */
 	public int getNumberOfResources() {
@@ -62,6 +63,7 @@ class PublicationResourceRegistry {
 	 * @return {@code true} if this registry contains the resource, {@code false} otherwise.
 	 */
 	public boolean contains(String location) {
+		assert(location != null);
 		try {
 			return contains(new URI(location));
 		} catch (URISyntaxException e) {
@@ -76,6 +78,7 @@ class PublicationResourceRegistry {
 	 * @return {@code true} if this registry contains the resource, {@code false} otherwise.
 	 */
 	public boolean contains(URI location) {
+		assert(location != null);
 		return locationMap.containsKey(location);
 	}
 	
@@ -85,6 +88,7 @@ class PublicationResourceRegistry {
 	 * @return {@code true} if this registry contains the resource, {@code false} otherwise.
 	 */
 	public boolean contains(PublicationResource resource) {
+		assert(resource != null);
 		return resourceSet.contains(resource);
 	}
 
@@ -96,6 +100,7 @@ class PublicationResourceRegistry {
 	 * @throws NoSuchElementException if this registry does not contains the resource at the location.
 	 */
 	public PublicationResource get(String location) {
+		assert(location != null);
 		try {
 			return get(new URI(location));
 		} catch (URISyntaxException e) {
@@ -111,6 +116,7 @@ class PublicationResourceRegistry {
 	 * @throws NoSuchElementException if this registry does not contains the resource at the location.
 	 */
 	public PublicationResource get(URI location) {
+		assert(location != null);
 		Entry entry = locationMap.get(location);
 		if (entry == null) {
 			throw new NoSuchElementException(Messages.RESOURCE_MISSING(location));
@@ -120,13 +126,11 @@ class PublicationResourceRegistry {
 
 	/**
 	 * Registers the resource with this registry.
-	 * @param resource the publication resource to be registered.
-	 * @throws IllegalArgumentException if specified {@code resource} is {@code null}.
+	 * 
+	 * @param resource the publication resource to be registered, cannot be {@code null}.
 	 */
 	public void register(PublicationResource resource) {
-		if (resource == null) {
-			throw new IllegalArgumentException("resource is null");
-		}
+		assert(resource != null);
 		URI location = resource.getLocation();
 		Entry entry = locationMap.get(location);
 		if (entry == null) {
@@ -143,10 +147,12 @@ class PublicationResourceRegistry {
 	
 	/**
 	 * Unregister a resource from this registry.
-	 * @param resource the resource to be removed.
+	 * 
+	 * @param resource the resource to be removed, cannot be {@code null}.
 	 */
 	public void unregister(PublicationResource resource) {
-		if (resource == null || !resourceSet.contains(resource)) {
+		assert(resource != null);
+		if (!resourceSet.contains(resource)) {
 			return;
 		}
 		URI location = resource.getLocation();
@@ -157,6 +163,11 @@ class PublicationResourceRegistry {
 		}
 	}
 	
+	/**
+	 * Returns all resources in this registry.
+	 * 
+	 * @return the set containing all resources. 
+	 */
 	public Set<PublicationResource> getAllResources() {
 		return immutableSet;
 	}

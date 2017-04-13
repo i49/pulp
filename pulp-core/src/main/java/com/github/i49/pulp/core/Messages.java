@@ -70,6 +70,10 @@ public final class Messages {
 		return format("MEDIA_TYPE_INVALID", value);
 	}
 	
+	public static String CONTENT_SOURCE_MISSING(URI location) {
+		return format("CONTENT_SOURCE_MISSING", location);
+	}
+	
 	/* core.container package */
 	
 	public static String CONTAINER_NOT_FOUND(Path path) {

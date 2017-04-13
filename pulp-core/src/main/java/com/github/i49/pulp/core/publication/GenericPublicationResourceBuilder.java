@@ -18,6 +18,7 @@ package com.github.i49.pulp.core.publication;
 
 import java.io.ByteArrayInputStream;
 import java.net.URI;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import com.github.i49.pulp.api.ContentSource;
@@ -35,16 +36,34 @@ class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 
 	private final PublicationResourceLocation location;
 	private final String localPath;
+	private final Path[] sourcePath;
 	private final MediaTypeRegistry typeRegistry;
 	
 	private ContentSource source;
 	private MediaType mediaType;
 	
-	GenericPublicationResourceBuilder(PublicationResourceLocation location, String localPath, MediaTypeRegistry typeRegistry) {
+	private static final ContentSource EMPTY_SOURCE = EmptyContentSource.getInstance();
+	
+	/**
+	 * Constructs this builder.
+	 * 
+	 * @param location the resource location relative to the root directory of the container.
+	 * @param localPath the user specified path.
+	 * @param sourcePath the paths used to find the content source.
+	 * @param typeRegistry the media type registry.
+	 */
+	GenericPublicationResourceBuilder(
+			PublicationResourceLocation location, 
+			String localPath, 
+			Path[] sourcePath,
+			MediaTypeRegistry typeRegistry) {
+	
 		this.location = location;
 		this.localPath = localPath;
+		this.sourcePath = sourcePath;
 		this.typeRegistry = typeRegistry;
 		
+		this.source = null;
 		this.mediaType = null;
 	}
 
@@ -68,7 +87,7 @@ class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 	
 	@Override
 	public PublicationResourceBuilder empty() {
-		return source(EmptyContentSource.getInstance());
+		return source(EMPTY_SOURCE);
 	}
 	
 	@Override
@@ -105,24 +124,10 @@ class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 	}
 	
 	@Override
-	public PublicationResourceBuilder sourceDir(Path dir) {
-		if (dir == null) {
-			throw new IllegalArgumentException("dir is null");
-		}
-		return sourceDir(dir.toUri());
-	}
-
-	@Override
-	public PublicationResourceBuilder sourceDir(URI dir) {
-		if (dir == null) {
-			throw new IllegalArgumentException("dir is null");
-		}
-		return source(dir.resolve(localPath));
-	}
-	
-	@Override
 	public PublicationResource build() {
 		final MediaType mediaType = determineMediaType();
+		final ContentSource source = findContentSource();
+		
 		PublicationResource resource = null;
 		if (mediaType == CoreMediaType.APPLICATION_XHTML_XML) {
 			resource = createXhtmlDocument();
@@ -131,9 +136,8 @@ class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 		} else {
 			resource = createResource(mediaType);
 		}
-		if (source != null) {
-			resource.setContentSource(source);
-		}
+		
+		resource.setContentSource(source);
 		return resource;
 	}
 	
@@ -156,6 +160,28 @@ class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 			}
 		}
 		return mediaType;
+	}
+	
+	private ContentSource findContentSource() {
+		if (this.source != null) {
+			return this.source;
+		}
+		return findContentSourceFromSourcePath();
+	}
+	
+	private ContentSource findContentSourceFromSourcePath() {
+		if (this.sourcePath.length == 0) {
+			return EMPTY_SOURCE;
+		}
+		for (Path path: this.sourcePath) {
+			Path source = path.resolve(localPath);
+			if (Files.exists(source)) {
+				return (location)->{
+					return Files.newInputStream(source);
+				};
+			}
+		}
+		throw new EpubException(Messages.CONTENT_SOURCE_MISSING(location.toURI()));
 	}
 	
 	protected PublicationResource createResource(MediaType mediaType) {

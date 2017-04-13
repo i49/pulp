@@ -20,6 +20,8 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -43,9 +45,10 @@ public class PublicationResourceBuilderTest {
 	@Test
 	public void ofType_shouldThrowExceptionIfMediaTypeInvalid() {
 		PublicationResourceBuilder builder = factory.newBuilder("chapter1.xhtml");
-		assertThatThrownBy(()->{
+		Throwable thrown = catchThrowable(()->{
 			builder.ofType("xyz");
-		}).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("xyz");
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("xyz");
 	}
 	
 	/* empty() */
@@ -82,20 +85,49 @@ public class PublicationResourceBuilderTest {
 		PublicationResource r = builder.build();
 		assertThat(r.getMediaType()).isEqualTo(CoreMediaType.APPLICATION_XHTML_XML);
 	}
+	
+	@Test
+	public void build_shouldFindContentSourceFromSinglePath() throws IOException {
+		factory.setSourcePath(EpubPaths.get("valid-single-rendition/EPUB"));
+		PublicationResource resource = factory.newBuilder("chapter1.xhtml").build();
+		String content = new String(resource.getContent(), StandardCharsets.UTF_8);
+		assertThat(content).containsSequence("<h1>Chapter 1</h1>");
+	}
 
+	@Test
+	public void build_shouldFindContentSourceFromSecondPath() throws IOException {
+		Path path1 = EpubPaths.get("path/to/nonexistent");
+		Path path2 = EpubPaths.get("valid-single-rendition/EPUB");
+		factory.setSourcePath(path1, path2);
+		PublicationResource resource = factory.newBuilder("chapter1.xhtml").build();
+		String content = new String(resource.getContent(), StandardCharsets.UTF_8);
+		assertThat(content).containsSequence("<h1>Chapter 1</h1>");
+	}
+	
+	@Test
+	public void build_shouldThrowExceptionIfContentSourceNotFound() {
+		factory.setSourcePath(EpubPaths.get("path/to/nonexistent"));
+		Throwable thrown = catchThrowable(()->{
+			factory.newBuilder("chapter1.xhtml").build();
+		});
+		assertThat(thrown).isInstanceOf(EpubException.class).hasMessageContaining("chapter1.xhtml");
+	}
+	
 	@Test
 	public void build_shouldThrowExceptionIfMediaTypeNotDetected() {
 		PublicationResourceBuilder builder = factory.newBuilder("figure.unknown");
-		assertThatThrownBy(()->{
+		Throwable thrown = catchThrowable(()->{
 			builder.build();
-		}).isInstanceOf(EpubException.class).hasMessageContaining("figure.unknown");
+		});
+		assertThat(thrown).isInstanceOf(EpubException.class).hasMessageContaining("figure.unknown");
 	}
 	
 	@Test
 	public void build_shouldThrowExceptionIfMediaTypeIsInvalid() {
 		PublicationResourceBuilder builder = factory.newBuilder("chapter1.xhtml");
-		assertThatThrownBy(()->{
+		Throwable thrown = catchThrowable(()->{
 			builder.ofType("abc");
-		}).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("abc");
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("abc");
 	}	
 }

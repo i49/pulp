@@ -19,6 +19,8 @@ package com.github.i49.pulp.api;
 import static org.assertj.core.api.Assertions.*;
 
 import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,8 +38,44 @@ public class PublicationResourceBuilderFactoryTest {
 	public void setUp() {
 		factory = Epub.createResourceBuilderFactory(BASE_URI);
 	}
+	
+	/* getBaseURI() */
+	
+	@Test
+	public void getBaseURI_shouldReturnBaseURI() {
+		assertThat(factory.getBaseURI()).isEqualTo(BASE_URI);
+	}
+	
+	/* setSourcePath() */
+	
+	@Test
+	public void setSourcePath_shouldSetSinglePath() {
+		factory.setSourcePath(Paths.get("path/to/first"));
+	}
 
-	/* newBuilder */
+	@Test
+	public void setSourcePath_shouldSetMultiplePaths() {
+		factory.setSourcePath(Paths.get("path/to/first"), Paths.get("path/to/second"));
+	}
+	
+	@Test
+	public void setSourcePath_shouldThrowExceptionIfPathsIsNull() {
+		Path[] paths = null;
+		Throwable thrown = catchThrowable(()->{
+			factory.setSourcePath(paths);
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
+	public void setSourcePath_shouldThrowExceptionIfOneOfPathsIsNull() {
+		Throwable thrown = catchThrowable(()->{
+			factory.setSourcePath(Paths.get("path1"), null, Paths.get("path2"));
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+	
+	/* newBuilder() */
 	
 	@Test
 	public void newBuilder_shouldCreateLocalResourceBuilder() {
@@ -53,9 +91,10 @@ public class PublicationResourceBuilderFactoryTest {
 
 	@Test
 	public void newBuilder_shouldThrowExceptionIfLocalLocationIsInvalid() {
-		assertThatThrownBy(()->{
+		Throwable thrown = catchThrowable(()->{
 			factory.newBuilder("../../images/cover.png");
-		}).isInstanceOf(IllegalArgumentException.class);
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
 	}
 	
 	@Test
@@ -66,8 +105,9 @@ public class PublicationResourceBuilderFactoryTest {
 
 	@Test
 	public void newBuilder_shouldThrowExceptionIfRemoteLocationIsOpaque() {
-		assertThatThrownBy(()->{
+		Throwable thrown = catchThrowable(()->{
 			factory.newBuilder("http:./images/cover.png");
-		}).isInstanceOf(IllegalArgumentException.class);
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
 	}
 }

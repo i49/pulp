@@ -84,23 +84,10 @@ public interface PublicationResourceBuilder {
 	PublicationResourceBuilder source(ContentSource source);
 	
 	/**
-	 * Specifies the directory containing the content of the resource.
-	 * @param dir the path of the directory.
-	 * @return this builder.
-	 */
-	PublicationResourceBuilder sourceDir(Path dir);
-	
-	/**
-	 * Specifies the directory containing the content of the resource.
-	 * @param dir the URI of the directory.
-	 * @return this builder.
-	 */
-	PublicationResourceBuilder sourceDir(URI dir);
-	
-	/**
 	 * Builds a {@link PublicationResource}.
 	 * 
 	 * @return built publication resource.
+	 * @throws EpubException if the content source for the resource was not found.
 	 */
 	PublicationResource build();
 }
