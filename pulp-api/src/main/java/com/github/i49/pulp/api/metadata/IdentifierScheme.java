@@ -14,7 +14,19 @@
  * limitations under the License.
  */
 
+package com.github.i49.pulp.api.metadata;
+
 /**
- * Provides Service Provider Interface (SPI) for API implementors.
+ * Identifier schemes for use in the Package Document opf:scheme attribute.
  */
-package com.github.i49.pulp.api.spi;
+public enum IdentifierScheme {
+	/** A Digital Object Identifier. */
+	DOI,
+	/** An International Standard Book Number. */
+	ISBN,
+	/** A Japan Digital Comic Number. */
+	JDCN,
+	/** A Universally-Unique Identifier. */
+	UUID
+	;
+}

@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
+package com.github.i49.pulp.api.metadata;
+
 /**
- * Provides Service Provider Interface (SPI) for API implementors.
+ * The file format, physical medium, or dimensions of the resource.
+ * 
+ * @see <a href="http://dublincore.org/documents/dces/#format">Dublin Core Metadata Element Set, Version 1.1</a> 
  */
-package com.github.i49.pulp.api.spi;
+public interface Format extends Property {
+}

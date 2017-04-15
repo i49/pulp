@@ -15,6 +15,6 @@
  */
 
 /**
- * Provides Service Provider Interface (SPI) for API implementors.
+ * Provides various kinds of metadata describing EPUB publications.
  */
-package com.github.i49.pulp.api.spi;
+package com.github.i49.pulp.api.metadata;

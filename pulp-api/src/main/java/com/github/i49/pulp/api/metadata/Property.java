@@ -14,7 +14,24 @@
  * limitations under the License.
  */
 
+package com.github.i49.pulp.api.metadata;
+
 /**
- * Provides Service Provider Interface (SPI) for API implementors.
+ * A property composing metadata for the given rendition.
  */
-package com.github.i49.pulp.api.spi;
+public interface Property {
+
+	/**
+	 * Returns the name of this property.
+	 * 
+	 * @return the name of this property.
+	 */
+	String getName();
+	
+	/**
+	 * Returns the value of this property.
+	 * 
+	 * @return the value of this property.
+	 */
+	String getValue();
+}

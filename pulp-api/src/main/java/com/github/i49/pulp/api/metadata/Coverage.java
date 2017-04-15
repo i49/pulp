@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
+package com.github.i49.pulp.api.metadata;
+
 /**
- * Provides Service Provider Interface (SPI) for API implementors.
+ * The spatial or temporal topic of the resource, the spatial applicability of the resource, 
+ * or the jurisdiction under which the resource is relevant.
+ *
+ * @see <a href="http://dublincore.org/documents/dces/#coverage">Dublin Core Metadata Element Set, Version 1.1</a> 
  */
-package com.github.i49.pulp.api.spi;
+public interface Coverage extends TextProperty {
+}

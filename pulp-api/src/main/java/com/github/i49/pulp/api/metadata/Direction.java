@@ -14,7 +14,15 @@
  * limitations under the License.
  */
 
+package com.github.i49.pulp.api.metadata;
+
 /**
- * Provides Service Provider Interface (SPI) for API implementors.
+ * Base text direction of the metadata value.
  */
-package com.github.i49.pulp.api.spi;
+public enum Direction {
+	/** Text direction is left-to-right. */
+	LEFT_TO_RIGHT,
+	/** Text direction is right-to-left. */
+	RIGHT_TO_LEFT
+	;
+}

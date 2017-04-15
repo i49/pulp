@@ -14,7 +14,21 @@
  * limitations under the License.
  */
 
+package com.github.i49.pulp.api.metadata;
+
+import java.net.URI;
+import java.util.Optional;
+
 /**
- * Provides Service Provider Interface (SPI) for API implementors.
+ * The topic of the EPUB rendition.
+ * 
+ * @see <a href="http://dublincore.org/documents/dces/#subject">Dublin Core Metadata Element Set, Version 1.1</a> 
  */
-package com.github.i49.pulp.api.spi;
+public interface Subject extends Property {
+	
+	Optional<SubjectAuthority> getAuthority();
+	
+	Optional<URI> getAuthorityScheme();
+	
+	Optional<String> getTerm();
+}

@@ -14,7 +14,24 @@
  * limitations under the License.
  */
 
+package com.github.i49.pulp.api.metadata;
+
+import java.util.Locale;
+
 /**
- * Provides Service Provider Interface (SPI) for API implementors.
+ * 
  */
-package com.github.i49.pulp.api.spi;
+public interface RelatorBuilder<T extends Relator> {
+
+	RelatorBuilder<T> language(Locale langaue);
+	
+	RelatorBuilder<T> direction(Direction direction);
+	
+	RelatorBuilder<T> fileAs(String value);
+	
+	RelatorBuilder<T> alternative(String value, Locale language);
+	
+	RelatorBuilder<T> role(String role);
+	
+	T build();
+}

@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
+package com.github.i49.pulp.api.metadata;
+
 /**
- * Provides Service Provider Interface (SPI) for API implementors.
+ * A metadata property that represents the name of a person, organization, etc. 
+ * responsible for the creation of the content of the EPUB rendition.
+ * 
+ * @see <a href="http://dublincore.org/documents/dces/#creator">Dublin Core Metadata Element Set, Version 1.1</a> 
  */
-package com.github.i49.pulp.api.spi;
+public interface Creator extends Relator {
+}

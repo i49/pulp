@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
+package com.github.i49.pulp.api.metadata;
+
 /**
- * Provides Service Provider Interface (SPI) for API implementors.
+ * An account of the resource.
+ * 
+ * @see <a href="http://dublincore.org/documents/dces/#description">Dublin Core Metadata Element Set, Version 1.1</a> 
  */
-package com.github.i49.pulp.api.spi;
+public interface Description extends TextProperty {
+
+}

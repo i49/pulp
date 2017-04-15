@@ -14,7 +14,27 @@
  * limitations under the License.
  */
 
+package com.github.i49.pulp.api.metadata;
+
+import java.util.Locale;
+import java.util.Optional;
+
 /**
- * Provides Service Provider Interface (SPI) for API implementors.
+ * A metadata property that has a human-readable text as its value.
  */
-package com.github.i49.pulp.api.spi;
+public interface TextProperty extends Property {
+
+	/**
+	 * Returns the language of the text.
+	 * 
+	 * @return the language of the text.
+	 */
+	Optional<Locale> getLanguage();
+	
+	/**
+	 * Returns the direction of the text.
+	 * 
+	 * @return the direction of the text.
+	 */
+	Optional<Direction> getDirection();
+}

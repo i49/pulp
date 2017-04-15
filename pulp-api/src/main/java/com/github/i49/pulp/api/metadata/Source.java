@@ -14,7 +14,21 @@
  * limitations under the License.
  */
 
+package com.github.i49.pulp.api.metadata;
+
+import java.util.Optional;
+
 /**
- * Provides Service Provider Interface (SPI) for API implementors.
+ * A related resource from which the described resource is derived.
+ * 
+ * @see <a href="http://dublincore.org/documents/dces/#source">Dublin Core Metadata Element Set, Version 1.1</a> 
  */
-package com.github.i49.pulp.api.spi;
+public interface Source extends Property {
+
+	/**
+	 * Returns the scheme used for describing this source.
+	 * 
+	 * @return the scheme used for describing this source.
+	 */
+	Optional<String> getScheme();
+}

@@ -14,7 +14,19 @@
  * limitations under the License.
  */
 
+package com.github.i49.pulp.api.metadata;
+
+import java.util.Optional;
+
 /**
- * Provides Service Provider Interface (SPI) for API implementors.
+ * General property that establishes some aspect of the EPUB rendition.
  */
-package com.github.i49.pulp.api.spi;
+public interface GeneralProperty extends TextProperty {
+
+	/**
+	 * Returns the scheme that identifies the system or scheme that the property value is drawn from.
+	 * 
+	 * @return the scheme used to represent the property value.
+	 */
+	Optional<String> getScheme();
+}

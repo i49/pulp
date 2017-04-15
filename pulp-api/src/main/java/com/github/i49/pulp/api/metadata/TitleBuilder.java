@@ -14,7 +14,21 @@
  * limitations under the License.
  */
 
+package com.github.i49.pulp.api.metadata;
+
+import java.util.Locale;
+
 /**
- * Provides Service Provider Interface (SPI) for API implementors.
  */
-package com.github.i49.pulp.api.spi;
+public interface TitleBuilder {
+
+	TitleBuilder language(Locale langaue);
+	
+	TitleBuilder direction(Direction direction);
+	
+	TitleBuilder fileAs(String value);
+	
+	TitleBuilder alternative(String value, Locale language);
+	
+	Title build();
+}
