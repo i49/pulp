@@ -22,7 +22,7 @@ import java.util.Locale;
 /**
  * The factory for producing properties of metadata.
  */
-public interface MetadataFactory {
+public interface MetadataPropertyFactory {
 
 	/**
 	 * Creates a builder to build an instance of {@link Contributor}.
@@ -197,11 +197,11 @@ public interface MetadataFactory {
 	 * Creates an instance of {@link Identifier} with a explicit scheme specified by URI.
 	 * 
 	 * @param value the value of the identifier.
-	 * @param scheme the URI representing the scheme used for the identifier.
+	 * @param schemeURI the URI representing the scheme used for the identifier.
 	 * @return newly created {@link Identifier}.
 	 * @throws IllegalArgumentException if one of arguments was invalid.
 	 */
-	Identifier newIdentifier(String value, URI scheme);
+	Identifier newIdentifier(String value, URI schemeURI);
 
 	/**
 	 * Creates an instance of {@link Publisher}.

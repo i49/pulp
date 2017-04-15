@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
+import com.github.i49.pulp.api.metadata.MetadataPropertyFactory;
 import com.github.i49.pulp.api.spi.EpubServiceProvider;
 
 /**
@@ -39,6 +40,7 @@ public final class Epub {
 
 	/**
 	 * Creates an empty publication.
+	 * 
 	 * @return an empty publication.
 	 * @throws EpubException if API implementation was not found.
 	 */
@@ -48,6 +50,7 @@ public final class Epub {
 	
 	/**
 	 * Creates an instance of {@link PublicationReader} that can read a publication from the given input stream.
+	 * 
 	 * @param path the location where the file to be read is located.
 	 * @return created publication reader.
 	 * @throws IllegalArgumentException if given {@code path} is {@code null}.
@@ -59,6 +62,7 @@ public final class Epub {
 	
 	/**
 	 * Creates an instance of {@link PublicationReaderFactory} that can produce one or more {@link PublicationReader}s.
+	 * 
 	 * @return created publication reader factory.
 	 * @throws EpubException if API implementation was not found.
 	 */
@@ -68,6 +72,7 @@ public final class Epub {
 
 	/**
 	 * Creates an instance of {@link PublicationWriter} that can write a publication to the given output stream.
+	 * 
 	 * @param path the location where a publication will be stored by the writer.
 	 * @return created publication writer.
 	 * @throws IllegalArgumentException if given {@code path} is {@code null}.
@@ -79,6 +84,7 @@ public final class Epub {
 	
 	/**
 	 * Creates an instance of {@link PublicationWriterFactory} that can produce one or more {@link PublicationWriter}s.
+	 * 
 	 * @return created publication writer factory.
 	 * @throws EpubException if API implementation was not found.
 	 */
@@ -86,6 +92,16 @@ public final class Epub {
 		return getProvider().createWriterFactory();
 	}
 
+	/**
+	 * Creates an instance of {@link MetadataPropertyFactory} that can produce metadata properties.
+	 * 
+	 * @return newly created {@link MetadataPropertyFactory}.
+	 * @throws EpubException if API implementation was not found.
+	 */
+	public static MetadataPropertyFactory createMetadataPropertyFactory() {
+		return getProvider().createMetadataPropertyFactory();
+	}
+	
 	/**
 	 * Creates an instance of {@link PublicationResourceBuilderFactory} that can be used to create {@link PublicationResourceBuilder}.
 	 *

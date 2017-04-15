@@ -22,6 +22,7 @@ import com.github.i49.pulp.api.Publication;
 import com.github.i49.pulp.api.PublicationReaderFactory;
 import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.PublicationWriterFactory;
+import com.github.i49.pulp.api.metadata.MetadataPropertyFactory;
 import com.github.i49.pulp.api.spi.EpubServiceProvider;
 
 /**
@@ -50,6 +51,11 @@ public class EpubServiceProviderProxy implements EpubServiceProvider {
 		return singleton.createWriterFactory();
 	}
 
+	@Override
+	public MetadataPropertyFactory createMetadataPropertyFactory() {
+		return singleton.createMetadataPropertyFactory();
+	}
+	
 	@Override
 	public PublicationResourceBuilderFactory createResourceBuilderFactory(URI baseURI) {
 		return singleton.createResourceBuilderFactory(baseURI);
