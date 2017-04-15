@@ -14,32 +14,19 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.api.metadata;
+package com.github.i49.pulp.core.metadata;
+
+import java.util.Locale;
+
+import com.github.i49.pulp.api.metadata.Coverage;
+import com.github.i49.pulp.api.metadata.Direction;
 
 /**
- * A property composing metadata for the given rendition.
+ * An implementation of {@link Coverage}.
  */
-public interface Property {
+class CoverageImpl extends AbstractTextProperty implements Coverage {
 
-	/**
-	 * Returns the name of this property.
-	 * 
-	 * @return the name of this property.
-	 */
-	String getName();
-	
-	/**
-	 * Returns the value of this property.
-	 * 
-	 * @return the value of this property.
-	 */
-	String getValue();
-	
-	/**
-	 * Returns the same result as {@link #getValue()}.
-	 * 
-	 * @return the same result as {@link #getValue()}.
-	 */
-	@Override
-	String toString();
+	public CoverageImpl(String value, Locale locale, Direction direction) {
+		super("coverage", value, locale, direction);
+	}
 }

@@ -14,32 +14,19 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.api.metadata;
+package com.github.i49.pulp.core.metadata;
+
+import java.util.Locale;
+
+import com.github.i49.pulp.api.metadata.Direction;
+import com.github.i49.pulp.api.metadata.Relation;
 
 /**
- * A property composing metadata for the given rendition.
+ * An implementation of {@link Description}.
  */
-public interface Property {
+public class RelationImpl extends AbstractTextProperty implements Relation {
 
-	/**
-	 * Returns the name of this property.
-	 * 
-	 * @return the name of this property.
-	 */
-	String getName();
-	
-	/**
-	 * Returns the value of this property.
-	 * 
-	 * @return the value of this property.
-	 */
-	String getValue();
-	
-	/**
-	 * Returns the same result as {@link #getValue()}.
-	 * 
-	 * @return the same result as {@link #getValue()}.
-	 */
-	@Override
-	String toString();
+	public RelationImpl(String value, Locale locale, Direction direction) {
+		super("relation", value, locale, direction);
+	}
 }

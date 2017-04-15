@@ -16,29 +16,31 @@
 
 package com.github.i49.pulp.api.metadata;
 
-/**
- * A property composing metadata for the given rendition.
- */
-public interface Property {
+import java.time.OffsetDateTime;
 
-	/**
-	 * Returns the name of this property.
-	 * 
-	 * @return the name of this property.
-	 */
-	String getName();
+/**
+ * Release identifier to distinguish each version of the EPUB rendition.
+ */
+public interface ReleaseIdentifier {
 	
 	/**
-	 * Returns the value of this property.
+	 * Returns the Unique Identifier of the rendition.
 	 * 
-	 * @return the value of this property.
+	 * @return the Unique Identifier of the rendition.
 	 */
-	String getValue();
+	Identifier getUniqueIdentifier();
 	
 	/**
-	 * Returns the same result as {@link #getValue()}.
+	 * Returns the last modification date and time of the rendition.
 	 * 
-	 * @return the same result as {@link #getValue()}.
+	 * @return the last modification date and time of the rendition.
+	 */
+	OffsetDateTime getLastModificationDate();
+	
+	/**
+	 * Returns the string representation of this release identifier.
+	 * 
+	 * @return the string representation of this release identifier.
 	 */
 	@Override
 	String toString();

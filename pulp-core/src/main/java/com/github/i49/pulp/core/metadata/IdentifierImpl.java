@@ -26,22 +26,21 @@ import com.github.i49.pulp.api.metadata.IdentifierScheme;
 /**
  * An implementation of {@link Identifier}.
  */
-public class IdentifierImpl implements Identifier {
+class IdentifierImpl extends AbstractProperty implements Identifier {
 	
-	private final String value;
 	private final Optional<IdentifierScheme> scheme;
 	private final Optional<URI> schemeURI;
 	
 	public static IdentifierImpl of(String value) {
-		return new IdentifierImpl(value, Optional.empty(), Optional.empty());
+		return new IdentifierImpl(value, null, null);
 	}
 
 	public static IdentifierImpl of(String value, IdentifierScheme scheme) {
-		return new IdentifierImpl(value, Optional.of(scheme), Optional.empty());
+		return new IdentifierImpl(value, scheme, null);
 	}
 	
 	public static IdentifierImpl of(String value, URI schemeURI) {
-		return new IdentifierImpl(value, Optional.empty(), Optional.of(schemeURI));
+		return new IdentifierImpl(value, null, schemeURI);
 	}
 
 	public static IdentifierImpl ofRandomUUID() {
@@ -50,22 +49,12 @@ public class IdentifierImpl implements Identifier {
 		return of(value, IdentifierScheme.UUID);
 	}
 
-	private IdentifierImpl(String value, Optional<IdentifierScheme> scheme, Optional<URI> schemeURI) {
-		this.value = value;
-		this.scheme = scheme;
-		this.schemeURI = schemeURI;
+	private IdentifierImpl(String value, IdentifierScheme scheme, URI schemeURI) {
+		super("identifier", value);
+		this.scheme = Optional.ofNullable(scheme);
+		this.schemeURI = Optional.ofNullable(schemeURI);
 	}
 	
-	@Override
-	public String getName() {
-		return "identifier";
-	}
-
-	@Override
-	public String getValue() {
-		return value;
-	}
-
 	@Override
 	public Optional<IdentifierScheme> getScheme() {
 		return scheme;

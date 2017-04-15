@@ -14,32 +14,35 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.api.metadata;
+package com.github.i49.pulp.core.metadata;
+
+import com.github.i49.pulp.api.metadata.Property;
 
 /**
- * A property composing metadata for the given rendition.
+ * A skeletal implementation of {@link Property}.
  */
-public interface Property {
+abstract class AbstractProperty implements Property {
 
-	/**
-	 * Returns the name of this property.
-	 * 
-	 * @return the name of this property.
-	 */
-	String getName();
+	private final String name;
+	private final String value;
 	
-	/**
-	 * Returns the value of this property.
-	 * 
-	 * @return the value of this property.
-	 */
-	String getValue();
+	protected AbstractProperty(String name, String value) {
+		this.name = name;
+		this.value = value;
+	}
 	
-	/**
-	 * Returns the same result as {@link #getValue()}.
-	 * 
-	 * @return the same result as {@link #getValue()}.
-	 */
 	@Override
-	String toString();
+	public String getName() {
+		return name;
+	}
+	
+	@Override
+	public String getValue() {
+		return value;
+	}
+	
+	@Override
+	public String toString() {
+		return getValue();
+	}
 }

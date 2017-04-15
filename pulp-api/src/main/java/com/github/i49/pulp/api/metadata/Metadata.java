@@ -72,6 +72,13 @@ public interface Metadata {
 	void setLastModificationDate(OffsetDateTime dateTime);
 	
 	/**
+	 * Returns the release identifier to distinguish each revision of the renditions.
+	 * 
+	 * @return the release identifier.
+	 */
+	ReleaseIdentifier getReleaseIdentifier();
+	
+	/**
 	 * Returns the identifiers of the rendition except the primary identifier.
 	 * 
 	 * @return the list of identifiers.

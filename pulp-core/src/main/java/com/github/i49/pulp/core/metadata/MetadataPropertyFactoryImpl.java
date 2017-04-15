@@ -82,20 +82,26 @@ public class MetadataPropertyFactoryImpl implements MetadataPropertyFactory {
 
 	@Override
 	public Coverage newCoverage(String text) {
-		// TODO Auto-generated method stub
-		return null;
+		assertNotNull(text, "text");
+		text = validatePropertyValue(text);
+		return new CoverageImpl(text, null, null);
 	}
 
 	@Override
 	public Coverage newCoverage(String text, Locale language) {
-		// TODO Auto-generated method stub
-		return null;
+		assertNotNull(text, "text");
+		assertNotNull(language, "language");
+		text = validatePropertyValue(text);
+		return new CoverageImpl(text, language, null);
 	}
 
 	@Override
 	public Coverage newCoverage(String text, Locale language, Direction direction) {
-		// TODO Auto-generated method stub
-		return null;
+		assertNotNull(text, "text");
+		assertNotNull(language, "language");
+		assertNotNull(direction, "direction");
+		text = validatePropertyValue(text);
+		return new CoverageImpl(text, language, direction);
 	}
 
 	@Override
@@ -112,20 +118,20 @@ public class MetadataPropertyFactoryImpl implements MetadataPropertyFactory {
 
 	@Override
 	public Description newDescription(String text) {
-		// TODO Auto-generated method stub
-		return null;
+		text = validatePropertyValue(text);
+		return new DescriptionImpl(text, null, null);
 	}
 
 	@Override
 	public Description newDescription(String text, Locale language) {
-		// TODO Auto-generated method stub
-		return null;
+		text = validatePropertyValue(text);
+		return new DescriptionImpl(text, language, null);
 	}
 
 	@Override
 	public Description newDescription(String text, Locale language, Direction direction) {
-		// TODO Auto-generated method stub
-		return null;
+		text = validatePropertyValue(text);
+		return new DescriptionImpl(text, language, direction);
 	}
 
 	@Override
@@ -141,24 +147,23 @@ public class MetadataPropertyFactoryImpl implements MetadataPropertyFactory {
 
 	@Override
 	public Identifier newIdentifier(String value) {
+		assertNotNull(value, "value");
 		value = validatePropertyValue(value);
 		return IdentifierImpl.of(value);
 	}
 
 	@Override
 	public Identifier newIdentifier(String value, IdentifierScheme scheme) {
-		if (scheme == null) {
-			throw new IllegalArgumentException("\"scheme\" must not be null");
-		}
+		assertNotNull(value, "value");
+		assertNotNull(scheme, "scheme");
 		value = validatePropertyValue(value);
 		return IdentifierImpl.of(value, scheme);
 	}
 
 	@Override
 	public Identifier newIdentifier(String value, URI schemeURI) {
-		if (schemeURI == null) {
-			throw new IllegalArgumentException("\"schemeURI\" must not be null");
-		}
+		assertNotNull(value, "value");
+		assertNotNull(schemeURI, "schemeURI");
 		value = validatePropertyValue(value);
 		return IdentifierImpl.of(value, schemeURI);
 	}
@@ -177,38 +182,50 @@ public class MetadataPropertyFactoryImpl implements MetadataPropertyFactory {
 
 	@Override
 	public Relation newRelation(String text) {
-		// TODO Auto-generated method stub
-		return null;
+		assertNotNull(text, "text");
+		text = validatePropertyValue(text);
+		return new RelationImpl(text, null, null);
 	}
 
 	@Override
 	public Relation newRelation(String text, Locale language) {
-		// TODO Auto-generated method stub
-		return null;
+		assertNotNull(text, "text");
+		assertNotNull(language, "language");
+		text = validatePropertyValue(text);
+		return new RelationImpl(text, language, null);
 	}
 
 	@Override
 	public Relation newRelation(String text, Locale language, Direction direction) {
-		// TODO Auto-generated method stub
-		return null;
+		assertNotNull(text, "text");
+		assertNotNull(language, "language");
+		assertNotNull(direction, "direction");
+		text = validatePropertyValue(text);
+		return new RelationImpl(text, language, direction);
 	}
 
 	@Override
 	public Rights newRights(String text) {
-		// TODO Auto-generated method stub
-		return null;
+		assertNotNull(text, "text");
+		text = validatePropertyValue(text);
+		return new RightsImpl(text, null, null);
 	}
 
 	@Override
 	public Rights newRights(String text, Locale language) {
-		// TODO Auto-generated method stub
-		return null;
+		assertNotNull(text, "text");
+		assertNotNull(language, "language");
+		text = validatePropertyValue(text);
+		return new RightsImpl(text, language, null);
 	}
 
 	@Override
 	public Rights newRights(String text, Locale language, Direction direction) {
-		// TODO Auto-generated method stub
-		return null;
+		assertNotNull(text, "text");
+		assertNotNull(language, "language");
+		assertNotNull(direction, "direction");
+		text = validatePropertyValue(text);
+		return new RightsImpl(text, language, direction);
 	}
 
 	@Override
@@ -262,13 +279,15 @@ public class MetadataPropertyFactoryImpl implements MetadataPropertyFactory {
 		return null;
 	}
 	
-	private static String validatePropertyValue(String value) {
-		if (value == null) {
-			throw new IllegalArgumentException("\"value\" must not be null");
+	private static void assertNotNull(Object parameter, String name) {
+		if (parameter == null) {
+			throw new IllegalArgumentException("\" + name + \" must not be null");
 		}
+	}
+	private static String validatePropertyValue(String value) {
 		String trimmed = value.trim();
 		if (trimmed.isEmpty()) {
-			throw new IllegalArgumentException("\"value\" must not be blank");
+			throw new IllegalArgumentException("property value must not be blank");
 		}
 		return trimmed;
 	}
