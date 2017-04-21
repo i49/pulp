@@ -16,14 +16,17 @@
 
 package com.github.i49.pulp.api.metadata;
 
-import java.util.Locale;
-
 /**
- * 
+ * A builder for a property.
+ *
+ * @param <P> the type of the property. 
  */
-public interface TitleBuilder extends TextPropertyBuilder<Title, TitleBuilder> {
+public interface PropertyBuilder<P extends Property> {
 
-	TitleBuilder fileAs(String value);
-	
-	TitleBuilder alternative(String value, Locale language);
+	/**
+	 * Builds a property.
+	 * 
+	 * @return a property built.
+	 */
+	P build();
 }

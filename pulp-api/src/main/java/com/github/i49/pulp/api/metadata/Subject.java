@@ -30,5 +30,5 @@ public interface Subject extends Property {
 	
 	Optional<URI> getAuthorityScheme();
 	
-	Optional<String> getTerm();
+	Optional<String> getTermCode();
 }

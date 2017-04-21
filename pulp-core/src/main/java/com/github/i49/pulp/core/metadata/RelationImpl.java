@@ -17,7 +17,9 @@
 package com.github.i49.pulp.core.metadata;
 
 import java.util.Locale;
+import java.util.Optional;
 
+import com.github.i49.pulp.api.metadata.BasicTerm;
 import com.github.i49.pulp.api.metadata.Direction;
 import com.github.i49.pulp.api.metadata.Relation;
 
@@ -26,7 +28,7 @@ import com.github.i49.pulp.api.metadata.Relation;
  */
 public class RelationImpl extends AbstractTextProperty implements Relation {
 
-	public RelationImpl(String value, Locale locale, Direction direction) {
-		super("relation", value, locale, direction);
+	public RelationImpl(String value, Optional<Locale> language, Optional<Direction> direction) {
+		super(BasicTerm.RELATION, value, language, direction);
 	}
 }

@@ -26,11 +26,11 @@ import org.junit.Test;
 import com.github.i49.pulp.api.Epub;
 
 /**
- * Unit tests for {@link MetadataPropertyFactory}.
+ * Unit tests for {@link PropertyFactory}.
  */
-public class MetadataPropertyFactoryTest {
+public class PropertyFactoryTest {
 	
-	private MetadataPropertyFactory factory;
+	private PropertyFactory factory;
 	
 	@Before
 	public void setUp() {
@@ -43,7 +43,7 @@ public class MetadataPropertyFactoryTest {
 	public void newCoverage_shouldCreateCoverage() {
 		String text = "17th century";
 		Coverage p = factory.newCoverage(text);
-		assertThat(p.getName()).isEqualTo("coverage");
+		assertThat(p.getTerm()).isSameAs(BasicTerm.COVERAGE);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).isEmpty();
 		assertThat(p.getDirection()).isEmpty();
@@ -55,7 +55,7 @@ public class MetadataPropertyFactoryTest {
 	public void newCoverage_shouldCreateCoverageWithLanguage() {
 		String text = "17th century";
 		Coverage p = factory.newCoverage(text, Locale.ENGLISH);
-		assertThat(p.getName()).isEqualTo("coverage");
+		assertThat(p.getTerm()).isSameAs(BasicTerm.COVERAGE);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).hasValue(Locale.ENGLISH);
 		assertThat(p.getDirection()).isEmpty();
@@ -67,7 +67,7 @@ public class MetadataPropertyFactoryTest {
 	public void newDescription_shouldCreateDescription() {
 		String text = "Illustrated guide to airport markings and lighting signals.";
 		Description p = factory.newDescription(text);
-		assertThat(p.getName()).isEqualTo("description");
+		assertThat(p.getTerm()).isSameAs(BasicTerm.DESCRIPTION);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).isEmpty();
 		assertThat(p.getDirection()).isEmpty();
@@ -79,7 +79,7 @@ public class MetadataPropertyFactoryTest {
 	public void newDescription_shouldCreateDescriptionWithLanguage() {
 		String text = "Illustrated guide to airport markings and lighting signals.";
 		Description p = factory.newDescription(text, Locale.ENGLISH);
-		assertThat(p.getName()).isEqualTo("description");
+		assertThat(p.getTerm()).isSameAs(BasicTerm.DESCRIPTION);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).hasValue(Locale.ENGLISH);
 		assertThat(p.getDirection()).isEmpty();
@@ -90,7 +90,7 @@ public class MetadataPropertyFactoryTest {
 	@Test
 	public void newIdentifier_shouldCreateRandomIdentifier() {
 		Identifier identifier = factory.newIdentifier();
-		assertThat(identifier.getName()).isEqualTo("identifier");
+		assertThat(identifier.getTerm()).isSameAs(BasicTerm.IDENTIFIER);
 		assertThat(identifier.getValue()).startsWith("urn:uuid:");
 		assertThat(identifier.getScheme()).hasValue(IdentifierScheme.UUID);
 		assertThat(identifier.getSchemeURI()).isEmpty();
@@ -102,7 +102,7 @@ public class MetadataPropertyFactoryTest {
 	public void newIdentifier_shouldCreateIdentifierWithValue() {
 		String value = "urn:isbn:0451450523";
 		Identifier identifier = factory.newIdentifier(value);
-		assertThat(identifier.getName()).isEqualTo("identifier");
+		assertThat(identifier.getTerm()).isSameAs(BasicTerm.IDENTIFIER);
 		assertThat(identifier.getValue()).isEqualTo(value);
 		assertThat(identifier.getScheme()).isEmpty();
 		assertThat(identifier.getSchemeURI()).isEmpty();
@@ -114,7 +114,7 @@ public class MetadataPropertyFactoryTest {
 	public void newIdentifier_shouldCreateIdentifierWithValueAndScheme() {
 		String value = "urn:isbn:0451450523";
 		Identifier identifier = factory.newIdentifier(value, IdentifierScheme.ISBN);
-		assertThat(identifier.getName()).isEqualTo("identifier");
+		assertThat(identifier.getTerm()).isSameAs(BasicTerm.IDENTIFIER);
 		assertThat(identifier.getValue()).isEqualTo(value);
 		assertThat(identifier.getScheme()).hasValue(IdentifierScheme.ISBN);
 		assertThat(identifier.getSchemeURI()).isEmpty();
@@ -126,7 +126,7 @@ public class MetadataPropertyFactoryTest {
 	public void newRelation_shouldCreateRelation() {
 		String text = "\"Two Lives\" [Resource is a collection of two novellas, one of which is \"Reading Turgenev\"]";
 		Relation p = factory.newRelation(text);
-		assertThat(p.getName()).isEqualTo("relation");
+		assertThat(p.getTerm()).isSameAs(BasicTerm.RELATION);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).isEmpty();
 		assertThat(p.getDirection()).isEmpty();
@@ -138,7 +138,7 @@ public class MetadataPropertyFactoryTest {
 	public void newRelation_shouldCreateRelationWithLanguage() {
 		String text = "\"Two Lives\" [Resource is a collection of two novellas, one of which is \"Reading Turgenev\"]";
 		Relation p = factory.newRelation(text, Locale.ENGLISH);
-		assertThat(p.getName()).isEqualTo("relation");
+		assertThat(p.getTerm()).isSameAs(BasicTerm.RELATION);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).hasValue(Locale.ENGLISH);
 		assertThat(p.getDirection()).isEmpty();
@@ -150,7 +150,7 @@ public class MetadataPropertyFactoryTest {
 	public void newRights_shouldCreateRights() {
 		String text = "Access limited to members";
 		Rights p = factory.newRights(text);
-		assertThat(p.getName()).isEqualTo("rights");
+		assertThat(p.getTerm()).isSameAs(BasicTerm.RIGHTS);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).isEmpty();
 		assertThat(p.getDirection()).isEmpty();
@@ -162,7 +162,7 @@ public class MetadataPropertyFactoryTest {
 	public void newRights_shouldCreateRightsWithLanguage() {
 		String text = "Access limited to members";
 		Rights p = factory.newRights(text, Locale.ENGLISH);
-		assertThat(p.getName()).isEqualTo("rights");
+		assertThat(p.getTerm()).isSameAs(BasicTerm.RIGHTS);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).hasValue(Locale.ENGLISH);
 		assertThat(p.getDirection()).isEmpty();

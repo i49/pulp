@@ -16,14 +16,17 @@
 
 package com.github.i49.pulp.api.metadata;
 
-import java.util.Locale;
+import java.util.Optional;
 
 /**
- * 
+ * A property that can provide an alternative representation.
  */
-public interface TitleBuilder extends TextPropertyBuilder<Title, TitleBuilder> {
+public interface AlternativeProvider {
 
-	TitleBuilder fileAs(String value);
-	
-	TitleBuilder alternative(String value, Locale language);
+	/**
+	 * Returns the alternative representation of the property value.
+	 * 
+	 * @return the alternative representation.
+	 */
+	Optional<Representation> getAlternativeRepresentation();
 }

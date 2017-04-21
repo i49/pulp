@@ -17,7 +17,9 @@
 package com.github.i49.pulp.core.metadata;
 
 import java.util.Locale;
+import java.util.Optional;
 
+import com.github.i49.pulp.api.metadata.BasicTerm;
 import com.github.i49.pulp.api.metadata.Direction;
 import com.github.i49.pulp.api.metadata.Rights;
 
@@ -26,8 +28,8 @@ import com.github.i49.pulp.api.metadata.Rights;
  */
 public class RightsImpl extends AbstractTextProperty implements Rights {
 
-	public RightsImpl(String value, Locale locale, Direction direction) {
-		super("rights", value, locale, direction);
+	public RightsImpl(String value, Optional<Locale> language, Optional<Direction> direction) {
+		super(BasicTerm.RIGHTS, value, language, direction);
 	}
 }
 

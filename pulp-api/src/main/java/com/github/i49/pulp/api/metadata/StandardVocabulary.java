@@ -16,14 +16,32 @@
 
 package com.github.i49.pulp.api.metadata;
 
-import java.util.Locale;
+import java.net.URI;
 
 /**
- * 
+ * Default and reserved vocabularies for metadata.
  */
-public interface TitleBuilder extends TextPropertyBuilder<Title, TitleBuilder> {
+public enum StandardVocabulary implements Vocabulary {
 
-	TitleBuilder fileAs(String value);
+	/**  EPUB Meta Properties Vocabulary */ 
+	EPUB_META("http://idpf.org/epub/vocab/package/meta/#"),
+	/* Dublin Core Metadata Element Set */
+	DCMES("http://purl.org/dc/elements/1.1/"),
+	/* DCMI Metadata Terms */
+	DCTERMS("http://purl.org/dc/terms/")
+	;
 	
-	TitleBuilder alternative(String value, Locale language);
+	private final URI uri;
+	
+	private StandardVocabulary(String uri) {
+		this.uri = URI.create(uri);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public URI getURI() {
+		return uri;
+	}
 }

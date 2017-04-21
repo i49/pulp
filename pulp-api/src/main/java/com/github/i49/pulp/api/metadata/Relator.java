@@ -21,22 +21,8 @@ import java.util.Optional;
 /**
  * A creator, contributor, or publisher of the EPUB publication.
  */
-public interface Relator extends TextProperty {
+public interface Relator extends TextProperty, AlternativeProvider {
 
-	/**
-	 * Returns the alternative representation of this property.
-	 * 
-	 * @return the alternative representation of this property.
-	 */
-	Optional<Alternative> getAlternative();
-
-	/**
-	 * Returns the normalized value of this property used when filed.
-	 * 
-	 * @return the normalized value of this property.
-	 */
-	Optional<String> getNormalizedValue();
-	
 	/**
 	 * Returns the role of this relator.
 	 * 

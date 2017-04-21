@@ -19,11 +19,28 @@ package com.github.i49.pulp.api.metadata;
 import java.util.Locale;
 
 /**
- * 
+ * An alternative representation of a metadata property value.
+ * This instance can attached to the following metadata properties.
+ * <ul>
+ * <li>{@link Creator}</li>
+ * <li>{@link Contributor}</li>
+ * <li>{@link Publisher}</li>
+ * <li>{@link Title}</li>
+ * </ul>
  */
-public interface TitleBuilder extends TextPropertyBuilder<Title, TitleBuilder> {
+public interface Representation {
 
-	TitleBuilder fileAs(String value);
+	/**
+	 * Returns the alternative representation of the property.
+	 * 
+	 * @return the alternative representation.
+	 */
+	String getValue();
 	
-	TitleBuilder alternative(String value, Locale language);
+	/**
+	 * Returns the language used for the alternative representation.
+	 * 
+	 * @return the language used for the alternative representation.
+	 */
+	Locale getLanguage();
 }

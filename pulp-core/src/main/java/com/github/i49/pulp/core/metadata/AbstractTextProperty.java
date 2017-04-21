@@ -20,7 +20,9 @@ import java.util.Locale;
 import java.util.Optional;
 
 import com.github.i49.pulp.api.metadata.Direction;
+import com.github.i49.pulp.api.metadata.Term;
 import com.github.i49.pulp.api.metadata.TextProperty;
+import com.github.i49.pulp.api.metadata.TextPropertyBuilder;
 
 /**
  * A skeletal implementation of {@link TextProperty}.
@@ -30,10 +32,16 @@ abstract class AbstractTextProperty extends AbstractProperty implements TextProp
 	private final Optional<Locale> language;
 	private final Optional<Direction> direction;
 	
-	protected AbstractTextProperty(String name, String value, Locale locale, Direction direction) {
-		super(name, value);
-		this.language = Optional.ofNullable(locale);
-		this.direction = Optional.ofNullable(direction);
+	protected AbstractTextProperty(Term term, String value, Optional<Locale> language, Optional<Direction> direction) {
+		super(term, value);
+		this.language = language;
+		this.direction = direction;
+	}
+	
+	protected AbstractTextProperty(Term term, String value, Builder<?, ?> builder) {
+		super(term, value);
+		this.language = Optional.of(builder.langauge);
+		this.direction = Optional.of(builder.direction);
 	}
 	
 	@Override
@@ -45,4 +53,31 @@ abstract class AbstractTextProperty extends AbstractProperty implements TextProp
 	public Optional<Direction> getDirection() {
 		return direction;
 	}
+	
+	abstract static class Builder<P extends TextProperty, T extends TextPropertyBuilder<P, T>> implements TextPropertyBuilder<P, T> {
+
+		private Locale langauge;
+		private Direction direction;
+		
+		@SuppressWarnings("unchecked")
+		@Override
+		public T language(Locale language) {
+			if (language == null) {
+				throw new IllegalArgumentException("\"language\" must not be null"); 
+			}
+			this.langauge = language;
+			return (T)this;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public T direction(Direction direction) {
+			if (direction == null) {
+				throw new IllegalArgumentException("\"direction\" must not be null"); 
+			}
+			this.direction = direction;
+			return (T)this;
+		}
+	}
 }
+

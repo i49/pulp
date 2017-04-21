@@ -16,14 +16,33 @@
 
 package com.github.i49.pulp.api.metadata;
 
-import java.util.Locale;
+import java.net.URI;
 
 /**
- * 
+ * A term in a vocabulary.
  */
-public interface TitleBuilder extends TextPropertyBuilder<Title, TitleBuilder> {
+public interface Term {
 
-	TitleBuilder fileAs(String value);
+	/**
+	 * Returns the vocabulary containing this term.
+	 * 
+	 * @return the vocabulary containing this term.
+	 */
+	Vocabulary getVocabulary();
 	
-	TitleBuilder alternative(String value, Locale language);
+	/**
+	 * Returns the name of this term.
+	 * 
+	 * @return the name of this term.
+	 */
+	String getName();
+	
+	/**
+	 * Returns the URI of this term.
+	 * 
+	 * @return the URI of this term.
+	 */
+	default URI getURI() {
+		return getVocabulary().getURI().resolve(getName());
+	}
 }

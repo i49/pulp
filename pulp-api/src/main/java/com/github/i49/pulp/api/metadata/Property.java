@@ -17,16 +17,16 @@
 package com.github.i49.pulp.api.metadata;
 
 /**
- * A property composing metadata for the given rendition.
+ * A property composing the metadata for the given rendition.
  */
 public interface Property {
 
 	/**
-	 * Returns the name of this property.
+	 * Returns the term of this property.
 	 * 
-	 * @return the name of this property.
+	 * @return the term of this property.
 	 */
-	String getName();
+	Term getTerm();
 	
 	/**
 	 * Returns the value of this property.
@@ -34,6 +34,17 @@ public interface Property {
 	 * @return the value of this property.
 	 */
 	String getValue();
+	
+	/**
+	 * Returns the normalized value of this property.
+	 * By default, this method returns the same value as the value returned by {@link #getValue()}.
+	 * 
+	 * @return the normalized value of this property.
+	 * @see #getValue()
+	 */
+	default String getNormalizedValue() {
+		return getValue();
+	}
 	
 	/**
 	 * Returns the same result as {@link #getValue()}.

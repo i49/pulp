@@ -19,7 +19,7 @@ package com.github.i49.pulp.api.metadata;
 /**
  * The publication types available for the type property in metadata.
  */
-public enum StandardType implements Type {
+public enum PublicationType implements Type {
 	
 	/** Identifies that the EPUB Publication represents a dictionary. */
 	DICTIONARY("dictionary"),
@@ -46,7 +46,7 @@ public enum StandardType implements Type {
 	 * 
 	 * @param value the value to be assigned for this property.
 	 */
-	private StandardType(String value) {
+	private PublicationType(String value) {
 		this.value = value;
 	}
 	
@@ -54,8 +54,8 @@ public enum StandardType implements Type {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getName() {
-		return "type";
+	public Term getTerm() {
+		return BasicTerm.TYPE;
 	}
 	
 	/**

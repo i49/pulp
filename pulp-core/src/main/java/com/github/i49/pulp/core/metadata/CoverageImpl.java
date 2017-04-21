@@ -17,7 +17,9 @@
 package com.github.i49.pulp.core.metadata;
 
 import java.util.Locale;
+import java.util.Optional;
 
+import com.github.i49.pulp.api.metadata.BasicTerm;
 import com.github.i49.pulp.api.metadata.Coverage;
 import com.github.i49.pulp.api.metadata.Direction;
 
@@ -26,7 +28,7 @@ import com.github.i49.pulp.api.metadata.Direction;
  */
 class CoverageImpl extends AbstractTextProperty implements Coverage {
 
-	public CoverageImpl(String value, Locale locale, Direction direction) {
-		super("coverage", value, locale, direction);
+	public CoverageImpl(String value, Optional<Locale> language, Optional<Direction> direction) {
+		super(BasicTerm.COVERAGE, value, language, direction);
 	}
 }

@@ -21,7 +21,7 @@ import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
-import com.github.i49.pulp.api.metadata.MetadataPropertyFactory;
+import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.spi.EpubServiceProvider;
 
 /**
@@ -93,12 +93,12 @@ public final class Epub {
 	}
 
 	/**
-	 * Creates an instance of {@link MetadataPropertyFactory} that can produce metadata properties.
+	 * Creates an instance of {@link PropertyFactory} that can produce metadata properties.
 	 * 
-	 * @return newly created {@link MetadataPropertyFactory}.
+	 * @return newly created {@link PropertyFactory}.
 	 * @throws EpubException if API implementation was not found.
 	 */
-	public static MetadataPropertyFactory createMetadataPropertyFactory() {
+	public static PropertyFactory createMetadataPropertyFactory() {
 		return getProvider().createMetadataPropertyFactory();
 	}
 	

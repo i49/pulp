@@ -17,7 +17,9 @@
 package com.github.i49.pulp.core.metadata;
 
 import java.util.Locale;
+import java.util.Optional;
 
+import com.github.i49.pulp.api.metadata.BasicTerm;
 import com.github.i49.pulp.api.metadata.Description;
 import com.github.i49.pulp.api.metadata.Direction;
 
@@ -26,7 +28,7 @@ import com.github.i49.pulp.api.metadata.Direction;
  */
 public class DescriptionImpl extends AbstractTextProperty implements Description {
 
-	public DescriptionImpl(String value, Locale locale, Direction direction) {
-		super("description", value, locale, direction);
+	public DescriptionImpl(String value, Optional<Locale> language, Optional<Direction> direction) {
+		super(BasicTerm.DESCRIPTION, value, language, direction);
 	}
 }

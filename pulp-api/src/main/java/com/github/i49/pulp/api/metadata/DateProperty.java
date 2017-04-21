@@ -16,14 +16,11 @@
 
 package com.github.i49.pulp.api.metadata;
 
-import java.util.Locale;
+import java.time.OffsetDateTime;
 
 /**
- * 
  */
-public interface TitleBuilder extends TextPropertyBuilder<Title, TitleBuilder> {
+public interface DateProperty extends Property {
 
-	TitleBuilder fileAs(String value);
-	
-	TitleBuilder alternative(String value, Locale language);
+	OffsetDateTime getDateTime();
 }

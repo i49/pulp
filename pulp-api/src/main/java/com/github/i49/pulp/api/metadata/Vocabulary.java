@@ -16,31 +16,17 @@
 
 package com.github.i49.pulp.api.metadata;
 
-import java.util.Locale;
+import java.net.URI;
 
 /**
- * An alternative representation of a metadata property value.
- * This instance can attached to the following metadata properties.
- * <ul>
- * <li>{@link Creator}</li>
- * <li>{@link Contributor}</li>
- * <li>{@link Publisher}</li>
- * <li>{@link Title}</li>
- * </ul>
+ * A collection of terms.
  */
-public interface Alternative {
-
-	/**
-	 * Returns the alternative representation of the property.
-	 * 
-	 * @return the alternative representation.
-	 */
-	String getValue();
+public interface Vocabulary {
 	
 	/**
-	 * Returns the language used for the alternative representation.
+	 * Return the URI of this vocabulary.
 	 * 
-	 * @return the language used for the alternative representation.
+	 * @return the URI of this vocabulary. 
 	 */
-	Locale getLanguage();
+	URI getURI();
 }

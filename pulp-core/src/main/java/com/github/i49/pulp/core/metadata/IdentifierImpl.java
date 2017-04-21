@@ -20,6 +20,7 @@ import java.net.URI;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.github.i49.pulp.api.metadata.BasicTerm;
 import com.github.i49.pulp.api.metadata.Identifier;
 import com.github.i49.pulp.api.metadata.IdentifierScheme;
 
@@ -31,28 +32,28 @@ class IdentifierImpl extends AbstractProperty implements Identifier {
 	private final Optional<IdentifierScheme> scheme;
 	private final Optional<URI> schemeURI;
 	
-	public static IdentifierImpl of(String value) {
-		return new IdentifierImpl(value, null, null);
-	}
-
-	public static IdentifierImpl of(String value, IdentifierScheme scheme) {
-		return new IdentifierImpl(value, scheme, null);
-	}
-	
-	public static IdentifierImpl of(String value, URI schemeURI) {
-		return new IdentifierImpl(value, null, schemeURI);
-	}
-
 	public static IdentifierImpl ofRandomUUID() {
 		UUID uuid = UUID.randomUUID();
 		String value = "urn:uuid:" + uuid.toString();
-		return of(value, IdentifierScheme.UUID);
+		return new IdentifierImpl(value, IdentifierScheme.UUID);
 	}
 
-	private IdentifierImpl(String value, IdentifierScheme scheme, URI schemeURI) {
-		super("identifier", value);
-		this.scheme = Optional.ofNullable(scheme);
-		this.schemeURI = Optional.ofNullable(schemeURI);
+	public IdentifierImpl(String value) {
+		super(BasicTerm.IDENTIFIER, value);
+		this.scheme = Optional.empty();
+		this.schemeURI = Optional.empty();
+	}
+
+	public IdentifierImpl(String value, IdentifierScheme scheme) {
+		super(BasicTerm.IDENTIFIER, value);
+		this.scheme = Optional.of(scheme);
+		this.schemeURI = Optional.empty();
+	}
+
+	public IdentifierImpl(String value, URI schemeURI) {
+		super(BasicTerm.IDENTIFIER, value);
+		this.scheme = Optional.empty();
+		this.schemeURI = Optional.of(schemeURI);
 	}
 	
 	@Override

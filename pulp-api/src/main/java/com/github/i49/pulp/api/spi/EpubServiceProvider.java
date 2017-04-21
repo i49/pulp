@@ -25,7 +25,7 @@ import com.github.i49.pulp.api.PublicationResourceBuilder;
 import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.PublicationWriter;
 import com.github.i49.pulp.api.PublicationWriterFactory;
-import com.github.i49.pulp.api.metadata.MetadataPropertyFactory;
+import com.github.i49.pulp.api.metadata.PropertyFactory;
 
 /**
  * Service Provider Interface (SPI) to be implemented by API implementor.
@@ -59,7 +59,7 @@ public interface EpubServiceProvider {
 	 * 
 	 * @return an instance of metadata property factory.
 	 */
-	MetadataPropertyFactory createMetadataPropertyFactory();
+	PropertyFactory createMetadataPropertyFactory();
 	
 	/**
 	 * Creates an instance of factory that can be used to produce {@link PublicationResourceBuilder}.

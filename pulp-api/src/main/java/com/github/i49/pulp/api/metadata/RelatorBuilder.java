@@ -21,17 +21,11 @@ import java.util.Locale;
 /**
  * 
  */
-public interface RelatorBuilder<T extends Relator> {
+public interface RelatorBuilder<P extends Relator> extends TextPropertyBuilder<P, RelatorBuilder<P>>{
 
-	RelatorBuilder<T> language(Locale langaue);
+	RelatorBuilder<P> fileAs(String value);
 	
-	RelatorBuilder<T> direction(Direction direction);
+	RelatorBuilder<P> alternative(String value, Locale language);
 	
-	RelatorBuilder<T> fileAs(String value);
-	
-	RelatorBuilder<T> alternative(String value, Locale language);
-	
-	RelatorBuilder<T> role(String role);
-	
-	T build();
+	RelatorBuilder<P> role(String role);
 }

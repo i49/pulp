@@ -17,23 +17,24 @@
 package com.github.i49.pulp.core.metadata;
 
 import com.github.i49.pulp.api.metadata.Property;
+import com.github.i49.pulp.api.metadata.Term;
 
 /**
  * A skeletal implementation of {@link Property}.
  */
 abstract class AbstractProperty implements Property {
 
-	private final String name;
+	private final Term term;
 	private final String value;
 	
-	protected AbstractProperty(String name, String value) {
-		this.name = name;
+	protected AbstractProperty(Term term, String value) {
+		this.term = term;
 		this.value = value;
 	}
 	
 	@Override
-	public String getName() {
-		return name;
+	public Term getTerm() {
+		return term;
 	}
 	
 	@Override

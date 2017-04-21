@@ -22,7 +22,7 @@ import java.util.Locale;
 /**
  * The factory for producing properties of metadata.
  */
-public interface MetadataPropertyFactory {
+public interface PropertyFactory {
 
 	/**
 	 * Creates a builder to build an instance of {@link Contributor}.
@@ -354,7 +354,7 @@ public interface MetadataPropertyFactory {
 	/**
 	 * Creates an instance of {@link Type}.
 	 * <p>
-	 * The members of {@link StandardType} are also available.
+	 * The members of {@link PublicationType} are also available.
 	 * </p>
 	 * 
 	 * @param value the value representing the type.

@@ -16,26 +16,10 @@
 
 package com.github.i49.pulp.api.metadata;
 
-import java.util.Optional;
-
 /**
  * A metadata property representing an instance of a name given to the EPUB publication.
  * 
  * @see <a href="http://dublincore.org/documents/dces/#title">Dublin Core Metadata Element Set, Version 1.1</a> 
  */
-public interface Title extends TextProperty {
-
-	/**
-	 * Returns the alternative representation of this property.
-	 * 
-	 * @return the alternative representation of this property.
-	 */
-	Optional<Alternative> getAlternative();
-
-	/**
-	 * Returns the normalized value of this property used when the value is filed.
-	 * 
-	 * @return the normalized value of this property.
-	 */
-	Optional<String> getNormalizedValue();
+public interface Title extends TextProperty, AlternativeProvider {
 }
