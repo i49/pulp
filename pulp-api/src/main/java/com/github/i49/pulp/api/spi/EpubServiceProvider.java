@@ -18,13 +18,13 @@ package com.github.i49.pulp.api.spi;
 
 import java.net.URI;
 
-import com.github.i49.pulp.api.Publication;
-import com.github.i49.pulp.api.PublicationReader;
-import com.github.i49.pulp.api.PublicationReaderFactory;
-import com.github.i49.pulp.api.PublicationResourceBuilder;
-import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
-import com.github.i49.pulp.api.PublicationWriter;
-import com.github.i49.pulp.api.PublicationWriterFactory;
+import com.github.i49.pulp.api.core.Publication;
+import com.github.i49.pulp.api.core.PublicationReader;
+import com.github.i49.pulp.api.core.PublicationReaderFactory;
+import com.github.i49.pulp.api.core.PublicationResourceBuilder;
+import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
+import com.github.i49.pulp.api.core.PublicationWriter;
+import com.github.i49.pulp.api.core.PublicationWriterFactory;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
 
 /**

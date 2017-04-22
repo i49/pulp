@@ -22,9 +22,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.zip.ZipException;
 
-import com.github.i49.pulp.api.EpubException;
-import com.github.i49.pulp.api.PublicationReader;
-import com.github.i49.pulp.api.PublicationReaderFactory;
+import com.github.i49.pulp.api.core.EpubException;
+import com.github.i49.pulp.api.core.PublicationReader;
+import com.github.i49.pulp.api.core.PublicationReaderFactory;
 import com.github.i49.pulp.api.spi.EpubServiceProvider;
 import com.github.i49.pulp.impl.Messages;
 

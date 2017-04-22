@@ -23,8 +23,8 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
-import com.github.i49.pulp.api.ContentSource;
-import com.github.i49.pulp.api.EpubException;
+import com.github.i49.pulp.api.core.ContentSource;
+import com.github.i49.pulp.api.core.EpubException;
 import com.github.i49.pulp.impl.Messages;
 import com.github.i49.pulp.impl.publication.StandardMediaType;
 import com.github.i49.pulp.impl.zip.ZipLoader;

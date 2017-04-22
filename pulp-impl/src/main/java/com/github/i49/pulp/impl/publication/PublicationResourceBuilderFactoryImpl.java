@@ -19,8 +19,8 @@ package com.github.i49.pulp.impl.publication;
 import java.net.URI;
 import java.nio.file.Path;
 
-import com.github.i49.pulp.api.PublicationResourceBuilder;
-import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
+import com.github.i49.pulp.api.core.PublicationResourceBuilder;
+import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
 
 public class PublicationResourceBuilderFactoryImpl implements PublicationResourceBuilderFactory {
 	

@@ -34,10 +34,10 @@ import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.github.i49.pulp.api.Manifest;
-import com.github.i49.pulp.api.Metadata;
-import com.github.i49.pulp.api.Rendition;
-import com.github.i49.pulp.api.Spine;
+import com.github.i49.pulp.api.core.Manifest;
+import com.github.i49.pulp.api.core.Metadata;
+import com.github.i49.pulp.api.core.Rendition;
+import com.github.i49.pulp.api.core.Spine;
 
 /**
  * A builder class to build a document carrying bibliographical and structural metadata 

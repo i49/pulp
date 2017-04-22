@@ -11,9 +11,9 @@ import java.time.ZoneOffset;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.i49.pulp.api.Epub;
-import com.github.i49.pulp.api.Metadata;
-import com.github.i49.pulp.api.Rendition;
+import com.github.i49.pulp.api.core.Epub;
+import com.github.i49.pulp.api.core.Metadata;
+import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.cli.MetadataLoader;
 
 public class MetadataLoaderTest {

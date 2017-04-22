@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import com.github.i49.pulp.api.Metadata;
+import com.github.i49.pulp.api.core.Metadata;
 
 class MetadataImpl implements Metadata {
 

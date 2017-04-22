@@ -22,9 +22,9 @@ import java.util.Iterator;
 
 import org.w3c.dom.Element;
 
-import com.github.i49.pulp.api.EpubException;
-import com.github.i49.pulp.api.Publication;
-import com.github.i49.pulp.api.Rendition;
+import com.github.i49.pulp.api.core.EpubException;
+import com.github.i49.pulp.api.core.Publication;
+import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.impl.Messages;
 
 abstract class ContainerDocumentParser implements ContainerDocumentProcessor {

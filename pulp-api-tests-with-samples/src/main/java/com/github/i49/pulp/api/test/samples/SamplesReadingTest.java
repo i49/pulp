@@ -26,13 +26,13 @@ import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.github.i49.pulp.api.Epub;
-import com.github.i49.pulp.api.Manifest;
-import com.github.i49.pulp.api.Publication;
-import com.github.i49.pulp.api.PublicationReader;
-import com.github.i49.pulp.api.Rendition;
-import com.github.i49.pulp.api.Spine;
-import com.github.i49.pulp.api.Spine.Page;
+import com.github.i49.pulp.api.core.Epub;
+import com.github.i49.pulp.api.core.Manifest;
+import com.github.i49.pulp.api.core.Publication;
+import com.github.i49.pulp.api.core.PublicationReader;
+import com.github.i49.pulp.api.core.Rendition;
+import com.github.i49.pulp.api.core.Spine;
+import com.github.i49.pulp.api.core.Spine.Page;
 
 public class SamplesReadingTest {
 

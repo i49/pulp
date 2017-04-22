@@ -21,12 +21,12 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import com.github.i49.pulp.api.ContentSource;
-import com.github.i49.pulp.api.CoreMediaType;
-import com.github.i49.pulp.api.EpubException;
-import com.github.i49.pulp.api.MediaType;
-import com.github.i49.pulp.api.PublicationResource;
-import com.github.i49.pulp.api.PublicationResourceBuilder;
+import com.github.i49.pulp.api.core.ContentSource;
+import com.github.i49.pulp.api.core.CoreMediaType;
+import com.github.i49.pulp.api.core.EpubException;
+import com.github.i49.pulp.api.core.MediaType;
+import com.github.i49.pulp.api.core.PublicationResource;
+import com.github.i49.pulp.api.core.PublicationResourceBuilder;
 import com.github.i49.pulp.impl.Messages;
 
 /**

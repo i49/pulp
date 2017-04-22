@@ -24,9 +24,9 @@ import java.util.Map;
 
 import org.w3c.dom.Element;
 
-import com.github.i49.pulp.api.EpubException;
-import com.github.i49.pulp.api.Manifest;
-import com.github.i49.pulp.api.Spine.Page;
+import com.github.i49.pulp.api.core.EpubException;
+import com.github.i49.pulp.api.core.Manifest;
+import com.github.i49.pulp.api.core.Spine.Page;
 import com.github.i49.pulp.impl.Messages;
 import com.github.i49.pulp.impl.xml.Nodes;
 

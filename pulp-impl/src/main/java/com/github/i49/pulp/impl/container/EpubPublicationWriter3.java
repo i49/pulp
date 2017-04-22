@@ -25,12 +25,12 @@ import javax.xml.transform.TransformerException;
 
 import org.w3c.dom.Document;
 
-import com.github.i49.pulp.api.EpubException;
-import com.github.i49.pulp.api.Manifest;
-import com.github.i49.pulp.api.Publication;
-import com.github.i49.pulp.api.PublicationResource;
-import com.github.i49.pulp.api.PublicationWriter;
-import com.github.i49.pulp.api.Rendition;
+import com.github.i49.pulp.api.core.EpubException;
+import com.github.i49.pulp.api.core.Manifest;
+import com.github.i49.pulp.api.core.Publication;
+import com.github.i49.pulp.api.core.PublicationResource;
+import com.github.i49.pulp.api.core.PublicationWriter;
+import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.impl.Messages;
 import com.github.i49.pulp.impl.publication.StandardMediaType;
 import com.github.i49.pulp.impl.xml.DocumentSerializer;

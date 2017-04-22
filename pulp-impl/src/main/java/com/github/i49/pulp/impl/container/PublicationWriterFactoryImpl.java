@@ -20,9 +20,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Path;
 
-import com.github.i49.pulp.api.EpubException;
-import com.github.i49.pulp.api.PublicationWriter;
-import com.github.i49.pulp.api.PublicationWriterFactory;
+import com.github.i49.pulp.api.core.EpubException;
+import com.github.i49.pulp.api.core.PublicationWriter;
+import com.github.i49.pulp.api.core.PublicationWriterFactory;
 import com.github.i49.pulp.impl.Messages;
 
 /**

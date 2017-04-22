@@ -27,14 +27,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.github.i49.pulp.api.Epub;
-import com.github.i49.pulp.api.Manifest;
-import com.github.i49.pulp.api.Metadata;
-import com.github.i49.pulp.api.Publication;
-import com.github.i49.pulp.api.PublicationResource;
-import com.github.i49.pulp.api.PublicationResourceBuilderFactory;
-import com.github.i49.pulp.api.Rendition;
-import com.github.i49.pulp.api.Spine;
+import com.github.i49.pulp.api.core.Epub;
+import com.github.i49.pulp.api.core.Manifest;
+import com.github.i49.pulp.api.core.Metadata;
+import com.github.i49.pulp.api.core.Publication;
+import com.github.i49.pulp.api.core.PublicationResource;
+import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
+import com.github.i49.pulp.api.core.Rendition;
+import com.github.i49.pulp.api.core.Spine;
 
 /**
  * A class to compile a publication.

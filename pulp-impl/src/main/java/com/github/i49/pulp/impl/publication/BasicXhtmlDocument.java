@@ -20,8 +20,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import com.github.i49.pulp.api.CoreMediaType;
-import com.github.i49.pulp.api.XhtmlDocument;
+import com.github.i49.pulp.api.core.CoreMediaType;
+import com.github.i49.pulp.api.core.XhtmlDocument;
 
 class BasicXhtmlDocument extends BasicXmlDocument implements XhtmlDocument {
 

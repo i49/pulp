@@ -18,8 +18,8 @@ package com.github.i49.pulp.api.test.samples;
 
 import org.assertj.core.api.AbstractAssert;
 
-import com.github.i49.pulp.api.Spine;
-import com.github.i49.pulp.api.Spine.Page;
+import com.github.i49.pulp.api.core.Spine;
+import com.github.i49.pulp.api.core.Spine.Page;
 
 public class Assertions {
 

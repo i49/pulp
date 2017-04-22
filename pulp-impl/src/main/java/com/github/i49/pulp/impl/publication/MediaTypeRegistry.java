@@ -16,12 +16,13 @@
 
 package com.github.i49.pulp.impl.publication;
 
-import static com.github.i49.pulp.api.CoreMediaType.*;
+import static com.github.i49.pulp.api.core.CoreMediaType.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import com.github.i49.pulp.api.CoreMediaType;
-import com.github.i49.pulp.api.MediaType;
+import com.github.i49.pulp.api.core.CoreMediaType;
+import com.github.i49.pulp.api.core.MediaType;
 import com.github.i49.pulp.impl.Messages;
 
 /**

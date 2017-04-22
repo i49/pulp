@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
-import com.github.i49.pulp.api.ContentSource;
+import com.github.i49.pulp.api.core.ContentSource;
 
 /**
  * {@link ContentSource} that provides zero-length content.

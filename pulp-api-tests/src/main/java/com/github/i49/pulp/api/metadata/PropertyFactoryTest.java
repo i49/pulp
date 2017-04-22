@@ -23,7 +23,7 @@ import java.util.Locale;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.i49.pulp.api.Epub;
+import com.github.i49.pulp.api.core.Epub;
 
 /**
  * Unit tests for {@link PropertyFactory}.

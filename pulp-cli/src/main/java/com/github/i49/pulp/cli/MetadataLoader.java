@@ -30,7 +30,7 @@ import java.util.Map;
 
 import org.yaml.snakeyaml.Yaml;
 
-import com.github.i49.pulp.api.Metadata;
+import com.github.i49.pulp.api.core.Metadata;
 
 /**
  * A loader class to load publication metadata from YAML files.
