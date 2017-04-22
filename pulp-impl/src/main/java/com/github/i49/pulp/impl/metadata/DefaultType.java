@@ -19,7 +19,7 @@ package com.github.i49.pulp.impl.metadata;
 import com.github.i49.pulp.api.metadata.Type;
 
 /**
- * The default implementation of {@link Type}.
+ * The default implementation of {@link Type} property.
  */
 class DefaultType extends AbstractProperty implements Type {
 

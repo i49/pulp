@@ -24,7 +24,7 @@ import com.github.i49.pulp.api.metadata.Direction;
 import com.github.i49.pulp.api.metadata.Relation;
 
 /**
- * The single implementation of {@link Description}.
+ * The default implementation of {@link Description} property.
  */
 public class DefaultRelation extends AbstractTextProperty implements Relation {
 

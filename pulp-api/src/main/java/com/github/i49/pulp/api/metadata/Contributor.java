@@ -19,6 +19,7 @@ package com.github.i49.pulp.api.metadata;
 /**
  * A metadata property used to represent the name of a person, organization, etc. 
  * that played a secondary role in the creation of the content of an EPUB rendition.
+ * This type represents {@link BasicTerm#CONTRIBUTOR}.
  * 
  * @see <a href="http://dublincore.org/documents/dces/#contributor">Dublin Core Metadata Element Set, Version 1.1</a> 
  */

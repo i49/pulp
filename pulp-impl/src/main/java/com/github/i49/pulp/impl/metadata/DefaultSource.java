@@ -21,7 +21,7 @@ import java.util.Optional;
 import com.github.i49.pulp.api.metadata.Source;
 
 /**
- * The single implementation of {@link Source}.
+ * The default implementation of {@link Source} property.
  */
 class DefaultSource extends AbstractProperty implements Source {
 

@@ -17,6 +17,8 @@
 package com.github.i49.pulp.api.metadata;
 
 import java.net.URI;
+import java.time.OffsetDateTime;
+import java.util.IllformedLocaleException;
 import java.util.Locale;
 
 /**
@@ -144,6 +146,15 @@ public interface PropertyFactory {
 	 * @throws IllegalArgumentException if one of arguments was invalid.
 	 */
 	Creator newCreator(String name, Locale language);
+	
+	/**
+	 * Creates an instance of {@link Date}.
+	 * 
+	 * @param dateTime the publication date and time.
+	 * @return newly created {@link Date}.
+	 * @throws IllegalArgumentException if {@code dateTime} is {@code null}.
+	 */
+	Date newDate(OffsetDateTime dateTime);
 
 	/**
 	 * Creates an instance of {@link Description}.
@@ -224,9 +235,10 @@ public interface PropertyFactory {
 	 * Creates an instance of {@link Language}
 	 * for the specified IETF BCP 47 language tag string.
 	 * 
-	 * @param languageTag the language tag defined in IETF BCP 47.
+	 * @param languageTag the language tag defined in IETF BCP 47, such as "en-US".
 	 * @return newly created {@link Language}.
 	 * @throws IllegalArgumentException if {@code languageTag} was {@code null}.
+	 * @throws IllformedLocaleException if {@code languageTag} was ill-formed.
 	 * @see <a href="http://www.ietf.org/rfc/bcp/bcp47.txt">Tags for Identifying Languages; Matching of Language Tags.</a>
 	 */
 	Language newLanguage(String languageTag);

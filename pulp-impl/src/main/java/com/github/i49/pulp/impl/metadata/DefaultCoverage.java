@@ -23,7 +23,7 @@ import com.github.i49.pulp.api.metadata.Coverage;
 import com.github.i49.pulp.api.metadata.Direction;
 
 /**
- * The single implementation of {@link Coverage}.
+ * The default implementation of {@link Coverage} property.
  */
 class DefaultCoverage extends AbstractTextProperty implements Coverage {
 

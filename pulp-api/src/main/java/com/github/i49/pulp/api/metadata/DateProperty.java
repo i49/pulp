@@ -19,8 +19,27 @@ package com.github.i49.pulp.api.metadata;
 import java.time.OffsetDateTime;
 
 /**
+ * A metadata property that has a value of date and time.
  */
 public interface DateProperty extends Property {
 
+	/**
+	 * Returns the date and time assigned to this property.
+	 * 
+	 * @return the date and time.
+	 */
 	OffsetDateTime getDateTime();
+
+	/**
+	 * Returns the string representation of this date
+	 * in the format defined by ISO8601. 
+	 * The time is converted into UTC.
+	 * 
+	 * <p>Example: "2000-01-01T00:00:00Z"</p>
+	 * 
+	 * @return the string representation of this date.
+	 * @see <a href="https://www.iso.org/standard/40874.html">ISO 8601:2004</a>
+	 */
+	@Override
+	String getValue();
 }

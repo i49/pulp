@@ -20,7 +20,7 @@ import com.github.i49.pulp.api.metadata.Publisher;
 import com.github.i49.pulp.api.metadata.RelatorBuilder;
 
 /**
- * The single implementation of {@link Publisher}.
+ * The default implementation of {@link Publisher} property.
  */
 class DefaultPublisher extends AbstractRelator<Publisher> implements Publisher {
 

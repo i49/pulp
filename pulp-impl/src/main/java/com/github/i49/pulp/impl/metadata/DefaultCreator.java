@@ -20,7 +20,7 @@ import com.github.i49.pulp.api.metadata.Creator;
 import com.github.i49.pulp.api.metadata.RelatorBuilder;
 
 /**
- * The single implementation of {@link Creator}.
+ * The default implementation of {@link Creator} property.
  */
 class DefaultCreator extends AbstractRelator<Creator> implements Creator {
 

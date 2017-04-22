@@ -23,7 +23,7 @@ import com.github.i49.pulp.api.metadata.Subject;
 import com.github.i49.pulp.api.metadata.SubjectAuthority;
 
 /**
- * The default implementation of {@link Subject}.
+ * The default implementation of {@link Subject} property.
  */
 class DefaultSubject extends AbstractProperty implements Subject {
 

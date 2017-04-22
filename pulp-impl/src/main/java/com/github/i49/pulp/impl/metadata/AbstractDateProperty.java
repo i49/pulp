@@ -16,28 +16,33 @@
 
 package com.github.i49.pulp.impl.metadata;
 
-import java.util.Locale;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
-import com.github.i49.pulp.api.metadata.Language;
+import com.github.i49.pulp.api.metadata.DateProperty;
 
 /**
- * The default implementation of {@link Language} property.
+ * A skeletal implementation of {@link DateProperty}.
  */
-public class DefaultLanguage extends AbstractProperty implements Language {
+abstract class AbstractDateProperty extends AbstractProperty implements DateProperty {
 
-	private final Locale value;
+	private static final DateTimeFormatter ISO8601_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	
-	public DefaultLanguage(Locale value) {
-		this.value = value;
+	private final OffsetDateTime dateTime;
+	
+	protected AbstractDateProperty(OffsetDateTime dateTime) {
+		this.dateTime = dateTime;
 	}
 
 	@Override
 	public String getValue() {
-		return value.toLanguageTag();
+		OffsetDateTime utc = OffsetDateTime.ofInstant(getDateTime().toInstant(), ZoneOffset.UTC);
+		return utc.format(ISO8601_FORMATTER);
 	}
-
+	
 	@Override
-	public Locale getLanguage() {
-		return value;
+	public OffsetDateTime getDateTime() {
+		return dateTime;
 	}
 }

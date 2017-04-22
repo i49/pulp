@@ -23,7 +23,7 @@ import com.github.i49.pulp.api.metadata.Direction;
 import com.github.i49.pulp.api.metadata.Rights;
 
 /**
- * The default implementation of {@link Rights}.
+ * The default implementation of {@link Rights} property.
  */
 public class DefaultRights extends AbstractTextProperty implements Rights {
 

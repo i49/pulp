@@ -14,23 +14,19 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.impl.metadata;
-
-import com.github.i49.pulp.api.metadata.Format;
+package com.github.i49.pulp.api.metadata;
 
 /**
- * The default implementation of {@link Format} property.
+ * The publication date of the EPUB Publication. 
+ * This type represents {@link BasicTerm#DATE}.
  */
-public class DefaultFormat extends AbstractProperty implements Format {
+public interface Date extends DateProperty {
 
-	private final String value;
-	
-	public DefaultFormat(String value) {
-		this.value = value;
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public String getValue() {
-		return value;
+	default Term getTerm() {
+		return BasicTerm.DATE;
 	}
 }

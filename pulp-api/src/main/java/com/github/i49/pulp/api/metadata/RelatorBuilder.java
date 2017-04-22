@@ -19,13 +19,38 @@ package com.github.i49.pulp.api.metadata;
 import java.util.Locale;
 
 /**
+ * A builder for building a {@link Relator} property.
  * 
+ * @param <P> the type of the property to build,
+ * such as {@link Creator}, {@link Contributor}, or {@link Publisher}.
  */
 public interface RelatorBuilder<P extends Relator> extends TextPropertyBuilder<P, RelatorBuilder<P>>{
 
+	/**
+	 * Optionally specifies the normalized form of the relator name.
+	 * 
+	 * @param value the name in the normalized form.
+	 * @return this builder.
+	 */
 	RelatorBuilder<P> fileAs(String value);
 	
+	/**
+	 * Optionally specifies the alternative representation of the relator name.
+	 * 
+	 * @param value the alternative representation of the relator.
+	 * @param language the language used for the alternative representation.
+	 * @return this builder.
+	 */
 	RelatorBuilder<P> alternative(String value, Locale language);
 	
+	/**
+	 * Optionally specifies the role of the relator.
+	 * <p>
+	 * Note that specified role will be ignored if the type of the property being built is {@link Publisher}.
+	 * </p>
+	 * 
+	 * @param role the role of the relator.
+	 * @return this builder.
+	 */
 	RelatorBuilder<P> role(String role);
 }

@@ -17,6 +17,7 @@
 package com.github.i49.pulp.impl.metadata;
 
 import java.net.URI;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -25,6 +26,7 @@ import java.util.Optional;
 import com.github.i49.pulp.api.metadata.Contributor;
 import com.github.i49.pulp.api.metadata.Coverage;
 import com.github.i49.pulp.api.metadata.Creator;
+import com.github.i49.pulp.api.metadata.Date;
 import com.github.i49.pulp.api.metadata.Description;
 import com.github.i49.pulp.api.metadata.Direction;
 import com.github.i49.pulp.api.metadata.Format;
@@ -123,6 +125,12 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	}
 
 	@Override
+	public Date newDate(OffsetDateTime dateTime) {
+		requireNonNull(dateTime, "dateTime");
+		return new DefaultDate(dateTime);
+	}
+	
+	@Override
 	public Description newDescription(String text) {
 		text = requireNonEmpty(text, "text");
 		return new DefaultDescription(text, Optional.empty(), Optional.empty());
@@ -176,8 +184,9 @@ public class DefaultPropertyFactory implements PropertyFactory {
 
 	@Override
 	public Language newLanguage(String languageTag) {
-		requireNonNull(languageTag, "languageTag");
-		return newLanguage(Locale.forLanguageTag(languageTag));
+		languageTag = requireNonEmpty(languageTag, "languageTag");
+		Locale locale = new Locale.Builder().setLanguageTag(languageTag).build();
+		return newLanguage(locale);
 	}
 
 	@Override

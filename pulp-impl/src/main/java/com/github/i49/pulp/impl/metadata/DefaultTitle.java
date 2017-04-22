@@ -23,7 +23,7 @@ import com.github.i49.pulp.api.metadata.Title;
 import com.github.i49.pulp.api.metadata.TitleBuilder;
 
 /**
- * The single implementation of {@link Title} property.
+ * The default implementation of {@link Title} property.
  */
 class DefaultTitle extends AbstractTextProperty implements Title {
 	

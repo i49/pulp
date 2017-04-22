@@ -24,7 +24,7 @@ import com.github.i49.pulp.api.metadata.Identifier;
 import com.github.i49.pulp.api.metadata.IdentifierScheme;
 
 /**
- * The single implementation of {@link Identifier}.
+ * The default implementation of {@link Identifier} property.
  */
 class DefaultIdentifier extends AbstractProperty implements Identifier {
 	

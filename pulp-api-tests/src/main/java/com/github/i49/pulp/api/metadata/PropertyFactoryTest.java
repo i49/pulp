@@ -19,6 +19,9 @@ package com.github.i49.pulp.api.metadata;
 import static org.assertj.core.api.Assertions.*;
 
 import java.net.URI;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.IllformedLocaleException;
 import java.util.Locale;
 
 import org.junit.Before;
@@ -122,6 +125,17 @@ public class PropertyFactoryTest {
 		assertThat(p.getRole()).isEmpty();
 	}
 	
+	/* newDate(OffsetDateTime) */
+	
+	@Test
+	public void newDate_shouldCreateDateByOffsetDateTime() {
+		OffsetDateTime dateTime = OffsetDateTime.of(2017, 4, 23, 1, 2, 3, 0, ZoneOffset.ofHours(9));
+		Date p = factory.newDate(dateTime);
+		assertThat(p.getTerm()).isSameAs(BasicTerm.DATE);
+		assertThat(p.getValue()).isEqualTo("2017-04-22T16:02:03Z");
+		assertThat(p.getDateTime()).isEqualTo(dateTime);
+	}
+	
 	/* newDescription(String) */
 	
 	@Test
@@ -199,6 +213,14 @@ public class PropertyFactoryTest {
 		assertThat(p.getTerm()).isSameAs(BasicTerm.LANGUAGE);
 		assertThat(p.getValue()).isEqualTo("en-US");
 		assertThat(p.getLanguage()).isEqualTo(Locale.forLanguageTag("en-US"));
+	}
+	
+	@Test
+	public void newLanguage_shouldThrowExceptionIfLangaugeTagIsInvalid() {
+		Throwable thrown = catchThrowable(()->{
+			factory.newLanguage("123");
+		});
+		assertThat(thrown).isInstanceOf(IllformedLocaleException .class);
 	}
 	
 	/* newLanguage(Locale) */

@@ -16,25 +16,16 @@
 
 package com.github.i49.pulp.impl.metadata;
 
-import com.github.i49.pulp.api.metadata.Contributor;
-import com.github.i49.pulp.api.metadata.RelatorBuilder;
+import java.time.OffsetDateTime;
+
+import com.github.i49.pulp.api.metadata.Date;
 
 /**
- * The default implementation of {@link Contributor} property.
+ * The default implementation of {@link Date} property.
  */
-class DefaultContributor extends AbstractRelator<Contributor> implements Contributor {
+class DefaultDate extends AbstractDateProperty implements Date {
 
-	/**
-	 * Creates a builder for building an instance of this class.
-	 * 
-	 * @param name the name of the contributor.
-	 * @return created builder.
-	 */
-	public static RelatorBuilder<Contributor> builder(String name) {
-		return new DefaultRelatorBuilder<Contributor>(name, DefaultContributor::new);
-	}
-	
-	private DefaultContributor(DefaultRelatorBuilder<Contributor> builder) {
-		super(builder);
+	public DefaultDate(OffsetDateTime dateTime) {
+		super(dateTime);
 	}
 }

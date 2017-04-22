@@ -19,7 +19,8 @@ package com.github.i49.pulp.api.metadata;
 import java.util.Optional;
 
 /**
- * A creator, contributor, or publisher of the EPUB publication.
+ * A person or organization who relates to the EPUB publication,
+ * such as creator, contributor or publisher. 
  */
 public interface Relator extends TextProperty, AlternativeProvider {
 

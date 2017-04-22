@@ -23,7 +23,7 @@ import com.github.i49.pulp.api.metadata.Description;
 import com.github.i49.pulp.api.metadata.Direction;
 
 /**
- * The single implementation of {@link Description}.
+ * The default implementation of {@link Description} property.
  */
 public class DefaultDescription extends AbstractTextProperty implements Description {
 

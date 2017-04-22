@@ -17,9 +17,9 @@
 package com.github.i49.pulp.api.metadata;
 
 /**
- * A builder for a property.
+ * A builder for building a property.
  *
- * @param <P> the type of the property. 
+ * @param <P> the type of the property to build. 
  */
 public interface PropertyBuilder<P extends Property> {
 
