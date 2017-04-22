@@ -145,6 +145,16 @@ public class PropertyFactoryTest {
 		assertThat(p.getDirection()).isEmpty();
 	}
 	
+	/* newFormat() */
+	
+	@Test
+	public void newFormat_shouldCreateFormat() {
+		String value = "application/epub+zip";
+		Format p = factory.newFormat(value);
+		assertThat(p.getTerm()).isSameAs(BasicTerm.FORMAT);
+		assertThat(p.getValue()).isEqualTo(value);
+	}
+	
 	/* newIdentifier() */
 	
 	@Test
@@ -256,5 +266,16 @@ public class PropertyFactoryTest {
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).hasValue(Locale.ENGLISH);
 		assertThat(p.getDirection()).isEmpty();
+	}
+	
+	/* newSource(String) */
+	
+	@Test
+	public void newSource_shouldCreateSource() {
+		String value = "http://www.gutenberg.org/files/25545/25545-h/25545-h.htm";
+		Source p = factory.newSource(value);
+		assertThat(p.getTerm()).isSameAs(BasicTerm.SOURCE);
+		assertThat(p.getValue()).isEqualTo(value);
+		assertThat(p.getScheme()).isEmpty();
 	}
 }

@@ -47,26 +47,25 @@ public class DefaultPropertyFactory implements PropertyFactory {
 
 	@Override
 	public RelatorBuilder<Contributor> getContributorBuilder(String name) {
-		assertNotNull(name, "name");
+		name = requireNonEmpty(name, "name");
 		return DefaultContributor.builder(name);
 	}
 
 	@Override
 	public RelatorBuilder<Creator> getCreatorBuilder(String name) {
-		assertNotNull(name, "name");
+		name = requireNonEmpty(name, "name");
 		return DefaultCreator.builder(name);
 	}
 
 	@Override
 	public RelatorBuilder<Publisher> getPublisherBuilder(String name) {
-		assertNotNull(name, "name");
+		name = requireNonEmpty(name, "name");
 		return DefaultPublisher.builder(name);
 	}
 
 	@Override
 	public TitleBuilder getTitleBuilder(String value) {
-		assertNotNull(value, "value");
-		value = validatePropertyValue(value);
+		value = requireNonEmpty(value, "value");
 		return DefaultTitle.builder(value);
 	}
 
@@ -82,25 +81,22 @@ public class DefaultPropertyFactory implements PropertyFactory {
 
 	@Override
 	public Coverage newCoverage(String text) {
-		assertNotNull(text, "text");
-		text = validatePropertyValue(text);
+		text = requireNonEmpty(text, "text");
 		return new DefaultCoverage(text, Optional.empty(), Optional.empty());
 	}
 
 	@Override
 	public Coverage newCoverage(String text, Locale language) {
-		assertNotNull(text, "text");
-		assertNotNull(language, "language");
-		text = validatePropertyValue(text);
+		text = requireNonEmpty(text, "text");
+		requireNonNull(language, "language");
 		return new DefaultCoverage(text, Optional.of(language), Optional.empty());
 	}
 
 	@Override
 	public Coverage newCoverage(String text, Locale language, Direction direction) {
-		assertNotNull(text, "text");
-		assertNotNull(language, "language");
-		assertNotNull(direction, "direction");
-		text = validatePropertyValue(text);
+		text = requireNonEmpty(text, "text");
+		requireNonNull(language, "language");
+		requireNonNull(direction, "direction");
 		return new DefaultCoverage(text, Optional.of(language), Optional.of(direction));
 	}
 
@@ -116,32 +112,29 @@ public class DefaultPropertyFactory implements PropertyFactory {
 
 	@Override
 	public Description newDescription(String text) {
-		assertNotNull(text, "text");
-		text = validatePropertyValue(text);
+		text = requireNonEmpty(text, "text");
 		return new DefaultDescription(text, Optional.empty(), Optional.empty());
 	}
 
 	@Override
 	public Description newDescription(String text, Locale language) {
-		assertNotNull(text, "text");
-		assertNotNull(language, "language");
-		text = validatePropertyValue(text);
+		text = requireNonEmpty(text, "text");
+		requireNonNull(language, "language");
 		return new DefaultDescription(text, Optional.of(language), Optional.empty());
 	}
 
 	@Override
 	public Description newDescription(String text, Locale language, Direction direction) {
-		assertNotNull(text, "text");
-		assertNotNull(language, "language");
-		assertNotNull(direction, "direction");
-		text = validatePropertyValue(text);
+		text = requireNonEmpty(text, "text");
+		requireNonNull(language, "language");
+		requireNonNull(direction, "direction");
 		return new DefaultDescription(text, Optional.of(language), Optional.of(direction));
 	}
 
 	@Override
 	public Format newFormat(String value) {
-		// TODO Auto-generated method stub
-		return null;
+		value = requireNonEmpty(value, "value");
+		return new DefaultFormat(value);
 	}
 
 	@Override
@@ -151,24 +144,21 @@ public class DefaultPropertyFactory implements PropertyFactory {
 
 	@Override
 	public Identifier newIdentifier(String value) {
-		assertNotNull(value, "value");
-		value = validatePropertyValue(value);
+		value = requireNonEmpty(value, "value");
 		return new DefaultIdentifier(value);
 	}
 
 	@Override
 	public Identifier newIdentifier(String value, IdentifierScheme scheme) {
-		assertNotNull(value, "value");
-		assertNotNull(scheme, "scheme");
-		value = validatePropertyValue(value);
+		value = requireNonEmpty(value, "value");
+		requireNonNull(scheme, "scheme");
 		return new DefaultIdentifier(value, scheme);
 	}
 
 	@Override
 	public Identifier newIdentifier(String value, URI schemeURI) {
-		assertNotNull(value, "value");
-		assertNotNull(schemeURI, "schemeURI");
-		value = validatePropertyValue(value);
+		value = requireNonEmpty(value, "value");
+		requireNonNull(schemeURI, "schemeURI");
 		return new DefaultIdentifier(value, schemeURI);
 	}
 
@@ -184,62 +174,57 @@ public class DefaultPropertyFactory implements PropertyFactory {
 
 	@Override
 	public Relation newRelation(String text) {
-		assertNotNull(text, "text");
-		text = validatePropertyValue(text);
+		text = requireNonEmpty(text, "text");
 		return new DefaultRelation(text, Optional.empty(), Optional.empty());
 	}
 
 	@Override
 	public Relation newRelation(String text, Locale language) {
-		assertNotNull(text, "text");
-		assertNotNull(language, "language");
-		text = validatePropertyValue(text);
+		text = requireNonEmpty(text, "text");
+		requireNonNull(language, "language");
 		return new DefaultRelation(text, Optional.of(language), Optional.empty());
 	}
 
 	@Override
 	public Relation newRelation(String text, Locale language, Direction direction) {
-		assertNotNull(text, "text");
-		assertNotNull(language, "language");
-		assertNotNull(direction, "direction");
-		text = validatePropertyValue(text);
+		text = requireNonEmpty(text, "text");
+		requireNonNull(language, "language");
+		requireNonNull(direction, "direction");
 		return new DefaultRelation(text, Optional.of(language), Optional.of(direction));
 	}
 
 	@Override
 	public Rights newRights(String text) {
-		assertNotNull(text, "text");
-		text = validatePropertyValue(text);
+		text = requireNonEmpty(text, "text");
 		return new DefaultRights(text, Optional.empty(), Optional.empty());
 	}
 
 	@Override
 	public Rights newRights(String text, Locale language) {
-		assertNotNull(text, "text");
-		assertNotNull(language, "language");
-		text = validatePropertyValue(text);
+		text = requireNonEmpty(text, "text");
+		requireNonNull(language, "language");
 		return new DefaultRights(text, Optional.of(language), Optional.empty());
 	}
 
 	@Override
 	public Rights newRights(String text, Locale language, Direction direction) {
-		assertNotNull(text, "text");
-		assertNotNull(language, "language");
-		assertNotNull(direction, "direction");
-		text = validatePropertyValue(text);
+		text = requireNonEmpty(text, "text");
+		requireNonNull(language, "language");
+		requireNonNull(direction, "direction");
 		return new DefaultRights(text, Optional.of(language), Optional.of(direction));
 	}
 
 	@Override
 	public Source newSource(String value) {
-		// TODO Auto-generated method stub
-		return null;
+		value = requireNonEmpty(value, "value");
+		return new DefaultSource(value, Optional.empty());
 	}
 
 	@Override
 	public Source newSource(String value, String scheme) {
-		// TODO Auto-generated method stub
-		return null;
+		value = requireNonEmpty(value, "value");
+		requireNonNull(scheme, "scheme");
+		return new DefaultSource(value, Optional.of(scheme));
 	}
 
 	@Override
@@ -279,16 +264,18 @@ public class DefaultPropertyFactory implements PropertyFactory {
 		return null;
 	}
 	
-	private static void assertNotNull(Object parameter, String name) {
-		if (parameter == null) {
-			throw new IllegalArgumentException("\" + name + \" must not be null");
+	private static <T> T requireNonNull(T object, String name) {
+		if (object == null) {
+			throw new IllegalArgumentException("\"" + name + "\" must not be null");
 		}
+		return object;
 	}
-	
-	private static String validatePropertyValue(String value) {
+
+	private static String requireNonEmpty(String value, String name) {
+		requireNonNull(value, name);
 		String trimmed = value.trim();
 		if (trimmed.isEmpty()) {
-			throw new IllegalArgumentException("property value must not be blank");
+			throw new IllegalArgumentException("\"" + name + "\" must not be blank");
 		}
 		return trimmed;
 	}

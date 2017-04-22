@@ -14,29 +14,32 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.api.metadata;
+package com.github.i49.pulp.impl.metadata;
 
 import java.util.Optional;
 
-/**
- * A related resource from which the described resource is derived.
- * 
- * @see <a href="http://dublincore.org/documents/dces/#source">Dublin Core Metadata Element Set, Version 1.1</a> 
- */
-public interface Source extends Property {
+import com.github.i49.pulp.api.metadata.Source;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	default Term getTerm() {
-		return BasicTerm.SOURCE;
-	}
+/**
+ * The single implementation of {@link Source}.
+ */
+class DefaultSource extends AbstractProperty implements Source {
+
+	private final String value;
+	private final Optional<String> scheme;
 	
-	/**
-	 * Returns the scheme used for describing this source.
-	 * 
-	 * @return the scheme used for describing this source.
-	 */
-	Optional<String> getScheme();
+	public DefaultSource(String value, Optional<String> scheme) {
+		this.value = value;
+		this.scheme = scheme;
+	}
+
+	@Override
+	public String getValue() {
+		return value;
+	}
+
+	@Override
+	public Optional<String> getScheme() {
+		return scheme;
+	}
 }

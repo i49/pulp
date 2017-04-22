@@ -14,29 +14,23 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.api.metadata;
+package com.github.i49.pulp.impl.metadata;
 
-import java.util.Optional;
+import com.github.i49.pulp.api.metadata.Format;
 
 /**
- * A related resource from which the described resource is derived.
- * 
- * @see <a href="http://dublincore.org/documents/dces/#source">Dublin Core Metadata Element Set, Version 1.1</a> 
+ * The single implementation of {@link Format}.
  */
-public interface Source extends Property {
+public class DefaultFormat extends AbstractProperty implements Format {
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	default Term getTerm() {
-		return BasicTerm.SOURCE;
-	}
+	private final String value;
 	
-	/**
-	 * Returns the scheme used for describing this source.
-	 * 
-	 * @return the scheme used for describing this source.
-	 */
-	Optional<String> getScheme();
+	public DefaultFormat(String value) {
+		this.value = value;
+	}
+
+	@Override
+	public String getValue() {
+		return value;
+	}
 }
