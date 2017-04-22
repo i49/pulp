@@ -16,13 +16,12 @@
 
 package com.github.i49.pulp.api.core;
 
+import static com.github.i49.pulp.api.core.EpubServiceLoader.getProvider;
+
 import java.net.URI;
 import java.nio.file.Path;
-import java.util.Iterator;
-import java.util.ServiceLoader;
 
 import com.github.i49.pulp.api.metadata.PropertyFactory;
-import com.github.i49.pulp.api.spi.EpubServiceProvider;
 
 /**
  * Factory class for creating EPUB processing objects.
@@ -114,32 +113,5 @@ public final class Epub {
 		return getProvider().createResourceBuilderFactory(baseURI);
 	}
 	
-	/**
-	 * Thread-local loader class of {@link EpubServiceProvider}.
-	 */
-	private static class ThreadLocalLoader extends ThreadLocal<ServiceLoader<EpubServiceProvider>> {
-
-		@Override
-		protected ServiceLoader<EpubServiceProvider> initialValue() {
-			return ServiceLoader.load(EpubServiceProvider.class);
-		}
-	}
-	
-	private static final ThreadLocal<ServiceLoader<EpubServiceProvider>> threadLoader = new ThreadLocalLoader();
-	
-	/**
-	 * Returns the service provider of {@link EpubServiceProvider}. 
-	 * @return found service provider.
-	 * @throws EpubException if API implementation was not found.
-	 */
-	private static EpubServiceProvider getProvider() {
-		Iterator<EpubServiceProvider> it = threadLoader.get().iterator();
-		if (it.hasNext()) {
-			return it.next();
-		}
-		throw new EpubException("Implementation of EpubServiceProvider was not found.");
-	}
-	
-	private Epub() {
-	}
+	private Epub() {}
 }
