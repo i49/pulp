@@ -16,9 +16,9 @@
     <module>../pulp-api</module>
     <module>../pulp-api-tests</module>
     <module>../pulp-api-tests-with-samples</module>
-    <module>../pulp-core</module>
     <module>../pulp-cli</module>
     <module>../pulp-distribution</module>
+    <module>../pulp-impl</module>
   </modules>
   
   <dependencyManagement>

@@ -8,7 +8,7 @@
     <relativePath>../pulp-parent</relativePath>
   </parent>
 
-  <artifactId>pulp-core</artifactId>
+  <artifactId>pulp-impl</artifactId>
   
   <dependencies>
     <dependency>

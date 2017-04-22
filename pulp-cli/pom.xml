@@ -19,7 +19,7 @@
     </dependency>
     <dependency>
       <groupId>com.github.i49</groupId>
-      <artifactId>pulp-core</artifactId>
+      <artifactId>pulp-impl</artifactId>
       <version>${project.version}</version>
       <scope>runtime</scope>
     </dependency>
@@ -31,6 +31,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   
