@@ -17,6 +17,7 @@
 package com.github.i49.pulp.impl.metadata;
 
 import java.util.Locale;
+import java.util.Optional;
 
 import com.github.i49.pulp.api.metadata.Direction;
 import com.github.i49.pulp.api.metadata.Property;
@@ -33,9 +34,9 @@ abstract class AbstractPropertyBuilder<P extends Property, T extends PropertyBui
 	implements PropertyBuilder<P> {
 
 	private final String value;
+	private String normalizedValue;
 	private Locale language;
 	private Direction direction;
-	private String normalizedValue;
 	private Representation alternative;
 	private String role;
 	
@@ -47,24 +48,24 @@ abstract class AbstractPropertyBuilder<P extends Property, T extends PropertyBui
 		return value;
 	}
 
-	public Locale getLanguage() {
-		return language;
-	}
-
-	public Direction getDirection() {
-		return direction;
-	}
-
 	public String getNormalizedValue() {
 		return normalizedValue;
 	}
 
-	public Representation getAlternative() {
-		return alternative;
+	public Optional<Locale> getLanguage() {
+		return Optional.ofNullable(language);
+	}
+
+	public Optional<Direction> getDirection() {
+		return Optional.ofNullable(direction);
+	}
+
+	public Optional<Representation> getAlternative() {
+		return Optional.ofNullable(alternative);
 	}
 	
-	public String getRole() {
-		return role;
+	public Optional<String> getRole() {
+		return Optional.ofNullable(role);
 	}
 
 	public T language(Locale language) {

@@ -21,6 +21,7 @@ package com.github.i49.pulp.api.metadata;
  * the given EPUB Publication is of a specialized type.
  * 
  * @see <a href="http://dublincore.org/documents/dces/#type">Dublin Core Metadata Element Set, Version 1.1</a> 
+ * @see PublicationType
  */
 public interface Type extends Property {
 

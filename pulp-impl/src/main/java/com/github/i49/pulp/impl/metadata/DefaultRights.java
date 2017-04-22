@@ -19,12 +19,11 @@ package com.github.i49.pulp.impl.metadata;
 import java.util.Locale;
 import java.util.Optional;
 
-import com.github.i49.pulp.api.metadata.Coverage;
 import com.github.i49.pulp.api.metadata.Direction;
 import com.github.i49.pulp.api.metadata.Rights;
 
 /**
- * The single implementation of {@link Coverage}.
+ * The default implementation of {@link Rights}.
  */
 public class DefaultRights extends AbstractTextProperty implements Rights {
 

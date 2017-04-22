@@ -18,6 +18,7 @@ package com.github.i49.pulp.api.metadata;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.net.URI;
 import java.util.Locale;
 
 import org.junit.Before;
@@ -277,5 +278,55 @@ public class PropertyFactoryTest {
 		assertThat(p.getTerm()).isSameAs(BasicTerm.SOURCE);
 		assertThat(p.getValue()).isEqualTo(value);
 		assertThat(p.getScheme()).isEmpty();
+	}
+	
+	/* newSubject(String) */
+	
+	@Test
+	public void newSubject_shouldCreateSubject() {
+		String value = "Olympic skiing";
+		Subject p = factory.newSubject(value);
+		assertThat(p.getTerm()).isSameAs(BasicTerm.SUBJECT);
+		assertThat(p.getValue()).isEqualTo(value);
+		assertThat(p.getAuthority()).isEmpty();
+		assertThat(p.getScheme()).isEmpty();
+		assertThat(p.getCode()).isEmpty();
+	}
+
+	/* newSubject(String, SubjectAuthority) */
+	
+	@Test
+	public void newSubject_shouldCreateSubjectWithAuthority() {
+		String value = "FICTION / Occult & Supernatural";
+		Subject p = factory.newSubject(value, SubjectAuthority.BISAC, "FIC024000");
+		assertThat(p.getTerm()).isSameAs(BasicTerm.SUBJECT);
+		assertThat(p.getValue()).isEqualTo(value);
+		assertThat(p.getAuthority()).hasValue(SubjectAuthority.BISAC);
+		assertThat(p.getScheme()).isEmpty();
+		assertThat(p.getCode()).hasValue("FIC024000");
+	}
+
+	/* newSubject(String, URI) */
+	
+	@Test
+	public void newSubject_shouldCreateSubjectWithSchemeURI() {
+		String value = "Number Theory";
+		URI scheme = URI.create("http://www.ams.org/msc/msc2010.html");
+		Subject p = factory.newSubject(value, scheme, "11");
+		assertThat(p.getTerm()).isSameAs(BasicTerm.SUBJECT);
+		assertThat(p.getValue()).isEqualTo(value);
+		assertThat(p.getAuthority()).isEmpty();
+		assertThat(p.getScheme()).hasValue(scheme);
+		assertThat(p.getCode()).hasValue("11");
+	}
+	
+	/* newType(String) */
+	
+	@Test
+	public void newType_shouldCreateType() {
+		String value = "dictionary";
+		Type p = factory.newType(value);
+		assertThat(p.getTerm()).isSameAs(BasicTerm.TYPE);
+		assertThat(p.getValue()).isEqualTo(value);
 	}
 }

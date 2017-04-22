@@ -31,15 +31,10 @@ class DefaultContributor extends AbstractRelator<Contributor> implements Contrib
 	 * @return created builder.
 	 */
 	public static RelatorBuilder<Contributor> builder(String name) {
-		return new AbstractRelatorBuilder<Contributor>(name) {
-			@Override
-			public Contributor build() {
-				return new DefaultContributor(this);
-			}
-		};
+		return new DefaultRelatorBuilder<Contributor>(name, DefaultContributor::new);
 	}
 	
-	private DefaultContributor(AbstractRelatorBuilder<Contributor> builder) {
+	private DefaultContributor(DefaultRelatorBuilder<Contributor> builder) {
 		super(builder);
 	}
 }

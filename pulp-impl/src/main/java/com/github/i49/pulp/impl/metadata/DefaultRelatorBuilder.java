@@ -16,18 +16,28 @@
 
 package com.github.i49.pulp.impl.metadata;
 
+import java.util.function.Function;
+
 import com.github.i49.pulp.api.metadata.Relator;
 import com.github.i49.pulp.api.metadata.RelatorBuilder;
 
 /**
- * A skeletal implementation of {@link RelatorBuilder}.
+ * The single implementation of {@link RelatorBuilder}.
  * 
- * @param <P> the type of relator property.
+ * @param <P> the type of relator property to build.
  */
-abstract class AbstractRelatorBuilder<P extends Relator> 
+class DefaultRelatorBuilder<P extends Relator> 
 	extends AbstractPropertyBuilder<P, RelatorBuilder<P>> implements RelatorBuilder<P> {
 
-	public AbstractRelatorBuilder(String value) {
+	private final Function<DefaultRelatorBuilder<P>, P> constructor; 
+	
+	public DefaultRelatorBuilder(String value, Function<DefaultRelatorBuilder<P>, P> constructor) {
 		super(value);
+		this.constructor = constructor;
+	}
+	
+	@Override
+	public P build() {
+		return constructor.apply(this);
 	}
 }

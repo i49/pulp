@@ -20,7 +20,23 @@ import java.net.URI;
 import java.util.Locale;
 
 /**
- * The factory for producing properties of metadata.
+ * The factory for producing various kinds of properties of metadata.
+ * 
+ * <p>The following properties can be created by this type.</p>
+ * <ol>
+ * <li>{@link Contributor}</li>
+ * <li>{@link Coverage}</li>
+ * <li>{@link Creator}</li>
+ * <li>{@link Description}</li>
+ * <li>{@link Format}</li>
+ * <li>{@link Identifier}</li>
+ * <li>{@link Publisher}</li>
+ * <li>{@link Relation}</li>
+ * <li>{@link Rights}</li>
+ * <li>{@link Source}</li>
+ * <li>{@link Subject}</li>
+ * <li>{@link Title}</li>
+ * </ol>
  */
 public interface PropertyFactory {
 
@@ -315,22 +331,22 @@ public interface PropertyFactory {
 	 * 
 	 * @param value the text describing the source.
 	 * @param authority the authority used for selecting the subject.
-	 * @param term the subject code. 
+	 * @param code the subject code specific in the authority. 
 	 * @return newly created {@link Subject}.
 	 * @throws IllegalArgumentException if one of arguments was invalid.
 	 */
-	Subject newSubject(String value, SubjectAuthority authority, String term);
+	Subject newSubject(String value, SubjectAuthority authority, String code);
 
 	/**
 	 * Creates an instance of {@link Subject} with a specific scheme.
 	 * 
 	 * @param value the text describing the source.
 	 * @param scheme the scheme used for selecting the subject.
-	 * @param term the subject code in the scheme.
+	 * @param code the subject code specific in the scheme.
 	 * @return newly created {@link Subject}.
 	 * @throws IllegalArgumentException if one of arguments was invalid.
 	 */
-	Subject newSubject(String value, URI scheme, String term);
+	Subject newSubject(String value, URI scheme, String code);
 	
 	/**
 	 * Creates an instance of {@link Title}.

@@ -229,20 +229,24 @@ public class DefaultPropertyFactory implements PropertyFactory {
 
 	@Override
 	public Subject newSubject(String value) {
-		// TODO Auto-generated method stub
-		return null;
+		value = requireNonEmpty(value, "value");
+		return new DefaultSubject(value);
 	}
 
 	@Override
-	public Subject newSubject(String value, SubjectAuthority authority, String term) {
-		// TODO Auto-generated method stub
-		return null;
+	public Subject newSubject(String value, SubjectAuthority authority, String code) {
+		value = requireNonEmpty(value, "value");
+		requireNonNull(authority, "authority");
+		code = requireNonEmpty(code, "code");
+		return new DefaultSubject(value, authority, code);
 	}
 
 	@Override
-	public Subject newSubject(String value, URI scheme, String term) {
-		// TODO Auto-generated method stub
-		return null;
+	public Subject newSubject(String value, URI scheme, String code) {
+		value = requireNonEmpty(value, "value");
+		requireNonNull(scheme, "scheme");
+		code = requireNonEmpty(code, "code");
+		return new DefaultSubject(value, scheme, code);
 	}
 
 	@Override
@@ -257,18 +261,14 @@ public class DefaultPropertyFactory implements PropertyFactory {
 
 	@Override
 	public Type newType(String value) {
-		if (value == null) {
-			throw new IllegalArgumentException("\"value\" must not be null");
-		}
-		// TODO Auto-generated method stub
-		return null;
+		value = requireNonEmpty(value, "value");
+		return new DefaultType(value);
 	}
 	
-	private static <T> T requireNonNull(T object, String name) {
+	private static <T> void requireNonNull(T object, String name) {
 		if (object == null) {
 			throw new IllegalArgumentException("\"" + name + "\" must not be null");
 		}
-		return object;
 	}
 
 	private static String requireNonEmpty(String value, String name) {

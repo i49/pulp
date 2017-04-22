@@ -17,7 +17,9 @@
 package com.github.i49.pulp.api.metadata;
 
 /**
- * The publication types available for the type property in metadata.
+ * The publication types predefined for the {@link Type} property in metadata.
+ * 
+ * @see Type
  */
 public enum PublicationType implements Type {
 	

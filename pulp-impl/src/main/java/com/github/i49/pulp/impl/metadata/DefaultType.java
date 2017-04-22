@@ -16,27 +16,21 @@
 
 package com.github.i49.pulp.impl.metadata;
 
-import com.github.i49.pulp.api.metadata.Publisher;
-import com.github.i49.pulp.api.metadata.RelatorBuilder;
+import com.github.i49.pulp.api.metadata.Type;
 
 /**
- * The single implementation of {@link Publisher}.
+ * The default implementation of {@link Type}.
  */
-class DefaultPublisher extends AbstractRelator<Publisher> implements Publisher {
+class DefaultType extends AbstractProperty implements Type {
 
-	private static final String ROLE = "pbl";
-	
-	/**
-	 * Creates a builder for building an instance of this class.
-	 * 
-	 * @param name the name of the publisher.
-	 * @return created builder.
-	 */
-	public static RelatorBuilder<Publisher> builder(String name) {
-		return new DefaultRelatorBuilder<Publisher>(name, DefaultPublisher::new);
+	private final String value;
+
+	public DefaultType(String value) {
+		this.value = value;
 	}
-	
-	private DefaultPublisher(DefaultRelatorBuilder<Publisher> builder) {
-		super(builder, ROLE);
+
+	@Override
+	public String getValue() {
+		return value;
 	}
 }

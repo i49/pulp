@@ -31,15 +31,10 @@ class DefaultCreator extends AbstractRelator<Creator> implements Creator {
 	 * @return created builder.
 	 */
 	public static RelatorBuilder<Creator> builder(String name) {
-		return new AbstractRelatorBuilder<Creator>(name) {
-			@Override
-			public Creator build() {
-				return new DefaultCreator(this);
-			}
-		};
+		return new DefaultRelatorBuilder<Creator>(name, DefaultCreator::new);
 	}
 	
-	private DefaultCreator(AbstractRelatorBuilder<Creator> builder) {
+	private DefaultCreator(DefaultRelatorBuilder<Creator> builder) {
 		super(builder);
 	}
 }

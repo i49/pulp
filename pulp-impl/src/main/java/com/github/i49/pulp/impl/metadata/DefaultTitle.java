@@ -37,7 +37,7 @@ class DefaultTitle extends AbstractTextProperty implements Title {
 	private DefaultTitle(Builder builder) {
 		super(builder);
 		this.normalizedValue = builder.getNormalizedValue();
-		this.alternative = Optional.ofNullable(builder.getAlternative());
+		this.alternative = builder.getAlternative();
 	}
 
 	@Override

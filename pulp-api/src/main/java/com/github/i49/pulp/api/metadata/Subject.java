@@ -34,9 +34,24 @@ public interface Subject extends Property {
 		return BasicTerm.SUBJECT;
 	}
 	
+	/**
+	 * Returns the authority of this subject.
+	 * 
+	 * @return the authority of this subject.
+	 */
 	Optional<SubjectAuthority> getAuthority();
 	
-	Optional<URI> getAuthorityScheme();
+	/**
+	 * Returns the URI representing the authority of this subject.
+	 * 
+	 * @return the URI representing the authority of this subject.
+	 */
+	Optional<URI> getScheme();
 	
-	Optional<String> getTermCode();
+	/**
+	 * Returns the code of this subject defined in the authority.
+	 * 
+	 * @return the code of this subject.
+	 */
+	Optional<String> getCode();
 }

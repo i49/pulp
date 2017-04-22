@@ -35,11 +35,11 @@ abstract class AbstractRelator<P extends Relator> extends AbstractTextProperty i
 	 * 
 	 * @param builder the builder for building an instance of this class.
 	 */
-	protected AbstractRelator(AbstractRelatorBuilder<P> builder) {
+	protected AbstractRelator(DefaultRelatorBuilder<P> builder) {
 		super(builder);
 		this.normalizedValue = builder.getNormalizedValue();
-		this.alternative = Optional.ofNullable(builder.getAlternative());
-		this.role = Optional.ofNullable(builder.getRole());
+		this.alternative = builder.getAlternative();
+		this.role = builder.getRole();
 	}
 	
 	/**
@@ -48,10 +48,10 @@ abstract class AbstractRelator<P extends Relator> extends AbstractTextProperty i
 	 * @param builder the builder for building an instance of this class.
 	 * @param role the role of this relator.
 	 */
-	protected AbstractRelator(AbstractRelatorBuilder<P> builder, String role) {
+	protected AbstractRelator(DefaultRelatorBuilder<P> builder, String role) {
 		super(builder);
 		this.normalizedValue = builder.getNormalizedValue();
-		this.alternative = Optional.ofNullable(builder.getAlternative());
+		this.alternative = builder.getAlternative();
 		this.role = Optional.ofNullable(role);
 	}
 	

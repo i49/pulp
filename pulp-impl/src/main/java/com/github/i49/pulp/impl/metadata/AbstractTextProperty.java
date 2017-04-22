@@ -39,8 +39,8 @@ abstract class AbstractTextProperty extends AbstractProperty implements TextProp
 	
 	protected AbstractTextProperty(AbstractPropertyBuilder<?, ?> builder) {
 		this.value = builder.getValue();
-		this.language = Optional.ofNullable(builder.getLanguage());
-		this.direction = Optional.ofNullable(builder.getDirection());
+		this.language = builder.getLanguage();
+		this.direction = builder.getDirection();
 	}
 	
 	@Override
