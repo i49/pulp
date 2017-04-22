@@ -14,8 +14,26 @@
  * limitations under the License.
  */
 
+package com.github.i49.pulp.api.metadata;
+
+import java.util.Locale;
+
 /**
- * Provides Service Provider Interface (SPI) for API implementors.
- * This package is not for API users.
+ * The language of the content of the given rendition.
  */
-package com.github.i49.pulp.api.spi;
+public interface Language extends Property {
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	default Term getTerm() {
+		return BasicTerm.LANGUAGE;
+	}
+	
+	/**
+	 * Returns the language as an instance of {@link Locale}.
+	 * @return the language.
+	 */
+	Locale getLanguage();
+}

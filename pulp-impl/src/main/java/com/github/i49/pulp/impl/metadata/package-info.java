@@ -15,6 +15,6 @@
  */
 
 /**
- * Provides the implementations of the metadata properties.
+ * Provides the implementations of the metadata and the properties.
  */
 package com.github.i49.pulp.impl.metadata;

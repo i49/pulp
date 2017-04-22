@@ -30,6 +30,7 @@ import java.util.Locale;
  * <li>{@link Description}</li>
  * <li>{@link Format}</li>
  * <li>{@link Identifier}</li>
+ * <li>{@link Language}</li>
  * <li>{@link Publisher}</li>
  * <li>{@link Relation}</li>
  * <li>{@link Rights}</li>
@@ -219,6 +220,26 @@ public interface PropertyFactory {
 	 */
 	Identifier newIdentifier(String value, URI schemeURI);
 
+	/**
+	 * Creates an instance of {@link Language}
+	 * for the specified IETF BCP 47 language tag string.
+	 * 
+	 * @param languageTag the language tag defined in IETF BCP 47.
+	 * @return newly created {@link Language}.
+	 * @throws IllegalArgumentException if {@code languageTag} was {@code null}.
+	 * @see <a href="http://www.ietf.org/rfc/bcp/bcp47.txt">Tags for Identifying Languages; Matching of Language Tags.</a>
+	 */
+	Language newLanguage(String languageTag);
+	
+	/**
+	 * Creates an instance of {@link Language}.
+	 * 
+	 * @param language the value of the language.
+	 * @return newly created {@link Language}.
+	 * @throws IllegalArgumentException if {@code language} was invalid.
+	 */
+	Language newLanguage(Locale language);
+	
 	/**
 	 * Creates an instance of {@link Publisher}.
 	 * 

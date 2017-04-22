@@ -14,8 +14,30 @@
  * limitations under the License.
  */
 
+package com.github.i49.pulp.impl.metadata;
+
+import java.util.Locale;
+
+import com.github.i49.pulp.api.metadata.Language;
+
 /**
- * Provides Service Provider Interface (SPI) for API implementors.
- * This package is not for API users.
+ * The default implementation of {@link Language}.
  */
-package com.github.i49.pulp.api.spi;
+public class DefaultLanguage extends AbstractProperty implements Language {
+
+	private final Locale value;
+	
+	public DefaultLanguage(Locale value) {
+		this.value = value;
+	}
+
+	@Override
+	public String getValue() {
+		return value.toLanguageTag();
+	}
+
+	@Override
+	public Locale getLanguage() {
+		return value;
+	}
+}

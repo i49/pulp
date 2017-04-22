@@ -17,7 +17,9 @@
 package com.github.i49.pulp.impl.metadata;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 import com.github.i49.pulp.api.metadata.Contributor;
@@ -28,7 +30,9 @@ import com.github.i49.pulp.api.metadata.Direction;
 import com.github.i49.pulp.api.metadata.Format;
 import com.github.i49.pulp.api.metadata.Identifier;
 import com.github.i49.pulp.api.metadata.IdentifierScheme;
+import com.github.i49.pulp.api.metadata.Language;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
+import com.github.i49.pulp.api.metadata.PublicationType;
 import com.github.i49.pulp.api.metadata.Publisher;
 import com.github.i49.pulp.api.metadata.Relation;
 import com.github.i49.pulp.api.metadata.RelatorBuilder;
@@ -44,6 +48,14 @@ import com.github.i49.pulp.api.metadata.Type;
  * The single implementation of {@link PropertyFactory}.
  */
 public class DefaultPropertyFactory implements PropertyFactory {
+	
+	private static final Map<String, PublicationType> PREDEFINED_TYPES = new HashMap<>();
+	
+	static {
+		for (PublicationType type: PublicationType.values()) {
+			PREDEFINED_TYPES.put(type.getValue(), type);
+		}
+	}
 
 	@Override
 	public RelatorBuilder<Contributor> getContributorBuilder(String name) {
@@ -163,6 +175,18 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	}
 
 	@Override
+	public Language newLanguage(String languageTag) {
+		requireNonNull(languageTag, "languageTag");
+		return newLanguage(Locale.forLanguageTag(languageTag));
+	}
+
+	@Override
+	public Language newLanguage(Locale language) {
+		requireNonNull(language, "language");
+		return new DefaultLanguage(language);
+	}
+	
+	@Override
 	public Publisher newPublisher(String name) {
 		return getPublisherBuilder(name).build();
 	}
@@ -262,7 +286,8 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	@Override
 	public Type newType(String value) {
 		value = requireNonEmpty(value, "value");
-		return new DefaultType(value);
+		Type type = PREDEFINED_TYPES.get(value);
+		return (type != null) ? type : new DefaultType(value);
 	}
 	
 	private static <T> void requireNonNull(T object, String name) {

@@ -191,6 +191,36 @@ public class PropertyFactoryTest {
 		assertThat(identifier.getSchemeURI()).isEmpty();
 	}
 	
+	/* newLanguage(String) */
+
+	@Test
+	public void newLanguage_shouldCreateLanguageByLanguageTag() {
+		Language p = factory.newLanguage("en-US");
+		assertThat(p.getTerm()).isSameAs(BasicTerm.LANGUAGE);
+		assertThat(p.getValue()).isEqualTo("en-US");
+		assertThat(p.getLanguage()).isEqualTo(Locale.forLanguageTag("en-US"));
+	}
+	
+	/* newLanguage(Locale) */
+	
+	@Test
+	public void newLanguage_shouldCreateLanguageByLocale() {
+		Locale language = Locale.forLanguageTag("en-US");
+		Language p = factory.newLanguage(language);
+		assertThat(p.getTerm()).isSameAs(BasicTerm.LANGUAGE);
+		assertThat(p.getValue()).isEqualTo("en-US");
+		assertThat(p.getLanguage()).isSameAs(language);
+	}
+
+	@Test
+	public void newLanguage_shouldCreateLanguageByPredefinedLocale() {
+		Locale language = Locale.FRENCH;
+		Language p = factory.newLanguage(language);
+		assertThat(p.getTerm()).isSameAs(BasicTerm.LANGUAGE);
+		assertThat(p.getValue()).isEqualTo("fr");
+		assertThat(p.getLanguage()).isSameAs(language);
+	}
+
 	/* newPublisher(String) */
 	
 	@Test
@@ -324,8 +354,17 @@ public class PropertyFactoryTest {
 	
 	@Test
 	public void newType_shouldCreateType() {
+		String value = "logbook";
+		Type p = factory.newType(value);
+		assertThat(p.getTerm()).isSameAs(BasicTerm.TYPE);
+		assertThat(p.getValue()).isEqualTo(value);
+	}
+
+	@Test
+	public void newType_shouldCreatePredefinedType() {
 		String value = "dictionary";
 		Type p = factory.newType(value);
+		assertThat(p).isSameAs(PublicationType.DICTIONARY);
 		assertThat(p.getTerm()).isSameAs(BasicTerm.TYPE);
 		assertThat(p.getValue()).isEqualTo(value);
 	}
