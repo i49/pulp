@@ -17,19 +17,29 @@
 package com.github.i49.pulp.core.metadata;
 
 import java.util.Locale;
-import java.util.Optional;
 
-import com.github.i49.pulp.api.metadata.BasicTerm;
-import com.github.i49.pulp.api.metadata.Direction;
-import com.github.i49.pulp.api.metadata.Rights;
+import com.github.i49.pulp.api.metadata.Representation;
 
 /**
- * An implementation of {@link Coverage}.
+ * The single implementation of {@link Representation}.
  */
-public class RightsImpl extends AbstractTextProperty implements Rights {
+public class DefaultRepresentation implements Representation {
 
-	public RightsImpl(String value, Optional<Locale> language, Optional<Direction> direction) {
-		super(BasicTerm.RIGHTS, value, language, direction);
+	private final String value;
+	private final Locale language;
+	
+	public DefaultRepresentation(String value, Locale language) {
+		this.value = value;
+		this.language = language;
+	}
+
+	@Override
+	public String getValue() {
+		return value;
+	}
+
+	@Override
+	public Locale getLanguage() {
+		return language;
 	}
 }
-

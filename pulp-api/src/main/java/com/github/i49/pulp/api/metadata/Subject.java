@@ -26,6 +26,14 @@ import java.util.Optional;
  */
 public interface Subject extends Property {
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	default Term getTerm() {
+		return BasicTerm.SUBJECT;
+	}
+	
 	Optional<SubjectAuthority> getAuthority();
 	
 	Optional<URI> getAuthorityScheme();

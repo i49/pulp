@@ -16,18 +16,16 @@
 
 package com.github.i49.pulp.core.metadata;
 
-import java.util.Locale;
 import java.util.Optional;
 
-import com.github.i49.pulp.api.metadata.BasicTerm;
 import com.github.i49.pulp.api.metadata.Representation;
 import com.github.i49.pulp.api.metadata.Title;
 import com.github.i49.pulp.api.metadata.TitleBuilder;
 
 /**
- * An implementation of {@link Title} property.
+ * The single implementation of {@link Title} property.
  */
-class TitleImpl extends AbstractTextProperty implements Title {
+class DefaultTitle extends AbstractTextProperty implements Title {
 	
 	private final String normalizedValue;
 	private final Optional<Representation> alternative;
@@ -36,14 +34,17 @@ class TitleImpl extends AbstractTextProperty implements Title {
 		return new Builder(value);
 	}
 	
-	private TitleImpl(Builder builder) {
-		super(BasicTerm.TITLE, builder.value, builder);
-		this.normalizedValue = builder.normalizedValue;
-		this.alternative = Optional.of(builder.alternative);
+	private DefaultTitle(Builder builder) {
+		super(builder);
+		this.normalizedValue = builder.getNormalizedValue();
+		this.alternative = Optional.ofNullable(builder.getAlternative());
 	}
 
 	@Override
 	public String getNormalizedValue() {
+		if (normalizedValue == null) {
+			return getValue();
+		}
 		return normalizedValue;
 	}
 	
@@ -52,40 +53,15 @@ class TitleImpl extends AbstractTextProperty implements Title {
 		return alternative;
 	}
 	
-	private static class Builder extends AbstractTextProperty.Builder<Title, TitleBuilder> implements TitleBuilder {
+	private static class Builder extends AbstractPropertyBuilder<Title, TitleBuilder> implements TitleBuilder {
 
-		private final String value;
-		private String normalizedValue;
-		private Representation alternative;
-		
-		Builder(String value) {
-			this.value = value;
+		private Builder(String value) {
+			super(value);
 		}
 		
-		@Override
-		public TitleBuilder fileAs(String value) {
-			if (value == null) {
-				throw new IllegalArgumentException("\"value\" must not be null"); 
-			}
-			this.normalizedValue = value;
-			return this;
-		}
-
-		@Override
-		public TitleBuilder alternative(String value, Locale language) {
-			if (value == null) {
-				throw new IllegalArgumentException("\"value\" must not be null"); 
-			}
-			if (language == null) {
-				throw new IllegalArgumentException("\"language\" must not be null"); 
-			}
-			// TODO Auto-generated method stub
-			return null;
-		}
-
 		@Override
 		public Title build() {
-			return new TitleImpl(this);
+			return new DefaultTitle(this);
 		}
 	}
 }

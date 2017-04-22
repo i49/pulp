@@ -16,15 +16,18 @@
 
 package com.github.i49.pulp.core.metadata;
 
-import com.github.i49.pulp.api.metadata.Property;
+import java.util.Locale;
+import java.util.Optional;
+
+import com.github.i49.pulp.api.metadata.Coverage;
+import com.github.i49.pulp.api.metadata.Direction;
 
 /**
- * A skeletal implementation of {@link Property}.
+ * The single implementation of {@link Coverage}.
  */
-abstract class AbstractProperty implements Property {
+class DefaultCoverage extends AbstractTextProperty implements Coverage {
 
-	@Override
-	public String toString() {
-		return getValue();
+	public DefaultCoverage(String value, Optional<Locale> language, Optional<Direction> direction) {
+		super(value, language, direction);
 	}
 }

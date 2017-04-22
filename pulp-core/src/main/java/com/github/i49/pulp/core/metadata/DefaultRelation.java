@@ -19,16 +19,15 @@ package com.github.i49.pulp.core.metadata;
 import java.util.Locale;
 import java.util.Optional;
 
-import com.github.i49.pulp.api.metadata.BasicTerm;
 import com.github.i49.pulp.api.metadata.Direction;
 import com.github.i49.pulp.api.metadata.Relation;
 
 /**
- * An implementation of {@link Description}.
+ * The single implementation of {@link Description}.
  */
-public class RelationImpl extends AbstractTextProperty implements Relation {
+public class DefaultRelation extends AbstractTextProperty implements Relation {
 
-	public RelationImpl(String value, Optional<Locale> language, Optional<Direction> direction) {
-		super(BasicTerm.RELATION, value, language, direction);
+	public DefaultRelation(String value, Optional<Locale> language, Optional<Direction> direction) {
+		super(value, language, direction);
 	}
 }

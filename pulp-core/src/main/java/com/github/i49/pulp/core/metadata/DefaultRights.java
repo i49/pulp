@@ -19,16 +19,16 @@ package com.github.i49.pulp.core.metadata;
 import java.util.Locale;
 import java.util.Optional;
 
-import com.github.i49.pulp.api.metadata.BasicTerm;
-import com.github.i49.pulp.api.metadata.Description;
 import com.github.i49.pulp.api.metadata.Direction;
+import com.github.i49.pulp.api.metadata.Rights;
 
 /**
- * An implementation of {@link Description}.
+ * The single implementation of {@link Coverage}.
  */
-public class DescriptionImpl extends AbstractTextProperty implements Description {
+public class DefaultRights extends AbstractTextProperty implements Rights {
 
-	public DescriptionImpl(String value, Optional<Locale> language, Optional<Direction> direction) {
-		super(BasicTerm.DESCRIPTION, value, language, direction);
+	public DefaultRights(String value, Optional<Locale> language, Optional<Direction> direction) {
+		super(value, language, direction);
 	}
 }
+

@@ -22,4 +22,12 @@ package com.github.i49.pulp.api.metadata;
  * @see <a href="http://dublincore.org/documents/dces/#relation">Dublin Core Metadata Element Set, Version 1.1</a> 
  */
 public interface Relation extends TextProperty {
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	default Term getTerm() {
+		return BasicTerm.RELATION;
+	}
 }

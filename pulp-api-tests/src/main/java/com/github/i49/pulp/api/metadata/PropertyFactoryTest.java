@@ -37,6 +37,36 @@ public class PropertyFactoryTest {
 		factory = Epub.createMetadataPropertyFactory();
 	}
 
+	/* newContributor(String) */
+	
+	@Test
+	public void newContributor_shouldCreateContributor() {
+		String name = "John Smith";
+		Contributor p = factory.newContributor(name);
+		assertThat(p.getTerm()).isSameAs(BasicTerm.CONTRIBUTOR);
+		assertThat(p.getValue()).isEqualTo(name);
+		assertThat(p.getNormalizedValue()).isEqualTo(name);
+		assertThat(p.getLanguage()).isEmpty();
+		assertThat(p.getDirection()).isEmpty();
+		assertThat(p.getAlternativeRepresentation()).isEmpty();
+		assertThat(p.getRole()).isEmpty();
+	}
+
+	/* newContributor(String, Locale) */
+
+	@Test
+	public void newContributor_shouldCreateContributorWithLanguage() {
+		String name = "Hans Schmidt";
+		Contributor p = factory.newContributor(name, Locale.GERMAN);
+		assertThat(p.getTerm()).isSameAs(BasicTerm.CONTRIBUTOR);
+		assertThat(p.getValue()).isEqualTo(name);
+		assertThat(p.getNormalizedValue()).isEqualTo(name);
+		assertThat(p.getLanguage()).hasValue(Locale.GERMAN);
+		assertThat(p.getDirection()).isEmpty();
+		assertThat(p.getAlternativeRepresentation()).isEmpty();
+		assertThat(p.getRole()).isEmpty();
+	}
+	
 	/* newCoverage(String) */
 	
 	@Test
@@ -61,6 +91,36 @@ public class PropertyFactoryTest {
 		assertThat(p.getDirection()).isEmpty();
 	}
 
+	/* newCreator(String) */
+	
+	@Test
+	public void newCreator_shouldCreateCreator() {
+		String name = "John Smith";
+		Creator p = factory.newCreator(name);
+		assertThat(p.getTerm()).isSameAs(BasicTerm.CREATOR);
+		assertThat(p.getValue()).isEqualTo(name);
+		assertThat(p.getNormalizedValue()).isEqualTo(name);
+		assertThat(p.getLanguage()).isEmpty();
+		assertThat(p.getDirection()).isEmpty();
+		assertThat(p.getAlternativeRepresentation()).isEmpty();
+		assertThat(p.getRole()).isEmpty();
+	}
+
+	/* newCreator(String, Locale) */
+
+	@Test
+	public void newCreator_shouldCreateCreatorWithLanguage() {
+		String name = "Hans Schmidt";
+		Creator p = factory.newCreator(name, Locale.GERMAN);
+		assertThat(p.getTerm()).isSameAs(BasicTerm.CREATOR);
+		assertThat(p.getValue()).isEqualTo(name);
+		assertThat(p.getNormalizedValue()).isEqualTo(name);
+		assertThat(p.getLanguage()).hasValue(Locale.GERMAN);
+		assertThat(p.getDirection()).isEmpty();
+		assertThat(p.getAlternativeRepresentation()).isEmpty();
+		assertThat(p.getRole()).isEmpty();
+	}
+	
 	/* newDescription(String) */
 	
 	@Test
@@ -118,6 +178,36 @@ public class PropertyFactoryTest {
 		assertThat(identifier.getValue()).isEqualTo(value);
 		assertThat(identifier.getScheme()).hasValue(IdentifierScheme.ISBN);
 		assertThat(identifier.getSchemeURI()).isEmpty();
+	}
+	
+	/* newPublisher(String) */
+	
+	@Test
+	public void newPublisher_shouldCreatePublisher() {
+		String name = "O’Reilly Media, Inc.";
+		Publisher p = factory.newPublisher(name);
+		assertThat(p.getTerm()).isSameAs(BasicTerm.PUBLISHER);
+		assertThat(p.getValue()).isEqualTo(name);
+		assertThat(p.getNormalizedValue()).isEqualTo(name);
+		assertThat(p.getLanguage()).isEmpty();
+		assertThat(p.getDirection()).isEmpty();
+		assertThat(p.getAlternativeRepresentation()).isEmpty();
+		assertThat(p.getRole()).hasValue("pbl");
+	}
+
+	/* newPublisher(String, Locale) */
+
+	@Test
+	public void newPublisher_shouldCreatePublisherWithLanguage() {
+		String name = "Lagardère Publishing";
+		Publisher p = factory.newPublisher(name, Locale.FRENCH);
+		assertThat(p.getTerm()).isSameAs(BasicTerm.PUBLISHER);
+		assertThat(p.getValue()).isEqualTo(name);
+		assertThat(p.getNormalizedValue()).isEqualTo(name);
+		assertThat(p.getLanguage()).hasValue(Locale.FRENCH);
+		assertThat(p.getDirection()).isEmpty();
+		assertThat(p.getAlternativeRepresentation()).isEmpty();
+		assertThat(p.getRole()).hasValue("pbl");
 	}
 	
 	/* newRelation(String) */

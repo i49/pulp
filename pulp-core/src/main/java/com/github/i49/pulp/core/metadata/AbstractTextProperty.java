@@ -20,28 +20,32 @@ import java.util.Locale;
 import java.util.Optional;
 
 import com.github.i49.pulp.api.metadata.Direction;
-import com.github.i49.pulp.api.metadata.Term;
 import com.github.i49.pulp.api.metadata.TextProperty;
-import com.github.i49.pulp.api.metadata.TextPropertyBuilder;
 
 /**
  * A skeletal implementation of {@link TextProperty}.
  */
 abstract class AbstractTextProperty extends AbstractProperty implements TextProperty {
 	
+	private final String value;
 	private final Optional<Locale> language;
 	private final Optional<Direction> direction;
 	
-	protected AbstractTextProperty(Term term, String value, Optional<Locale> language, Optional<Direction> direction) {
-		super(term, value);
+	protected AbstractTextProperty(String value, Optional<Locale> language, Optional<Direction> direction) {
+		this.value = value;
 		this.language = language;
 		this.direction = direction;
 	}
 	
-	protected AbstractTextProperty(Term term, String value, Builder<?, ?> builder) {
-		super(term, value);
-		this.language = Optional.of(builder.langauge);
-		this.direction = Optional.of(builder.direction);
+	protected AbstractTextProperty(AbstractPropertyBuilder<?, ?> builder) {
+		this.value = builder.getValue();
+		this.language = Optional.ofNullable(builder.getLanguage());
+		this.direction = Optional.ofNullable(builder.getDirection());
+	}
+	
+	@Override
+	public String getValue() {
+		return value;
 	}
 	
 	@Override
@@ -52,32 +56,6 @@ abstract class AbstractTextProperty extends AbstractProperty implements TextProp
 	@Override
 	public Optional<Direction> getDirection() {
 		return direction;
-	}
-	
-	abstract static class Builder<P extends TextProperty, T extends TextPropertyBuilder<P, T>> implements TextPropertyBuilder<P, T> {
-
-		private Locale langauge;
-		private Direction direction;
-		
-		@SuppressWarnings("unchecked")
-		@Override
-		public T language(Locale language) {
-			if (language == null) {
-				throw new IllegalArgumentException("\"language\" must not be null"); 
-			}
-			this.langauge = language;
-			return (T)this;
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public T direction(Direction direction) {
-			if (direction == null) {
-				throw new IllegalArgumentException("\"direction\" must not be null"); 
-			}
-			this.direction = direction;
-			return (T)this;
-		}
 	}
 }
 

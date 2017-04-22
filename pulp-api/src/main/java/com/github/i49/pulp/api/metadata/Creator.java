@@ -23,4 +23,12 @@ package com.github.i49.pulp.api.metadata;
  * @see <a href="http://dublincore.org/documents/dces/#creator">Dublin Core Metadata Element Set, Version 1.1</a> 
  */
 public interface Creator extends Relator {
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	default Term getTerm() {
+		return BasicTerm.CREATOR;
+	}
 }

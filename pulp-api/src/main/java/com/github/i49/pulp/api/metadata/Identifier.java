@@ -25,6 +25,14 @@ import java.util.Optional;
  * @see <a href="http://dublincore.org/documents/dces/#identifier">Dublin Core Metadata Element Set, Version 1.1</a> 
  */
 public interface Identifier extends Property {
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	default Term getTerm() {
+		return BasicTerm.IDENTIFIER;
+	}
 	
 	/**
 	 * Returns the scheme used for this identifier.

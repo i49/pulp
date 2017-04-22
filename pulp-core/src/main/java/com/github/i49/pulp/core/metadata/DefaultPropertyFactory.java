@@ -41,52 +41,50 @@ import com.github.i49.pulp.api.metadata.TitleBuilder;
 import com.github.i49.pulp.api.metadata.Type;
 
 /**
- * An implementation of {@link PropertyFactory}.
+ * The single implementation of {@link PropertyFactory}.
  */
-public class PropertyFactoryImpl implements PropertyFactory {
+public class DefaultPropertyFactory implements PropertyFactory {
 
 	@Override
-	public RelatorBuilder<Contributor> builderForContributor(String name) {
-		// TODO Auto-generated method stub
-		return null;
+	public RelatorBuilder<Contributor> getContributorBuilder(String name) {
+		assertNotNull(name, "name");
+		return DefaultContributor.builder(name);
 	}
 
 	@Override
-	public RelatorBuilder<Creator> builderForCreator(String name) {
-		// TODO Auto-generated method stub
-		return null;
+	public RelatorBuilder<Creator> getCreatorBuilder(String name) {
+		assertNotNull(name, "name");
+		return DefaultCreator.builder(name);
 	}
 
 	@Override
-	public RelatorBuilder<Publisher> builderForPublisher(String name) {
-		// TODO Auto-generated method stub
-		return null;
+	public RelatorBuilder<Publisher> getPublisherBuilder(String name) {
+		assertNotNull(name, "name");
+		return DefaultPublisher.builder(name);
 	}
 
 	@Override
-	public TitleBuilder builderForTitle(String value) {
+	public TitleBuilder getTitleBuilder(String value) {
 		assertNotNull(value, "value");
 		value = validatePropertyValue(value);
-		return TitleImpl.builder(value);
+		return DefaultTitle.builder(value);
 	}
 
 	@Override
 	public Contributor newContributor(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return getContributorBuilder(name).build();
 	}
 
 	@Override
 	public Contributor newContributor(String name, Locale language) {
-		// TODO Auto-generated method stub
-		return null;
+		return getContributorBuilder(name).language(language).build();
 	}
 
 	@Override
 	public Coverage newCoverage(String text) {
 		assertNotNull(text, "text");
 		text = validatePropertyValue(text);
-		return new CoverageImpl(text, Optional.empty(), Optional.empty());
+		return new DefaultCoverage(text, Optional.empty(), Optional.empty());
 	}
 
 	@Override
@@ -94,7 +92,7 @@ public class PropertyFactoryImpl implements PropertyFactory {
 		assertNotNull(text, "text");
 		assertNotNull(language, "language");
 		text = validatePropertyValue(text);
-		return new CoverageImpl(text, Optional.of(language), Optional.empty());
+		return new DefaultCoverage(text, Optional.of(language), Optional.empty());
 	}
 
 	@Override
@@ -103,26 +101,24 @@ public class PropertyFactoryImpl implements PropertyFactory {
 		assertNotNull(language, "language");
 		assertNotNull(direction, "direction");
 		text = validatePropertyValue(text);
-		return new CoverageImpl(text, Optional.of(language), Optional.of(direction));
+		return new DefaultCoverage(text, Optional.of(language), Optional.of(direction));
 	}
 
 	@Override
 	public Creator newCreator(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return getCreatorBuilder(name).build();
 	}
 
 	@Override
 	public Creator newCreator(String name, Locale language) {
-		// TODO Auto-generated method stub
-		return null;
+		return getCreatorBuilder(name).language(language).build();
 	}
 
 	@Override
 	public Description newDescription(String text) {
 		assertNotNull(text, "text");
 		text = validatePropertyValue(text);
-		return new DescriptionImpl(text, Optional.empty(), Optional.empty());
+		return new DefaultDescription(text, Optional.empty(), Optional.empty());
 	}
 
 	@Override
@@ -130,7 +126,7 @@ public class PropertyFactoryImpl implements PropertyFactory {
 		assertNotNull(text, "text");
 		assertNotNull(language, "language");
 		text = validatePropertyValue(text);
-		return new DescriptionImpl(text, Optional.of(language), Optional.empty());
+		return new DefaultDescription(text, Optional.of(language), Optional.empty());
 	}
 
 	@Override
@@ -139,7 +135,7 @@ public class PropertyFactoryImpl implements PropertyFactory {
 		assertNotNull(language, "language");
 		assertNotNull(direction, "direction");
 		text = validatePropertyValue(text);
-		return new DescriptionImpl(text, Optional.of(language), Optional.of(direction));
+		return new DefaultDescription(text, Optional.of(language), Optional.of(direction));
 	}
 
 	@Override
@@ -150,14 +146,14 @@ public class PropertyFactoryImpl implements PropertyFactory {
 
 	@Override
 	public Identifier newIdentifier() {
-		return IdentifierImpl.ofRandomUUID();
+		return DefaultIdentifier.ofRandomUUID();
 	}
 
 	@Override
 	public Identifier newIdentifier(String value) {
 		assertNotNull(value, "value");
 		value = validatePropertyValue(value);
-		return new IdentifierImpl(value);
+		return new DefaultIdentifier(value);
 	}
 
 	@Override
@@ -165,7 +161,7 @@ public class PropertyFactoryImpl implements PropertyFactory {
 		assertNotNull(value, "value");
 		assertNotNull(scheme, "scheme");
 		value = validatePropertyValue(value);
-		return new IdentifierImpl(value, scheme);
+		return new DefaultIdentifier(value, scheme);
 	}
 
 	@Override
@@ -173,26 +169,24 @@ public class PropertyFactoryImpl implements PropertyFactory {
 		assertNotNull(value, "value");
 		assertNotNull(schemeURI, "schemeURI");
 		value = validatePropertyValue(value);
-		return new IdentifierImpl(value, schemeURI);
+		return new DefaultIdentifier(value, schemeURI);
 	}
 
 	@Override
 	public Publisher newPublisher(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return getPublisherBuilder(name).build();
 	}
 
 	@Override
 	public Publisher newPublisher(String name, Locale language) {
-		// TODO Auto-generated method stub
-		return null;
+		return getPublisherBuilder(name).language(language).build();
 	}
 
 	@Override
 	public Relation newRelation(String text) {
 		assertNotNull(text, "text");
 		text = validatePropertyValue(text);
-		return new RelationImpl(text, Optional.empty(), Optional.empty());
+		return new DefaultRelation(text, Optional.empty(), Optional.empty());
 	}
 
 	@Override
@@ -200,7 +194,7 @@ public class PropertyFactoryImpl implements PropertyFactory {
 		assertNotNull(text, "text");
 		assertNotNull(language, "language");
 		text = validatePropertyValue(text);
-		return new RelationImpl(text, Optional.of(language), Optional.empty());
+		return new DefaultRelation(text, Optional.of(language), Optional.empty());
 	}
 
 	@Override
@@ -209,14 +203,14 @@ public class PropertyFactoryImpl implements PropertyFactory {
 		assertNotNull(language, "language");
 		assertNotNull(direction, "direction");
 		text = validatePropertyValue(text);
-		return new RelationImpl(text, Optional.of(language), Optional.of(direction));
+		return new DefaultRelation(text, Optional.of(language), Optional.of(direction));
 	}
 
 	@Override
 	public Rights newRights(String text) {
 		assertNotNull(text, "text");
 		text = validatePropertyValue(text);
-		return new RightsImpl(text, Optional.empty(), Optional.empty());
+		return new DefaultRights(text, Optional.empty(), Optional.empty());
 	}
 
 	@Override
@@ -224,7 +218,7 @@ public class PropertyFactoryImpl implements PropertyFactory {
 		assertNotNull(text, "text");
 		assertNotNull(language, "language");
 		text = validatePropertyValue(text);
-		return new RightsImpl(text, Optional.of(language), Optional.empty());
+		return new DefaultRights(text, Optional.of(language), Optional.empty());
 	}
 
 	@Override
@@ -233,7 +227,7 @@ public class PropertyFactoryImpl implements PropertyFactory {
 		assertNotNull(language, "language");
 		assertNotNull(direction, "direction");
 		text = validatePropertyValue(text);
-		return new RightsImpl(text, Optional.of(language), Optional.of(direction));
+		return new DefaultRights(text, Optional.of(language), Optional.of(direction));
 	}
 
 	@Override
@@ -268,12 +262,12 @@ public class PropertyFactoryImpl implements PropertyFactory {
 
 	@Override
 	public Title newTitle(String value) {
-		return builderForTitle(value).build();
+		return getTitleBuilder(value).build();
 	}
 
 	@Override
 	public Title newTitle(String value, Locale language) {
-		return builderForTitle(value).language(language).build();
+		return getTitleBuilder(value).language(language).build();
 	}
 
 	@Override

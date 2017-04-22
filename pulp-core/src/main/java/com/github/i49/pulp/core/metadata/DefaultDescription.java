@@ -19,16 +19,15 @@ package com.github.i49.pulp.core.metadata;
 import java.util.Locale;
 import java.util.Optional;
 
-import com.github.i49.pulp.api.metadata.BasicTerm;
-import com.github.i49.pulp.api.metadata.Coverage;
+import com.github.i49.pulp.api.metadata.Description;
 import com.github.i49.pulp.api.metadata.Direction;
 
 /**
- * An implementation of {@link Coverage}.
+ * The single implementation of {@link Description}.
  */
-class CoverageImpl extends AbstractTextProperty implements Coverage {
+public class DefaultDescription extends AbstractTextProperty implements Description {
 
-	public CoverageImpl(String value, Optional<Locale> language, Optional<Direction> direction) {
-		super(BasicTerm.COVERAGE, value, language, direction);
+	public DefaultDescription(String value, Optional<Locale> language, Optional<Direction> direction) {
+		super(value, language, direction);
 	}
 }

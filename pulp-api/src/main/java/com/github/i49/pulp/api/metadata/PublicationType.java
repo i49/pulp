@@ -54,14 +54,6 @@ public enum PublicationType implements Type {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Term getTerm() {
-		return BasicTerm.TYPE;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public String getValue() {
 		return value;
 	}

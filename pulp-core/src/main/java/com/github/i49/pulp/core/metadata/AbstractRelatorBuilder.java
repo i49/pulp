@@ -16,15 +16,18 @@
 
 package com.github.i49.pulp.core.metadata;
 
-import com.github.i49.pulp.api.metadata.Property;
+import com.github.i49.pulp.api.metadata.Relator;
+import com.github.i49.pulp.api.metadata.RelatorBuilder;
 
 /**
- * A skeletal implementation of {@link Property}.
+ * A skeletal implementation of {@link RelatorBuilder}.
+ * 
+ * @param <P> the type of relator property.
  */
-abstract class AbstractProperty implements Property {
+abstract class AbstractRelatorBuilder<P extends Relator> 
+	extends AbstractPropertyBuilder<P, RelatorBuilder<P>> implements RelatorBuilder<P> {
 
-	@Override
-	public String toString() {
-		return getValue();
+	public AbstractRelatorBuilder(String value) {
+		super(value);
 	}
 }

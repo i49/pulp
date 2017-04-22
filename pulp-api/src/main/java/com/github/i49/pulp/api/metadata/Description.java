@@ -23,4 +23,11 @@ package com.github.i49.pulp.api.metadata;
  */
 public interface Description extends TextProperty {
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	default Term getTerm() {
+		return BasicTerm.DESCRIPTION;
+	}
 }

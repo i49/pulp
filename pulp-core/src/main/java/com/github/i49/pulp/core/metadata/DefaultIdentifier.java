@@ -20,40 +20,45 @@ import java.net.URI;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.github.i49.pulp.api.metadata.BasicTerm;
 import com.github.i49.pulp.api.metadata.Identifier;
 import com.github.i49.pulp.api.metadata.IdentifierScheme;
 
 /**
- * An implementation of {@link Identifier}.
+ * The single implementation of {@link Identifier}.
  */
-class IdentifierImpl extends AbstractProperty implements Identifier {
+class DefaultIdentifier extends AbstractProperty implements Identifier {
 	
+	private final String value;
 	private final Optional<IdentifierScheme> scheme;
 	private final Optional<URI> schemeURI;
 	
-	public static IdentifierImpl ofRandomUUID() {
+	public static DefaultIdentifier ofRandomUUID() {
 		UUID uuid = UUID.randomUUID();
 		String value = "urn:uuid:" + uuid.toString();
-		return new IdentifierImpl(value, IdentifierScheme.UUID);
+		return new DefaultIdentifier(value, IdentifierScheme.UUID);
 	}
 
-	public IdentifierImpl(String value) {
-		super(BasicTerm.IDENTIFIER, value);
+	public DefaultIdentifier(String value) {
+		this.value = value;
 		this.scheme = Optional.empty();
 		this.schemeURI = Optional.empty();
 	}
 
-	public IdentifierImpl(String value, IdentifierScheme scheme) {
-		super(BasicTerm.IDENTIFIER, value);
+	public DefaultIdentifier(String value, IdentifierScheme scheme) {
+		this.value = value;
 		this.scheme = Optional.of(scheme);
 		this.schemeURI = Optional.empty();
 	}
 
-	public IdentifierImpl(String value, URI schemeURI) {
-		super(BasicTerm.IDENTIFIER, value);
+	public DefaultIdentifier(String value, URI schemeURI) {
+		this.value = value;
 		this.scheme = Optional.empty();
 		this.schemeURI = Optional.of(schemeURI);
+	}
+
+	@Override
+	public String getValue() {
+		return value;
 	}
 	
 	@Override
