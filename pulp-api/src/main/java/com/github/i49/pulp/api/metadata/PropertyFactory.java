@@ -24,7 +24,7 @@ import java.util.Locale;
 /**
  * The factory for producing various kinds of properties of metadata.
  * 
- * <p>The following properties can be created by this type.</p>
+ * <p>The following properties can be instantiated via this interface.</p>
  * <ol>
  * <li>{@link Contributor}</li>
  * <li>{@link Coverage}</li>
@@ -47,7 +47,7 @@ import java.util.Locale;
 public interface PropertyFactory {
 
 	/**
-	 * Creates a builder to build an instance of {@link Contributor}.
+	 * Creates a builder to build an instance of {@link Contributor} property.
 	 * 
 	 * @param name the name of the person or organization.
 	 * @return a builder for building {@link Contributor}.
@@ -56,7 +56,7 @@ public interface PropertyFactory {
 	Relator.Builder<Contributor> getContributorBuilder(String name);
 
 	/**
-	 * Creates a builder to build an instance of {@link Creator}.
+	 * Creates a builder to build an instance of {@link Creator} property.
 	 * 
 	 * @param name the name of the person or organization.
 	 * @return a builder for building {@link Creator}.
@@ -65,7 +65,7 @@ public interface PropertyFactory {
 	Relator.Builder<Creator> getCreatorBuilder(String name);
 
 	/**
-	 * Creates a builder to build an instance of {@link Publisher}.
+	 * Creates a builder to build an instance of {@link Publisher} property.
 	 * 
 	 * @param name the name of the person or organization.
 	 * @return a builder for building {@link Publisher}.
@@ -74,7 +74,7 @@ public interface PropertyFactory {
 	Relator.Builder<Publisher> getPublisherBuilder(String name);
 	
 	/**
-	 * Creates a builder to build an instance of {@link Title}.
+	 * Creates a builder to build an instance of {@link Title} property.
 	 * 
 	 * @param value the value of the title.
 	 * @return a builder for building {@link Title}.
@@ -83,7 +83,7 @@ public interface PropertyFactory {
 	Title.Builder getTitleBuilder(String value);
 
 	/**
-	 * Creates an instance of {@link Contributor}.
+	 * Creates an instance of {@link Contributor} property.
 	 * 
 	 * @param name the name of the person or organization.
 	 * @return newly created {@link Contributor}.
@@ -92,7 +92,7 @@ public interface PropertyFactory {
 	Contributor newContributor(String name);
 
 	/**
-	 * Creates an instance of {@link Contributor} with a specific language.
+	 * Creates an instance of {@link Contributor} property with a specific language.
 	 * 
 	 * @param name the name of the person or organization.
 	 * @param language the language used for the name.
@@ -102,7 +102,7 @@ public interface PropertyFactory {
 	Contributor newContributor(String name, Locale language);
 
 	/**
-	 * Creates an instance of {@link Coverage}.
+	 * Creates an instance of {@link Coverage} property.
 	 * 
 	 * @param text the text describing the coverage.
 	 * @return newly created {@link Coverage}.
@@ -111,7 +111,7 @@ public interface PropertyFactory {
 	Coverage newCoverage(String text);
 
 	/**
-	 * Creates an instance of {@link Coverage} with the language specified.
+	 * Creates an instance of {@link Coverage} property with the language specified.
 	 * 
 	 * @param text the text describing the coverage.
 	 * @param language the language used for the text.
@@ -121,7 +121,7 @@ public interface PropertyFactory {
 	Coverage newCoverage(String text, Locale language);
 
 	/**
-	 * Creates an instance of {@link Coverage} with the language and the direction specified.
+	 * Creates an instance of {@link Coverage} property with the language and the direction specified.
 	 * 
 	 * @param text the text describing the coverage.
 	 * @param language the language used for the text.
@@ -132,7 +132,7 @@ public interface PropertyFactory {
 	Coverage newCoverage(String text, Locale language, Direction direction);
 	
 	/**
-	 * Creates an instance of {@link Creator}.
+	 * Creates an instance of {@link Creator} property.
 	 * 
 	 * @param name the name of the person or organization.
 	 * @return newly created {@link Creator}.
@@ -141,7 +141,7 @@ public interface PropertyFactory {
 	Creator newCreator(String name);
 
 	/**
-	 * Creates an instance of {@link Creator} with a specific language.
+	 * Creates an instance of {@link Creator} property with a specific language.
 	 * 
 	 * @param name the name of the person or organization.
 	 * @param language the language used for {@code name}.
@@ -151,7 +151,7 @@ public interface PropertyFactory {
 	Creator newCreator(String name, Locale language);
 	
 	/**
-	 * Creates an instance of {@link Date}.
+	 * Creates an instance of {@link Date} property.
 	 * 
 	 * @param dateTime the publication date and time.
 	 * @return newly created {@link Date}.
@@ -160,7 +160,7 @@ public interface PropertyFactory {
 	Date newDate(OffsetDateTime dateTime);
 
 	/**
-	 * Creates an instance of {@link Description}.
+	 * Creates an instance of {@link Description} property.
 	 * 
 	 * @param text the description of the rendition.
 	 * @return newly created {@link Description}.
@@ -169,7 +169,7 @@ public interface PropertyFactory {
 	Description newDescription(String text);
 
 	/**
-	 * Creates an instance of {@link Description} with the language specified.
+	 * Creates an instance of {@link Description} property with the language specified.
 	 * 
 	 * @param text the description of the rendition.
 	 * @param language the language of the description. 
@@ -179,7 +179,7 @@ public interface PropertyFactory {
 	Description newDescription(String text, Locale language);
 
 	/**
-	 * Creates an instance of {@link Description} with the language and the direction specified.
+	 * Creates an instance of {@link Description} property with the language and the direction specified.
 	 * 
 	 * @param text the description of the rendition.
 	 * @param language the language of the description. 
@@ -190,7 +190,7 @@ public interface PropertyFactory {
 	Description newDescription(String text, Locale language, Direction direction);
 	
 	/**
-	 * Creates an instance of {@link Format}.
+	 * Creates an instance of {@link Format} property.
 	 * 
 	 * @param value the value representing the format.
 	 * @return newly created {@link Format}.
@@ -199,14 +199,14 @@ public interface PropertyFactory {
 	Format newFormat(String value);
 	
 	/**
-	 * Creates an instance of {@link Identifier} by generating a random UUID.
+	 * Creates an instance of {@link Identifier} property by generating a random UUID.
 	 * 
 	 * @return newly created {@link Identifier}.
 	 */
 	Identifier newIdentifier();
 
 	/**
-	 * Creates an instance of {@link Identifier}.
+	 * Creates an instance of {@link Identifier} property.
 	 * 
 	 * @param value the value of the identifier.
 	 * @return newly created {@link Identifier}.
@@ -215,7 +215,7 @@ public interface PropertyFactory {
 	Identifier newIdentifier(String value);
 
 	/**
-	 * Creates an instance of {@link Identifier} with a explicit scheme.
+	 * Creates an instance of {@link Identifier} property with a explicit scheme.
 	 * 
 	 * @param value the value of the identifier.
 	 * @param scheme the scheme used for the identifier.
@@ -225,7 +225,7 @@ public interface PropertyFactory {
 	Identifier newIdentifier(String value, IdentifierScheme scheme);
 
 	/**
-	 * Creates an instance of {@link Identifier} with a explicit scheme specified by URI.
+	 * Creates an instance of {@link Identifier} property with a explicit scheme specified by URI.
 	 * 
 	 * @param value the value of the identifier.
 	 * @param schemeURI the URI representing the scheme used for the identifier.
@@ -235,7 +235,7 @@ public interface PropertyFactory {
 	Identifier newIdentifier(String value, URI schemeURI);
 
 	/**
-	 * Creates an instance of {@link Language}
+	 * Creates an instance of {@link Language} property
 	 * for the specified IETF BCP 47 language tag string.
 	 * 
 	 * @param languageTag the language tag defined in IETF BCP 47, such as "en-US".
@@ -247,7 +247,7 @@ public interface PropertyFactory {
 	Language newLanguage(String languageTag);
 	
 	/**
-	 * Creates an instance of {@link Language}.
+	 * Creates an instance of {@link Language} property.
 	 * 
 	 * @param language the value of the language.
 	 * @return newly created {@link Language}.
@@ -256,7 +256,7 @@ public interface PropertyFactory {
 	Language newLanguage(Locale language);
 	
 	/**
-	 * Creates an instance of {@link Modified}.
+	 * Creates an instance of {@link Modified} property.
 	 * 
 	 * @param dateTime the last modification date and time of the publication.
 	 * @return newly created {@link Modified}.
@@ -265,7 +265,7 @@ public interface PropertyFactory {
 	Modified newModified(OffsetDateTime dateTime);
 	
 	/**
-	 * Creates an instance of {@link Publisher}.
+	 * Creates an instance of {@link Publisher} property.
 	 * 
 	 * @param name the name of the person or organization.
 	 * @return newly created {@link Publisher}.
@@ -274,7 +274,7 @@ public interface PropertyFactory {
 	Publisher newPublisher(String name);
 
 	/**
-	 * Creates an instance of {@link Publisher} with a specific language.
+	 * Creates an instance of {@link Publisher} property with a specific language.
 	 * 
 	 * @param name the name of the person or organization.
 	 * @param language the language used for {@code name}.
@@ -284,7 +284,7 @@ public interface PropertyFactory {
 	Publisher newPublisher(String name, Locale language);
 
 	/**
-	 * Creates an instance of {@link Relation}.
+	 * Creates an instance of {@link Relation} property.
 	 * 
 	 * @param text the text describing the related resource.
 	 * @return newly created {@link Relation}.
@@ -293,7 +293,7 @@ public interface PropertyFactory {
 	Relation newRelation(String text);
 
 	/**
-	 * Creates an instance of {@link Relation} with the language specified.
+	 * Creates an instance of {@link Relation} property with the language specified.
 	 * 
 	 * @param text the text describing the related resource.
 	 * @param language the language used for the text.
@@ -303,7 +303,7 @@ public interface PropertyFactory {
 	Relation newRelation(String text, Locale language);
 
 	/**
-	 * Creates an instance of {@link Relation}  with the language and the direction specified.
+	 * Creates an instance of {@link Relation} property with the language and the direction specified.
 	 * 
 	 * @param text the text describing the related resource.
 	 * @param language the language used for the text.
@@ -314,7 +314,7 @@ public interface PropertyFactory {
 	Relation newRelation(String text, Locale language, Direction direction);
 	
 	/**
-	 * Creates an instance of {@link Rights}.
+	 * Creates an instance of {@link Rights} property.
 	 * 
 	 * @param text the text describing the rights.
 	 * @return newly created {@link Rights}.
@@ -323,7 +323,7 @@ public interface PropertyFactory {
 	Rights newRights(String text);
 
 	/**
-	 * Creates an instance of {@link Rights} with the language specified.
+	 * Creates an instance of {@link Rights} property with the language specified.
 	 * 
 	 * @param text the text describing the rights.
 	 * @param language the language used for the text.
@@ -333,7 +333,7 @@ public interface PropertyFactory {
 	Rights newRights(String text, Locale language);
 
 	/**
-	 * Creates an instance of {@link Rights} with the language and the direction specified.
+	 * Creates an instance of {@link Rights} property with the language and the direction specified.
 	 * 
 	 * @param text the text describing the rights.
 	 * @param language the language used for the text.
@@ -344,7 +344,7 @@ public interface PropertyFactory {
 	Rights newRights(String text, Locale language, Direction direction);
 	
 	/**
-	 * Creates an instance of {@link Source}.
+	 * Creates an instance of {@link Source} property.
 	 * 
 	 * @param value the text describing the source.
 	 * @return newly created {@link Source}.
@@ -353,7 +353,7 @@ public interface PropertyFactory {
 	Source newSource(String value);
 	
 	/**
-	 * Creates an instance of {@link Source} with a specific scheme.
+	 * Creates an instance of {@link Source} property with a specific scheme.
 	 * 
 	 * @param value the text describing the source.
 	 * @param scheme the scheme used to represent the source.
@@ -363,7 +363,7 @@ public interface PropertyFactory {
 	Source newSource(String value, String scheme);
 
 	/**
-	 * Creates an instance of {@link Subject}.
+	 * Creates an instance of {@link Subject} property.
 	 * 
 	 * @param value the text describing the source.
 	 * @return newly created {@link Subject}.
@@ -372,7 +372,7 @@ public interface PropertyFactory {
 	Subject newSubject(String value);
 
 	/**
-	 * Creates an instance of {@link Subject} with a specific authority.
+	 * Creates an instance of {@link Subject} property with a specific authority.
 	 * 
 	 * @param value the text describing the source.
 	 * @param authority the authority used for selecting the subject.
@@ -383,7 +383,7 @@ public interface PropertyFactory {
 	Subject newSubject(String value, SubjectAuthority authority, String code);
 
 	/**
-	 * Creates an instance of {@link Subject} with a specific scheme.
+	 * Creates an instance of {@link Subject} property with a specific scheme.
 	 * 
 	 * @param value the text describing the source.
 	 * @param scheme the scheme used for selecting the subject.
@@ -394,7 +394,7 @@ public interface PropertyFactory {
 	Subject newSubject(String value, URI scheme, String code);
 	
 	/**
-	 * Creates an instance of {@link Title}.
+	 * Creates an instance of {@link Title} property.
 	 * 
 	 * @param value the value of the title.
 	 * @return newly created {@link Title}.
@@ -403,7 +403,7 @@ public interface PropertyFactory {
 	Title newTitle(String value);
 
 	/**
-	 * Creates an instance of {@link Title} with a specific language.
+	 * Creates an instance of {@link Title} property with a specific language.
 	 * 
 	 * @param value the value of the title.
 	 * @param language the language used for the title.
@@ -413,9 +413,9 @@ public interface PropertyFactory {
 	Title newTitle(String value, Locale language);
 
 	/**
-	 * Creates an instance of {@link Type}.
+	 * Creates an instance of {@link Type} property.
 	 * <p>
-	 * The members of {@link PublicationType} are also available.
+	 * The members of {@link PublicationType} are also available as instances.
 	 * </p>
 	 * 
 	 * @param value the value representing the type.
