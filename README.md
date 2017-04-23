@@ -10,11 +10,11 @@ This project is composed of the following modules.
 Modules                     |Description                                 |Status
 ----------------------------|--------------------------------------------|---------
 pulp-api                    |Java API for EPUB processing                |Pre-alpha
-pulp-api-tests              |Unit tests for the API implementation       |-   
-pulp-api-tests-with-samples |Testing with IDPF EPUB3 samples             |-
+pulp-api-impl               |Reference implementation of the API         |Pre-alpha
+pulp-api-it                 |Integration tests with IDPF EPUB3 samples   |-
+pulp-api-ut                 |Unit tests for the API implementation       |-   
 pulp-cli                    |Command line utility built on the API       |Pre-alpha
 pulp-distribution           |Distribution file generator                 |-
-pulp-impl                   |Reference implementation of the API         |Pre-alpha
 pulp-parent                 |Common settings for all other modules above |-
 
 ## How To Build
