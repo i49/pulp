@@ -29,6 +29,7 @@ import java.util.Locale;
  * <li>{@link Contributor}</li>
  * <li>{@link Coverage}</li>
  * <li>{@link Creator}</li>
+ * <li>{@link Date}</li>
  * <li>{@link Description}</li>
  * <li>{@link Format}</li>
  * <li>{@link Identifier}</li>
@@ -39,6 +40,8 @@ import java.util.Locale;
  * <li>{@link Source}</li>
  * <li>{@link Subject}</li>
  * <li>{@link Title}</li>
+ * <li>{@link Type}</li>
+ * <li>{@link Modified}</li>
  * </ol>
  */
 public interface PropertyFactory {
@@ -251,6 +254,15 @@ public interface PropertyFactory {
 	 * @throws IllegalArgumentException if {@code language} was invalid.
 	 */
 	Language newLanguage(Locale language);
+	
+	/**
+	 * Creates an instance of {@link Modified}.
+	 * 
+	 * @param dateTime the last modification date and time of the publication.
+	 * @return newly created {@link Modified}.
+	 * @throws IllegalArgumentException if {@code dateTime} is {@code null}.
+	 */
+	Modified newModified(OffsetDateTime dateTime);
 	
 	/**
 	 * Creates an instance of {@link Publisher}.

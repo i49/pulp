@@ -128,7 +128,7 @@ public class PropertyFactoryTest {
 	/* newDate(OffsetDateTime) */
 	
 	@Test
-	public void newDate_shouldCreateDateByOffsetDateTime() {
+	public void newDate_shouldCreateDateOfSpecifiedDateTime() {
 		OffsetDateTime dateTime = OffsetDateTime.of(2017, 4, 23, 1, 2, 3, 0, ZoneOffset.ofHours(9));
 		Date p = factory.newDate(dateTime);
 		assertThat(p.getTerm()).isSameAs(BasicTerm.DATE);
@@ -241,6 +241,17 @@ public class PropertyFactoryTest {
 		assertThat(p.getTerm()).isSameAs(BasicTerm.LANGUAGE);
 		assertThat(p.getValue()).isEqualTo("fr");
 		assertThat(p.getLanguage()).isSameAs(language);
+	}
+	
+	/* newModified(OffsetDateTime) */
+	
+	@Test
+	public void newModified_shouldCreateModifiedOfSpecifiedDateTime() {
+		OffsetDateTime dateTime = OffsetDateTime.of(2017, 4, 23, 1, 2, 3, 0, ZoneOffset.ofHours(9));
+		Modified p = factory.newModified(dateTime);
+		assertThat(p.getTerm()).isSameAs(BasicTerm.MODIFIED);
+		assertThat(p.getValue()).isEqualTo("2017-04-22T16:02:03Z");
+		assertThat(p.getDateTime()).isEqualTo(dateTime);
 	}
 
 	/* newPublisher(String) */

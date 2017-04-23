@@ -33,6 +33,7 @@ import com.github.i49.pulp.api.metadata.Format;
 import com.github.i49.pulp.api.metadata.Identifier;
 import com.github.i49.pulp.api.metadata.IdentifierScheme;
 import com.github.i49.pulp.api.metadata.Language;
+import com.github.i49.pulp.api.metadata.Modified;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.PublicationType;
 import com.github.i49.pulp.api.metadata.Publisher;
@@ -196,6 +197,12 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	}
 	
 	@Override
+	public Modified newModified(OffsetDateTime dateTime) {
+		requireNonNull(dateTime, "dateTime");
+		return new DefaultModified(dateTime);
+	}
+	
+	@Override
 	public Publisher newPublisher(String name) {
 		return getPublisherBuilder(name).build();
 	}
@@ -299,6 +306,13 @@ public class DefaultPropertyFactory implements PropertyFactory {
 		return (type != null) ? type : new DefaultType(value);
 	}
 	
+	/**
+	 * Requires the specified parameter is not null.
+	 * 
+	 * @param object the parameter to check.
+	 * @param name the name of the parameter.
+	 * @throws IllegalArgumentException if {@code object} is {@code null}.
+	 */
 	private static <T> void requireNonNull(T object, String name) {
 		if (object == null) {
 			throw new IllegalArgumentException("\"" + name + "\" must not be null");
