@@ -16,6 +16,8 @@
 
 package com.github.i49.pulp.api.metadata;
 
+import java.util.Locale;
+
 /**
  * A metadata property representing an instance of a name given to the EPUB publication.
  * 
@@ -29,5 +31,28 @@ public interface Title extends TextProperty, AlternativeProvider {
 	@Override
 	default Term getTerm() {
 		return BasicTerm.TITLE;
+	}
+
+	/**
+	 * A builder for building an instance of {@link Title} property.
+	 */
+	public interface Builder extends TextProperty.Builder<Title, Builder> {
+
+		/**
+		 * Optionally specifies the normalized form of the title.
+		 * 
+		 * @param value the title in the normalized form.
+		 * @return this builder.
+		 */
+		Builder fileAs(String value);
+		
+		/**
+		 * Optionally specifies the alternative representation of the title.
+		 * 
+		 * @param value the alternative representation of the title.
+		 * @param language the language used for the alternative representation.
+		 * @return this builder.
+		 */
+		Builder alternative(String value, Locale language);
 	}
 }

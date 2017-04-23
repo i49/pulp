@@ -38,13 +38,12 @@ import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.PublicationType;
 import com.github.i49.pulp.api.metadata.Publisher;
 import com.github.i49.pulp.api.metadata.Relation;
-import com.github.i49.pulp.api.metadata.RelatorBuilder;
+import com.github.i49.pulp.api.metadata.Relator;
 import com.github.i49.pulp.api.metadata.Rights;
 import com.github.i49.pulp.api.metadata.Source;
 import com.github.i49.pulp.api.metadata.Subject;
 import com.github.i49.pulp.api.metadata.SubjectAuthority;
 import com.github.i49.pulp.api.metadata.Title;
-import com.github.i49.pulp.api.metadata.TitleBuilder;
 import com.github.i49.pulp.api.metadata.Type;
 
 /**
@@ -61,25 +60,25 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	}
 
 	@Override
-	public RelatorBuilder<Contributor> getContributorBuilder(String name) {
+	public Relator.Builder<Contributor> getContributorBuilder(String name) {
 		name = requireNonEmpty(name, "name");
 		return DefaultContributor.builder(name);
 	}
 
 	@Override
-	public RelatorBuilder<Creator> getCreatorBuilder(String name) {
+	public Relator.Builder<Creator> getCreatorBuilder(String name) {
 		name = requireNonEmpty(name, "name");
 		return DefaultCreator.builder(name);
 	}
 
 	@Override
-	public RelatorBuilder<Publisher> getPublisherBuilder(String name) {
+	public Relator.Builder<Publisher> getPublisherBuilder(String name) {
 		name = requireNonEmpty(name, "name");
 		return DefaultPublisher.builder(name);
 	}
 
 	@Override
-	public TitleBuilder getTitleBuilder(String value) {
+	public Title.Builder getTitleBuilder(String value) {
 		value = requireNonEmpty(value, "value");
 		return DefaultTitle.builder(value);
 	}

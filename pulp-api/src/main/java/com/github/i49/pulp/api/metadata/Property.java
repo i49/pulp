@@ -53,4 +53,19 @@ public interface Property {
 	 */
 	@Override
 	String toString();
+
+	/**
+	 * A builder for building a property.
+	 *
+	 * @param <P> the type of the property to build. 
+	 */
+	public interface Builder<P extends Property> {
+
+		/**
+		 * Builds a property.
+		 * 
+		 * @return a property built.
+		 */
+		P build();
+	}
 }

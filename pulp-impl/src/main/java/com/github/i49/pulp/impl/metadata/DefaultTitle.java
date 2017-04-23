@@ -20,7 +20,6 @@ import java.util.Optional;
 
 import com.github.i49.pulp.api.metadata.Representation;
 import com.github.i49.pulp.api.metadata.Title;
-import com.github.i49.pulp.api.metadata.TitleBuilder;
 
 /**
  * The default implementation of {@link Title} property.
@@ -30,7 +29,7 @@ class DefaultTitle extends AbstractTextProperty implements Title {
 	private final String normalizedValue;
 	private final Optional<Representation> alternative;
 
-	static TitleBuilder builder(String value) {
+	static Builder builder(String value) {
 		return new Builder(value);
 	}
 	
@@ -53,7 +52,7 @@ class DefaultTitle extends AbstractTextProperty implements Title {
 		return alternative;
 	}
 	
-	private static class Builder extends AbstractPropertyBuilder<Title, TitleBuilder> implements TitleBuilder {
+	private static class Builder extends AbstractPropertyBuilder<Title, Title.Builder> implements Title.Builder {
 
 		private Builder(String value) {
 			super(value);

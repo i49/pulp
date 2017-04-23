@@ -16,6 +16,7 @@
 
 package com.github.i49.pulp.api.metadata;
 
+import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -30,4 +31,41 @@ public interface Relator extends TextProperty, AlternativeProvider {
 	 * @return the role of this relator.
 	 */
 	Optional<String> getRole();
+
+	/**
+	 * A builder for building a {@link Relator} property.
+	 * 
+	 * @param <P> the type of the property to build,
+	 * such as {@link Creator}, {@link Contributor}, or {@link Publisher}.
+	 */
+	public interface Builder<P extends Relator> extends TextProperty.Builder<P, Builder<P>>{
+
+		/**
+		 * Optionally specifies the normalized form of the relator name.
+		 * 
+		 * @param value the name in the normalized form.
+		 * @return this builder.
+		 */
+		Builder<P> fileAs(String value);
+		
+		/**
+		 * Optionally specifies the alternative representation of the relator name.
+		 * 
+		 * @param value the alternative representation of the relator.
+		 * @param language the language used for the alternative representation.
+		 * @return this builder.
+		 */
+		Builder<P> alternative(String value, Locale language);
+		
+		/**
+		 * Optionally specifies the role of the relator.
+		 * <p>
+		 * Note that specified role will be ignored if the type of the property being built is {@link Publisher}.
+		 * </p>
+		 * 
+		 * @param role the role of the relator.
+		 * @return this builder.
+		 */
+		Builder<P> role(String role);
+	}
 }

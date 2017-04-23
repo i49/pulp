@@ -21,7 +21,6 @@ import java.util.Optional;
 
 import com.github.i49.pulp.api.metadata.Direction;
 import com.github.i49.pulp.api.metadata.Property;
-import com.github.i49.pulp.api.metadata.PropertyBuilder;
 import com.github.i49.pulp.api.metadata.Representation;
 
 /**
@@ -30,8 +29,8 @@ import com.github.i49.pulp.api.metadata.Representation;
  * @param <P> the type of the property to build.
  * @param <T> actual builder type.
  */
-abstract class AbstractPropertyBuilder<P extends Property, T extends PropertyBuilder<P>> 
-	implements PropertyBuilder<P> {
+abstract class AbstractPropertyBuilder<P extends Property, T extends Property.Builder<P>> 
+	implements Property.Builder<P> {
 
 	private final String value;
 	private String normalizedValue;

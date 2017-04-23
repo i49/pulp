@@ -53,7 +53,7 @@ public interface PropertyFactory {
 	 * @return a builder for building {@link Contributor}.
 	 * @throws IllegalArgumentException if {@code name} was invalid.
 	 */
-	RelatorBuilder<Contributor> getContributorBuilder(String name);
+	Relator.Builder<Contributor> getContributorBuilder(String name);
 
 	/**
 	 * Creates a builder to build an instance of {@link Creator}.
@@ -62,7 +62,7 @@ public interface PropertyFactory {
 	 * @return a builder for building {@link Creator}.
 	 * @throws IllegalArgumentException if {@code name} was invalid.
 	 */
-	RelatorBuilder<Creator> getCreatorBuilder(String name);
+	Relator.Builder<Creator> getCreatorBuilder(String name);
 
 	/**
 	 * Creates a builder to build an instance of {@link Publisher}.
@@ -71,7 +71,7 @@ public interface PropertyFactory {
 	 * @return a builder for building {@link Publisher}.
 	 * @throws IllegalArgumentException if {@code name} was invalid.
 	 */
-	RelatorBuilder<Publisher> getPublisherBuilder(String name);
+	Relator.Builder<Publisher> getPublisherBuilder(String name);
 	
 	/**
 	 * Creates a builder to build an instance of {@link Title}.
@@ -80,7 +80,7 @@ public interface PropertyFactory {
 	 * @return a builder for building {@link Title}.
 	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	TitleBuilder getTitleBuilder(String value);
+	Title.Builder getTitleBuilder(String value);
 
 	/**
 	 * Creates an instance of {@link Contributor}.

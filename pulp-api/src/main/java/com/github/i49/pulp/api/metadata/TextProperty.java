@@ -37,4 +37,31 @@ public interface TextProperty extends Property {
 	 * @return the direction of the text.
 	 */
 	Optional<Direction> getDirection();
+
+	/**
+	 * A builder for building a text-type property.
+	 * 
+	 * @param <P> the type of the property to build.
+	 * @param <T> actual builder type which extends this builder.
+	 */
+	public interface Builder<P extends TextProperty, T extends Builder<P, T>> extends Property.Builder<P> {
+
+		/**
+		 * Optionally specifies the language of the text.
+		 * 
+		 * @param language the language of the text.
+		 * @return this builder.
+		 * @throws IllegalArgumentException if {@code language} is {@code null}.
+		 */
+		T language(Locale language);
+		
+		/**
+		 * Optionally specifies the directionality of the text.
+		 * 
+		 * @param direction the directionality of the text.
+		 * @return this builder.
+		 * @throws IllegalArgumentException if {@code direction} is {@code null}.
+		 */
+		T direction(Direction direction);
+	}
 }

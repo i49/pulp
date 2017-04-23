@@ -17,7 +17,7 @@
 package com.github.i49.pulp.impl.metadata;
 
 import com.github.i49.pulp.api.metadata.Creator;
-import com.github.i49.pulp.api.metadata.RelatorBuilder;
+import com.github.i49.pulp.api.metadata.Relator;
 
 /**
  * The default implementation of {@link Creator} property.
@@ -30,7 +30,7 @@ class DefaultCreator extends AbstractRelator<Creator> implements Creator {
 	 * @param name the name of the creator.
 	 * @return created builder.
 	 */
-	public static RelatorBuilder<Creator> builder(String name) {
+	public static Relator.Builder<Creator> builder(String name) {
 		return new DefaultRelatorBuilder<Creator>(name, DefaultCreator::new);
 	}
 	
