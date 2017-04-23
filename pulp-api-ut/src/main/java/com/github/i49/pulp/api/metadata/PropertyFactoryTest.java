@@ -38,7 +38,7 @@ public class PropertyFactoryTest {
 	
 	@Before
 	public void setUp() {
-		factory = Epub.createMetadataPropertyFactory();
+		factory = Epub.createPropertyFactory();
 	}
 
 	/* newContributor(String) */

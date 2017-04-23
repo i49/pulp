@@ -52,7 +52,7 @@ class DefaultTitle extends AbstractTextTypeProperty implements Title {
 		return alternative;
 	}
 	
-	private static class Builder extends AbstractPropertyBuilder<Title, Title.Builder> implements Title.Builder {
+	static class Builder extends AbstractPropertyBuilder<Title, Title.Builder> implements Title.Builder {
 
 		private Builder(String value) {
 			super(value);

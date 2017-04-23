@@ -91,14 +91,18 @@ public final class Epub {
 		return getProvider().createWriterFactory();
 	}
 
+	public static com.github.i49.pulp.api.metadata.Metadata createMetadata() {
+		return getProvider().createMetadata();
+	}
+	
 	/**
 	 * Creates an instance of {@link PropertyFactory} that can produce metadata properties.
 	 * 
 	 * @return newly created {@link PropertyFactory}.
 	 * @throws EpubException if API implementation was not found.
 	 */
-	public static PropertyFactory createMetadataPropertyFactory() {
-		return getProvider().createMetadataPropertyFactory();
+	public static PropertyFactory createPropertyFactory() {
+		return getProvider().createPropertyFactory();
 	}
 	
 	/**

@@ -21,7 +21,7 @@ import com.github.i49.pulp.api.metadata.Format;
 /**
  * The default implementation of {@link Format} property.
  */
-public class DefaultFormat extends AbstractProperty implements Format {
+class DefaultFormat extends AbstractProperty implements Format {
 
 	private final String value;
 	

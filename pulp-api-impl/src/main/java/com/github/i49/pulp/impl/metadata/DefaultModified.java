@@ -25,7 +25,7 @@ import com.github.i49.pulp.api.metadata.Modified;
  */
 class DefaultModified extends AbstractDateTypeProperty implements Modified {
 
-	public DefaultModified(OffsetDateTime dateTime) {
+	DefaultModified(OffsetDateTime dateTime) {
 		super(dateTime);
 	}
 }

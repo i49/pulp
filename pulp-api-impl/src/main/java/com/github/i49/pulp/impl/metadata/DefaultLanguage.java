@@ -23,7 +23,7 @@ import com.github.i49.pulp.api.metadata.Language;
 /**
  * The default implementation of {@link Language} property.
  */
-public class DefaultLanguage extends AbstractProperty implements Language {
+class DefaultLanguage extends AbstractProperty implements Language {
 
 	private final Locale value;
 	

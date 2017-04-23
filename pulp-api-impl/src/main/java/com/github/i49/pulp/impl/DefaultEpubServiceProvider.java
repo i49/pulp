@@ -22,10 +22,12 @@ import com.github.i49.pulp.api.core.Publication;
 import com.github.i49.pulp.api.core.PublicationReaderFactory;
 import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.core.PublicationWriterFactory;
+import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.spi.EpubServiceProvider;
 import com.github.i49.pulp.impl.container.PublicationReaderFactoryImpl;
 import com.github.i49.pulp.impl.container.PublicationWriterFactoryImpl;
+import com.github.i49.pulp.impl.metadata.DefaultMetadata;
 import com.github.i49.pulp.impl.metadata.DefaultPropertyFactory;
 import com.github.i49.pulp.impl.publication.MediaTypeRegistry;
 import com.github.i49.pulp.impl.publication.PublicationImpl;
@@ -54,7 +56,12 @@ public class DefaultEpubServiceProvider implements EpubServiceProvider {
 	}
 
 	@Override
-	public PropertyFactory createMetadataPropertyFactory() {
+	public Metadata createMetadata() {
+		return new DefaultMetadata();
+	}
+	
+	@Override
+	public PropertyFactory createPropertyFactory() {
 		return new DefaultPropertyFactory();
 	}
 	

@@ -25,7 +25,7 @@ import com.github.i49.pulp.api.metadata.Direction;
 /**
  * The default implementation of {@link Description} property.
  */
-public class DefaultDescription extends AbstractTextTypeProperty implements Description {
+class DefaultDescription extends AbstractTextTypeProperty implements Description {
 
 	public DefaultDescription(String value, Optional<Locale> language, Optional<Direction> direction) {
 		super(value, language, direction);

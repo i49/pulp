@@ -25,7 +25,7 @@ import com.github.i49.pulp.api.metadata.Rights;
 /**
  * The default implementation of {@link Rights} property.
  */
-public class DefaultRights extends AbstractTextTypeProperty implements Rights {
+class DefaultRights extends AbstractTextTypeProperty implements Rights {
 
 	public DefaultRights(String value, Optional<Locale> language, Optional<Direction> direction) {
 		super(value, language, direction);

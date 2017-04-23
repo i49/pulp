@@ -14,32 +14,16 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.impl.metadata;
+package com.github.i49.pulp.impl;
 
-import java.util.Locale;
+public final class Preconditions {
 
-import com.github.i49.pulp.api.metadata.Representation;
-
-/**
- * The default implementation of {@link Representation}.
- */
-class DefaultRepresentation implements Representation {
-
-	private final String value;
-	private final Locale language;
-	
-	public DefaultRepresentation(String value, Locale language) {
-		this.value = value;
-		this.language = language;
+	public static <T> void checkNotNull(T object, String name) {
+		if (object == null) {
+			throw new IllegalArgumentException("\"" + name + "\" must not be null");
+		}
 	}
 
-	@Override
-	public String getValue() {
-		return value;
-	}
-
-	@Override
-	public Locale getLanguage() {
-		return language;
+	private Preconditions() {
 	}
 }

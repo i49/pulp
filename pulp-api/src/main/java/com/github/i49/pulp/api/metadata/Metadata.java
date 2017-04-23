@@ -16,164 +16,51 @@
 
 package com.github.i49.pulp.api.metadata;
 
-import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 /**
  * A set of meta information describing a EPUB publication and renditions.
  */
 public interface Metadata {
-	
-	/**
-	 * Returns the primary identifier (Unique Identifier) of the rendition.
-	 * 
-	 * @return the primary identifier.
-	 */
-	Identifier getPrimaryIdentifier();
 
-	/**
-	 * Assigns the primary identifier (Unique Identifier) of the rendition.
-	 * 
-	 * @param identifier the primary identifier of the rendition.
-	 * @throws IllegalArgumentException if {@code identifier} is {@code null}.
-	 */
-	void setPrimaryIdentifier(Identifier identifier);
-	
-	/**
-	 * Returns the publication date and time of the rendition.
-	 * 
-	 * @return the publication date and time of the rendition.
-	 */
-	Optional<OffsetDateTime> getPublicationDate();
-	
-	/**
-	 * Assigns the publication date and time of the rendition.
-	 * 
-	 * @param dateTime the publication date and time.
-	 * @throws IllegalArgumentException if {@code dateTime} is {@code null}.
-	 */
-	void setPublicationDate(OffsetDateTime dateTime);
-	
-	/**
-	 * Returns the last modification date and time of the rendition.
-	 * 
-	 * @return the last modification date and time of the rendition.
-	 */
-	Optional<OffsetDateTime> getLastModificationDate();
-	
-	/**
-	 * Assigns the last modification date and time of the rendition.
-	 * 
-	 * @param dateTime the last modification date and time.
-	 * @throws IllegalArgumentException if {@code dateTime} is {@code null}.
-	 */
-	void setLastModificationDate(OffsetDateTime dateTime);
-	
-	/**
-	 * Returns the release identifier to distinguish each revision of the renditions.
-	 * 
-	 * @return the release identifier.
-	 */
 	ReleaseIdentifier getReleaseIdentifier();
 	
 	/**
-	 * Returns the identifiers of the rendition except the primary identifier.
+	 * Returns the number of the properties in this metadata.
 	 * 
-	 * @return the list of identifiers.
+	 * @return the number of the properties in this metadata.
 	 */
-	List<Identifier> getAdditionalIdentifiers();
+	int getNumberOfProperties();
 	
 	/**
-	 * Returns the titles of the rendition.
-	 * The first title is the primary one for the rendition.
+	 * Returns the number of the properties of the specified term in this metadata.
 	 * 
-	 * @return the titles of the rendition.
+	 * @param term the term of the properties to count.
+	 * @return the number of the properties of the specified term in this metadata.
 	 */
-	List<Title> getTitles();
-	
-	/**
-	 * Returns the languages of the content of the rendition.
-	 * 
-	 * @return the languages of the content of the rendition.
-	 */
-	List<Locale> getLanguages();
-	
-	/**
-	 * Returns the creators responsible for the creation of the content of the rendition.
-	 * 
-	 * @return the creators of the rendition.
-	 */
-	List<Creator> getCreators();
-	
-	/**
-	 * Returns the contributors that played a secondary role in the creation of the content of the rendition.
-	 * 
-	 * @return the contributors of the rendition.
-	 */
-	List<Contributor> getContributors();
+	int getNumberOfProperties(Term term);
 
 	/**
-	 * Returns the publishers of the rendition.
+	 * Returns one property of the specified term.
+	 * If this metadata contains more than one properties of the term,
+	 * only the first one will be returned. 
 	 * 
-	 * @return the publishers of the rendition.
+	 * @param term the term of the property.
+	 * @return the property found in this metadata.
 	 */
-	List<Publisher> getPublishers();
+	Optional<Property> getProperty(Term term);
 	
 	/**
-	 * Returns the subjects of the rendition.
+	 * Returns all properties of the specified term.
 	 * 
-	 * @return the subjects of the rendition.
+	 * @param term the term of the property.
+	 * @return the properties found in this metadata.
 	 */
-	List<Subject> getSubjects();
-	
-	/**
-	 * Returns the types of the rendition.
-	 * 
-	 * @return the types of the rendition.
-	 */
-	List<Type> getTypes();
-	
-	/**
-	 * Returns the formats of the rendition.
-	 * 
-	 * @return the formats of the rendition.
-	 */
-	List<Format> getFormats();
+	List<Property> getProperties(Term term);
 
 	/**
-	 * Returns the sources of the rendition.
-	 * 
-	 * @return the sources of the rendition.
+	 * Clears all properties and adds default properties.
 	 */
-	List<Source> getSources(); 
-	
-	/**
-	 * Returns the coverages of the rendition.
-	 * 
-	 * @return the coverages of the rendition.
-	 */
-	List<Coverage> getCoverages();
-	
-	/**
-	 * Returns the descriptions of the rendition.
-	 * 
-	 * @return the descriptions of the rendition.
-	 */
-	List<Description> getDescriptions();
-
-	/**
-	 * Returns the related resources of the rendition.
-	 * 
-	 * @return the related resources of the rendition.
-	 */
-	List<Relation> getRelations();
-
-	/**
-	 * Returns the rights over the rendition.
-	 * 
-	 * @return the rights over the rendition.
-	 */
-	List<Rights> getRights();
+	void reset();
 }

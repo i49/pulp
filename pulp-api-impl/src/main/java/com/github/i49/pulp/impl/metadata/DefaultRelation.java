@@ -26,7 +26,7 @@ import com.github.i49.pulp.api.metadata.Relation;
 /**
  * The default implementation of {@link Description} property.
  */
-public class DefaultRelation extends AbstractTextTypeProperty implements Relation {
+class DefaultRelation extends AbstractTextTypeProperty implements Relation {
 
 	public DefaultRelation(String value, Optional<Locale> language, Optional<Direction> direction) {
 		super(value, language, direction);
