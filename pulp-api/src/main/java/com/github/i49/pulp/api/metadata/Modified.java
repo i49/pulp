@@ -20,7 +20,7 @@ package com.github.i49.pulp.api.metadata;
  * The last modification date of the EPUB Publication. 
  * This type represents {@link BasicTerm#MODIFIED}.
  */
-public interface Modified extends DateProperty {
+public interface Modified extends DateTypeProperty {
 
 	/**
 	 * {@inheritDoc}

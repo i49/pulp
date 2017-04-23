@@ -21,7 +21,7 @@ import java.time.OffsetDateTime;
 /**
  * A metadata property that has a value of date and time.
  */
-public interface DateProperty extends Property {
+public interface DateTypeProperty extends Property {
 
 	/**
 	 * Returns the date and time assigned to this property.

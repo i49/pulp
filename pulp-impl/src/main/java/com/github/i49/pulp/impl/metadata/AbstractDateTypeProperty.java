@@ -20,18 +20,18 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
-import com.github.i49.pulp.api.metadata.DateProperty;
+import com.github.i49.pulp.api.metadata.DateTypeProperty;
 
 /**
- * A skeletal implementation of {@link DateProperty}.
+ * A skeletal implementation of {@link DateTypeProperty}.
  */
-abstract class AbstractDateProperty extends AbstractProperty implements DateProperty {
+abstract class AbstractDateTypeProperty extends AbstractProperty implements DateTypeProperty {
 
 	private static final DateTimeFormatter ISO8601_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	
 	private final OffsetDateTime dateTime;
 	
-	protected AbstractDateProperty(OffsetDateTime dateTime) {
+	protected AbstractDateTypeProperty(OffsetDateTime dateTime) {
 		this.dateTime = dateTime;
 	}
 

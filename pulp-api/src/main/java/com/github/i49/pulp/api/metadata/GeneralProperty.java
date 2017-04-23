@@ -21,7 +21,7 @@ import java.util.Optional;
 /**
  * General property that establishes some aspect of the EPUB rendition.
  */
-public interface GeneralProperty extends TextProperty {
+public interface GeneralProperty extends TextTypeProperty {
 
 	/**
 	 * Returns the scheme that identifies the system or scheme that the property value is drawn from.

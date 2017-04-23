@@ -23,7 +23,7 @@ import java.util.Optional;
  * A person or organization who relates to the EPUB publication,
  * such as creator, contributor or publisher. 
  */
-public interface Relator extends TextProperty, AlternativeProvider {
+public interface Relator extends TextTypeProperty, AlternativeProvider {
 
 	/**
 	 * Returns the role of this relator.
@@ -38,7 +38,7 @@ public interface Relator extends TextProperty, AlternativeProvider {
 	 * @param <P> the type of the property to build,
 	 * such as {@link Creator}, {@link Contributor}, or {@link Publisher}.
 	 */
-	public interface Builder<P extends Relator> extends TextProperty.Builder<P, Builder<P>>{
+	public interface Builder<P extends Relator> extends TextTypeProperty.Builder<P, Builder<P>>{
 
 		/**
 		 * Optionally specifies the normalized form of the relator name.

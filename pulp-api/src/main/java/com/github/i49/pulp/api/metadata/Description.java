@@ -21,7 +21,7 @@ package com.github.i49.pulp.api.metadata;
  * 
  * @see <a href="http://dublincore.org/documents/dces/#description">Dublin Core Metadata Element Set, Version 1.1</a> 
  */
-public interface Description extends TextProperty {
+public interface Description extends TextTypeProperty {
 
 	/**
 	 * {@inheritDoc}

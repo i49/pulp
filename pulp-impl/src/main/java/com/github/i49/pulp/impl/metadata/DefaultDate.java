@@ -23,7 +23,7 @@ import com.github.i49.pulp.api.metadata.Date;
 /**
  * The default implementation of {@link Date} property.
  */
-class DefaultDate extends AbstractDateProperty implements Date {
+class DefaultDate extends AbstractDateTypeProperty implements Date {
 
 	public DefaultDate(OffsetDateTime dateTime) {
 		super(dateTime);

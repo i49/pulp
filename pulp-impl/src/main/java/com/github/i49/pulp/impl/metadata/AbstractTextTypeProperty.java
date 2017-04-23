@@ -20,24 +20,24 @@ import java.util.Locale;
 import java.util.Optional;
 
 import com.github.i49.pulp.api.metadata.Direction;
-import com.github.i49.pulp.api.metadata.TextProperty;
+import com.github.i49.pulp.api.metadata.TextTypeProperty;
 
 /**
- * A skeletal implementation of {@link TextProperty}.
+ * A skeletal implementation of {@link TextTypeProperty}.
  */
-abstract class AbstractTextProperty extends AbstractProperty implements TextProperty {
+abstract class AbstractTextTypeProperty extends AbstractProperty implements TextTypeProperty {
 	
 	private final String value;
 	private final Optional<Locale> language;
 	private final Optional<Direction> direction;
 	
-	protected AbstractTextProperty(String value, Optional<Locale> language, Optional<Direction> direction) {
+	protected AbstractTextTypeProperty(String value, Optional<Locale> language, Optional<Direction> direction) {
 		this.value = value;
 		this.language = language;
 		this.direction = direction;
 	}
 	
-	protected AbstractTextProperty(AbstractPropertyBuilder<?, ?> builder) {
+	protected AbstractTextTypeProperty(AbstractPropertyBuilder<?, ?> builder) {
 		this.value = builder.getValue();
 		this.language = builder.getLanguage();
 		this.direction = builder.getDirection();

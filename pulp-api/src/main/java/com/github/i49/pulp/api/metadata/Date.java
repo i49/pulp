@@ -20,7 +20,7 @@ package com.github.i49.pulp.api.metadata;
  * The publication date of the EPUB Publication. 
  * This type represents {@link BasicTerm#DATE}.
  */
-public interface Date extends DateProperty {
+public interface Date extends DateTypeProperty {
 
 	/**
 	 * {@inheritDoc}

@@ -25,7 +25,7 @@ import com.github.i49.pulp.api.metadata.Direction;
 /**
  * The default implementation of {@link Coverage} property.
  */
-class DefaultCoverage extends AbstractTextProperty implements Coverage {
+class DefaultCoverage extends AbstractTextTypeProperty implements Coverage {
 
 	public DefaultCoverage(String value, Optional<Locale> language, Optional<Direction> direction) {
 		super(value, language, direction);

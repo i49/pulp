@@ -23,7 +23,7 @@ import com.github.i49.pulp.api.metadata.Modified;
 /**
  * The default implementation of {@link Modified} property.
  */
-class DefaultModified extends AbstractDateProperty implements Modified {
+class DefaultModified extends AbstractDateTypeProperty implements Modified {
 
 	public DefaultModified(OffsetDateTime dateTime) {
 		super(dateTime);
