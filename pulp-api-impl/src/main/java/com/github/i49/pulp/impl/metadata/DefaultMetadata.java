@@ -23,8 +23,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
+import com.github.i49.pulp.api.metadata.BasicTerm;
 import com.github.i49.pulp.api.metadata.Language;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.Property;
@@ -77,23 +78,28 @@ public class DefaultMetadata implements Metadata {
 	}
 	
 	@Override
-	public Optional<Property> getProperty(Term term) {
+	public boolean contains(Term term) {
 		checkNotNull(term, "term");
 		List<Property> list = terms.get(term);
-		if (list == null || list.isEmpty()) {
-			return Optional.empty();
-		} else {
-			return Optional.of(list.get(0));
-		}
+		return (list != null && !list.isEmpty());
 	}
 	
 	@Override
-	public List<Property> getProperties(Term term) {
+	public Property get(Term term) {
+		checkNotNull(term, "term");
+		List<Property> list = terms.get(term);
+		if (list == null || list.isEmpty()) {
+			throw new NoSuchElementException();
+		}
+		return list.get(0);
+	}
+	
+	@Override
+	public List<Property> getList(Term term) {
 		checkNotNull(term, "term");
 		List<Property> list = terms.get(term);
 		if (list == null) {
-			list = new PropertyList(term);
-			terms.put(term, list);
+			list = addList(term, 0, Integer.MAX_VALUE);
 		}
 		return list;
 	}
@@ -101,24 +107,29 @@ public class DefaultMetadata implements Metadata {
 	@Override
 	public void reset() {
 		this.terms.clear();
-		addProperty(DefaultIdentifier.ofRandomUUID());
-		addProperty(DEFAULT_TITLE);
-		addProperty(DEFAULT_LANGUAGE);
-		addProperty(new DefaultModified(OffsetDateTime.now()));
+		addDefaultLists();
+		add(DefaultIdentifier.ofRandomUUID());
+		add(DEFAULT_TITLE);
+		add(DEFAULT_LANGUAGE);
+		add(new DefaultModified(OffsetDateTime.now()));
 	}
 
-	private void addProperty(Property property) {
-		if (property == null) {
-			throw new IllegalArgumentException("\"property\" must not be null");
-		}
+	private void addDefaultLists() {
+		addList(BasicTerm.IDENTIFIER, 1, Integer.MAX_VALUE);
+		addList(BasicTerm.TITLE, 1, Integer.MAX_VALUE);
+		addList(BasicTerm.LANGUAGE, 1, Integer.MAX_VALUE);
+		addList(BasicTerm.MODIFIED, 1, 1);
+		addList(BasicTerm.DATE, 0, 1);
+	}
+	
+	private List<Property> addList(Term term, int minSize, int maxSize) {
+		List<Property> list = new PropertyList(term, minSize, maxSize);
+		terms.put(term, list);
+		return list;
+	}
+	
+	private void add(Property property) {
 		Term term = property.getTerm();
-		List<Property> list = terms.get(term);
-		if (list == null) {
-			list = new PropertyList(term);
-			terms.put(term, list);
-		} else if (list.contains(property)) {
-			throw new IllegalStateException();
-		}
-		list.add(property);
+		getList(term).add(property);
 	}
 }

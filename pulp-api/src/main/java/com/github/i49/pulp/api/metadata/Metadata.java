@@ -17,13 +17,23 @@
 package com.github.i49.pulp.api.metadata;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * A set of meta information describing a EPUB publication and renditions.
  */
 public interface Metadata {
 
+	/**
+	 * Returns the <i>release identifier</i> of the publication.
+	 * 
+	 * <p>Release identifier of the publication consists of  the following properties:</p>
+	 * <ul>
+	 * <li>identifier</li>
+	 * <li>last modification date</li>
+	 * </ul>
+	 * 
+	 * @return the release identifier of the publication.
+	 */
 	ReleaseIdentifier getReleaseIdentifier();
 	
 	/**
@@ -42,14 +52,23 @@ public interface Metadata {
 	int getNumberOfProperties(Term term);
 
 	/**
+	 * Checks if this metadata contains any properties of the specified term.
+	 * 
+	 * @param term the term of the property.
+	 * @return {@code true} if this metadata contains the property, {@code false} otherwise.
+	 */
+	boolean contains(Term term);
+	
+	/**
 	 * Returns one property of the specified term.
 	 * If this metadata contains more than one properties of the term,
 	 * only the first one will be returned. 
 	 * 
 	 * @param term the term of the property.
 	 * @return the property found in this metadata.
+	 * @throws NoSuchElementException if metadata does not contain any properties of the term.
 	 */
-	Optional<Property> getProperty(Term term);
+	Property get(Term term);
 	
 	/**
 	 * Returns all properties of the specified term.
@@ -57,7 +76,7 @@ public interface Metadata {
 	 * @param term the term of the property.
 	 * @return the properties found in this metadata.
 	 */
-	List<Property> getProperties(Term term);
+	List<Property> getList(Term term);
 
 	/**
 	 * Clears all properties and adds default properties.

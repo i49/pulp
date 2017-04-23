@@ -29,14 +29,28 @@ class PropertyList extends AbstractList<Property> {
 	
 	private final ArrayList<Property> delegate = new ArrayList<>();
 	private final Term term;
+	private final int minSize;
+	private final int maxSize;
 	
+	public PropertyList(Term term) {
+		this(term, 0, Integer.MAX_VALUE);
+	}
+
+	public PropertyList(Term term, int minSize) {
+		this(term, minSize, Integer.MAX_VALUE);
+	}
+
 	/**
 	 * Constructs this list.
 	 * 
 	 * @param term the term of the property this list can contain.
+	 * @param minSize the minimum size of this list.
+	 * @param maxSize the maximum size of this list.
 	 */
-	public PropertyList(Term term) {
+	public PropertyList(Term term, int minSize, int maxSize) {
 		this.term = term;
+		this.minSize = minSize;
+		this.maxSize = maxSize;
 	}
 
 	@Override
@@ -63,14 +77,19 @@ class PropertyList extends AbstractList<Property> {
 
 	@Override
 	public Property remove(int index) {
+		if (size() <= minSize) {
+			throw new IllegalStateException("List must have at least " + minSize + " element(s).");
+		}
 		return delegate.remove(index);
 	}
 
 	private void validateElement(Property element) {
 		if (element == null) {
-			throw new NullPointerException("list element must not be null");
+			throw new NullPointerException("Property must not be null.");
 		} else if (element.getTerm() != this.term) {
-			throw new IllegalArgumentException("list element has wrong term");
+			throw new IllegalArgumentException("Unexpected term " + term + ".");
+		} else if (contains(element)) {
+			throw new IllegalArgumentException("Element already exists.");
 		}
 	}
 }
