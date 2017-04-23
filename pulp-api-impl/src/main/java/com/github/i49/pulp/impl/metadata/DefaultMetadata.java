@@ -99,7 +99,7 @@ public class DefaultMetadata implements Metadata {
 		checkNotNull(term, "term");
 		List<Property> list = terms.get(term);
 		if (list == null) {
-			list = addList(term, 0, Integer.MAX_VALUE);
+			list = addList(term);
 		}
 		return list;
 	}
@@ -115,15 +115,20 @@ public class DefaultMetadata implements Metadata {
 	}
 
 	private void addDefaultLists() {
-		addList(BasicTerm.IDENTIFIER, 1, Integer.MAX_VALUE);
-		addList(BasicTerm.TITLE, 1, Integer.MAX_VALUE);
-		addList(BasicTerm.LANGUAGE, 1, Integer.MAX_VALUE);
-		addList(BasicTerm.MODIFIED, 1, 1);
-		addList(BasicTerm.DATE, 0, 1);
+		addList(BasicTerm.IDENTIFIER, true, true);
+		addList(BasicTerm.TITLE, true, true);
+		addList(BasicTerm.LANGUAGE, true, true);
+		// Only one property is allowed for Modified and Date.
+		addList(BasicTerm.MODIFIED, true, false);
+		addList(BasicTerm.DATE, false, false);
 	}
 	
-	private List<Property> addList(Term term, int minSize, int maxSize) {
-		List<Property> list = new PropertyList(term, minSize, maxSize);
+	private List<Property> addList(Term term) {
+		return addList(term, false, true);
+	}
+	
+	private List<Property> addList(Term term, boolean required, boolean multiple) {
+		List<Property> list = new PropertyList(term, required, multiple);
 		terms.put(term, list);
 		return list;
 	}

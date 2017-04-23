@@ -18,6 +18,7 @@ package com.github.i49.pulp.api.metadata;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.junit.Before;
@@ -80,10 +81,43 @@ public class PropertyListTest {
 		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
 	}
 	
+	@Test
+	public void add_shouldThrowExceptionIfMultipleDatePropertiesAdded() {
+		Date p1 = factory.newDate(OffsetDateTime.now());
+		Date p2 = factory.newDate(OffsetDateTime.now());
+		List<Property> list = m.getList(BasicTerm.DATE);
+		list.add(p1);
+		Throwable thrown = catchThrowable(()->{
+			list.add(p2);
+		});
+		assertThat(thrown).isInstanceOf(IllegalStateException.class);
+	}
+
+	@Test
+	public void add_shouldThrowExceptionIfMultipleModifiedPropertiesAdded() {
+		Modified p = factory.newModified(OffsetDateTime.now());
+		List<Property> list = m.getList(BasicTerm.MODIFIED);
+		Throwable thrown = catchThrowable(()->{
+			list.add(p);
+		});
+		assertThat(thrown).isInstanceOf(IllegalStateException.class);
+	}
+	
 	/* remove(int) */
 	
 	@Test
-	public void remove_shouldThrowExceptionIfPropertyAtSpecifiedIndexIsMandatory() {
+	public void remove_shouldRemovePropertyAtSpecifiedPosition() {
+		List<Property> list = m.getList(BasicTerm.TITLE);
+		Title p = factory.newTitle("THE LORD OF THE RINGS"); 
+		list.add(p);
+		assertThat(list).hasSize(2);
+		list.remove(0);
+		assertThat(list).hasSize(1);
+		assertThat(list.get(0)).isSameAs(p);
+	}
+	
+	@Test
+	public void remove_shouldThrowExceptionIfPropertyAtSpecifiedPositionIsRequired() {
 		List<Property> list = m.getList(BasicTerm.TITLE);
 		Throwable thrown = catchThrowable(()->{
 			list.remove(0);
@@ -94,7 +128,18 @@ public class PropertyListTest {
 	/* remove(Property) */
 	
 	@Test
-	public void remove_shouldThrowExceptionIfPropertyIsMandatory() {
+	public void remove_shouldRemoveSpecifiedProperty() {
+		List<Property> list = m.getList(BasicTerm.TITLE);
+		Title p = factory.newTitle("THE LORD OF THE RINGS"); 
+		list.add(p);
+		assertThat(list).hasSize(2);
+		list.remove(list.get(0));
+		assertThat(list).hasSize(1);
+		assertThat(list.get(0)).isSameAs(p);
+	}
+
+	@Test
+	public void remove_shouldThrowExceptionIfPropertyIsRequired() {
 		List<Property> list = m.getList(BasicTerm.TITLE);
 		Property p = list.get(0);
 		Throwable thrown = catchThrowable(()->{
@@ -106,11 +151,24 @@ public class PropertyListTest {
 	/* clear() */
 	
 	@Test
+	public void clear_shouldClearAllPropertiesFromList() {
+		List<Property> list = m.getList(BasicTerm.CREATOR);
+		list.add(factory.newCreator("Lewis Carroll"));
+		list.add(factory.newCreator("John Tenniel"));
+		assertThat(list).hasSize(2);
+		list.clear();
+		assertThat(list).isEmpty();
+	}
+	
+	@Test
 	public void clear_shouldThrowExceptionIfPropertyIsMandatory() {
 		List<Property> list = m.getList(BasicTerm.TITLE);
+		Title p = factory.newTitle("THE LORD OF THE RINGS"); 
+		list.add(p);
 		Throwable thrown = catchThrowable(()->{
 			list.clear();
 		});
 		assertThat(thrown).isInstanceOf(IllegalStateException.class);
+		assertThat(list).hasSize(1);
 	}
 }

@@ -19,7 +19,7 @@ package com.github.i49.pulp.api.metadata;
 import static com.github.i49.pulp.api.metadata.StandardVocabulary.*;
 
 /**
- * Basic terms frequently used as metadata properties. 
+ * Basic terms generally used as metadata properties. 
  * 
  * @see <a href="http://dublincore.org/documents/dces/">Dublin Core Metadata Element Set, Version 1.1</a>
  * @see <a href="http://dublincore.org/documents/dcmi-terms/">DCMI Metadata Terms</a> 

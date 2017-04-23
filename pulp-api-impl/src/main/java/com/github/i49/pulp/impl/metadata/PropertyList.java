@@ -29,28 +29,20 @@ class PropertyList extends AbstractList<Property> {
 	
 	private final ArrayList<Property> delegate = new ArrayList<>();
 	private final Term term;
-	private final int minSize;
-	private final int maxSize;
+	private final boolean required;
+	private final boolean multiple;
 	
-	public PropertyList(Term term) {
-		this(term, 0, Integer.MAX_VALUE);
-	}
-
-	public PropertyList(Term term, int minSize) {
-		this(term, minSize, Integer.MAX_VALUE);
-	}
-
 	/**
-	 * Constructs this list.
+	 * Constructs new property list.
 	 * 
 	 * @param term the term of the property this list can contain.
-	 * @param minSize the minimum size of this list.
-	 * @param maxSize the maximum size of this list.
+	 * @param required {@code true} if at least one property is required.
+	 * @param multiple {@code true} if this list is allowed to have more than one properties.
 	 */
-	public PropertyList(Term term, int minSize, int maxSize) {
+	public PropertyList(Term term, boolean required, boolean multiple) {
 		this.term = term;
-		this.minSize = minSize;
-		this.maxSize = maxSize;
+		this.required = required;
+		this.multiple = multiple;
 	}
 
 	@Override
@@ -65,31 +57,34 @@ class PropertyList extends AbstractList<Property> {
 	
 	@Override
 	public Property set(int index, Property element) {
-		validateElement(element);
+		validate(element);
 		return delegate.set(index, element);
 	}
 
 	@Override
 	public void add(int index, Property element) {
-		validateElement(element);
+		validate(element);
+		if (!this.multiple && size() >= 1) {
+			throw new IllegalStateException("Cannot add more than one property for this term.");
+		}
 		delegate.add(index, element);
 	}
 
 	@Override
 	public Property remove(int index) {
-		if (size() <= minSize) {
-			throw new IllegalStateException("List must have at least " + minSize + " element(s).");
+		if (this.required && size() <= 1) {
+			throw new IllegalStateException("Cannot remove the required property of " + term + ".");
 		}
 		return delegate.remove(index);
 	}
 
-	private void validateElement(Property element) {
+	private void validate(Property element) {
 		if (element == null) {
 			throw new NullPointerException("Property must not be null.");
 		} else if (element.getTerm() != this.term) {
-			throw new IllegalArgumentException("Unexpected term " + term + ".");
+			throw new IllegalArgumentException("The element has unexpected term: " + term + ".");
 		} else if (contains(element)) {
-			throw new IllegalArgumentException("Element already exists.");
+			throw new IllegalArgumentException("The element already exists.");
 		}
 	}
 }

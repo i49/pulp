@@ -19,7 +19,8 @@ package com.github.i49.pulp.api.metadata;
 import java.net.URI;
 
 /**
- * A term in a vocabulary.
+ * A term in a vocabulary. 
+ * The instances of this type are defined as the members of {@link BasicTerm} enumeration.
  */
 public interface Term {
 
