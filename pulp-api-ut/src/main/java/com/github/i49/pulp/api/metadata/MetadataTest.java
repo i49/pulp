@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,10 +32,12 @@ import com.github.i49.pulp.api.core.Epub;
  */
 public class MetadataTest {
 
+	private PropertyFactory f;
 	private Metadata m;
 	
 	@Before
 	public void setUp() {
+		f = Epub.createPropertyFactory();
 		m = Epub.createMetadata();
 	}
 	
@@ -77,6 +80,27 @@ public class MetadataTest {
 		assertThat(m.contains(BasicTerm.CREATOR)).isFalse();
 	}
 	
+	/* getTerms() */
+	
+	@Test
+	public void getTerms_shouldReturn4TermsByDefault() {
+		Creator p = f.newCreator("John Smith");
+		m.add(p);
+		Set<Term> terms = m.getTerms();
+		assertThat(terms).contains(
+				BasicTerm.IDENTIFIER, BasicTerm.TITLE, BasicTerm.LANGUAGE, BasicTerm.MODIFIED);
+	}
+
+	@Test
+	public void getTerms_shouldReturnAllTermsIncludingAdded() {
+		Creator p = f.newCreator("John Smith");
+		m.add(p);
+		Set<Term> terms = m.getTerms();
+		assertThat(terms).contains(
+				BasicTerm.IDENTIFIER, BasicTerm.TITLE, BasicTerm.LANGUAGE, BasicTerm.MODIFIED, 
+				BasicTerm.CREATOR);
+	}
+	
 	/* get(Term) */
 	
 	@Test
@@ -112,5 +136,68 @@ public class MetadataTest {
 		List<Property> list = m.getList(BasicTerm.CREATOR);
 		assertThat(list).isNotNull();
 		assertThat(list).hasSize(0);
+	}
+	
+	/* set(property) */
+	
+	@Test
+	public void set_shouldAddSpecifiedProperty() {
+		Creator p = f.newCreator("John Smith");
+		m.set(p);
+		List<Property> list = m.getList(BasicTerm.CREATOR);
+		assertThat(list).hasSize(1);
+		assertThat(list).contains(p);
+	}
+	
+	@Test
+	public void set_shouldReplaceTitleAddedByDefault() {
+		Title p = f.newTitle("The Catcher in the Rye");
+		m.set(p);
+		List<Property> list = m.getList(BasicTerm.TITLE);
+		assertThat(list).hasSize(1);
+		assertThat(list).contains(p);
+	}
+	
+	/* add(Property) */
+	
+	@Test
+	public void add_shouldAddFirstProperty() {
+		Creator p = f.newCreator("John Smith");
+		assertThat(m.add(p)).isTrue();
+		List<Property> list = m.getList(BasicTerm.CREATOR);
+		assertThat(list).hasSize(1);
+		assertThat(list).contains(p);
+	}
+	
+	@Test
+	public void add_shouldAddSecondProprety() {
+		Title p = f.newTitle("The Catcher in the Rye");
+		assertThat(m.add(p)).isTrue();
+		List<Property> list = m.getList(BasicTerm.TITLE);
+		assertThat(list).hasSize(2);
+		assertThat(list).contains(p);
+	}
+	
+	@Test
+	public void add_shouldReturnFalseIfPropertyAlreadyExists() {
+		Creator p = f.newCreator("John Smith");
+		assertThat(m.add(p)).isTrue();
+		assertThat(m.add(p)).isFalse();
+		List<Property> list = m.getList(BasicTerm.CREATOR);
+		assertThat(list).hasSize(1);
+		assertThat(list).contains(p);
+	}
+	
+	/* remove(Property) */
+
+	@Test
+	public void remove_shouldRemoveSpecifiedProperty() {
+		
+	}
+	
+	@Test
+	public void remove_shouldReturnFalseIfPropertyDoesNotExist() {
+		Creator p = f.newCreator("John Smith");
+		assertThat(m.remove(p)).isFalse();
 	}
 }

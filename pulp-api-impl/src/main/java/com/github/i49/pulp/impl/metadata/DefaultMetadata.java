@@ -20,10 +20,12 @@ import static com.github.i49.pulp.impl.Preconditions.*;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import com.github.i49.pulp.api.metadata.BasicTerm;
 import com.github.i49.pulp.api.metadata.Language;
@@ -85,6 +87,17 @@ public class DefaultMetadata implements Metadata {
 	}
 	
 	@Override
+	public Set<Term> getTerms() {
+		Set<Term> terms = new HashSet<>();
+		for (Term term: this.terms.keySet()) {
+			if (!this.terms.get(term).isEmpty()) {
+				terms.add(term);
+			}
+		}
+		return terms;
+	}
+	
+	@Override
 	public Property get(Term term) {
 		checkNotNull(term, "term");
 		List<Property> list = terms.get(term);
@@ -113,7 +126,41 @@ public class DefaultMetadata implements Metadata {
 		add(DEFAULT_LANGUAGE);
 		add(new DefaultModified(OffsetDateTime.now()));
 	}
+	
+	@Override
+	public void set(Property property) {
+		checkNotNull(property, "property");
+		List<Property> list = getList(property.getTerm());
+		if (list.isEmpty()) {
+			list.add(property);
+		} else {
+			list.set(0, property);
+		}
+		while (list.size() > 1) {
+			list.remove(1);
+		}
+	}
 
+	@Override
+	public boolean add(Property property) {
+		checkNotNull(property, "property");
+		List<Property> list = getList(property.getTerm());
+		if (list.contains(property)) {
+			return false;
+		}
+		return list.add(property);
+	}
+	
+	@Override
+	public boolean remove(Property property) {
+		checkNotNull(property, "property");
+		List<Property> list = terms.get(property.getTerm());
+		if (list == null) {
+			return false;
+		}
+		return list.remove(property);
+	}
+	
 	private void addDefaultLists() {
 		addList(BasicTerm.IDENTIFIER, true, true);
 		addList(BasicTerm.TITLE, true, true);
@@ -131,10 +178,5 @@ public class DefaultMetadata implements Metadata {
 		List<Property> list = new PropertyList(term, required, multiple);
 		terms.put(term, list);
 		return list;
-	}
-	
-	private void add(Property property) {
-		Term term = property.getTerm();
-		getList(term).add(property);
 	}
 }
