@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.impl;
+package com.github.i49.pulp.impl.service;
 
 import java.net.URI;
 
