@@ -41,7 +41,8 @@ import com.github.i49.pulp.api.metadata.Title;
 public class DefaultMetadata implements Metadata {
 	
 	private final Map<Term, List<Property>> terms = new HashMap<>();
-	
+	private final ReleaseIdentifier releaseIdentifier;
+
 	private static final Title DEFAULT_TITLE;
 	private static final Language DEFAULT_LANGUAGE;
 	
@@ -51,16 +52,16 @@ public class DefaultMetadata implements Metadata {
 	}
 
 	/**
-	 * Constructs this object. 
+	 * Constructs the new metadata.
 	 */
 	public DefaultMetadata() {
+		releaseIdentifier = new DefaultReleaseIdentifier(this);
 		reset();
 	}
 
 	@Override
 	public ReleaseIdentifier getReleaseIdentifier() {
-		// TODO Auto-generated method stub
-		return null;
+		return releaseIdentifier;
 	}
 
 	@Override

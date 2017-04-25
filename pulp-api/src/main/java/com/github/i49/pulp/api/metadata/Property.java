@@ -39,8 +39,9 @@ public interface Property {
 	
 	/**
 	 * Returns the normalized form of the value of this property.
+	 * By default this method returns an empty {@link Optional} instance.
 	 * 
-	 * @return the normalized form of the value.
+	 * @return the normalized form of the property value.
 	 */
 	default Optional<String> getNormalizedValue() {
 		return Optional.empty();

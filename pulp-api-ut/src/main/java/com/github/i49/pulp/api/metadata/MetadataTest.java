@@ -41,6 +41,14 @@ public class MetadataTest {
 		m = Epub.createMetadata();
 	}
 	
+	/* getReleaseIdentifier() */
+	
+	@Test
+	public void getReleaseIdentifier_shouldReturnValidReleaseIdentifier() {
+		ReleaseIdentifier identifier = m.getReleaseIdentifier();
+		assertThat(identifier).isNotNull();
+	}
+	
 	/* getNumberOfProperties() */
 	
 	@Test

@@ -16,17 +16,15 @@
 
 package com.github.i49.pulp.api.metadata;
 
-import java.time.OffsetDateTime;
-
 /**
- * Release identifier to distinguish each version of the EPUB rendition.
+ * The release identifier to distinguish each version of the EPUB rendition.
  */
 public interface ReleaseIdentifier {
 	
 	/**
-	 * Returns the Unique Identifier of the rendition.
+	 * Returns the unique identifier of the rendition.
 	 * 
-	 * @return the Unique Identifier of the rendition.
+	 * @return the unique identifier of the rendition.
 	 */
 	Identifier getUniqueIdentifier();
 	
@@ -35,7 +33,7 @@ public interface ReleaseIdentifier {
 	 * 
 	 * @return the last modification date and time of the rendition.
 	 */
-	OffsetDateTime getLastModificationDate();
+	Modified getLastModificationDate();
 	
 	/**
 	 * Returns the string representation of this release identifier.
@@ -44,4 +42,23 @@ public interface ReleaseIdentifier {
 	 */
 	@Override
 	String toString();
+	
+	/**
+	 * Returns a hash code value computed based on the string 
+	 * representation of this release identifier returned by {@link #toString()}.
+	 * 
+	 * @return a hash code value for this release identifier.
+	 */
+	@Override
+	int hashCode();
+	
+	/**
+	 * Compares two release identifiers based on the string representation
+	 * returned by {@link #toString()}. 
+	 * 
+	 * @param object the reference object with which to compare.
+	 * @return {@code true} if this identifier equals the {@code object}, {@code false} otherwise.
+	 */
+	@Override
+	boolean equals(Object object);
 }
