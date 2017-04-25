@@ -19,7 +19,7 @@ package com.github.i49.pulp.impl.publication;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import com.github.i49.pulp.impl.Messages;
+import com.github.i49.pulp.impl.base.Messages;
 
 /**
  * A location of a publication resource.

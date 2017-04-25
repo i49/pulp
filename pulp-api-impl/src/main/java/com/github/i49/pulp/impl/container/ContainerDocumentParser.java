@@ -25,7 +25,7 @@ import org.w3c.dom.Element;
 import com.github.i49.pulp.api.core.EpubException;
 import com.github.i49.pulp.api.core.Publication;
 import com.github.i49.pulp.api.core.Rendition;
-import com.github.i49.pulp.impl.Messages;
+import com.github.i49.pulp.impl.base.Messages;
 
 abstract class ContainerDocumentParser implements ContainerDocumentProcessor {
 

@@ -27,7 +27,7 @@ import java.util.Set;
 
 import com.github.i49.pulp.api.core.EpubException;
 import com.github.i49.pulp.api.core.PublicationResource;
-import com.github.i49.pulp.impl.Messages;
+import com.github.i49.pulp.impl.base.Messages;
 
 /**
  * The registry that maintains all resources used by a publication. 

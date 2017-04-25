@@ -29,7 +29,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import com.github.i49.pulp.api.core.EpubException;
-import com.github.i49.pulp.impl.Messages;
+import com.github.i49.pulp.impl.base.Messages;
 
 /**
  * Utility class for creating XML services.

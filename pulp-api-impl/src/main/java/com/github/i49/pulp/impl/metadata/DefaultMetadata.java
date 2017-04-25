@@ -16,7 +16,7 @@
 
 package com.github.i49.pulp.impl.metadata;
 
-import static com.github.i49.pulp.impl.Preconditions.*;
+import static com.github.i49.pulp.impl.base.Preconditions.*;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;

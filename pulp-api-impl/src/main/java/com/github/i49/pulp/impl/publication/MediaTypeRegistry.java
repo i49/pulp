@@ -23,7 +23,7 @@ import java.util.Map;
 
 import com.github.i49.pulp.api.core.CoreMediaType;
 import com.github.i49.pulp.api.core.MediaType;
-import com.github.i49.pulp.impl.Messages;
+import com.github.i49.pulp.impl.base.Messages;
 
 /**
  * The central registry of media types.

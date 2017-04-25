@@ -21,7 +21,7 @@ import static com.github.i49.pulp.impl.xml.XmlAssertions.*;
 import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.core.EpubException;
-import com.github.i49.pulp.impl.Messages;
+import com.github.i49.pulp.impl.base.Messages;
 
 /**
  * Parser interface for parsing a package document.

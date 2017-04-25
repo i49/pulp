@@ -33,7 +33,7 @@ import com.github.i49.pulp.api.core.PublicationResource;
 import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.core.Spine;
 import com.github.i49.pulp.api.core.Manifest.Item;
-import com.github.i49.pulp.impl.Messages;
+import com.github.i49.pulp.impl.base.Messages;
 
 /**
  * An implementation of {@link Rendition}.

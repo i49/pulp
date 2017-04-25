@@ -14,16 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.impl;
-
-public final class Preconditions {
-
-	public static <T> void checkNotNull(T object, String name) {
-		if (object == null) {
-			throw new IllegalArgumentException("\"" + name + "\" must not be null");
-		}
-	}
-
-	private Preconditions() {
-	}
-}
+/**
+ * Provides the base components useful for other part of the implementation.
+ */
+package com.github.i49.pulp.impl.base;

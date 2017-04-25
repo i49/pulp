@@ -16,7 +16,7 @@
 
 package com.github.i49.pulp.impl.xml;
 
-import static com.github.i49.pulp.impl.Messages.*;
+import static com.github.i49.pulp.impl.base.Messages.*;
 
 import java.util.Arrays;
 import java.util.HashSet;

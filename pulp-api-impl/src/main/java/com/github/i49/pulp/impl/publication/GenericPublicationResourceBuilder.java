@@ -27,7 +27,7 @@ import com.github.i49.pulp.api.core.EpubException;
 import com.github.i49.pulp.api.core.MediaType;
 import com.github.i49.pulp.api.core.PublicationResource;
 import com.github.i49.pulp.api.core.PublicationResourceBuilder;
-import com.github.i49.pulp.impl.Messages;
+import com.github.i49.pulp.impl.base.Messages;
 
 /**
  * A generic implementation of {@link PublicationResourceBuilder}

@@ -16,7 +16,7 @@
 
 package com.github.i49.pulp.impl.zip;
 
-import static com.github.i49.pulp.impl.Messages.*;
+import static com.github.i49.pulp.impl.base.Messages.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

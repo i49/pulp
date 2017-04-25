@@ -27,7 +27,7 @@ import com.github.i49.pulp.api.core.EpubException;
 import com.github.i49.pulp.api.core.Publication;
 import com.github.i49.pulp.api.core.PublicationResource;
 import com.github.i49.pulp.api.core.Rendition;
-import com.github.i49.pulp.impl.Messages;
+import com.github.i49.pulp.impl.base.Messages;
 
 /**
  * An implementation of {@link Publication}.

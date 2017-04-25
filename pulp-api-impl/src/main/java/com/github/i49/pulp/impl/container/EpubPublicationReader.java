@@ -39,7 +39,7 @@ import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.core.Manifest.Item;
 import com.github.i49.pulp.api.core.Spine.Page;
 import com.github.i49.pulp.api.spi.EpubServiceProvider;
-import com.github.i49.pulp.impl.Messages;
+import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.xml.XmlServices;
 
 public class EpubPublicationReader implements PublicationReader {
