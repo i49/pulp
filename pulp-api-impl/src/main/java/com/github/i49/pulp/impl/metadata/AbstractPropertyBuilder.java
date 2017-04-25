@@ -47,8 +47,8 @@ abstract class AbstractPropertyBuilder<P extends Property, T extends Property.Bu
 		return value;
 	}
 
-	public String getNormalizedValue() {
-		return normalizedValue;
+	public Optional<String> getNormalizedValue() {
+		return Optional.ofNullable(normalizedValue);
 	}
 
 	public Optional<Locale> getLanguage() {

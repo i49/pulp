@@ -49,7 +49,7 @@ public class PropertyFactoryTest {
 		Contributor p = factory.newContributor(name);
 		assertThat(p.getTerm()).isSameAs(BasicTerm.CONTRIBUTOR);
 		assertThat(p.getValue()).isEqualTo(name);
-		assertThat(p.getNormalizedValue()).isEqualTo(name);
+		assertThat(p.getNormalizedValue()).isEmpty();
 		assertThat(p.getLanguage()).isEmpty();
 		assertThat(p.getDirection()).isEmpty();
 		assertThat(p.getAlternativeRepresentation()).isEmpty();
@@ -64,7 +64,7 @@ public class PropertyFactoryTest {
 		Contributor p = factory.newContributor(name, Locale.GERMAN);
 		assertThat(p.getTerm()).isSameAs(BasicTerm.CONTRIBUTOR);
 		assertThat(p.getValue()).isEqualTo(name);
-		assertThat(p.getNormalizedValue()).isEqualTo(name);
+		assertThat(p.getNormalizedValue()).isEmpty();
 		assertThat(p.getLanguage()).hasValue(Locale.GERMAN);
 		assertThat(p.getDirection()).isEmpty();
 		assertThat(p.getAlternativeRepresentation()).isEmpty();
@@ -103,7 +103,7 @@ public class PropertyFactoryTest {
 		Creator p = factory.newCreator(name);
 		assertThat(p.getTerm()).isSameAs(BasicTerm.CREATOR);
 		assertThat(p.getValue()).isEqualTo(name);
-		assertThat(p.getNormalizedValue()).isEqualTo(name);
+		assertThat(p.getNormalizedValue()).isEmpty();
 		assertThat(p.getLanguage()).isEmpty();
 		assertThat(p.getDirection()).isEmpty();
 		assertThat(p.getAlternativeRepresentation()).isEmpty();
@@ -118,7 +118,7 @@ public class PropertyFactoryTest {
 		Creator p = factory.newCreator(name, Locale.GERMAN);
 		assertThat(p.getTerm()).isSameAs(BasicTerm.CREATOR);
 		assertThat(p.getValue()).isEqualTo(name);
-		assertThat(p.getNormalizedValue()).isEqualTo(name);
+		assertThat(p.getNormalizedValue()).isEmpty();
 		assertThat(p.getLanguage()).hasValue(Locale.GERMAN);
 		assertThat(p.getDirection()).isEmpty();
 		assertThat(p.getAlternativeRepresentation()).isEmpty();
@@ -262,7 +262,7 @@ public class PropertyFactoryTest {
 		Publisher p = factory.newPublisher(name);
 		assertThat(p.getTerm()).isSameAs(BasicTerm.PUBLISHER);
 		assertThat(p.getValue()).isEqualTo(name);
-		assertThat(p.getNormalizedValue()).isEqualTo(name);
+		assertThat(p.getNormalizedValue()).isEmpty();
 		assertThat(p.getLanguage()).isEmpty();
 		assertThat(p.getDirection()).isEmpty();
 		assertThat(p.getAlternativeRepresentation()).isEmpty();
@@ -277,7 +277,7 @@ public class PropertyFactoryTest {
 		Publisher p = factory.newPublisher(name, Locale.FRENCH);
 		assertThat(p.getTerm()).isSameAs(BasicTerm.PUBLISHER);
 		assertThat(p.getValue()).isEqualTo(name);
-		assertThat(p.getNormalizedValue()).isEqualTo(name);
+		assertThat(p.getNormalizedValue()).isEmpty();
 		assertThat(p.getLanguage()).hasValue(Locale.FRENCH);
 		assertThat(p.getDirection()).isEmpty();
 		assertThat(p.getAlternativeRepresentation()).isEmpty();

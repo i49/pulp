@@ -34,7 +34,7 @@ public interface TextTypeProperty extends Property {
 	/**
 	 * Returns the direction of the text.
 	 * 
-	 * @return the direction of the text.
+	 * @return the direction of the text, such as left-to-right and right-to-left.
 	 */
 	Optional<Direction> getDirection();
 
@@ -56,7 +56,8 @@ public interface TextTypeProperty extends Property {
 		T language(Locale language);
 		
 		/**
-		 * Optionally specifies the directionality of the text.
+		 * Optionally specifies the directionality of the text,
+		 * such as left-to-right and right-to-left.
 		 * 
 		 * @param direction the directionality of the text.
 		 * @return this builder.

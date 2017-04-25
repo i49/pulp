@@ -26,7 +26,7 @@ import com.github.i49.pulp.api.metadata.Representation;
  */
 abstract class AbstractRelator<P extends Relator> extends AbstractTextTypeProperty implements Relator {
 
-	private final String normalizedValue;
+	private final Optional<String> normalizedValue;
 	private final Optional<Representation> alternative;
 	private final Optional<String> role;
 	
@@ -56,10 +56,7 @@ abstract class AbstractRelator<P extends Relator> extends AbstractTextTypeProper
 	}
 	
 	@Override
-	public String getNormalizedValue() {
-		if (normalizedValue == null) {
-			return getValue();
-		}
+	public Optional<String> getNormalizedValue() {
 		return normalizedValue;
 	}
 	

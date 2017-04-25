@@ -16,6 +16,8 @@
 
 package com.github.i49.pulp.api.metadata;
 
+import java.util.Optional;
+
 /**
  * A property composing the metadata for the given rendition.
  */
@@ -36,14 +38,12 @@ public interface Property {
 	String getValue();
 	
 	/**
-	 * Returns the normalized value of this property.
-	 * By default, this method returns the same value as the value returned by {@link #getValue()}.
+	 * Returns the normalized form of the value of this property.
 	 * 
-	 * @return the normalized value of this property.
-	 * @see #getValue()
+	 * @return the normalized form of the value.
 	 */
-	default String getNormalizedValue() {
-		return getValue();
+	default Optional<String> getNormalizedValue() {
+		return Optional.empty();
 	}
 	
 	/**

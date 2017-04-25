@@ -26,7 +26,7 @@ import com.github.i49.pulp.api.metadata.Title;
  */
 class DefaultTitle extends AbstractTextTypeProperty implements Title {
 	
-	private final String normalizedValue;
+	private final Optional<String> normalizedValue;
 	private final Optional<Representation> alternative;
 
 	static Builder builder(String value) {
@@ -40,10 +40,7 @@ class DefaultTitle extends AbstractTextTypeProperty implements Title {
 	}
 
 	@Override
-	public String getNormalizedValue() {
-		if (normalizedValue == null) {
-			return getValue();
-		}
+	public Optional<String> getNormalizedValue() {
 		return normalizedValue;
 	}
 	
