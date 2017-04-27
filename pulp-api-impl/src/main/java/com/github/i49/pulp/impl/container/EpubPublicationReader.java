@@ -29,7 +29,6 @@ import org.xml.sax.SAXException;
 
 import com.github.i49.pulp.api.core.EpubException;
 import com.github.i49.pulp.api.core.EpubParsingException;
-import com.github.i49.pulp.api.core.Metadata;
 import com.github.i49.pulp.api.core.Publication;
 import com.github.i49.pulp.api.core.PublicationReader;
 import com.github.i49.pulp.api.core.PublicationResource;
@@ -38,6 +37,7 @@ import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.core.Manifest.Item;
 import com.github.i49.pulp.api.core.Spine.Page;
+import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.spi.EpubServiceProvider;
 import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.xml.XmlServices;

@@ -18,6 +18,8 @@ package com.github.i49.pulp.api.core;
 
 import java.net.URI;
 
+import com.github.i49.pulp.api.metadata.Metadata;
+
 /**
  * A logical document entity consisting of a set of interrelated resources 
  * representing one rendering of a {@link Publication}. 

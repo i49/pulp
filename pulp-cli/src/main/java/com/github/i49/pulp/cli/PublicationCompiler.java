@@ -29,12 +29,12 @@ import java.util.regex.Pattern;
 
 import com.github.i49.pulp.api.core.Epub;
 import com.github.i49.pulp.api.core.Manifest;
-import com.github.i49.pulp.api.core.Metadata;
 import com.github.i49.pulp.api.core.Publication;
 import com.github.i49.pulp.api.core.PublicationResource;
 import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.core.Spine;
+import com.github.i49.pulp.api.metadata.Metadata;
 
 /**
  * A class to compile a publication.

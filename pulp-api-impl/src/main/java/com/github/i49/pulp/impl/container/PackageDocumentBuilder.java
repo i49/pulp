@@ -17,16 +17,11 @@
 package com.github.i49.pulp.impl.container;
 
 import java.net.URI;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -35,9 +30,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.core.Manifest;
-import com.github.i49.pulp.api.core.Metadata;
 import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.core.Spine;
+import com.github.i49.pulp.api.metadata.BasicTerm;
+import com.github.i49.pulp.api.metadata.Metadata;
+import com.github.i49.pulp.api.metadata.Property;
 
 /**
  * A builder class to build a document carrying bibliographical and structural metadata 
@@ -48,14 +45,10 @@ class PackageDocumentBuilder implements PackageDocumentProcessor {
 	private static final String VERSION = "3.0";
 	private static final String UNIQUE_IDENTIFIER = "pub-id";
 	private static final String ID_PREFIX = "item";
-	private static final String DEFAULT_TITLE = "(untitled)";
-	
-	private static final DateTimeFormatter ISO8601_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	
 	private final DocumentBuilder documentBuilder;
 	private Rendition rendition;
 	private URI packageBase;
-	private final OffsetDateTime now;
 
 	private Document document;
 	private Map<Manifest.Item, String> itemIds = new HashMap<>();
@@ -66,7 +59,6 @@ class PackageDocumentBuilder implements PackageDocumentProcessor {
 	 */
 	public PackageDocumentBuilder(DocumentBuilder documentBuilder) {
 		this.documentBuilder = documentBuilder;
-		this.now = OffsetDateTime.now();
 		this.nextNumber = 1;
 	}
 	
@@ -111,10 +103,11 @@ class PackageDocumentBuilder implements PackageDocumentProcessor {
 		Element e = document.createElementNS(NAMESPACE_URI, "metadata");
 		e.setAttribute("xmlns:dc", DC_NAMESPACE_URI);
 
-		addIdentifier(e, meta);
+		addIdentifiers(e, meta);
 		addTitles(e, meta);
 		addLanguages(e, meta);
 		addCreators(e, meta);
+		addContributors(e, meta);
 		addPublishers(e, meta);
 		addDate(e, meta);
 		addLastModified(e, meta);
@@ -122,82 +115,72 @@ class PackageDocumentBuilder implements PackageDocumentProcessor {
 		return e;
 	}
 	
-	private void addIdentifier(Element parent, Metadata metadata) {
-		String value = metadata.getIdentifier();
-		if (value == null) {
-			value = generateIdentifier();
+	private void addIdentifiers(Element parent, Metadata metadata) {
+		boolean first = true;
+		for (Property p: metadata.getList(BasicTerm.IDENTIFIER)) {
+			Element e = createMetadataEntry("dc:identifier", p.getValue());
+			if (first) {
+				first = false;
+				e.setAttribute("id", UNIQUE_IDENTIFIER);
+				parent.appendChild(e);
+			}
 		}
-		Element child = createMetadata("dc:identifier", value);
-		child.setAttribute("id", UNIQUE_IDENTIFIER);
-		parent.appendChild(child);
 	}
 	
 	private void addTitles(Element parent, Metadata metadata) {
-		if (metadata.getTitles().isEmpty()) {
-			Element child = createMetadata("dc:title", DEFAULT_TITLE);
-			parent.appendChild(child);
-		} else {
-			for (String value: metadata.getTitles()) {
-				Element child = createMetadata("dc:title", value);
-				parent.appendChild(child);
-			}
+		for (Property p: metadata.getList(BasicTerm.TITLE)) {
+			Element e = createMetadataEntry("dc:title", p.getValue());
+			parent.appendChild(e);
 		}
 	}
 
 	private void addLanguages(Element parent, Metadata metadata) {
-		if (metadata.getLanguages().isEmpty()) {
-			Locale value = Locale.getDefault();
-			Element child = createMetadata("dc:language", value.toLanguageTag());
-			parent.appendChild(child);
-		} else {
-			for (Locale value: metadata.getLanguages()) {
-				Element child = createMetadata("dc:language", value.toLanguageTag());
-				parent.appendChild(child);
-			}
+		for (Property p: metadata.getList(BasicTerm.LANGUAGE)) {
+			Element e = createMetadataEntry("dc:language", p.getValue());
+			parent.appendChild(e);
 		}
 	}
 	
 	private void addCreators(Element parent, Metadata metadata) {
-		for (String value: metadata.getCreators()) {
-			Element child = createMetadata("dc:creator", value);
-			parent.appendChild(child);
+		for (Property p: metadata.getList(BasicTerm.CREATOR)) {
+			Element e = createMetadataEntry("dc:creator", p.getValue());
+			parent.appendChild(e);
 		}
 	}
 
+	private void addContributors(Element parent, Metadata metadata) {
+		for (Property p: metadata.getList(BasicTerm.CONTRIBUTOR)) {
+			Element e = createMetadataEntry("dc:contributor", p.getValue());
+			parent.appendChild(e);
+		}
+	}
+	
 	private void addPublishers(Element parent, Metadata metadata) {
-		for (String value: metadata.getPublishers()) {
-			Element child = createMetadata("dc:publisher", value);
-			parent.appendChild(child);
+		for (Property p: metadata.getList(BasicTerm.PUBLISHER)) {
+			Element e = createMetadataEntry("dc:publisher", p.getValue());
+			parent.appendChild(e);
 		}
 	}
 	
 	private void addDate(Element parent, Metadata metadata) {
-		OffsetDateTime dateTime = metadata.getDate();
-		if (dateTime != null) {
-			Element child = createMetadata("dc:date", formatDateTime(dateTime));
-			parent.appendChild(child);
+		if (metadata.contains(BasicTerm.DATE)) {
+			Property p = metadata.get(BasicTerm.DATE);
+			Element e = createMetadataEntry("dc:date", p.getValue());
+			parent.appendChild(e);
 		}
 	}
 
 	private void addLastModified(Element parent, Metadata metadata) {
-		OffsetDateTime dateTime = metadata.getLastModified();
-		if (dateTime == null) {
-			dateTime = now;
-		}
-		Element child = createMetadata("meta", formatDateTime(dateTime));
-		child.setAttribute("property", "dcterms:modified");
-		parent.appendChild(child);
+		Property p = metadata.get(BasicTerm.MODIFIED);
+		Element e = createMetadataEntry("meta", p.getValue());
+		e.setAttribute("property", "dcterms:modified");
+		parent.appendChild(e);
 	}
 	
-	private Element createMetadata(String name, String value) {
+	private Element createMetadataEntry(String name, String value) {
 		Element e = document.createElement(name);
 		e.appendChild(document.createTextNode(value));
 		return e;
-	}
-	
-	private static String formatDateTime(OffsetDateTime dateTime) {
-		OffsetDateTime utc = OffsetDateTime.ofInstant(dateTime.toInstant(), ZoneOffset.UTC);
-		return utc.format(ISO8601_FORMATTER);
 	}
 	
 	/**
@@ -289,10 +272,5 @@ class PackageDocumentBuilder implements PackageDocumentProcessor {
 	 */
 	private String nextItemId() {
 		return ID_PREFIX + this.nextNumber++;		
-	}
-	
-	private static String generateIdentifier() {
-		UUID uuid = UUID.randomUUID();
-		return "urn:uuid:" + uuid.toString();
 	}
 }

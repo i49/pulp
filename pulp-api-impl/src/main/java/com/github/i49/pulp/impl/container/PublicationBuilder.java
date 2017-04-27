@@ -17,8 +17,8 @@
 package com.github.i49.pulp.impl.container;
 
 import com.github.i49.pulp.api.core.Manifest;
-import com.github.i49.pulp.api.core.Metadata;
 import com.github.i49.pulp.api.core.Spine;
+import com.github.i49.pulp.api.metadata.Metadata;
 
 /**
  * A builder interface for the parsers to build a publication.
