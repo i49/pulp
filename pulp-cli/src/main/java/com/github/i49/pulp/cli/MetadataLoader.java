@@ -23,14 +23,22 @@ import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import org.yaml.snakeyaml.Yaml;
 
-import com.github.i49.pulp.api.core.Metadata;
+import com.github.i49.pulp.api.core.Epub;
+import com.github.i49.pulp.api.metadata.Creator;
+import com.github.i49.pulp.api.metadata.Date;
+import com.github.i49.pulp.api.metadata.Identifier;
+import com.github.i49.pulp.api.metadata.Language;
+import com.github.i49.pulp.api.metadata.Metadata;
+import com.github.i49.pulp.api.metadata.Modified;
+import com.github.i49.pulp.api.metadata.PropertyFactory;
+import com.github.i49.pulp.api.metadata.Publisher;
+import com.github.i49.pulp.api.metadata.Title;
 
 /**
  * A loader class to load publication metadata from YAML files.
@@ -38,9 +46,11 @@ import com.github.i49.pulp.api.core.Metadata;
 class MetadataLoader {
 	
 	private final InputStream stream;
+	private final PropertyFactory factory;
 	
 	private MetadataLoader(InputStream stream) {
 		this.stream = stream;
+		this.factory = Epub.createPropertyFactory();
 	}
 	
 	/**
@@ -69,47 +79,128 @@ class MetadataLoader {
 		if (map == null) {
 			return;
 		}
-		if (map.containsKey("identifier")) {
-			m.setIdentifier((String)map.get("identifier"));
-		}
-		if (map.containsKey("title")) {
-			m.getTitles().addAll(getStringOrList(map, "title"));
-		}
-		if (map.containsKey("language")) {
-			for (String language: getStringOrList(map, "language")) {
-				m.getLanguages().add(Locale.forLanguageTag(language));
-			}	
-		}
-		if (map.containsKey("creator")) {
-			m.getCreators().addAll(getStringOrList(map, "creator"));
-		}
-		if (map.containsKey("publisher")) {
-			m.getPublishers().addAll(getStringOrList(map, "publisher"));
-		}
-		if (map.containsKey("date")) {
-			m.setDate(getDateTime(map, "date"));
-		}
-		if (map.containsKey("modified")) {
-			m.setLastModified(getDateTime(map, "modified"));
-		}
+		parseIdentifiers(m, getEntries(map, "identifier"));
+		parseTitles(m, getEntries(map, "title"));
+		parseLanguages(m, getEntries(map, "language"));
+		parseCreators(m, getEntries(map, "creator"));
+		parsePublishers(m, getEntries(map, "publisher"));
+		parseDate(m, getDateTime(map, "date"));
+		parseModified(m, getDateTime(map, "modified"));
 	}
 	
-	@SuppressWarnings("unchecked")
-	private List<String> getStringOrList(Map<?, ?> map, String key) {
-		List<String> list = new ArrayList<>();
-		Object value = map.get(key);
-		if (value != null) {
-			if (value instanceof String) {
-				list.add((String)value);
-			} else if (value instanceof List) {
-				list.addAll((List<String>)value);
+	private void parseIdentifiers(Metadata m, List<Entry> entries) {
+		for (Entry entry: entries) {
+			Identifier p = factory.newIdentifier(entry.getValue());
+			if (entry.isFirst()) {
+				m.set(p);
+			} else {
+				m.add(p);
 			}
 		}
-		return list;
+	}
+
+	private void parseTitles(Metadata m, List<Entry> entries) {
+		for (Entry entry: entries) {
+			Title p = factory.newTitle(entry.getValue());
+			if (entry.isFirst()) {
+				m.set(p);
+			} else {
+				m.add(p);
+			}
+		}
+	}
+
+	private void parseLanguages(Metadata m, List<Entry> entries) {
+		for (Entry entry: entries) {
+			Language p = factory.newLanguage(Locale.forLanguageTag(entry.getValue()));
+			if (entry.isFirst()) {
+				m.set(p);
+			} else {
+				m.add(p);
+			}
+		}
+	}
+
+	private void parseCreators(Metadata m, List<Entry> entries) {
+		for (Entry entry: entries) {
+			Creator p = factory.newCreator(entry.getValue());
+			if (entry.isFirst()) {
+				m.set(p);
+			} else {
+				m.add(p);
+			}
+		}
+	}
+
+	private void parsePublishers(Metadata m, List<Entry> entries) {
+		for (Entry entry: entries) {
+			Publisher p = factory.newPublisher(entry.getValue());
+			if (entry.isFirst()) {
+				m.set(p);
+			} else {
+				m.add(p);
+			}
+		}
+	}
+
+	private void parseDate(Metadata m, OffsetDateTime value) {
+		if (value != null) {
+			Date p = factory.newDate(value);
+			m.set(p);
+		}
+	}
+
+	private void parseModified(Metadata m, OffsetDateTime value) {
+		if (value != null) {
+			Modified p = factory.newModified(value);
+			m.set(p);
+		}
 	}
 	
+	private List<Entry> getEntries(Map<?, ?> map, String key) {
+		List<Entry> entries = new ArrayList<>();
+		Object value = map.get(key);
+		if (value == null) {
+			return entries;
+		}
+		if (value instanceof String) {
+			entries.add(new Entry(0, (String)value));
+		} else if (value instanceof List) {
+			List<?> list = (List<?>)value;
+			for (int i = 0; i < list.size(); i++) {
+				Object item = list.get(i);
+				if (item instanceof String) {
+					entries.add(new Entry(i, (String)item));
+				}
+			}
+		}
+		return entries;
+	}
+
 	private OffsetDateTime getDateTime(Map<?, ?> map, String key) {
-		Date date = (Date)map.get(key);
+		java.util.Date date = (java.util.Date)map.get(key);
+		if (date == null) {
+			return null;
+		}
 		return OffsetDateTime.ofInstant(date.toInstant(), ZoneOffset.UTC);
+	}
+	
+	private static class Entry {
+		
+		private final int index;
+		private final String value;
+		
+		public Entry(int index, String value) {
+			this.index = index;
+			this.value = value;
+		}
+		
+		public boolean isFirst() {
+			return index == 0;
+		}
+
+		public String getValue() {
+			return value;
+		}
 	}
 }
