@@ -3,6 +3,15 @@
 
 Pulp project provides Java API for EPUB processing and its implementation.
 
+## Features
+
+Pulp has the features described below:
+
+- Supports EPUB specification 3.0 and 3.1, which are defined by IDPF.
+- Can read and write EPUB files.
+- Can create EPUBs programmatically from scratch.
+- Clean separation between API and its implementation.
+
 ## Project Structure
 
 This project is composed of the following modules.
