@@ -32,7 +32,8 @@ abstract class AbstractTextTypeProperty extends AbstractProperty implements Text
 	private final Optional<Direction> direction;
 	
 	protected AbstractTextTypeProperty(String value, Optional<Locale> language, Optional<Direction> direction) {
-		this.value = value;
+		assert(value != null);
+		this.value = value.trim();
 		this.language = language;
 		this.direction = direction;
 	}

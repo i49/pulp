@@ -33,24 +33,27 @@ class DefaultSubject extends AbstractProperty implements Subject {
 	private final Optional<String> code;
 	
 	public DefaultSubject(String value) {
-		this.value = value;
+		assert(value != null);
+		this.value = value.trim();
 		this.authority = Optional.empty();
 		this.scheme = Optional.empty();
 		this.code = Optional.empty();
 	}
 
 	public DefaultSubject(String value, SubjectAuthority authority, String code) {
-		this.value = value;
+		assert(value != null && authority != null && code != null);
+		this.value = value.trim();
 		this.authority = Optional.of(authority);
 		this.scheme = Optional.empty();
-		this.code = Optional.of(code);
+		this.code = Optional.of(code.trim());
 	}
 
 	public DefaultSubject(String value, URI scheme, String code) {
-		this.value = value;
+		assert(value != null && scheme != null && code != null);
+		this.value = value.trim();
 		this.authority = Optional.empty();
 		this.scheme = Optional.of(scheme);
-		this.code = Optional.of(code);
+		this.code = Optional.of(code.trim());
 	}
 	
 	@Override

@@ -32,6 +32,7 @@ abstract class AbstractDateTypeProperty extends AbstractProperty implements Date
 	private final OffsetDateTime dateTime;
 	
 	protected AbstractDateTypeProperty(OffsetDateTime dateTime) {
+		assert(dateTime != null);
 		this.dateTime = dateTime;
 	}
 

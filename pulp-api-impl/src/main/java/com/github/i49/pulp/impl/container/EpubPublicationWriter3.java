@@ -16,6 +16,8 @@
 
 package com.github.i49.pulp.impl.container;
 
+import static com.github.i49.pulp.impl.base.Preconditions.checkNotNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -54,9 +56,10 @@ class EpubPublicationWriter3 implements PublicationWriter {
 	}
 
 	@Override
-	public void write(Publication pub) {
+	public void write(Publication publication) {
+		checkNotNull(publication, "publication");
 		try {
-			writeAll(pub);
+			writeAll(publication);
 		} catch (Exception e) {
 			throw new EpubException(e.getMessage(), e);
 		}

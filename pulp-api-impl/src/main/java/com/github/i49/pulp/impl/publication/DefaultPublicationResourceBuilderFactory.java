@@ -16,6 +16,8 @@
 
 package com.github.i49.pulp.impl.publication;
 
+import static com.github.i49.pulp.impl.base.Preconditions.*;
+
 import java.net.URI;
 import java.nio.file.Path;
 
@@ -31,6 +33,7 @@ public class DefaultPublicationResourceBuilderFactory implements PublicationReso
 	private Path[] sourcePath = NO_PATHS;
 	
 	public DefaultPublicationResourceBuilderFactory(URI baseURI, MediaTypeRegistry typeRegistry) {
+		assert(baseURI != null && typeRegistry != null);
 		this.baseURI = PublicationResourceLocation.ofLocal(baseURI);
 		this.typeRegistry = typeRegistry;
 	}
@@ -42,22 +45,14 @@ public class DefaultPublicationResourceBuilderFactory implements PublicationReso
 	
 	@Override
 	public void setSourcePath(Path... paths) {
-		if (paths == null) {
-			throw new IllegalArgumentException("\"paths\" must not be null");
-		}
-		for (Path path: paths) {
-			if (path == null) {
-				throw new IllegalArgumentException("\"paths\" cannot contain null");
-			}
-		}
+		checkNotNull(paths, "paths");
+		checkElementNotNull(paths, "paths");
 		this.sourcePath = paths;
 	}
 
 	@Override
 	public PublicationResourceBuilder newBuilder(String location) {
-		if (location == null) {
-			throw new IllegalArgumentException("\"location\" must not be null");
-		}
+		checkNotNull(location, "location");
 		PublicationResourceLocation resolved = resolve(location);
 		return new GenericPublicationResourceBuilder(resolved, location, this.sourcePath, this.typeRegistry);
 	}
@@ -69,6 +64,7 @@ public class DefaultPublicationResourceBuilderFactory implements PublicationReso
 	 * @return resolved location.
 	 */
 	private PublicationResourceLocation resolve(String location) {
+		assert(location != null);
 		URI uri = this.baseURI.resolve(location); 
 		return PublicationResourceLocation.of(uri);
 	}

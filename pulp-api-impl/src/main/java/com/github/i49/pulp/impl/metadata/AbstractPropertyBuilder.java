@@ -16,6 +16,8 @@
 
 package com.github.i49.pulp.impl.metadata;
 
+import static com.github.i49.pulp.impl.base.Preconditions.*;
+
 import java.util.Locale;
 import java.util.Optional;
 
@@ -40,7 +42,8 @@ abstract class AbstractPropertyBuilder<P extends Property, T extends Property.Bu
 	private String role;
 	
 	protected AbstractPropertyBuilder(String value) {
-		this.value = value;
+		assert(value != null);
+		this.value = value.trim();
 	}
 	
 	public String getValue() {
@@ -68,45 +71,33 @@ abstract class AbstractPropertyBuilder<P extends Property, T extends Property.Bu
 	}
 
 	public T language(Locale language) {
-		if (language == null) {
-			throw new IllegalArgumentException("\"language\" must not be null"); 
-		}
+		checkNotNull(language, "language");
 		this.language = language;
 		return self();
 	}
 
 	public T direction(Direction direction) {
-		if (direction == null) {
-			throw new IllegalArgumentException("\"direction\" must not be null"); 
-		}
+		checkNotNull(direction, "direction");
 		this.direction = direction;
 		return self();
 	}
 	
 	public T fileAs(String value) {
-		if (value == null) {
-			throw new IllegalArgumentException("\"value\" must not be null"); 
-		}
-		this.normalizedValue = value;
+		checkNotBlank(value, "value");
+		this.normalizedValue = value.trim();
 		return self();
 	}
 
 	public T alternative(String value, Locale language) {
-		if (value == null) {
-			throw new IllegalArgumentException("\"value\" must not be null"); 
-		}
-		if (language == null) {
-			throw new IllegalArgumentException("\"language\" must not be null"); 
-		}
+		checkNotBlank(value, "value");
+		checkNotNull(language, "language");
 		this.alternative = new DefaultRepresentation(value, language);
 		return self();
 	}
 	
 	public T role(String role) {
-		if (role == null) {
-			throw new IllegalArgumentException("\"role\" must not be null"); 
-		}
-		this.role = role;
+		checkNotBlank(role, "role");
+		this.role = role.trim();
 		return self();
 	}
 	

@@ -26,13 +26,16 @@ public interface PublicationWriter extends Closeable {
 	
 	/**
 	 * Closes this writer and frees any resources associated with this writer.
-	 * @throws EpubException if an I/O error occurred.
+	 * 
+	 * @throws EpubException if an I/O error has occurred.
 	 */
 	void close();
 	
 	/**
 	 * Writes a publication.
+	 * 
 	 * @param publication the publication to be written.
+	 * @throws IllegalArgumentException if {@code publication} is {@code null}.
 	 * @throws EpubException if the publication cannot be written due to some error such as {@link IOException}.
 	 */
 	void write(Publication publication);

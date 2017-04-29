@@ -16,6 +16,8 @@
 
 package com.github.i49.pulp.impl.container;
 
+import static com.github.i49.pulp.impl.base.Preconditions.*;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -41,14 +43,13 @@ public class DefaultPublicationReaderFactory implements PublicationReaderFactory
 	 * @param provider the service provider.
 	 */
 	public DefaultPublicationReaderFactory(EpubServiceProvider provider) {
+		assert(provider != null);
 		this.provider = provider;
 	}
 	
 	@Override
 	public PublicationReader createReader(Path path) {
-		if (path == null) {
-			throw new IllegalArgumentException("path is null");
-		}
+		checkNotNull(path, "path");
 		ReadableContainer container = openContainer(path);
 		return new EpubPublicationReader(container, this.provider);
 	}

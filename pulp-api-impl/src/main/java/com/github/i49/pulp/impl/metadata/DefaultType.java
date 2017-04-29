@@ -26,7 +26,8 @@ class DefaultType extends AbstractProperty implements Type {
 	private final String value;
 
 	public DefaultType(String value) {
-		this.value = value;
+		assert(value != null);
+		this.value = value.trim();
 	}
 
 	@Override

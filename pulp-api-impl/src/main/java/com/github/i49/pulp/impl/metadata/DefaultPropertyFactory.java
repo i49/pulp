@@ -16,6 +16,8 @@
 
 package com.github.i49.pulp.impl.metadata;
 
+import static com.github.i49.pulp.impl.base.Preconditions.*;
+
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -52,6 +54,7 @@ import com.github.i49.pulp.api.metadata.Type;
  */
 public class DefaultPropertyFactory implements PropertyFactory {
 	
+	// Predefined special publication types.
 	private static final Map<String, PublicationType> PREDEFINED_TYPES = new HashMap<>();
 	
 	static {
@@ -62,25 +65,25 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	
 	@Override
 	public Relator.Builder<Contributor> getContributorBuilder(String name) {
-		name = requireNonEmpty(name, "name");
+		checkNotBlank(name, "name");
 		return DefaultContributor.builder(name);
 	}
 
 	@Override
 	public Relator.Builder<Creator> getCreatorBuilder(String name) {
-		name = requireNonEmpty(name, "name");
+		checkNotBlank(name, "name");
 		return DefaultCreator.builder(name);
 	}
 
 	@Override
 	public Relator.Builder<Publisher> getPublisherBuilder(String name) {
-		name = requireNonEmpty(name, "name");
+		checkNotBlank(name, "name");
 		return DefaultPublisher.builder(name);
 	}
 
 	@Override
 	public Title.Builder getTitleBuilder(String value) {
-		value = requireNonEmpty(value, "value");
+		checkNotBlank(value, "value");
 		return DefaultTitle.builder(value);
 	}
 
@@ -96,22 +99,22 @@ public class DefaultPropertyFactory implements PropertyFactory {
 
 	@Override
 	public Coverage newCoverage(String text) {
-		text = requireNonEmpty(text, "text");
+		checkNotBlank(text, "text");
 		return new DefaultCoverage(text, Optional.empty(), Optional.empty());
 	}
 
 	@Override
 	public Coverage newCoverage(String text, Locale language) {
-		text = requireNonEmpty(text, "text");
-		requireNonNull(language, "language");
+		checkNotBlank(text, "text");
+		checkNotNull(language, "language");
 		return new DefaultCoverage(text, Optional.of(language), Optional.empty());
 	}
 
 	@Override
 	public Coverage newCoverage(String text, Locale language, Direction direction) {
-		text = requireNonEmpty(text, "text");
-		requireNonNull(language, "language");
-		requireNonNull(direction, "direction");
+		checkNotBlank(text, "text");
+		checkNotNull(language, "language");
+		checkNotNull(direction, "direction");
 		return new DefaultCoverage(text, Optional.of(language), Optional.of(direction));
 	}
 
@@ -127,34 +130,34 @@ public class DefaultPropertyFactory implements PropertyFactory {
 
 	@Override
 	public Date newDate(OffsetDateTime dateTime) {
-		requireNonNull(dateTime, "dateTime");
+		checkNotNull(dateTime, "dateTime");
 		return new DefaultDate(dateTime);
 	}
 	
 	@Override
 	public Description newDescription(String text) {
-		text = requireNonEmpty(text, "text");
+		checkNotBlank(text, "text");
 		return new DefaultDescription(text, Optional.empty(), Optional.empty());
 	}
 
 	@Override
 	public Description newDescription(String text, Locale language) {
-		text = requireNonEmpty(text, "text");
-		requireNonNull(language, "language");
+		checkNotBlank(text, "text");
+		checkNotNull(language, "language");
 		return new DefaultDescription(text, Optional.of(language), Optional.empty());
 	}
 
 	@Override
 	public Description newDescription(String text, Locale language, Direction direction) {
-		text = requireNonEmpty(text, "text");
-		requireNonNull(language, "language");
-		requireNonNull(direction, "direction");
+		checkNotBlank(text, "text");
+		checkNotNull(language, "language");
+		checkNotNull(direction, "direction");
 		return new DefaultDescription(text, Optional.of(language), Optional.of(direction));
 	}
 
 	@Override
 	public Format newFormat(String value) {
-		value = requireNonEmpty(value, "value");
+		checkNotBlank(value, "value");
 		return new DefaultFormat(value);
 	}
 
@@ -165,40 +168,41 @@ public class DefaultPropertyFactory implements PropertyFactory {
 
 	@Override
 	public Identifier newIdentifier(String value) {
-		value = requireNonEmpty(value, "value");
+		checkNotBlank(value, "value");
 		return new DefaultIdentifier(value);
 	}
 
 	@Override
 	public Identifier newIdentifier(String value, IdentifierScheme scheme) {
-		value = requireNonEmpty(value, "value");
-		requireNonNull(scheme, "scheme");
+		checkNotBlank(value, "value");
+		checkNotNull(scheme, "scheme");
 		return new DefaultIdentifier(value, scheme);
 	}
 
 	@Override
 	public Identifier newIdentifier(String value, URI schemeURI) {
-		value = requireNonEmpty(value, "value");
-		requireNonNull(schemeURI, "schemeURI");
+		checkNotBlank(value, "value");
+		checkNotNull(schemeURI, "schemeURI");
 		return new DefaultIdentifier(value, schemeURI);
 	}
 
 	@Override
 	public Language newLanguage(String languageTag) {
-		languageTag = requireNonEmpty(languageTag, "languageTag");
+		checkNotBlank(languageTag, "languageTag");
+		languageTag = languageTag.trim();
 		Locale locale = new Locale.Builder().setLanguageTag(languageTag).build();
 		return newLanguage(locale);
 	}
 
 	@Override
 	public Language newLanguage(Locale language) {
-		requireNonNull(language, "language");
+		checkNotNull(language, "language");
 		return new DefaultLanguage(language);
 	}
 	
 	@Override
 	public Modified newModified(OffsetDateTime dateTime) {
-		requireNonNull(dateTime, "dateTime");
+		checkNotNull(dateTime, "dateTime");
 		return new DefaultModified(dateTime);
 	}
 	
@@ -214,78 +218,78 @@ public class DefaultPropertyFactory implements PropertyFactory {
 
 	@Override
 	public Relation newRelation(String text) {
-		text = requireNonEmpty(text, "text");
+		checkNotBlank(text, "text");
 		return new DefaultRelation(text, Optional.empty(), Optional.empty());
 	}
 
 	@Override
 	public Relation newRelation(String text, Locale language) {
-		text = requireNonEmpty(text, "text");
-		requireNonNull(language, "language");
+		checkNotBlank(text, "text");
+		checkNotNull(language, "language");
 		return new DefaultRelation(text, Optional.of(language), Optional.empty());
 	}
 
 	@Override
 	public Relation newRelation(String text, Locale language, Direction direction) {
-		text = requireNonEmpty(text, "text");
-		requireNonNull(language, "language");
-		requireNonNull(direction, "direction");
+		checkNotBlank(text, "text");
+		checkNotNull(language, "language");
+		checkNotNull(direction, "direction");
 		return new DefaultRelation(text, Optional.of(language), Optional.of(direction));
 	}
 
 	@Override
 	public Rights newRights(String text) {
-		text = requireNonEmpty(text, "text");
+		checkNotBlank(text, "text");
 		return new DefaultRights(text, Optional.empty(), Optional.empty());
 	}
 
 	@Override
 	public Rights newRights(String text, Locale language) {
-		text = requireNonEmpty(text, "text");
-		requireNonNull(language, "language");
+		checkNotBlank(text, "text");
+		checkNotNull(language, "language");
 		return new DefaultRights(text, Optional.of(language), Optional.empty());
 	}
 
 	@Override
 	public Rights newRights(String text, Locale language, Direction direction) {
-		text = requireNonEmpty(text, "text");
-		requireNonNull(language, "language");
-		requireNonNull(direction, "direction");
+		checkNotBlank(text, "text");
+		checkNotNull(language, "language");
+		checkNotNull(direction, "direction");
 		return new DefaultRights(text, Optional.of(language), Optional.of(direction));
 	}
 
 	@Override
 	public Source newSource(String value) {
-		value = requireNonEmpty(value, "value");
+		checkNotBlank(value, "value");
 		return new DefaultSource(value, Optional.empty());
 	}
 
 	@Override
 	public Source newSource(String value, String scheme) {
-		value = requireNonEmpty(value, "value");
-		requireNonNull(scheme, "scheme");
+		checkNotBlank(value, "value");
+		checkNotNull(scheme, "scheme");
 		return new DefaultSource(value, Optional.of(scheme));
 	}
 
 	@Override
 	public Subject newSubject(String value) {
-		value = requireNonEmpty(value, "value");
+		checkNotBlank(value, "value");
 		return new DefaultSubject(value);
 	}
 
 	@Override
 	public Subject newSubject(String value, SubjectAuthority authority, String code) {
-		value = requireNonEmpty(value, "value");
-		requireNonNull(authority, "authority");
-		code = requireNonEmpty(code, "code");
+		checkNotBlank(value, "value");
+		checkNotNull(authority, "authority");
+		checkNotBlank(code, "code");
 		return new DefaultSubject(value, authority, code);
 	}
 
 	@Override
 	public Subject newSubject(String value, URI scheme, String code) {
-		value = requireNonEmpty(value, "value");
-		requireNonNull(scheme, "scheme");
-		code = requireNonEmpty(code, "code");
+		checkNotBlank(value, "value");
+		checkNotNull(scheme, "scheme");
+		checkNotBlank(code, "code");
 		return new DefaultSubject(value, scheme, code);
 	}
 
@@ -301,30 +305,8 @@ public class DefaultPropertyFactory implements PropertyFactory {
 
 	@Override
 	public Type newType(String value) {
-		value = requireNonEmpty(value, "value");
+		checkNotBlank(value, "value");
 		Type type = PREDEFINED_TYPES.get(value);
 		return (type != null) ? type : new DefaultType(value);
-	}
-	
-	/**
-	 * Requires the specified parameter is not null.
-	 * 
-	 * @param object the parameter to check.
-	 * @param name the name of the parameter.
-	 * @throws IllegalArgumentException if {@code object} is {@code null}.
-	 */
-	private static <T> void requireNonNull(T object, String name) {
-		if (object == null) {
-			throw new IllegalArgumentException("\"" + name + "\" must not be null");
-		}
-	}
-
-	private static String requireNonEmpty(String value, String name) {
-		requireNonNull(value, name);
-		String trimmed = value.trim();
-		if (trimmed.isEmpty()) {
-			throw new IllegalArgumentException("\"" + name + "\" must not be blank");
-		}
-		return trimmed;
 	}
 }

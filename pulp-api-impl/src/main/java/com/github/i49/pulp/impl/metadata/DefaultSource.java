@@ -29,7 +29,8 @@ class DefaultSource extends AbstractProperty implements Source {
 	private final Optional<String> scheme;
 	
 	public DefaultSource(String value, Optional<String> scheme) {
-		this.value = value;
+		assert(value != null);
+		this.value = value.trim();
 		this.scheme = scheme;
 	}
 

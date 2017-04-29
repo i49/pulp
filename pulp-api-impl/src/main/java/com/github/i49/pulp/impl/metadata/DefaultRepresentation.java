@@ -29,7 +29,8 @@ class DefaultRepresentation implements Representation {
 	private final Locale language;
 	
 	public DefaultRepresentation(String value, Locale language) {
-		this.value = value;
+		assert(value != null && language != null);
+		this.value = value.trim();
 		this.language = language;
 	}
 

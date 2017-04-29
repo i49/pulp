@@ -16,6 +16,8 @@
 
 package com.github.i49.pulp.impl.publication;
 
+import static com.github.i49.pulp.impl.base.Preconditions.*;
+
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
@@ -72,11 +74,8 @@ public class DefaultPublication implements Publication {
 	
 	@Override
 	public Rendition addRendition(String location) {
-		if (location == null) {
-			return createRendition(DEFAULT_RENDITION_LOCATION);
-		} else {
-			return createRendition(PublicationResourceLocation.ofLocal(location));
-		}
+		checkNotNull(location, "location");
+		return createRendition(PublicationResourceLocation.ofLocal(location));
 	}
 
 	@Override
@@ -91,17 +90,13 @@ public class DefaultPublication implements Publication {
 	
 	@Override
 	public boolean containsResource(String location) {
-		if (location == null) {
-			throw new IllegalArgumentException("\"location\" must not be null");
-		}
+		checkNotNull(location, "location");
 		return this.registry.contains(location);
 	}
 	
 	@Override
 	public PublicationResource getResource(String location) {
-		if (location == null) {
-			throw new IllegalArgumentException("\"location\" must not be null");
-		}
+		checkNotNull(location, "location");
 		return this.registry.get(location);
 	}
 	

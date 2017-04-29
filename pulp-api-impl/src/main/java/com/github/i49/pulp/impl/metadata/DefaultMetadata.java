@@ -153,6 +153,7 @@ public class DefaultMetadata implements Metadata {
 	}
 	
 	private List<Property> addList(Term term) {
+		assert(term != null);
 		boolean multiple = !(term == BasicTerm.DATE || term == BasicTerm.MODIFIED);
 		List<Property> list = new PropertyList(term, multiple);
 		terms.put(term, list);

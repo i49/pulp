@@ -99,38 +99,44 @@ public class PublicationTest {
 	}
 	
 	@Test
-	public void addRendition_shouldAddRenditionAtDefaultLocationIfLocationIsNull() {
-		Rendition r = publication.addRendition(null);
-		assertThat(r.getLocation()).hasToString("EPUB/package.opf");
+	public void addRendition_shouldThrowExceptionIfLocationIsNull() {
+		Throwable thrown = catchThrowable(()->{
+			publication.addRendition(null);
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
 	}
 	
 	@Test
 	public void addRendition_shouldThrowExceptionIfLocationHasScheme() {
-		assertThatThrownBy(()->{
+		Throwable thrown = catchThrowable(()->{
 			publication.addRendition("http://example.org/EPUB/package.opf");
-		}).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("http://example.org/EPUB/package.opf");
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("http://example.org/EPUB/package.opf");
 	}
 
 	@Test
 	public void addRendition_shouldThrowExceptionIfLocationIsPathAbsolute() {
-		assertThatThrownBy(()->{
+		Throwable thrown = catchThrowable(()->{
 			publication.addRendition("/EPUB/package.opf");
-		}).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("/EPUB/package.opf");
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("/EPUB/package.opf");
 	}
 
 	@Test
 	public void addRendition_shouldThrowExceptionIfLocationContainsDotSegments() {
-		assertThatThrownBy(()->{
+		Throwable thrown = catchThrowable(()->{
 			publication.addRendition("../package.opf");
-		}).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("../package.opf");
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("../package.opf");
 	}
 	
 	@Test
 	public void addRendition_shouldThrowExceptionIfRenditionAlreadyExists() {
 		publication.addRendition();
-		assertThatThrownBy(()->{
+		Throwable thrown = catchThrowable(()->{
 			publication.addRendition();
-		}).isInstanceOf(EpubException.class).hasMessageContaining("EPUB/package.opf");
+		});
+		assertThat(thrown).isInstanceOf(EpubException.class).hasMessageContaining("EPUB/package.opf");
 	}
 
 	/* iterator() */

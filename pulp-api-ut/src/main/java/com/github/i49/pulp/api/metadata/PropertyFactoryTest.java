@@ -56,6 +56,22 @@ public class PropertyFactoryTest {
 		assertThat(p.getRole()).isEmpty();
 	}
 
+	@Test 
+	public void newContributor_shouldThrowExceptionIfNameIsNull() {
+		Throwable thrown = catchThrowable(()->{
+			factory.newContributor(null);
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test 
+	public void newContributor_shouldThrowExceptionIfNameIsBlank() {
+		Throwable thrown = catchThrowable(()->{
+			factory.newContributor(" ");
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+	
 	/* newContributor(String, Locale) */
 
 	@Test
@@ -110,6 +126,22 @@ public class PropertyFactoryTest {
 		assertThat(p.getRole()).isEmpty();
 	}
 
+	@Test 
+	public void newCreator_shouldThrowExceptionIfNameIsNull() {
+		Throwable thrown = catchThrowable(()->{
+			factory.newCreator(null);
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test 
+	public void newCreator_shouldThrowExceptionIfNameIsBlank() {
+		Throwable thrown = catchThrowable(()->{
+			factory.newCreator(" ");
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+	
 	/* newCreator(String, Locale) */
 
 	@Test
@@ -135,6 +167,14 @@ public class PropertyFactoryTest {
 		assertThat(p.getValue()).isEqualTo("2017-04-22T16:02:03Z");
 		assertThat(p.getDateTime()).isEqualTo(dateTime);
 	}
+
+	@Test 
+	public void newDate_shouldThrowExceptionIfDateTimeIsNull() {
+		Throwable thrown = catchThrowable(()->{
+			factory.newDate(null);
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
 	
 	/* newDescription(String) */
 	
@@ -146,6 +186,22 @@ public class PropertyFactoryTest {
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).isEmpty();
 		assertThat(p.getDirection()).isEmpty();
+	}
+	
+	@Test 
+	public void newDescription_shouldThrowExceptionIfTextIsNull() {
+		Throwable thrown = catchThrowable(()->{
+			factory.newDescription(null);
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test 
+	public void newDescription_shouldThrowExceptionIfTextIsBlank() {
+		Throwable thrown = catchThrowable(()->{
+			factory.newDescription("   ");
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
 	}
 	
 	/* newDescription(String, Locale) */
@@ -192,6 +248,22 @@ public class PropertyFactoryTest {
 		assertThat(identifier.getScheme()).isEmpty();
 		assertThat(identifier.getSchemeURI()).isEmpty();
 	}
+	
+	@Test
+	public void newIdentifier_shouldThrowExceptionIfValueIsNull() {
+		Throwable thrown = catchThrowable(()->{
+			factory.newIdentifier(null);
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
+	public void newIdentifier_shouldThrowExceptionIfValueIsBlank() {
+		Throwable thrown = catchThrowable(()->{
+			factory.newIdentifier(" ");
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException .class);
+	}
 
 	/* newIdentifier(String, IdentifierScheme) */
 	
@@ -215,6 +287,22 @@ public class PropertyFactoryTest {
 		assertThat(p.getLanguage()).isEqualTo(Locale.forLanguageTag("en-US"));
 	}
 	
+	@Test
+	public void newLanguage_shouldThrowExceptionIfLangaugeTagIsNull() {
+		Throwable thrown = catchThrowable(()->{
+			factory.newLanguage((String)null);
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException .class);
+	}
+
+	@Test
+	public void newLanguage_shouldThrowExceptionIfLangaugeTagIsBlank() {
+		Throwable thrown = catchThrowable(()->{
+			factory.newLanguage("");
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException .class);
+	}
+
 	@Test
 	public void newLanguage_shouldThrowExceptionIfLangaugeTagIsInvalid() {
 		Throwable thrown = catchThrowable(()->{
@@ -254,6 +342,14 @@ public class PropertyFactoryTest {
 		assertThat(p.getDateTime()).isEqualTo(dateTime);
 	}
 
+	@Test 
+	public void newModified_shouldThrowExceptionIfDateTimeIsNull() {
+		Throwable thrown = catchThrowable(()->{
+			factory.newModified(null);
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+	
 	/* newPublisher(String) */
 	
 	@Test
@@ -269,6 +365,22 @@ public class PropertyFactoryTest {
 		assertThat(p.getRole()).hasValue("pbl");
 	}
 
+	@Test 
+	public void newPublisher_shouldThrowExceptionIfNameIsNull() {
+		Throwable thrown = catchThrowable(()->{
+			factory.newPublisher(null);
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test 
+	public void newPublisher_shouldThrowExceptionIfNameIsBlank() {
+		Throwable thrown = catchThrowable(()->{
+			factory.newPublisher(" ");
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+	
 	/* newPublisher(String, Locale) */
 
 	@Test

@@ -16,6 +16,8 @@
 
 package com.github.i49.pulp.impl.publication;
 
+import static com.github.i49.pulp.impl.base.Preconditions.*;
+
 import java.io.ByteArrayInputStream;
 import java.net.URI;
 import java.nio.file.Files;
@@ -69,18 +71,14 @@ class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 
 	@Override
 	public PublicationResourceBuilder ofType(MediaType mediaType) {
-		if (mediaType == null) {
-			throw new IllegalArgumentException("\"mediaType\" must not be null");
-		}
+		checkNotNull(mediaType, "mediaType");
 		this.mediaType = mediaType;
 		return this;
 	}
 
 	@Override
 	public PublicationResourceBuilder ofType(String value) {
-		if (value == null) {
-			throw new IllegalArgumentException("\"value\" must not be null");
-		}
+		checkNotNull(value, "value");
 		this.mediaType = typeRegistry.getMediaType(value);
 		return this;
 	}
@@ -92,33 +90,25 @@ class GenericPublicationResourceBuilder implements PublicationResourceBuilder {
 	
 	@Override
 	public PublicationResourceBuilder source(Path path) {
-		if (path == null) {
-			throw new IllegalArgumentException("\"path\" must not be null");
-		}
+		checkNotNull(path, "path");
 		return source(path.toUri());
 	}
 
 	@Override
 	public PublicationResourceBuilder source(URI uri) {
-		if (uri == null) {
-			throw new IllegalArgumentException("\"uri\" must not be null");
-		}
+		checkNotNull(uri, "uri");
 		return source((location)->uri.toURL().openStream());
 	}
 	
 	@Override
 	public PublicationResourceBuilder source(byte[] bytes) {
-		if (bytes == null) {
-			throw new IllegalArgumentException("\"bytes\" must not be null");
-		}
+		checkNotNull(bytes, "bytes");
 		return source((location)->new ByteArrayInputStream(bytes));
 	}
 	
 	@Override
 	public PublicationResourceBuilder source(ContentSource source) {
-		if (source == null) {
-			throw new IllegalArgumentException("\"source\" must not be null");
-		}
+		checkNotNull(source, "source");
 		this.source = source;
 		return this;
 	}

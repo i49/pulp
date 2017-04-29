@@ -16,6 +16,8 @@
 
 package com.github.i49.pulp.impl.publication;
 
+import static com.github.i49.pulp.impl.base.Preconditions.*;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,9 +42,7 @@ class BasicPublicationResource implements PublicationResource {
 	private ContentSource source;
 	
 	public BasicPublicationResource(PublicationResourceLocation location, MediaType mediaType) {
-		if (location == null || mediaType == null) {
-			throw new NullPointerException();
-		}
+		assert(location != null && mediaType != null);
 		this.location = location;
 		this.mediaType = mediaType;
 	}
@@ -84,9 +84,7 @@ class BasicPublicationResource implements PublicationResource {
 	
 	@Override
 	public void setContentSource(ContentSource source) {
-		if (source == null) {
-			throw new IllegalArgumentException("\"source\" must not be null");
-		}
+		checkNotNull(source, "source");
 		this.source = source;
 	}
 	

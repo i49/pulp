@@ -28,6 +28,7 @@ class DefaultLanguage extends AbstractProperty implements Language {
 	private final Locale value;
 	
 	public DefaultLanguage(Locale value) {
+		assert(value != null);
 		this.value = value;
 	}
 

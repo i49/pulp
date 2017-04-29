@@ -18,7 +18,9 @@ package com.github.i49.pulp.api.metadata;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -91,7 +93,7 @@ public class MetadataTest {
 	
 	@Test
 	public void contains_shouldReturnTrueIfPropertyExists() {
-		m.add(f.newTitle("Default Title"));
+		m.add(f.newTitle("Untitled"));
 		assertThat(m.contains(BasicTerm.TITLE)).isTrue();
 	}
 
@@ -158,6 +160,19 @@ public class MetadataTest {
 		assertThat(list).hasSize(0);
 	}
 	
+	/* clear() */
+	
+	@Test
+	public void clear_shouldClearAllProperties() {
+		m.add(f.newIdentifier());
+		m.add(f.newTitle("Untitled"));
+		m.add(f.newLanguage(Locale.getDefault()));
+		m.add(f.newModified(OffsetDateTime.now()));
+		assertThat(m.getNumberOfProperties()).isEqualTo(4);
+		m.clear();
+		assertThat(m.getNumberOfProperties()).isEqualTo(0);
+	}
+	
 	/* add(Property) */
 	
 	@Test
@@ -192,12 +207,53 @@ public class MetadataTest {
 
 	@Test
 	public void remove_shouldRemoveSpecifiedProperty() {
+		Title p = f.newTitle("Untitled");
+		m.add(p);
+		assertThat(m.getNumberOfProperties()).isEqualTo(1);
+		assertThat(m.contains(BasicTerm.TITLE)).isTrue();
 		
+		assertThat(m.remove(p)).isTrue();
+		assertThat(m.getNumberOfProperties()).isEqualTo(0);
+		assertThat(m.contains(BasicTerm.TITLE)).isFalse();
 	}
 	
 	@Test
 	public void remove_shouldReturnFalseIfPropertyDoesNotExist() {
 		Creator p = f.newCreator("John Smith");
 		assertThat(m.remove(p)).isFalse();
+	}
+	
+	/** addMandatory() */
+	
+	@Test
+	public void addMandatory_shouldAddRequiredProperties() {
+		m.addMandatory();
+		assertThat(m.getNumberOfProperties()).isEqualTo(4);
+		
+		Identifier identifier = (Identifier)m.get(BasicTerm.IDENTIFIER);
+		assertThat(identifier).isNotNull();
+		assertThat(identifier.getValue()).isNotBlank();
+	
+		Title title = (Title)m.get(BasicTerm.TITLE);
+		assertThat(title).isNotNull();
+		assertThat(title.getValue()).isNotBlank();
+
+		Language language = (Language)m.get(BasicTerm.LANGUAGE);
+		assertThat(language).isNotNull();
+		assertThat(language.getLanguage()).isEqualTo(Locale.getDefault());
+
+		Modified modified = (Modified)m.get(BasicTerm.MODIFIED);
+		assertThat(modified).isNotNull();
+	}
+	
+	@Test
+	public void addMandatory_shouldNotAddPropertyAlreadPresent() {
+		Title p = f.newTitle("The Catcher in the Rye");
+		m.add(p);
+		assertThat(m.getNumberOfProperties()).isEqualTo(1);
+		m.addMandatory();
+		assertThat(m.getNumberOfProperties()).isEqualTo(4);
+		assertThat(m.getNumberOfProperties(BasicTerm.TITLE)).isEqualTo(1);
+		assertThat(m.get(BasicTerm.TITLE)).isSameAs(p);
 	}
 }

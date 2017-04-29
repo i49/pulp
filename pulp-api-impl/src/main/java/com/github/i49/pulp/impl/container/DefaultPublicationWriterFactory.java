@@ -16,6 +16,8 @@
 
 package com.github.i49.pulp.impl.container;
 
+import static com.github.i49.pulp.impl.base.Preconditions.*;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Path;
@@ -35,9 +37,7 @@ public class DefaultPublicationWriterFactory implements PublicationWriterFactory
 	
 	@Override
 	public PublicationWriter createWriter(Path path) {
-		if (path == null) {
-			throw new IllegalArgumentException("path is null");
-		}
+		checkNotNull(path, "path");
 		WriteableContainer container = null;
 		try {
 			container = new WriteableZipContainer(path);
@@ -49,9 +49,7 @@ public class DefaultPublicationWriterFactory implements PublicationWriterFactory
 
 	@Override
 	public PublicationWriter createWriter(OutputStream stream) {
-		if (stream == null) {
-			throw new IllegalArgumentException("stream is null");
-		}
+		checkNotNull(stream, "stream");
 		return new EpubPublicationWriter3(new WriteableZipContainer(stream));
 	}
 }

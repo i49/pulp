@@ -26,7 +26,8 @@ class DefaultFormat extends AbstractProperty implements Format {
 	private final String value;
 	
 	public DefaultFormat(String value) {
-		this.value = value;
+		assert(value != null);
+		this.value = value.trim();
 	}
 
 	@Override

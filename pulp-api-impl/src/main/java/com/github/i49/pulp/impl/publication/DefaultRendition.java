@@ -16,6 +16,8 @@
 
 package com.github.i49.pulp.impl.publication;
 
+import static com.github.i49.pulp.impl.base.Preconditions.checkNotNull;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +49,7 @@ public class DefaultRendition implements Rendition {
 	private final PublicationResourceLocation location;
 	private final PublicationResourceRegistry registry;
 	
+	/* the metadata of this rendition */
 	private final Metadata metadata;
 
 	private final DefaultManifest manifest = new DefaultManifest();
@@ -84,9 +87,7 @@ public class DefaultRendition implements Rendition {
 	
 	@Override
 	public URI resolve(String location) {
-		if (location == null) {
-			throw new IllegalArgumentException("\"location\" must not be null");
-		}
+		checkNotNull(location, "location");
 		return this.location.resolve(location);
 	}
 	
@@ -132,17 +133,13 @@ public class DefaultRendition implements Rendition {
 	
 		@Override
 		public boolean contains(Item item) {
-			if (item == null) {
-				throw new IllegalArgumentException("\"item\" must not be null");
-			}
+			checkNotNull(item, "item");
 			return resourceItemMap.containsValue(item);
 		}
 		
 		@Override
 		public boolean contains(String location) {
-			if (location == null) {
-				throw new IllegalArgumentException("\"location\" must not be null");
-			}
+			checkNotNull(location, "location");
 			URI resolved = resolve(location);
 			if (!registry.contains(resolved)) {
 				return false;
@@ -153,9 +150,7 @@ public class DefaultRendition implements Rendition {
 		
 		@Override
 		public Item get(String location) {
-			if (location == null) {
-				throw new IllegalArgumentException("\"location\" must not be null");
-			}
+			checkNotNull(location, "location");
 			Item item = null;
 			PublicationResource resource = registry.get(resolve(location));
 			if (resource != null) {
@@ -169,9 +164,8 @@ public class DefaultRendition implements Rendition {
 		
 		@Override
 		public Item add(PublicationResource resource) {
-			if (resource == null) {
-				throw new IllegalArgumentException("\"resource\" must not be null");
-			} else if (resourceItemMap.containsKey(resource)) {
+			checkNotNull(resource, "resource");
+			if (resourceItemMap.containsKey(resource)) {
 				throw new EpubException(Messages.RESOURCE_ALREADY_EXISTS_IN_MANIFEST(resource.getLocation()));
 			}
 			registry.register(resource);
@@ -180,9 +174,8 @@ public class DefaultRendition implements Rendition {
 
 		@Override
 		public boolean remove(Item item) {
-			if (item == null) {
-				throw new IllegalArgumentException("\"item\" must not be null");
-			} else if (!resourceItemMap.containsValue(item)) {
+			checkNotNull(item, "item");
+			if (!resourceItemMap.containsValue(item)) {
 				return false;
 			}
 			PublicationResource resource = item.getResource();
@@ -322,6 +315,7 @@ public class DefaultRendition implements Rendition {
 
 		@Override
 		public Page append(Item item) {
+			checkNotNull(item, "item");
 			validateItem(item);
 			Page page = new DefaultPage(item);
 			pages.add(page);
@@ -331,6 +325,7 @@ public class DefaultRendition implements Rendition {
 
 		@Override
 		public Page insert(int index, Item item) {
+			checkNotNull(item, "item");
 			validateItem(item);
 			Page page = new DefaultPage(item);
 			pages.add(index, page);
@@ -357,9 +352,7 @@ public class DefaultRendition implements Rendition {
 		}
 
 		private void validateItem(Item item) {
-			if (item == null) {
-				throw new IllegalArgumentException("\"item\" must not be null");
-			} else if (!manifest.contains(item)) {
+			if (!manifest.contains(item)) {
 				throw new IllegalArgumentException(Messages.MANIFEST_ITEM_MISSING(item.getLocation().toString()));
 			} else if (itemPageMap.containsKey(item)) {
 				throw new IllegalArgumentException(Messages.MANIFEST_ITEM_ALREADY_EXISTS_IN_SPINE(item.getLocation()));
