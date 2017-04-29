@@ -27,7 +27,9 @@ import com.github.i49.pulp.api.core.EpubException;
 import com.github.i49.pulp.api.core.Publication;
 import com.github.i49.pulp.api.core.PublicationResource;
 import com.github.i49.pulp.api.core.Rendition;
+import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.impl.base.Messages;
+import com.github.i49.pulp.impl.metadata.MetadataFactory;
 
 /**
  * An implementation of {@link Publication}.
@@ -37,12 +39,16 @@ public class PublicationImpl implements Publication {
 	private static final PublicationResourceLocation DEFAULT_RENDITION_LOCATION = 
 			PublicationResourceLocation.of("EPUB/package.opf");
 
+	private final MetadataFactory metadataFactory;
+	
 	// The registry of publication resources.
 	private final PublicationResourceRegistry registry;
+
 	// Renditions.
 	private final HashMap<URI, Rendition> renditions = new LinkedHashMap<>();
 
-	public PublicationImpl() {
+	public PublicationImpl(MetadataFactory metadataFactory) {
+		this.metadataFactory = metadataFactory;
 		this.registry = new PublicationResourceRegistry();
 	}
 
@@ -104,7 +110,8 @@ public class PublicationImpl implements Publication {
 		if (this.renditions.containsKey(uri)) {
 			throw new EpubException(Messages.RENDITION_ALREADY_EXISTS(location.toString()));
 		}
-		Rendition rendition = new RenditionImpl(this, location, this.registry);
+		Metadata metadata = this.metadataFactory.newMetadata();
+		Rendition rendition = new RenditionImpl(this, location, this.registry, metadata);
 		this.renditions.put(uri, rendition);
 		return rendition;
 	}

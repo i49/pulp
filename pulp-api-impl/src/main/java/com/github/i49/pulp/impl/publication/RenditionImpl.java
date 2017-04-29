@@ -34,7 +34,6 @@ import com.github.i49.pulp.api.core.Spine;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.core.Manifest.Item;
 import com.github.i49.pulp.impl.base.Messages;
-import com.github.i49.pulp.impl.metadata.DefaultMetadata;
 
 /**
  * An implementation of {@link Rendition}.
@@ -48,7 +47,7 @@ public class RenditionImpl implements Rendition {
 	private final PublicationResourceLocation location;
 	private final PublicationResourceRegistry registry;
 	
-	private final Metadata metadata = new DefaultMetadata();
+	private final Metadata metadata;
 
 	private final ManifestImpl manifest = new ManifestImpl();
 	private final SpineImpl spine = new SpineImpl();
@@ -59,11 +58,18 @@ public class RenditionImpl implements Rendition {
 	 * @param publication the publication that owns this rendition.
 	 * @param location the location of the package document.
 	 * @param registry the registry that maintains all publication resources.
+	 * @param metadata the metadata of this rendition.
 	 */
-	public RenditionImpl(Publication publication, PublicationResourceLocation location, PublicationResourceRegistry registry) {
+	public RenditionImpl(
+			Publication publication, 
+			PublicationResourceLocation location, 
+			PublicationResourceRegistry registry,
+			Metadata metadata) {
+		
 		this.publication = publication;
 		this.location = location;
 		this.registry = registry;
+		this.metadata = metadata;
 	}
 	
 	@Override

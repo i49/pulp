@@ -41,12 +41,14 @@ public class DefaultMetadata implements Metadata {
 	
 	private final Map<Term, List<Property>> terms = new HashMap<>();
 	private final ReleaseIdentifier releaseIdentifier;
+	private final PropertyFactory propertyFactory;
 
 	/**
 	 * Constructs the new metadata.
 	 */
-	public DefaultMetadata() {
+	public DefaultMetadata(PropertyFactory propertyFactory) {
 		this.releaseIdentifier = new DefaultReleaseIdentifier(this);
+		this.propertyFactory = propertyFactory;
 	}
 
 	@Override
@@ -158,6 +160,6 @@ public class DefaultMetadata implements Metadata {
 	}
 	
 	private PropertyFactory getFactory() {
-		return DefaultPropertyFactory.getInstance();
+		return propertyFactory;
 	}
 }

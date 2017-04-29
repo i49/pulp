@@ -52,8 +52,6 @@ import com.github.i49.pulp.api.metadata.Type;
  */
 public class DefaultPropertyFactory implements PropertyFactory {
 	
-	private static final PropertyFactory SINGLETON = new DefaultPropertyFactory();
-	
 	private static final Map<String, PublicationType> PREDEFINED_TYPES = new HashMap<>();
 	
 	static {
@@ -62,18 +60,6 @@ public class DefaultPropertyFactory implements PropertyFactory {
 		}
 	}
 	
-	/**
-	 * Returns the single instance of this class.
-	 * 
-	 * @return the single instance of this class, never be {@code null}.
-	 */
-	public static PropertyFactory getInstance() {
-		return SINGLETON;
-	}
-	
-	private DefaultPropertyFactory() {
-	}
-
 	@Override
 	public Relator.Builder<Contributor> getContributorBuilder(String name) {
 		name = requireNonEmpty(name, "name");
