@@ -91,10 +91,6 @@ public final class Epub {
 		return getProvider().createWriterFactory();
 	}
 
-	public static com.github.i49.pulp.api.metadata.Metadata createMetadata() {
-		return getProvider().createMetadata();
-	}
-	
 	/**
 	 * Creates an instance of {@link PropertyFactory} that can produce metadata properties.
 	 * 

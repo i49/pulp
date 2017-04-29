@@ -47,9 +47,12 @@ import com.github.i49.pulp.api.metadata.Title;
 import com.github.i49.pulp.api.metadata.Type;
 
 /**
- * The single implementation of {@link PropertyFactory}.
+ * The default implementation of {@link PropertyFactory}.
+ * Only one instance can be created for this class.
  */
 public class DefaultPropertyFactory implements PropertyFactory {
+	
+	private static final PropertyFactory SINGLETON = new DefaultPropertyFactory();
 	
 	private static final Map<String, PublicationType> PREDEFINED_TYPES = new HashMap<>();
 	
@@ -57,6 +60,18 @@ public class DefaultPropertyFactory implements PropertyFactory {
 		for (PublicationType type: PublicationType.values()) {
 			PREDEFINED_TYPES.put(type.getValue(), type);
 		}
+	}
+	
+	/**
+	 * Returns the single instance of this class.
+	 * 
+	 * @return the single instance of this class, never be {@code null}.
+	 */
+	public static PropertyFactory getInstance() {
+		return SINGLETON;
+	}
+	
+	private DefaultPropertyFactory() {
 	}
 
 	@Override

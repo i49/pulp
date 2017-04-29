@@ -95,31 +95,11 @@ public interface Metadata {
 	List<Property> getList(Term term);
 	
 	/**
-	 * Clears all properties in this metadata and restores default ones.
-	 * 
-	 * <p>The properties of the following terms are added by default.</p>
-	 * <dl>
-	 * <dt>identifier</dt>
-	 * <dd>A UUID is randomly generated.</dd>
-	 * <dt>title</dt>
-	 * <dd>A default title is added.</dd>
-	 * <dt>language</dt>
-	 * <dd>The language of the current locale is added.</dd>
-	 * <dt>modified</dt>
-	 * <dd>Current time is added.</dd>
-	 * </dl>
+	 * Clears all properties in this metadata.
+	 * All mandatory properties are cleared also.
 	 */
-	void reset();
+	void clear();
 
-	/**
-	 * Adds the specified property to the metadata after all existing properties
-	 * of the same term are removed.
-	 * 
-	 * @param property the property to set.
-	 * @throws IllegalArgumentException if {@code property} is {@code null}.
-	 */
-	void set(Property property);
-	
 	/**
 	 * Adds the specified property to this metadata if it is not already present.
 	 * 
@@ -149,4 +129,21 @@ public interface Metadata {
 	 * @throws IllegalStateException if {@code property} must be maintained in the metadata.
 	 */
 	boolean remove(Property property);
+	
+	/**
+	 * Adds the required properties to this metadata if they does not exist.
+	 * 
+	 * <p>The properties of the following terms are added by default.</p>
+	 * <dl>
+	 * <dt>identifier</dt>
+	 * <dd>A UUID is randomly generated.</dd>
+	 * <dt>title</dt>
+	 * <dd>A default title is added.</dd>
+	 * <dt>language</dt>
+	 * <dd>The language of the current locale is added.</dd>
+	 * <dt>modified</dt>
+	 * <dd>Current time is added.</dd>
+	 * </dl>
+	 */
+	void addMandatory();
 }

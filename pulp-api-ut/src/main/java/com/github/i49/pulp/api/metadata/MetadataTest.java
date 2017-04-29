@@ -26,6 +26,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.i49.pulp.api.core.Epub;
+import com.github.i49.pulp.api.core.Publication;
+import com.github.i49.pulp.api.core.Rendition;
 
 /**
  * Unit tests for {@link Metadata}.
@@ -38,7 +40,9 @@ public class MetadataTest {
 	@Before
 	public void setUp() {
 		f = Epub.createPropertyFactory();
-		m = Epub.createMetadata();
+		Publication p = Epub.createPublication(); 
+		Rendition r = p.addRendition();
+		m = r.getMetadata();
 	}
 	
 	/* getReleaseIdentifier() */
@@ -52,7 +56,13 @@ public class MetadataTest {
 	/* getNumberOfProperties() */
 	
 	@Test
-	public void getNumberOfProperties_shouldReturn4ByDefault() {
+	public void getNumberOfProperties_shouldReturn0ByDefault() {
+		assertThat(m.getNumberOfProperties()).isEqualTo(0);
+	}
+	
+	@Test
+	public void getNumberOfProperties_shouldReturn4IfMandatoryPropertiesAdded() {
+		m.addMandatory();
 		assertThat(m.getNumberOfProperties()).isEqualTo(4);
 	}
 	
@@ -60,6 +70,7 @@ public class MetadataTest {
 	
 	@Test
 	public void getNumberOfProperties_shouldReturnCorrectNumber() {
+		m.addMandatory();
 		assertThat(m.getNumberOfProperties(BasicTerm.IDENTIFIER)).isEqualTo(1);
 		assertThat(m.getNumberOfProperties(BasicTerm.TITLE)).isEqualTo(1);
 		assertThat(m.getNumberOfProperties(BasicTerm.LANGUAGE)).isEqualTo(1);
@@ -80,6 +91,7 @@ public class MetadataTest {
 	
 	@Test
 	public void contains_shouldReturnTrueIfPropertyExists() {
+		m.add(f.newTitle("Default Title"));
 		assertThat(m.contains(BasicTerm.TITLE)).isTrue();
 	}
 
@@ -91,18 +103,16 @@ public class MetadataTest {
 	/* getTerms() */
 	
 	@Test
-	public void getTerms_shouldReturn4TermsByDefault() {
-		Creator p = f.newCreator("John Smith");
-		m.add(p);
+	public void getTerms_shouldReturnNoTermsByDefault() {
 		Set<Term> terms = m.getTerms();
-		assertThat(terms).contains(
-				BasicTerm.IDENTIFIER, BasicTerm.TITLE, BasicTerm.LANGUAGE, BasicTerm.MODIFIED);
+		assertThat(terms).isEmpty();
 	}
 
 	@Test
-	public void getTerms_shouldReturnAllTermsIncludingAdded() {
+	public void getTerms_shouldReturnAllTermsAdded() {
 		Creator p = f.newCreator("John Smith");
 		m.add(p);
+		m.addMandatory();
 		Set<Term> terms = m.getTerms();
 		assertThat(terms).contains(
 				BasicTerm.IDENTIFIER, BasicTerm.TITLE, BasicTerm.LANGUAGE, BasicTerm.MODIFIED, 
@@ -113,6 +123,7 @@ public class MetadataTest {
 	
 	@Test
 	public void get_shouldReturnPropertyIfExists() {
+		m.add(f.newTitle("Untitled"));
 		Property p = m.get(BasicTerm.TITLE);
 		assertThat(p).isNotNull();
 		assertThat(p.getTerm()).isSameAs(BasicTerm.TITLE);
@@ -131,6 +142,7 @@ public class MetadataTest {
 	
 	@Test
 	public void getList_shouldReturnNonEmptyListIfPropertyExists() {
+		m.add(f.newTitle("Untitled"));
 		List<Property> list = m.getList(BasicTerm.TITLE);
 		assertThat(list).isNotNull();
 		assertThat(list).hasSize(1);
@@ -144,26 +156,6 @@ public class MetadataTest {
 		List<Property> list = m.getList(BasicTerm.CREATOR);
 		assertThat(list).isNotNull();
 		assertThat(list).hasSize(0);
-	}
-	
-	/* set(property) */
-	
-	@Test
-	public void set_shouldAddSpecifiedProperty() {
-		Creator p = f.newCreator("John Smith");
-		m.set(p);
-		List<Property> list = m.getList(BasicTerm.CREATOR);
-		assertThat(list).hasSize(1);
-		assertThat(list).contains(p);
-	}
-	
-	@Test
-	public void set_shouldReplaceTitleAddedByDefault() {
-		Title p = f.newTitle("The Catcher in the Rye");
-		m.set(p);
-		List<Property> list = m.getList(BasicTerm.TITLE);
-		assertThat(list).hasSize(1);
-		assertThat(list).contains(p);
 	}
 	
 	/* add(Property) */
@@ -182,7 +174,7 @@ public class MetadataTest {
 		Title p = f.newTitle("The Catcher in the Rye");
 		assertThat(m.add(p)).isTrue();
 		List<Property> list = m.getList(BasicTerm.TITLE);
-		assertThat(list).hasSize(2);
+		assertThat(list).hasSize(1);
 		assertThat(list).contains(p);
 	}
 	

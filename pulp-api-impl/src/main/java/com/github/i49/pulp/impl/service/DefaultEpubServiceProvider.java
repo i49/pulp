@@ -16,25 +16,25 @@
 
 package com.github.i49.pulp.impl.service;
 
+import static com.github.i49.pulp.impl.base.Preconditions.*;
+
 import java.net.URI;
 
 import com.github.i49.pulp.api.core.Publication;
 import com.github.i49.pulp.api.core.PublicationReaderFactory;
 import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.core.PublicationWriterFactory;
-import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.spi.EpubServiceProvider;
 import com.github.i49.pulp.impl.container.PublicationReaderFactoryImpl;
 import com.github.i49.pulp.impl.container.PublicationWriterFactoryImpl;
-import com.github.i49.pulp.impl.metadata.DefaultMetadata;
 import com.github.i49.pulp.impl.metadata.DefaultPropertyFactory;
 import com.github.i49.pulp.impl.publication.MediaTypeRegistry;
 import com.github.i49.pulp.impl.publication.PublicationImpl;
 import com.github.i49.pulp.impl.publication.PublicationResourceBuilderFactoryImpl;
 
 /**
- * The single implementation of {@link EpubServiceProvider} interface.
+ * The default implementation of {@link EpubServiceProvider} interface.
  */
 public class DefaultEpubServiceProvider implements EpubServiceProvider {
 	
@@ -56,20 +56,13 @@ public class DefaultEpubServiceProvider implements EpubServiceProvider {
 	}
 
 	@Override
-	public Metadata createMetadata() {
-		return new DefaultMetadata();
-	}
-	
-	@Override
 	public PropertyFactory createPropertyFactory() {
-		return new DefaultPropertyFactory();
+		return DefaultPropertyFactory.getInstance();
 	}
 	
 	@Override
 	public PublicationResourceBuilderFactory createResourceBuilderFactory(URI baseURI) {
-		if (baseURI == null) {
-			throw new IllegalArgumentException("baseURI is null");
-		}
+		checkNotNull(baseURI, "baseURI");
 		return new PublicationResourceBuilderFactoryImpl(baseURI, typeRegistry);
 	}
 }

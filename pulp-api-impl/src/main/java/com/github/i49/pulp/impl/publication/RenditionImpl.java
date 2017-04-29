@@ -48,7 +48,7 @@ public class RenditionImpl implements Rendition {
 	private final PublicationResourceLocation location;
 	private final PublicationResourceRegistry registry;
 	
-	private final DefaultMetadata metadata = new DefaultMetadata();
+	private final Metadata metadata = new DefaultMetadata();
 
 	private final ManifestImpl manifest = new ManifestImpl();
 	private final SpineImpl spine = new SpineImpl();

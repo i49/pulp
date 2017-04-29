@@ -25,7 +25,6 @@ import com.github.i49.pulp.api.core.PublicationResourceBuilder;
 import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.core.PublicationWriter;
 import com.github.i49.pulp.api.core.PublicationWriterFactory;
-import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
 
 /**
@@ -54,8 +53,6 @@ public interface EpubServiceProvider {
 	 * @return an instance of publication writer factory.
 	 */
 	PublicationWriterFactory createWriterFactory();
-	
-	Metadata createMetadata();
 	
 	/**
 	 * Creates an instance of factory that can be used to produce metadata properties.

@@ -25,24 +25,28 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.i49.pulp.api.core.Epub;
+import com.github.i49.pulp.api.core.Publication;
+import com.github.i49.pulp.api.core.Rendition;
 
 public class PropertyListTest {
 
-	private PropertyFactory factory;
+	private PropertyFactory f;
 	private Metadata m;
 	
 	@Before
 	public void setUp() {
-		factory = Epub.createPropertyFactory();
-		m = Epub.createMetadata();
+		f = Epub.createPropertyFactory();
+		Publication p = Epub.createPublication(); 
+		Rendition r = p.addRendition();
+		m = r.getMetadata();
 	}
 	
 	/* add(Property) */
 	
 	@Test
 	public void add_shouldAddPropertyAtLast() {
-		Creator p1 = factory.newCreator("Lewis Carroll");
-		Creator p2 = factory.newCreator("John Tenniel");
+		Creator p1 = f.newCreator("Lewis Carroll");
+		Creator p2 = f.newCreator("John Tenniel");
 		List<Property> list = m.getList(BasicTerm.CREATOR);
 		list.add(p1);
 		list.add(p2);
@@ -63,7 +67,7 @@ public class PropertyListTest {
 	@Test
 	public void add_shouldThrowExceptionIfPropertyHasWrongTerm() {
 		List<Property> list = m.getList(BasicTerm.CREATOR);
-		Contributor p = factory.newContributor("John Smith");
+		Contributor p = f.newContributor("John Smith");
 		Throwable thrown = catchThrowable(()->{
 			list.add(p);
 		});
@@ -72,7 +76,7 @@ public class PropertyListTest {
 
 	@Test
 	public void add_shouldThrowExceptionIfPropertyAlreadyExists() {
-		Creator p = factory.newCreator("Lewis Carroll");
+		Creator p = f.newCreator("Lewis Carroll");
 		List<Property> list = m.getList(BasicTerm.CREATOR);
 		list.add(p);
 		Throwable thrown = catchThrowable(()->{
@@ -83,8 +87,8 @@ public class PropertyListTest {
 	
 	@Test
 	public void add_shouldThrowExceptionIfMultipleDatePropertiesAdded() {
-		Date p1 = factory.newDate(OffsetDateTime.now());
-		Date p2 = factory.newDate(OffsetDateTime.now());
+		Date p1 = f.newDate(OffsetDateTime.now());
+		Date p2 = f.newDate(OffsetDateTime.now());
 		List<Property> list = m.getList(BasicTerm.DATE);
 		list.add(p1);
 		Throwable thrown = catchThrowable(()->{
@@ -95,10 +99,12 @@ public class PropertyListTest {
 
 	@Test
 	public void add_shouldThrowExceptionIfMultipleModifiedPropertiesAdded() {
-		Modified p = factory.newModified(OffsetDateTime.now());
+		Modified p1 = f.newModified(OffsetDateTime.now());
+		Modified p2 = f.newModified(OffsetDateTime.now());
 		List<Property> list = m.getList(BasicTerm.MODIFIED);
+		list.add(p1);
 		Throwable thrown = catchThrowable(()->{
-			list.add(p);
+			list.add(p2);
 		});
 		assertThat(thrown).isInstanceOf(IllegalStateException.class);
 	}
@@ -108,7 +114,8 @@ public class PropertyListTest {
 	@Test
 	public void remove_shouldRemovePropertyAtSpecifiedPosition() {
 		List<Property> list = m.getList(BasicTerm.TITLE);
-		Title p = factory.newTitle("THE LORD OF THE RINGS"); 
+		list.add(f.newTitle("Default Title"));
+		Title p = f.newTitle("THE LORD OF THE RINGS"); 
 		list.add(p);
 		assertThat(list).hasSize(2);
 		list.remove(0);
@@ -116,36 +123,18 @@ public class PropertyListTest {
 		assertThat(list.get(0)).isSameAs(p);
 	}
 	
-	@Test
-	public void remove_shouldThrowExceptionIfPropertyAtSpecifiedPositionIsRequired() {
-		List<Property> list = m.getList(BasicTerm.TITLE);
-		Throwable thrown = catchThrowable(()->{
-			list.remove(0);
-		});
-		assertThat(thrown).isInstanceOf(IllegalStateException.class);
-	}
-
 	/* remove(Property) */
 	
 	@Test
 	public void remove_shouldRemoveSpecifiedProperty() {
 		List<Property> list = m.getList(BasicTerm.TITLE);
-		Title p = factory.newTitle("THE LORD OF THE RINGS"); 
+		list.add(f.newTitle("Default Title"));
+		Title p = f.newTitle("THE LORD OF THE RINGS"); 
 		list.add(p);
 		assertThat(list).hasSize(2);
 		list.remove(list.get(0));
 		assertThat(list).hasSize(1);
 		assertThat(list.get(0)).isSameAs(p);
-	}
-
-	@Test
-	public void remove_shouldThrowExceptionIfPropertyIsRequired() {
-		List<Property> list = m.getList(BasicTerm.TITLE);
-		Property p = list.get(0);
-		Throwable thrown = catchThrowable(()->{
-			list.remove(p);
-		});
-		assertThat(thrown).isInstanceOf(IllegalStateException.class);
 	}
 	
 	/* clear() */
@@ -153,22 +142,10 @@ public class PropertyListTest {
 	@Test
 	public void clear_shouldClearAllPropertiesFromList() {
 		List<Property> list = m.getList(BasicTerm.CREATOR);
-		list.add(factory.newCreator("Lewis Carroll"));
-		list.add(factory.newCreator("John Tenniel"));
+		list.add(f.newCreator("Lewis Carroll"));
+		list.add(f.newCreator("John Tenniel"));
 		assertThat(list).hasSize(2);
 		list.clear();
 		assertThat(list).isEmpty();
-	}
-	
-	@Test
-	public void clear_shouldThrowExceptionIfPropertyIsMandatory() {
-		List<Property> list = m.getList(BasicTerm.TITLE);
-		Title p = factory.newTitle("THE LORD OF THE RINGS"); 
-		list.add(p);
-		Throwable thrown = catchThrowable(()->{
-			list.clear();
-		});
-		assertThat(thrown).isInstanceOf(IllegalStateException.class);
-		assertThat(list).hasSize(1);
 	}
 }

@@ -84,6 +84,7 @@ class EpubPublicationWriter3 implements PublicationWriter {
 	}
 	
 	private void writeRendition(Rendition rendition) throws Exception {
+		rendition.getMetadata().addMandatory();
 		writePackageDocument(rendition);
 		writeAllResources(rendition);
 	}

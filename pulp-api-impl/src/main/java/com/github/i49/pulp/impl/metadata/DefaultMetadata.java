@@ -28,12 +28,11 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import com.github.i49.pulp.api.metadata.BasicTerm;
-import com.github.i49.pulp.api.metadata.Language;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.Property;
+import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.ReleaseIdentifier;
 import com.github.i49.pulp.api.metadata.Term;
-import com.github.i49.pulp.api.metadata.Title;
 
 /**
  * The default implementation of {@link Metadata}.
@@ -43,20 +42,11 @@ public class DefaultMetadata implements Metadata {
 	private final Map<Term, List<Property>> terms = new HashMap<>();
 	private final ReleaseIdentifier releaseIdentifier;
 
-	private static final Title DEFAULT_TITLE;
-	private static final Language DEFAULT_LANGUAGE;
-	
-	static {
-		DEFAULT_TITLE = DefaultTitle.builder("Untitled").build();
-		DEFAULT_LANGUAGE = new DefaultLanguage(Locale.getDefault());
-	}
-
 	/**
 	 * Constructs the new metadata.
 	 */
 	public DefaultMetadata() {
-		releaseIdentifier = new DefaultReleaseIdentifier(this);
-		reset();
+		this.releaseIdentifier = new DefaultReleaseIdentifier(this);
 	}
 
 	@Override
@@ -119,29 +109,10 @@ public class DefaultMetadata implements Metadata {
 	}
 	
 	@Override
-	public void reset() {
+	public void clear() {
 		this.terms.clear();
-		addDefaultLists();
-		add(DefaultIdentifier.ofRandomUUID());
-		add(DEFAULT_TITLE);
-		add(DEFAULT_LANGUAGE);
-		add(new DefaultModified(OffsetDateTime.now()));
 	}
 	
-	@Override
-	public void set(Property property) {
-		checkNotNull(property, "property");
-		List<Property> list = getList(property.getTerm());
-		if (list.isEmpty()) {
-			list.add(property);
-		} else {
-			list.set(0, property);
-		}
-		while (list.size() > 1) {
-			list.remove(1);
-		}
-	}
-
 	@Override
 	public boolean add(Property property) {
 		checkNotNull(property, "property");
@@ -162,22 +133,31 @@ public class DefaultMetadata implements Metadata {
 		return list.remove(property);
 	}
 	
-	private void addDefaultLists() {
-		addList(BasicTerm.IDENTIFIER, true, true);
-		addList(BasicTerm.TITLE, true, true);
-		addList(BasicTerm.LANGUAGE, true, true);
-		// Only one property is allowed for Modified and Date.
-		addList(BasicTerm.MODIFIED, true, false);
-		addList(BasicTerm.DATE, false, false);
+	@Override
+	public void addMandatory() {
+		if (!contains(BasicTerm.IDENTIFIER)) {
+			add(getFactory().newIdentifier());
+		}
+		if (!contains(BasicTerm.TITLE)) {
+			add(getFactory().newTitle("untitled"));
+		}
+		if (!contains(BasicTerm.LANGUAGE)) {
+			add(getFactory().newLanguage(Locale.getDefault()));
+		}
+		if (!contains(BasicTerm.MODIFIED)) {
+			OffsetDateTime now = OffsetDateTime.now();
+			add(getFactory().newModified(now));
+		}
 	}
 	
 	private List<Property> addList(Term term) {
-		return addList(term, false, true);
-	}
-	
-	private List<Property> addList(Term term, boolean required, boolean multiple) {
-		List<Property> list = new PropertyList(term, required, multiple);
+		boolean multiple = !(term == BasicTerm.DATE || term == BasicTerm.MODIFIED);
+		List<Property> list = new PropertyList(term, multiple);
 		terms.put(term, list);
 		return list;
+	}
+	
+	private PropertyFactory getFactory() {
+		return DefaultPropertyFactory.getInstance();
 	}
 }

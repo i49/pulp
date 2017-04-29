@@ -78,7 +78,7 @@ class PublicationCompiler {
 		Path path = this.sourceDir.resolve(METADATA_FILENAME);
 		if (Files.exists(path)) {
 			MetadataLoader loader = MetadataLoader.from(path);
-			loader.loadTo(metadata);
+			loader.load(metadata);
 		}
 	}
 	

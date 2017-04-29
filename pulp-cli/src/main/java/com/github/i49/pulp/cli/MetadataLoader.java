@@ -67,13 +67,15 @@ class MetadataLoader {
 		return new MetadataLoader(stream);
 	}
 	
-	public void loadTo(Metadata metadata) throws IOException {
-		try (InputStream s = this.stream) {
-			load(metadata);
+	public void load(Metadata m) throws IOException {
+		m.clear();
+		try (InputStream s = stream) {
+			loadMetadata(m);
 		}
+		m.addMandatory();
 	}
 
-	public void load(Metadata m) {
+	private void loadMetadata(Metadata m) {
 		Yaml yaml = new Yaml();
 		Map<?, ?> map = yaml.loadAs(this.stream, Map.class);
 		if (map == null) {
@@ -91,69 +93,49 @@ class MetadataLoader {
 	private void parseIdentifiers(Metadata m, List<Entry> entries) {
 		for (Entry entry: entries) {
 			Identifier p = factory.newIdentifier(entry.getValue());
-			if (entry.isFirst()) {
-				m.set(p);
-			} else {
-				m.add(p);
-			}
+			m.add(p);
 		}
 	}
 
 	private void parseTitles(Metadata m, List<Entry> entries) {
 		for (Entry entry: entries) {
 			Title p = factory.newTitle(entry.getValue());
-			if (entry.isFirst()) {
-				m.set(p);
-			} else {
-				m.add(p);
-			}
+			m.add(p);
 		}
 	}
 
 	private void parseLanguages(Metadata m, List<Entry> entries) {
 		for (Entry entry: entries) {
 			Language p = factory.newLanguage(Locale.forLanguageTag(entry.getValue()));
-			if (entry.isFirst()) {
-				m.set(p);
-			} else {
-				m.add(p);
-			}
+			m.add(p);
 		}
 	}
 
 	private void parseCreators(Metadata m, List<Entry> entries) {
 		for (Entry entry: entries) {
 			Creator p = factory.newCreator(entry.getValue());
-			if (entry.isFirst()) {
-				m.set(p);
-			} else {
-				m.add(p);
-			}
+			m.add(p);
 		}
 	}
 
 	private void parsePublishers(Metadata m, List<Entry> entries) {
 		for (Entry entry: entries) {
 			Publisher p = factory.newPublisher(entry.getValue());
-			if (entry.isFirst()) {
-				m.set(p);
-			} else {
-				m.add(p);
-			}
+			m.add(p);
 		}
 	}
 
 	private void parseDate(Metadata m, OffsetDateTime value) {
 		if (value != null) {
 			Date p = factory.newDate(value);
-			m.set(p);
+			m.add(p);
 		}
 	}
 
 	private void parseModified(Metadata m, OffsetDateTime value) {
 		if (value != null) {
 			Modified p = factory.newModified(value);
-			m.set(p);
+			m.add(p);
 		}
 	}
 	
@@ -195,6 +177,7 @@ class MetadataLoader {
 			this.value = value;
 		}
 		
+		@SuppressWarnings("unused")
 		public boolean isFirst() {
 			return index == 0;
 		}

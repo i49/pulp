@@ -22,48 +22,45 @@ import com.github.i49.pulp.api.core.Publication;
 import com.github.i49.pulp.api.core.PublicationReaderFactory;
 import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.core.PublicationWriterFactory;
-import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.spi.EpubServiceProvider;
 
 /**
- * Proxy of {@link EpubServiceProvider} implementation.
+ * The Proxy of {@link EpubServiceProvider} implementation.
+ * This class will be instantiated per a thread.
+ * All these instances bypass every method invocation to 
+ * the shared single instance of {@link DefaultEpubServiceProvider}.
  */
 public class EpubServiceProviderProxy implements EpubServiceProvider {
 
 	// The singleton of {@link EpubServiceProviderImpl} shared by all threads.
-	private static final EpubServiceProvider singleton = new DefaultEpubServiceProvider();
+	private static final EpubServiceProvider SINGLETON = new DefaultEpubServiceProvider();
 	
 	public EpubServiceProviderProxy() {
 	}
 
 	@Override
 	public Publication createPublication() {
-		return singleton.createPublication();
+		return SINGLETON.createPublication();
 	}
 
 	@Override
 	public PublicationReaderFactory createReaderFactory() {
-		return singleton.createReaderFactory();
+		return SINGLETON.createReaderFactory();
 	}
 
 	@Override
 	public PublicationWriterFactory createWriterFactory() {
-		return singleton.createWriterFactory();
+		return SINGLETON.createWriterFactory();
 	}
 
 	@Override
-	public Metadata createMetadata() {
-		return singleton.createMetadata();
-	}
-	
-	@Override
 	public PropertyFactory createPropertyFactory() {
-		return singleton.createPropertyFactory();
+		return SINGLETON.createPropertyFactory();
 	}
 	
 	@Override
 	public PublicationResourceBuilderFactory createResourceBuilderFactory(URI baseURI) {
-		return singleton.createResourceBuilderFactory(baseURI);
+		return SINGLETON.createResourceBuilderFactory(baseURI);
 	}
 }

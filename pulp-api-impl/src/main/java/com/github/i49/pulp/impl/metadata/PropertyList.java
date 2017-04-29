@@ -29,19 +29,16 @@ class PropertyList extends AbstractList<Property> {
 	
 	private final ArrayList<Property> delegate = new ArrayList<>();
 	private final Term term;
-	private final boolean required;
 	private final boolean multiple;
 	
 	/**
 	 * Constructs new property list.
 	 * 
 	 * @param term the term of the property this list can contain.
-	 * @param required {@code true} if at least one property is required.
 	 * @param multiple {@code true} if this list is allowed to have more than one properties.
 	 */
-	public PropertyList(Term term, boolean required, boolean multiple) {
+	public PropertyList(Term term, boolean multiple) {
 		this.term = term;
-		this.required = required;
 		this.multiple = multiple;
 	}
 
@@ -72,9 +69,6 @@ class PropertyList extends AbstractList<Property> {
 
 	@Override
 	public Property remove(int index) {
-		if (this.required && size() <= 1) {
-			throw new IllegalStateException("Cannot remove the required property of " + term + ".");
-		}
 		return delegate.remove(index);
 	}
 
