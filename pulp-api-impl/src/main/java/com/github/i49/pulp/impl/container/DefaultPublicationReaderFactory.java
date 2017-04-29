@@ -29,9 +29,9 @@ import com.github.i49.pulp.api.spi.EpubServiceProvider;
 import com.github.i49.pulp.impl.base.Messages;
 
 /**
- * An implementation of {@link PublicationReaderFactory}.
+ * The default implementation of {@link PublicationReaderFactory}.
  */
-public class PublicationReaderFactoryImpl implements PublicationReaderFactory {
+public class DefaultPublicationReaderFactory implements PublicationReaderFactory {
 
 	private final EpubServiceProvider provider;
 	
@@ -40,7 +40,7 @@ public class PublicationReaderFactoryImpl implements PublicationReaderFactory {
 	 * 
 	 * @param provider the service provider.
 	 */
-	public PublicationReaderFactoryImpl(EpubServiceProvider provider) {
+	public DefaultPublicationReaderFactory(EpubServiceProvider provider) {
 		this.provider = provider;
 	}
 	

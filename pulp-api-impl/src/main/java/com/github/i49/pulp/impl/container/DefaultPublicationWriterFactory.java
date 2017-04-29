@@ -26,11 +26,11 @@ import com.github.i49.pulp.api.core.PublicationWriterFactory;
 import com.github.i49.pulp.impl.base.Messages;
 
 /**
- * An implementation of {@link PublicationWriterFactory}.
+ * The default implementation of {@link PublicationWriterFactory}.
  */
-public class PublicationWriterFactoryImpl implements PublicationWriterFactory {
+public class DefaultPublicationWriterFactory implements PublicationWriterFactory {
 
-	public PublicationWriterFactoryImpl() {
+	public DefaultPublicationWriterFactory() {
 	}
 	
 	@Override

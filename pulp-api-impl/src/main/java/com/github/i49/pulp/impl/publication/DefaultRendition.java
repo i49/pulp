@@ -36,9 +36,9 @@ import com.github.i49.pulp.api.core.Manifest.Item;
 import com.github.i49.pulp.impl.base.Messages;
 
 /**
- * An implementation of {@link Rendition}.
+ * The default implementation of {@link Rendition}.
  */
-public class RenditionImpl implements Rendition {
+public class DefaultRendition implements Rendition {
 
 	/* publication owing this rendition */
 	private final Publication publication;
@@ -49,8 +49,8 @@ public class RenditionImpl implements Rendition {
 	
 	private final Metadata metadata;
 
-	private final ManifestImpl manifest = new ManifestImpl();
-	private final SpineImpl spine = new SpineImpl();
+	private final DefaultManifest manifest = new DefaultManifest();
+	private final DefaultSpine spine = new DefaultSpine();
 	
 	/**
 	 * Constructs this rendition.
@@ -60,7 +60,7 @@ public class RenditionImpl implements Rendition {
 	 * @param registry the registry that maintains all publication resources.
 	 * @param metadata the metadata of this rendition.
 	 */
-	public RenditionImpl(
+	public DefaultRendition(
 			Publication publication, 
 			PublicationResourceLocation location, 
 			PublicationResourceRegistry registry,
@@ -115,9 +115,9 @@ public class RenditionImpl implements Rendition {
 	}
 	
 	/**
-	 * An implementation of {@code Manifest}.
+	 * The default implementation of {@code Manifest}.
 	 */
-	private class ManifestImpl implements Manifest {
+	private class DefaultManifest implements Manifest {
 		
 		private final Map<PublicationResource, Item> resourceItemMap = new HashMap<>();
 		// cover image of the rendition
@@ -226,16 +226,16 @@ public class RenditionImpl implements Rendition {
 
 		private Item addNewItem(PublicationResource resource) {
 			URI location = relativize(resource.getLocation());
-			Item item = new ItemImpl(location, resource);
+			Item item = new DefaultItem(location, resource);
 			resourceItemMap.put(resource, item);
 			return item;
 		}
 	}
 	
 	/**
-	 * An implementation of {@link Manifest.Item}.
+	 * The default implementation of {@link Manifest.Item}.
 	 */
-	private class ItemImpl implements Manifest.Item {
+	private class DefaultItem implements Manifest.Item {
 		
 		private final URI location;
 		private final PublicationResource resource;
@@ -246,7 +246,7 @@ public class RenditionImpl implements Rendition {
 		 * @param location the location of this item.
 		 * @param resource the publication resource referenced by this item.
 		 */
-		private ItemImpl(URI location, PublicationResource resource) {
+		private DefaultItem(URI location, PublicationResource resource) {
 			this.location = location;
 			this.resource = resource;
 			this.scripted = false;
@@ -302,9 +302,9 @@ public class RenditionImpl implements Rendition {
 	}
 	
 	/**
-	 * An implementation of {@link Spine}.
+	 * The default implementation of {@link Spine}.
 	 */
-	private class SpineImpl implements Spine {
+	private class DefaultSpine implements Spine {
 		
 		private final List<Spine.Page> pages = new ArrayList<>();
 		private final Map<Manifest.Item, Spine.Page> itemPageMap = new HashMap<>();
@@ -323,7 +323,7 @@ public class RenditionImpl implements Rendition {
 		@Override
 		public Page append(Item item) {
 			validateItem(item);
-			Page page = new PageImpl(item);
+			Page page = new DefaultPage(item);
 			pages.add(page);
 			itemPageMap.put(item, page);
 			return page;
@@ -332,7 +332,7 @@ public class RenditionImpl implements Rendition {
 		@Override
 		public Page insert(int index, Item item) {
 			validateItem(item);
-			Page page = new PageImpl(item);
+			Page page = new DefaultPage(item);
 			pages.add(index, page);
 			itemPageMap.put(item, page);
 			return page;
@@ -368,14 +368,14 @@ public class RenditionImpl implements Rendition {
 	}
 	
 	/**
-	 * An implementation of {@link Spine.Page}.
+	 * The default implementation of {@link Spine.Page}.
 	 */
-	private static class PageImpl implements Spine.Page {
+	private static class DefaultPage implements Spine.Page {
 
 		private final Item item;
 		private boolean linear;
 		
-		private PageImpl(Item item)  {
+		private DefaultPage(Item item)  {
 			this.item = item;
 			this.linear = true;
 		}
@@ -391,7 +391,7 @@ public class RenditionImpl implements Rendition {
 		}
 
 		@Override
-		public PageImpl linear(boolean linear) {
+		public DefaultPage linear(boolean linear) {
 			this.linear = linear;
 			return this;
 		}

@@ -26,13 +26,13 @@ import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.core.PublicationWriterFactory;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.spi.EpubServiceProvider;
-import com.github.i49.pulp.impl.container.PublicationReaderFactoryImpl;
-import com.github.i49.pulp.impl.container.PublicationWriterFactoryImpl;
+import com.github.i49.pulp.impl.container.DefaultPublicationReaderFactory;
+import com.github.i49.pulp.impl.container.DefaultPublicationWriterFactory;
 import com.github.i49.pulp.impl.metadata.DefaultPropertyFactory;
 import com.github.i49.pulp.impl.metadata.MetadataFactory;
 import com.github.i49.pulp.impl.publication.MediaTypeRegistry;
-import com.github.i49.pulp.impl.publication.PublicationImpl;
-import com.github.i49.pulp.impl.publication.PublicationResourceBuilderFactoryImpl;
+import com.github.i49.pulp.impl.publication.DefaultPublication;
+import com.github.i49.pulp.impl.publication.DefaultPublicationResourceBuilderFactory;
 
 /**
  * The default implementation of {@link EpubServiceProvider} interface.
@@ -49,17 +49,17 @@ class DefaultEpubServiceProvider implements EpubServiceProvider {
 	
 	@Override
 	public Publication createPublication() {
-		return new PublicationImpl(this.metadataFactory);
+		return new DefaultPublication(this.metadataFactory);
 	}
 
 	@Override
 	public PublicationReaderFactory createReaderFactory() {
-		return new PublicationReaderFactoryImpl(this);
+		return new DefaultPublicationReaderFactory(this);
 	}
 	
 	@Override
 	public PublicationWriterFactory createWriterFactory() {
-		return new PublicationWriterFactoryImpl();
+		return new DefaultPublicationWriterFactory();
 	}
 
 	@Override
@@ -70,6 +70,6 @@ class DefaultEpubServiceProvider implements EpubServiceProvider {
 	@Override
 	public PublicationResourceBuilderFactory createResourceBuilderFactory(URI baseURI) {
 		checkNotNull(baseURI, "baseURI");
-		return new PublicationResourceBuilderFactoryImpl(baseURI, typeRegistry);
+		return new DefaultPublicationResourceBuilderFactory(baseURI, typeRegistry);
 	}
 }

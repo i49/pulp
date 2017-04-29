@@ -32,9 +32,9 @@ import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.metadata.MetadataFactory;
 
 /**
- * An implementation of {@link Publication}.
+ * The default implementation of {@link Publication}.
  */
-public class PublicationImpl implements Publication {
+public class DefaultPublication implements Publication {
 	
 	private static final PublicationResourceLocation DEFAULT_RENDITION_LOCATION = 
 			PublicationResourceLocation.of("EPUB/package.opf");
@@ -47,7 +47,7 @@ public class PublicationImpl implements Publication {
 	// Renditions.
 	private final HashMap<URI, Rendition> renditions = new LinkedHashMap<>();
 
-	public PublicationImpl(MetadataFactory metadataFactory) {
+	public DefaultPublication(MetadataFactory metadataFactory) {
 		this.metadataFactory = metadataFactory;
 		this.registry = new PublicationResourceRegistry();
 	}
@@ -111,7 +111,7 @@ public class PublicationImpl implements Publication {
 			throw new EpubException(Messages.RENDITION_ALREADY_EXISTS(location.toString()));
 		}
 		Metadata metadata = this.metadataFactory.newMetadata();
-		Rendition rendition = new RenditionImpl(this, location, this.registry, metadata);
+		Rendition rendition = new DefaultRendition(this, location, this.registry, metadata);
 		this.renditions.put(uri, rendition);
 		return rendition;
 	}
