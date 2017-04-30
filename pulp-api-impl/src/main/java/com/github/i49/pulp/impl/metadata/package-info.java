@@ -16,5 +16,11 @@
 
 /**
  * Provides the implementations of the metadata and the properties.
+ * 
+ * <p>This package directly depends on the following packages.</p>
+ * <ul>
+ * <li>com.github.i49.pulp.api.metadata</li>
+ * <li>com.github.i49.pulp.impl.base</li>
+ * </ul>
  */
 package com.github.i49.pulp.impl.metadata;

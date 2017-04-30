@@ -60,7 +60,7 @@ class PublicationCompiler {
 	
 	public Publication compile() throws IOException {
 		Publication publication = Epub.createPublication();
-		Rendition rendition = publication.addRendition(null);
+		Rendition rendition = publication.addRendition();
 		buildRendition(rendition);
 		return publication;
 	}

@@ -14,23 +14,19 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.impl.metadata;
+package com.github.i49.pulp.impl.publication;
 
 import com.github.i49.pulp.api.metadata.Metadata;
-import com.github.i49.pulp.api.metadata.PropertyFactory;
 
 /**
- * Internal metadata factory.
+ * The metadata factory interface for the EPUB renditions.
  */
-public class MetadataFactory {
+public interface MetadataFactory {
 
-	private final PropertyFactory propertyFactory;
-	
-	public MetadataFactory(PropertyFactory propertyFactory) {
-		this.propertyFactory = propertyFactory;
-	}
-
-	public Metadata newMetadata() {
-		return new DefaultMetadata(this.propertyFactory);
-	}
+	/**
+	 * Creates a new instance of {@link Metadata}.
+	 *  
+	 * @return newly created metadata.
+	 */
+	Metadata newMetadata();
 }

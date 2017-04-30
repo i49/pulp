@@ -16,5 +16,13 @@
 
 /**
  * Provides publication models. 
+ * 
+ * <p>This package directly depends on the following packages.</p>
+ * <ul>
+ * <li>com.github.i49.pulp.api.core</li>
+ * <li>com.github.i49.pulp.api.metadata</li>
+ * <li>com.github.i49.pulp.impl.base</li>
+ * <li>com.github.i49.pulp.impl.xml</li>
+ * </ul>
  */
 package com.github.i49.pulp.impl.publication;

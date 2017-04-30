@@ -25,7 +25,7 @@ public class MetadataLoaderTest {
 	
 	@Before
 	public void setUp() {
-		Rendition rendition = Epub.createPublication().addRendition(null);
+		Rendition rendition = Epub.createPublication().addRendition();
 		m = rendition.getMetadata(); 
 	}
 

@@ -15,6 +15,6 @@
  */
 
 /**
- * Provides the reference implementation of EPUB processing API. 
+ * Provides the reference implementation of the Pulp API. 
  */
 package com.github.i49.pulp.impl;

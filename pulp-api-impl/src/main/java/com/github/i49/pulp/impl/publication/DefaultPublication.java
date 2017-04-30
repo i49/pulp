@@ -31,7 +31,6 @@ import com.github.i49.pulp.api.core.PublicationResource;
 import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.impl.base.Messages;
-import com.github.i49.pulp.impl.metadata.MetadataFactory;
 
 /**
  * The default implementation of {@link Publication}.
