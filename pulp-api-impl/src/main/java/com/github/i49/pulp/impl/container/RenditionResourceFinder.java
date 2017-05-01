@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.impl.publication;
+package com.github.i49.pulp.impl.container;
 
-import com.github.i49.pulp.api.metadata.Metadata;
+import com.github.i49.pulp.api.core.PublicationResource;
 
 /**
- * The metadata factory interface for the EPUB renditions.
+ * Resource finder for a rendition of a publication.
  */
-public interface MetadataFactory {
+interface RenditionResourceFinder {
 
 	/**
-	 * Creates a new instance of {@link Metadata}.
-	 *  
-	 * @return newly created metadata.
+	 * Finds the resource required by the rendition.
+	 * 
+	 * @param href the location of the resource relative to the package document.
+	 * @param mediaType the media type of the resource.
+	 * @return the resource found.
 	 */
-	Metadata newMetadata();
+	PublicationResource findResource(String href, String mediaType);
 }

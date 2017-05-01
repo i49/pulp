@@ -16,14 +16,38 @@
 
 package com.github.i49.pulp.impl.container;
 
-import com.github.i49.pulp.api.metadata.StandardVocabulary;
+import org.w3c.dom.Element;
+
+import com.github.i49.pulp.api.metadata.Vocabulary;
 
 /**
- * Base type for builder and parser. 
+ * Metadata entry.
  */
+class MetadataEntry {
 
-public interface PackageDocumentProcessor {
+	private final Element element;
+	private final Vocabulary vocabulary;
+	
+	public MetadataEntry(Element element) {
+		this.element = element;
+		this.vocabulary = null;
+	}
 
-	static final String NAMESPACE_URI = EpubVocabulary.PACKAGE_DOCUMENT.getNamespaceURI();
-	static final String DC_NAMESPACE_URI = StandardVocabulary.DCMES.getURI().toString();
+	public MetadataEntry(Element element, Vocabulary vocabulary) {
+		this.element = element;
+		this.vocabulary = vocabulary;
+	}
+	
+	public Element getElement() {
+		return element;
+	}
+	
+	public Vocabulary getVocabulary() {
+		return vocabulary;
+	}
+	
+	@Override
+	public String toString() {
+		return element.getTagName();
+	}
 }

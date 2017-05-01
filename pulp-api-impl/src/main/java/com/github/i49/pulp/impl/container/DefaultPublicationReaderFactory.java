@@ -35,23 +35,23 @@ import com.github.i49.pulp.impl.base.Messages;
  */
 public class DefaultPublicationReaderFactory implements PublicationReaderFactory {
 
-	private final EpubServiceProvider provider;
+	private final EpubServiceProvider service;
 	
 	/**
 	 * Constructs this factory.
 	 * 
-	 * @param provider the service provider.
+	 * @param service the EPUB service.
 	 */
-	public DefaultPublicationReaderFactory(EpubServiceProvider provider) {
-		assert(provider != null);
-		this.provider = provider;
+	public DefaultPublicationReaderFactory(EpubServiceProvider service) {
+		assert(service != null);
+		this.service = service;
 	}
 	
 	@Override
 	public PublicationReader createReader(Path path) {
 		checkNotNull(path, "path");
 		ReadableContainer container = openContainer(path);
-		return new EpubPublicationReader(container, this.provider);
+		return new EpubPublicationReader(container, this.service);
 	}
 	
 	/**

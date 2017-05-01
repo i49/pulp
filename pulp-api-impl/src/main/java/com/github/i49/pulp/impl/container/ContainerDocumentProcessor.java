@@ -21,5 +21,5 @@ package com.github.i49.pulp.impl.container;
  */
 public interface ContainerDocumentProcessor {
 
-	static final String NAMESPACE_URI = Vocabulary.CONTAINER_DOCUMENT.getNamespaceURI();
+	static final String NAMESPACE_URI = EpubVocabulary.CONTAINER_DOCUMENT.getNamespaceURI();
 }

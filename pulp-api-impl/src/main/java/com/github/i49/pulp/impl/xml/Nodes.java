@@ -22,10 +22,20 @@ import org.w3c.dom.Element;
 
 public final class Nodes {
 
-	public static Iterator<Element> children(Element element, String namespaceURI) {
-		return new ElementIterator(element, namespaceURI);
+	public static Iterator<Element> children(Element element) {
+		return new ElementIterator(element);
 	}
-
+	
+	public static Iterator<Element> children(Element element, String namespaceURI) {
+		return new ElementIterator(element, (Element child)->{
+			if (namespaceURI == null) {
+				return child == null;
+			} else {
+				return namespaceURI.equals(child.getNamespaceURI());
+			}
+		});
+	}
+	
 	private Nodes() {
 	}
 }

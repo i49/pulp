@@ -21,6 +21,7 @@ import static com.github.i49.pulp.impl.xml.XmlAssertions.*;
 import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.core.EpubException;
+import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.impl.base.Messages;
 
 /**
@@ -29,28 +30,14 @@ import com.github.i49.pulp.impl.base.Messages;
 abstract class PackageDocumentParser implements PackageDocumentProcessor {
 	
 	protected final Element rootElement;
-	protected final PublicationBuilder builder;
-	
-	protected PackageDocumentParser(Element rootElement, PublicationBuilder builder) {
-		this.rootElement = rootElement;
-		this.builder = builder;
-	}
-	
-	/**
-	 * Parses a Package Document which describes a rendition.
-	 * 
-	 * @param rendition the rendition to build.
-	 */
-	public abstract void parse();
 	
 	/**
 	 * Creates a new parser.
 	 * 
 	 * @param rootElement the root element of the document.
-	 * @param builder the builder for building a publication.
 	 * @return newly created parser.
 	 */
-	public static PackageDocumentParser create(Element rootElement, PublicationBuilder builder) {
+	public static PackageDocumentParser create(Element rootElement) {
 		
 		assertOn(rootElement)
 			.hasName("package", NAMESPACE_URI)
@@ -59,10 +46,21 @@ abstract class PackageDocumentParser implements PackageDocumentProcessor {
 		PackageDocumentParser parser = null;
 		String version = rootElement.getAttribute("version");
 		if ("3.0".equals(version)) {
-			parser = new PackageDocumentParser3(rootElement, builder);
+			parser = new PackageDocumentParser3(rootElement);
 		} else {
 			throw new EpubException(Messages.XML_DOCUMENT_VERSION_UNSUPPORTED(version));
 		}
 		return parser;
+	}
+
+	/**
+	 * Parses a package document which describes a rendition.
+	 * 
+	 * @param rendition the rendition to be built by this parser.
+	 */
+	public abstract void parseFor(Rendition rendition, RenditionResourceFinder resourceFinder);
+
+	protected PackageDocumentParser(Element rootElement) {
+		this.rootElement = rootElement;
 	}
 }

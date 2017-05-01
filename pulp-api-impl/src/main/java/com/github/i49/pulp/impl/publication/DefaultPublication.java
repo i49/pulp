@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import com.github.i49.pulp.api.core.EpubException;
 import com.github.i49.pulp.api.core.Publication;
@@ -40,7 +41,7 @@ public class DefaultPublication implements Publication {
 	private static final PublicationResourceLocation DEFAULT_RENDITION_LOCATION = 
 			PublicationResourceLocation.of("EPUB/package.opf");
 
-	private final MetadataFactory metadataFactory;
+	private final Supplier<Metadata> metadataSupplier;
 	
 	// The registry of publication resources.
 	private final PublicationResourceRegistry registry;
@@ -48,8 +49,13 @@ public class DefaultPublication implements Publication {
 	// Renditions.
 	private final HashMap<URI, Rendition> renditions = new LinkedHashMap<>();
 
-	public DefaultPublication(MetadataFactory metadataFactory) {
-		this.metadataFactory = metadataFactory;
+	/**
+	 * Constructs this object.
+	 * 
+	 * @param metadataSupplier the supplier of metadata.
+	 */
+	public DefaultPublication(Supplier<Metadata> metadataSupplier) {
+		this.metadataSupplier = metadataSupplier;
 		this.registry = new PublicationResourceRegistry();
 	}
 
@@ -104,7 +110,7 @@ public class DefaultPublication implements Publication {
 		if (this.renditions.containsKey(uri)) {
 			throw new EpubException(Messages.RENDITION_ALREADY_EXISTS(location.toString()));
 		}
-		Metadata metadata = this.metadataFactory.newMetadata();
+		Metadata metadata = this.metadataSupplier.get();
 		Rendition rendition = new DefaultRendition(this, location, this.registry, metadata);
 		this.renditions.put(uri, rendition);
 		return rendition;

@@ -35,24 +35,25 @@ import com.github.i49.pulp.api.core.PublicationResource;
 import com.github.i49.pulp.api.core.PublicationResourceBuilder;
 import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.core.Rendition;
-import com.github.i49.pulp.api.core.Manifest.Item;
-import com.github.i49.pulp.api.core.Spine.Page;
-import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.spi.EpubServiceProvider;
 import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.xml.XmlServices;
 
-public class EpubPublicationReader implements PublicationReader {
+public class EpubPublicationReader implements PublicationReader, RenditionResourceFinder {
 
 	private final ReadableContainer container;
-	private final EpubServiceProvider provider;
+	private final EpubServiceProvider service;
 	private final DocumentBuilder documentBuilder;
 	
 	private String currentLocation;
 	
-	public EpubPublicationReader(ReadableContainer loader, EpubServiceProvider provider) {
+	private Publication publication;
+	private Rendition currentRendition;
+	private PublicationResourceBuilderFactory currentResourceFactory;
+	
+	public EpubPublicationReader(ReadableContainer loader, EpubServiceProvider service) {
 		this.container = loader;
-		this.provider = provider;
+		this.service = service;
 		this.documentBuilder = XmlServices.newBuilder();
 	}
 
@@ -75,23 +76,16 @@ public class EpubPublicationReader implements PublicationReader {
 	}
 	
 	protected Publication parseAll() throws IOException, SAXException {
-		Publication publication = createPublication();
+		this.publication = createPublication();
 		Iterator<Rendition> it = parseContainerDocument(publication);
-		PublicationBuilderImpl builder = new PublicationBuilderImpl(publication);
 		while (it.hasNext()) {
-			Rendition rendition = it.next();
-			builder.setCurrentRendition(rendition);
-			buildRendition(rendition, builder);
+			buildRendition(it.next());
 		}
-		return publication;
+		return this.publication;
 	}
 	
 	protected Publication createPublication() {
-		return provider.createPublication();
-	}
-	
-	protected PublicationResourceBuilderFactory createResourceBuilderFactory(URI location) {
-		return provider.createResourceBuilderFactory(location);
+		return service.createPublication();
 	}
 	
 	protected Iterator<Rendition> parseContainerDocument(Publication publication) throws IOException, SAXException {
@@ -101,11 +95,13 @@ public class EpubPublicationReader implements PublicationReader {
 		return parser.parseFor(publication);
 	}
 	
-	protected void buildRendition(Rendition rendition, PublicationBuilder builder) throws IOException, SAXException {
+	protected void buildRendition(Rendition rendition) throws IOException, SAXException {
+		this.currentRendition = rendition;
+		this.currentResourceFactory = service.createResourceBuilderFactory(rendition.getLocation());
 		String location = rendition.getLocation().getPath();
 		Element rootElement = readXmlDocument(location);
-		PackageDocumentParser parser = PackageDocumentParser.create(rootElement, builder);
-		parser.parse();
+		PackageDocumentParser parser = PackageDocumentParser.create(rootElement);
+		parser.parseFor(rendition, this);
 	}
 	
 	private Element readXmlDocument(String location) throws IOException, SAXException {
@@ -121,64 +117,30 @@ public class EpubPublicationReader implements PublicationReader {
 		this.currentLocation = location;
 	}
 	
-	/**
-	 * A builder implementation for the parsers to build a publication.
-	 */
-	private class PublicationBuilderImpl implements PublicationBuilder {
-		
-		private Publication publication;
-		private Rendition rendition;
-		private PublicationResourceBuilderFactory builderFactory;
-		
-		public PublicationBuilderImpl(Publication publication) {
-			this.publication = publication;
+	@Override
+	public PublicationResource findResource(String href, String mediaType) {
+		URI location = this.currentRendition.resolve(href);
+		String path = location.getPath();
+		if (this.publication.containsResource(path)) {
+			return this.publication.getResource(path);
+		} else {
+			return buildResource(location, href, mediaType);
 		}
-		
-		public void setCurrentRendition(Rendition rendition) {
-			this.rendition = rendition;
-			this.builderFactory = provider.createResourceBuilderFactory(rendition.getLocation());
-		}
-
-		@Override
-		public Metadata getMetadateToBuild() {
-			return rendition.getMetadata();
-		}
-
-		@Override
-		public Item addManifestItem(String href, String mediaType) {
-			PublicationResource resource = getResource(href, mediaType);
-			return rendition.getManifest().add(resource);
-		}
-
-		@Override
-		public Page addSpinePage(Item item) {
-			return rendition.getSpine().append(item);
-		}
-		
-		private PublicationResource getResource(String href, String mediaType) {
-			URI location = rendition.resolve(href);
+	}
+	
+	private PublicationResource buildResource(URI location, String href, String mediaType) {
+		PublicationResourceBuilder builder = this.currentResourceFactory.newBuilder(href);
+		builder.ofType(mediaType);
+		if (location.isAbsolute()) {
+			builder.source(location);
+		} else {
 			String path = location.getPath();
-			if (publication.containsResource(path)) {
-				return publication.getResource(path);
+			if (this.container.contains(path)) {
+				builder.source(this.container.getContentSource(path));
 			} else {
-				return buildResource(location, href, mediaType);
+				throw new EpubException(Messages.RESOURCE_MISSING(location));
 			}
 		}
-		
-		private PublicationResource buildResource(URI location, String href, String mediaType) {
-			PublicationResourceBuilder builder = builderFactory.newBuilder(href);
-			builder.ofType(mediaType);
-			if (location.isAbsolute()) {
-				builder.source(location);
-			} else {
-				String path = location.getPath();
-				if (container.contains(path)) {
-					builder.source(container.getContentSource(path));
-				} else {
-					throw new EpubException(Messages.RESOURCE_MISSING(location));
-				}
-			}
-			return builder.build();
-		}
+		return builder.build();
 	}
 }

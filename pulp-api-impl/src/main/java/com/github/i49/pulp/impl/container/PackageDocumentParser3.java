@@ -18,15 +18,21 @@ package com.github.i49.pulp.impl.container;
 
 import static com.github.i49.pulp.impl.xml.XmlAssertions.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.core.EpubException;
 import com.github.i49.pulp.api.core.Manifest;
+import com.github.i49.pulp.api.core.PublicationResource;
+import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.core.Spine.Page;
+import com.github.i49.pulp.api.metadata.Property;
+import com.github.i49.pulp.api.metadata.StandardVocabulary;
 import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.xml.Nodes;
 
@@ -35,20 +41,28 @@ import com.github.i49.pulp.impl.xml.Nodes;
  */
 class PackageDocumentParser3 extends PackageDocumentParser {
 	
+	protected Rendition rendition; 
+	protected RenditionResourceFinder resourceFinder;
+	
 	/*
 	 * Map object for mapping item ids to items.
 	 */
 	private final Map<String, Manifest.Item> items = new HashMap<>();
 
-	public PackageDocumentParser3(Element rootElement, PublicationBuilder builder) {
-		super(rootElement, builder);
+	public PackageDocumentParser3(Element rootElement) {
+		super(rootElement);
 	}
 
 	@Override
-	public void parse() {
-
-		assertOn(rootElement).contains("metadata", "manifest", "spine");
+	public void parseFor(Rendition rendition, RenditionResourceFinder resourceFinder) {
+		this.rendition = rendition;
+		this.resourceFinder = resourceFinder;
+		parseAll();
+	}
 	
+	protected void parseAll() {
+		assertOn(rootElement).contains("metadata", "manifest", "spine");
+		
 		Iterator<Element> it = Nodes.children(rootElement, NAMESPACE_URI);
 
 		Element element = it.next();
@@ -65,8 +79,64 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 	}
 	
 	protected void parseMetadata(Element element) {
+		List<MetadataEntry> entries = fetchMetadataEntries(element);
+		for (MetadataEntry entry: entries) {
+			if (entry.getVocabulary() == StandardVocabulary.DCMES) {
+				//parseDublinCoreProperty(entry);
+			}
+		}
+	}
+	
+	protected List<MetadataEntry> fetchMetadataEntries(Element metadata) {
+		Map<String, MetadataEntry> map = new HashMap<>();
+		List<MetadataEntry> entries = new ArrayList<>();
+
+		Iterator<Element> it = Nodes.children(metadata);
+		while (it.hasNext()) {
+			Element child = it.next();
+			MetadataEntry entry = null;
+			if (DC_NAMESPACE_URI.equals(child.getNamespaceURI())) {
+				entry = new MetadataEntry(child, StandardVocabulary.DCMES);
+			} else if (NAMESPACE_URI.equals(child.getNamespaceURI())) {
+				entry = new MetadataEntry(child);
+			}
+			if (entry != null) {
+				entries.add(entry);
+				String id = child.getAttribute("id");
+				if (id != null) {
+					map.put(id, entry);
+				}
+			}
+		}
+		
+		return entries;
 	}
 
+	protected Property parseDublinCoreProperty(MetadataEntry entry) {
+		String localName = entry.getElement().getLocalName();
+		switch (localName) {
+		case "identifier":
+			return parseIdentifier(entry);
+		case "title":
+			return parseTitle(entry);
+		case "lanaguage":
+			return parseLanguage(entry);
+		}
+		throw new EpubException("Unknown Dublin Core element.");
+	}
+	
+	protected Property parseIdentifier(MetadataEntry entry) {
+		return null;
+	}
+
+	protected Property parseTitle(MetadataEntry entry) {
+		return null;
+	}
+
+	protected Property parseLanguage(MetadataEntry entry) {
+		return null;
+	}
+	
 	protected void parseManifest(Element element) {
 		Iterator<Element> it = Nodes.children(element, NAMESPACE_URI);
 		while (it.hasNext()) {
@@ -78,12 +148,17 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 			String id = child.getAttribute("id");
 			String href = child.getAttribute("href");
 			String mediaType = child.getAttribute("media-type");
-			Manifest.Item item = this.builder.addManifestItem(href, mediaType);
+			Manifest.Item item = addManifestItem(href, mediaType);
 			if (child.hasAttribute("properties")) {
 				addProperties(item, child.getAttribute("properties"));
 			}
 			registerItemWithMap(id, item);
 		}
+	}
+	
+	protected Manifest.Item addManifestItem(String href, String mediaType) {
+		PublicationResource resource = this.resourceFinder.findResource(href, mediaType);
+		return this.rendition.getManifest().add(resource);
 	}
 	
 	protected void addProperties(Manifest.Item item, String properties) {
@@ -109,7 +184,7 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 			if (item == null) {
 				throw new EpubException(Messages.MANIFEST_ITEM_ID_MISSING(idref));
 			}
-			Page page = this.builder.addSpinePage(item);
+			Page page = this.rendition.getSpine().append(item);
 			if ("no".equals(child.getAttribute("linear"))) {
 				page.linear(false);
 			}

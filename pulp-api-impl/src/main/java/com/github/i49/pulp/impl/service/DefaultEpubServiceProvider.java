@@ -32,14 +32,13 @@ import com.github.i49.pulp.impl.container.DefaultPublicationWriterFactory;
 import com.github.i49.pulp.impl.metadata.DefaultMetadata;
 import com.github.i49.pulp.impl.metadata.DefaultPropertyFactory;
 import com.github.i49.pulp.impl.publication.MediaTypeRegistry;
-import com.github.i49.pulp.impl.publication.MetadataFactory;
 import com.github.i49.pulp.impl.publication.DefaultPublication;
 import com.github.i49.pulp.impl.publication.DefaultPublicationResourceBuilderFactory;
 
 /**
  * The default implementation of {@link EpubServiceProvider} interface.
  */
-class DefaultEpubServiceProvider implements EpubServiceProvider, MetadataFactory {
+class DefaultEpubServiceProvider implements EpubServiceProvider {
 	
 	private final MediaTypeRegistry typeRegistry = new MediaTypeRegistry();
 	private final PropertyFactory propertyFactory = new DefaultPropertyFactory();
@@ -49,7 +48,7 @@ class DefaultEpubServiceProvider implements EpubServiceProvider, MetadataFactory
 	
 	@Override
 	public Publication createPublication() {
-		return new DefaultPublication(this);
+		return new DefaultPublication(this::createMetadata);
 	}
 
 	@Override
@@ -73,8 +72,7 @@ class DefaultEpubServiceProvider implements EpubServiceProvider, MetadataFactory
 		return new DefaultPublicationResourceBuilderFactory(baseURI, this.typeRegistry);
 	}
 
-	@Override
-	public Metadata newMetadata() {
+	private Metadata createMetadata() {
 		return new DefaultMetadata(this.propertyFactory);
 	}
 }

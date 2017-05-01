@@ -16,14 +16,19 @@
 
 package com.github.i49.pulp.impl.container;
 
-import com.github.i49.pulp.api.metadata.StandardVocabulary;
+public enum EpubVocabulary {
+	
+	CONTAINER_DOCUMENT("urn:oasis:names:tc:opendocument:xmlns:container"),
+	PACKAGE_DOCUMENT("http://www.idpf.org/2007/opf")
+	;
+	
+	private final String uri;
 
-/**
- * Base type for builder and parser. 
- */
-
-public interface PackageDocumentProcessor {
-
-	static final String NAMESPACE_URI = EpubVocabulary.PACKAGE_DOCUMENT.getNamespaceURI();
-	static final String DC_NAMESPACE_URI = StandardVocabulary.DCMES.getURI().toString();
+	private EpubVocabulary(String uri) {
+		this.uri = uri;
+	}
+	
+	public String getNamespaceURI() {
+		return uri;
+	}
 }

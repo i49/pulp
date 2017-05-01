@@ -18,6 +18,7 @@ package com.github.i49.pulp.impl.xml;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -26,14 +27,20 @@ import org.w3c.dom.NodeList;
 class ElementIterator implements Iterator<Element> {
 
 	private final NodeList nodeList;
-	private final String namespaceURI;
+	private final Predicate<Element> predicate;
 	
 	private int index;
 	private Element next;
-	
-	ElementIterator(Element parent, String namespaceURI) {
+
+	ElementIterator(Element parent) {
 		this.nodeList = parent.getChildNodes();
-		this.namespaceURI = namespaceURI;
+		this.predicate = e->true;
+		this.index = 0;
+	}
+	
+	ElementIterator(Element parent, Predicate<Element> predicate) {
+		this.nodeList = parent.getChildNodes();
+		this.predicate = predicate;
 		this.index = 0;
 	}
 	
@@ -43,8 +50,12 @@ class ElementIterator implements Iterator<Element> {
 			return true;
 		}
 		while (this.index < nodeList.getLength()) {
-			Element element = filter(nodeList.item(this.index++));
-			if (element != null) {
+			Node node = nodeList.item(this.index++);
+			if (node.getNodeType() != Node.ELEMENT_NODE) {
+				continue;
+			}
+			Element element = (Element)node;
+			if (this.predicate.test(element)) {
 				this.next = element;
 				break;
 			}
@@ -60,19 +71,5 @@ class ElementIterator implements Iterator<Element> {
 		Element next = this.next;
 		this.next = null;
 		return next;
-	}
-	
-	private Element filter(Node node) {
-		if (node.getNodeType() != Node.ELEMENT_NODE) {
-			return null;
-		}
-		if (this.namespaceURI == null) {
-			if (node.getNamespaceURI() != null) {
-				return null;
-			}
-		} else if (!this.namespaceURI.equals(node.getNamespaceURI())) {
-			return null;
-		}
-		return (Element)node;
 	}
 }
