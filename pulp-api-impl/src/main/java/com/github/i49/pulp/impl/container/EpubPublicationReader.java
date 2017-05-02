@@ -24,7 +24,6 @@ import java.util.Iterator;
 import javax.xml.parsers.DocumentBuilder;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import com.github.i49.pulp.api.core.EpubException;
@@ -44,6 +43,9 @@ public class EpubPublicationReader implements PublicationReader, RenditionResour
 	private final ReadableContainer container;
 	private final EpubServiceProvider service;
 	private final DocumentBuilder documentBuilder;
+
+	private final ContainerDocumentParserFactory containerParserFactory;
+	private final PackageDocumentParserFactory packageParserFactory;
 	
 	private String currentLocation;
 	
@@ -55,6 +57,8 @@ public class EpubPublicationReader implements PublicationReader, RenditionResour
 		this.container = loader;
 		this.service = service;
 		this.documentBuilder = XmlServices.newBuilder();
+		this.containerParserFactory = new ContainerDocumentParserFactory();
+		this.packageParserFactory = new PackageDocumentParserFactory();
 	}
 
 	@Override
@@ -90,26 +94,28 @@ public class EpubPublicationReader implements PublicationReader, RenditionResour
 	
 	protected Iterator<Rendition> parseContainerDocument(Publication publication) throws IOException, SAXException {
 		String location = AbstractContainer.CONTAINER_DOCUMENT_LOCATION;
-		Element rootElement = readXmlDocument(location);
-		ContainerDocumentParser parser = ContainerDocumentParser.create(rootElement);
-		return parser.parseFor(publication);
+		Document document = readXmlDocument(location);
+		ContainerDocumentParser parser = this.containerParserFactory.newParser(document);
+		parser.setPublication(publication);
+		return parser.parse(document);
 	}
 	
 	protected void buildRendition(Rendition rendition) throws IOException, SAXException {
 		this.currentRendition = rendition;
 		this.currentResourceFactory = service.createResourceBuilderFactory(rendition.getLocation());
 		String location = rendition.getLocation().getPath();
-		Element rootElement = readXmlDocument(location);
-		PackageDocumentParser parser = PackageDocumentParser.create(rootElement);
-		parser.parseFor(rendition, this);
+		Document document = readXmlDocument(location);
+		PackageDocumentParser parser = this.packageParserFactory.newParser(document);
+		parser.setRenditionToBuild(rendition, this);
+		parser.parse(document);
 	}
 	
-	private Element readXmlDocument(String location) throws IOException, SAXException {
+	private Document readXmlDocument(String location) throws IOException, SAXException {
 		setCurrentLocation(location);
 		try (InputStream in = container.openItemToRead(location)) {
 			Document document = documentBuilder.parse(in); 
 			document.setDocumentURI(location);
-			return document.getDocumentElement();
+			return document;
 		}
 	}
 

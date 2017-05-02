@@ -23,9 +23,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.github.i49.pulp.api.core.Publication;
 import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.impl.publication.StandardMediaType;
 import com.github.i49.pulp.impl.xml.Nodes;
@@ -37,16 +37,13 @@ class ContainerDocumentParser1 extends ContainerDocumentParser {
 
 	private final List<Element> rootfiles = new ArrayList<>();
 	
-	public ContainerDocumentParser1(Element rootElement) {
-		super(rootElement);
-	}
-
 	@Override
-	public Iterator<Rendition> parseFor(Publication publication) {
+	public Iterator<Rendition> parse(Document document) {
+		Element rootElement = document.getDocumentElement();
 		assertOn(rootElement).contains("rootfiles");
 		Iterator<Element> it = Nodes.children(rootElement, NAMESPACE_URI);
 		parseRootfiles(it.next());
-		return new RenditionIterator(publication);
+		return new RenditionIterator();
 	}
 		
 	protected void parseRootfiles(Element rootfiles) {
@@ -73,12 +70,7 @@ class ContainerDocumentParser1 extends ContainerDocumentParser {
 	
 	protected class RenditionIterator implements Iterator<Rendition> {
 
-		private Publication publication;
 		private int nextIndex = 0;
-		
-		public RenditionIterator(Publication publication) {
-			this.publication = publication;
-		}
 		
 		@Override
 		public boolean hasNext() {
@@ -96,7 +88,7 @@ class ContainerDocumentParser1 extends ContainerDocumentParser {
 		
 		protected Rendition createRendition(Element rootfile) {
 			String location = rootfile.getAttribute("full-path");
-			return this.publication.addRendition(location);
+			return getPublication().addRendition(location);
 		}
 	}
 }

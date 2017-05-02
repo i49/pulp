@@ -24,12 +24,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.core.EpubException;
 import com.github.i49.pulp.api.core.Manifest;
 import com.github.i49.pulp.api.core.PublicationResource;
-import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.core.Spine.Page;
 import com.github.i49.pulp.api.metadata.Property;
 import com.github.i49.pulp.api.metadata.StandardVocabulary;
@@ -41,26 +41,14 @@ import com.github.i49.pulp.impl.xml.Nodes;
  */
 class PackageDocumentParser3 extends PackageDocumentParser {
 	
-	protected Rendition rendition; 
-	protected RenditionResourceFinder resourceFinder;
-	
 	/*
 	 * Map object for mapping item ids to items.
 	 */
 	private final Map<String, Manifest.Item> items = new HashMap<>();
 
-	public PackageDocumentParser3(Element rootElement) {
-		super(rootElement);
-	}
-
 	@Override
-	public void parseFor(Rendition rendition, RenditionResourceFinder resourceFinder) {
-		this.rendition = rendition;
-		this.resourceFinder = resourceFinder;
-		parseAll();
-	}
-	
-	protected void parseAll() {
+	public void parse(Document document) {
+		Element rootElement = document.getDocumentElement();
 		assertOn(rootElement).contains("metadata", "manifest", "spine");
 		
 		Iterator<Element> it = Nodes.children(rootElement, NAMESPACE_URI);
@@ -157,8 +145,8 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 	}
 	
 	protected Manifest.Item addManifestItem(String href, String mediaType) {
-		PublicationResource resource = this.resourceFinder.findResource(href, mediaType);
-		return this.rendition.getManifest().add(resource);
+		PublicationResource resource = getResourceFinder().findResource(href, mediaType);
+		return getRendition().getManifest().add(resource);
 	}
 	
 	protected void addProperties(Manifest.Item item, String properties) {
@@ -184,7 +172,7 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 			if (item == null) {
 				throw new EpubException(Messages.MANIFEST_ITEM_ID_MISSING(idref));
 			}
-			Page page = this.rendition.getSpine().append(item);
+			Page page = getRendition().getSpine().append(item);
 			if ("no".equals(child.getAttribute("linear"))) {
 				page.linear(false);
 			}
