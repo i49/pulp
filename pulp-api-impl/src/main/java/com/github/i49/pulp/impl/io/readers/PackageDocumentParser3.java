@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.impl.container;
+package com.github.i49.pulp.impl.io.readers;
 
 import static com.github.i49.pulp.impl.xml.XmlAssertions.*;
 

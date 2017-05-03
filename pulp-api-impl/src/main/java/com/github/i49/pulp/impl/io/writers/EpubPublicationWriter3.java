@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.impl.container;
+package com.github.i49.pulp.impl.io.writers;
 
 import static com.github.i49.pulp.impl.base.Preconditions.checkNotNull;
 
@@ -34,6 +34,8 @@ import com.github.i49.pulp.api.core.PublicationResource;
 import com.github.i49.pulp.api.core.PublicationWriter;
 import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.impl.base.Messages;
+import com.github.i49.pulp.impl.io.containers.AbstractContainer;
+import com.github.i49.pulp.impl.io.containers.WriteableContainer;
 import com.github.i49.pulp.impl.publication.StandardMediaType;
 import com.github.i49.pulp.impl.xml.DocumentSerializer;
 import com.github.i49.pulp.impl.xml.XmlServices;

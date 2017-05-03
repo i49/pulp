@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.impl.container;
+package com.github.i49.pulp.impl.io.containers;
 
-import com.github.i49.pulp.api.metadata.StandardVocabulary;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Path;
 
-/**
- * Base type for generators and parsers.
- */
-interface PackageDocumentProcessor {
+public abstract class WriteableContainer extends AbstractContainer {
+	
+	protected WriteableContainer(Path path) {
+		super(path);
+	}
 
-	static final String NAMESPACE_URI = EpubVocabulary.PACKAGE_DOCUMENT.getNamespaceURI();
-	static final String DC_NAMESPACE_URI = StandardVocabulary.DCMES.getURI().toString();
+	public abstract void writeItem(String location, byte[] content) throws IOException;
+	
+	public abstract OutputStream openItemToWrite(String location) throws IOException;
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.impl.container;
+package com.github.i49.pulp.impl.io.readers;
 
 import static com.github.i49.pulp.impl.base.Preconditions.*;
 
@@ -29,6 +29,8 @@ import com.github.i49.pulp.api.core.PublicationReader;
 import com.github.i49.pulp.api.core.PublicationReaderFactory;
 import com.github.i49.pulp.api.spi.EpubServiceProvider;
 import com.github.i49.pulp.impl.base.Messages;
+import com.github.i49.pulp.impl.io.containers.ReadableContainer;
+import com.github.i49.pulp.impl.io.containers.ReadableZipContainer;
 
 /**
  * The default implementation of {@link PublicationReaderFactory}.

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.impl.container;
+package com.github.i49.pulp.impl.io.writers;
 
 import static com.github.i49.pulp.impl.base.Preconditions.*;
 
@@ -26,6 +26,8 @@ import com.github.i49.pulp.api.core.EpubException;
 import com.github.i49.pulp.api.core.PublicationWriter;
 import com.github.i49.pulp.api.core.PublicationWriterFactory;
 import com.github.i49.pulp.impl.base.Messages;
+import com.github.i49.pulp.impl.io.containers.WriteableContainer;
+import com.github.i49.pulp.impl.io.containers.WriteableZipContainer;
 
 /**
  * The default implementation of {@link PublicationWriterFactory}.

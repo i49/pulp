@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.impl.container;
+package com.github.i49.pulp.impl.io.readers;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,6 +36,8 @@ import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.spi.EpubServiceProvider;
 import com.github.i49.pulp.impl.base.Messages;
+import com.github.i49.pulp.impl.io.containers.AbstractContainer;
+import com.github.i49.pulp.impl.io.containers.ReadableContainer;
 import com.github.i49.pulp.impl.xml.XmlServices;
 
 /**

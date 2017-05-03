@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.impl.container;
+package com.github.i49.pulp.impl.io.containers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

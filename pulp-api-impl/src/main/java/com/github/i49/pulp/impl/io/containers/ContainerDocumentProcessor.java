@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.impl.container;
+package com.github.i49.pulp.impl.io.containers;
 
-public enum EpubVocabulary {
-	
-	CONTAINER_DOCUMENT("urn:oasis:names:tc:opendocument:xmlns:container"),
-	PACKAGE_DOCUMENT("http://www.idpf.org/2007/opf")
-	;
-	
-	private final String uri;
+/**
+ * Base type for generators and parsers. 
+ */
+public interface ContainerDocumentProcessor {
 
-	private EpubVocabulary(String uri) {
-		this.uri = uri;
-	}
-	
-	public String getNamespaceURI() {
-		return uri;
-	}
+	static final String NAMESPACE_URI = EpubVocabulary.CONTAINER_DOCUMENT.getNamespaceURI();
 }

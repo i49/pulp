@@ -14,45 +14,31 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.impl.container;
+package com.github.i49.pulp.impl.io.readers;
 
 import static com.github.i49.pulp.impl.xml.XmlAssertions.assertOn;
+
+import java.util.Iterator;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.github.i49.pulp.api.core.Publication;
 import com.github.i49.pulp.api.core.Rendition;
-import com.github.i49.pulp.api.metadata.PropertyFactory;
+import com.github.i49.pulp.impl.io.containers.ContainerDocumentProcessor;
 
-/**
- * Parser for parsing a package document that contains the information about a EPUB rendition.
- */
-interface PackageDocumentParser extends PackageDocumentProcessor {
-	
-	/**
-	 * Probes the version of the specification.
-	 * 
-	 * @param document the XML document to probe.
-	 * @return the version of the specification.
-	 */
+interface ContainerDocumentParser extends ContainerDocumentProcessor {
+
 	static String probe(Document document) {
 	
 		Element rootElement = document.getDocumentElement();
 		
 		assertOn(rootElement)
-		.hasName("package", NAMESPACE_URI)
+		.hasName("container", NAMESPACE_URI)
 		.hasNonEmptyAttribute("version");
 
 		return rootElement.getAttribute("version");
 	}
 	
-	/**
-	 * Parses the package document.
-	 * 
-	 * @param document the package document.
-	 * @param rendition the rendition to build.
-	 * @param propertyFactory the factory for producing metadata properties.
-	 * @param resourceFinder the finder to find the resources required by the rendition.
-	 */
-	void parse(Document document, Rendition rendition, PropertyFactory propertyFactory, RenditionResourceFinder resourceFinder);
+	Iterator<Rendition> parse(Document document, Publication publication);
 }

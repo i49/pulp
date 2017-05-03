@@ -14,12 +14,21 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.impl.container;
+package com.github.i49.pulp.impl.io.readers;
+
+import com.github.i49.pulp.api.core.PublicationResource;
 
 /**
- * Base type for generators and parsers. 
+ * Resource finder for a rendition of a publication.
  */
-interface ContainerDocumentProcessor {
+interface RenditionResourceFinder {
 
-	static final String NAMESPACE_URI = EpubVocabulary.CONTAINER_DOCUMENT.getNamespaceURI();
+	/**
+	 * Finds the resource required by the rendition.
+	 * 
+	 * @param href the location of the resource relative to the package document.
+	 * @param mediaType the media type of the resource.
+	 * @return the resource found.
+	 */
+	PublicationResource findResource(String href, String mediaType);
 }

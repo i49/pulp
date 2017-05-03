@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.impl.container;
+package com.github.i49.pulp.impl.io.writers;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -35,6 +35,7 @@ import com.github.i49.pulp.api.core.Spine;
 import com.github.i49.pulp.api.metadata.BasicTerm;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.Property;
+import com.github.i49.pulp.impl.io.containers.PackageDocumentProcessor;
 
 /**
  * A generator class to generate a document which carries bibliographical 
