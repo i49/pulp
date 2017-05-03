@@ -36,6 +36,8 @@ import com.github.i49.pulp.api.core.PublicationReader;
 import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.core.Spine;
 import com.github.i49.pulp.api.core.Spine.Page;
+import com.github.i49.pulp.api.metadata.BasicTerm;
+import com.github.i49.pulp.api.metadata.Metadata;
 
 /**
  * Tests of reading EPUB 3.0 samples.
@@ -73,11 +75,17 @@ public class Epub30SamplesTest {
 			assertThat(p.getNumberOfRenditions()).isEqualTo(1);
 			
 			Rendition r = p.getDefaultRendition();
-			Manifest m = r.getManifest();
-			assertThat(m.getNumberOfItems()).isEqualTo(35);
+			
+			Metadata m = r.getMetadata();
+			assertThat(m.get(BasicTerm.IDENTIFIER).getValue()).isEqualTo("urn:isbn:9781449328030");
+			assertThat(m.get(BasicTerm.TITLE).getValue()).isEqualTo("Accessible EPUB 3");
+			assertThat(m.get(BasicTerm.LANGUAGE).getValue()).isEqualTo("en");
+			
+			Manifest mf = r.getManifest();
+			assertThat(mf.getNumberOfItems()).isEqualTo(35);
 	
-			assertThat(m.get("covers/9781449328030_lrg.jpg").isCoverImage()).isTrue();
-			assertThat(m.get("bk01-toc.xhtml").isNavigation()).isTrue();
+			assertThat(mf.get("covers/9781449328030_lrg.jpg").isCoverImage()).isTrue();
+			assertThat(mf.get("bk01-toc.xhtml").isNavigation()).isTrue();
 	
 			Spine s = r.getSpine();
 			assertThat(s.getNumberOfPages()).isEqualTo(22);

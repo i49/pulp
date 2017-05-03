@@ -28,21 +28,25 @@ class MetadataEntry {
 	private final Element element;
 	private final Vocabulary vocabulary;
 	
-	public MetadataEntry(Element element) {
+	MetadataEntry(Element element) {
 		this.element = element;
 		this.vocabulary = null;
 	}
 
-	public MetadataEntry(Element element, Vocabulary vocabulary) {
+	MetadataEntry(Element element, Vocabulary vocabulary) {
 		this.element = element;
 		this.vocabulary = vocabulary;
 	}
 	
-	public Element getElement() {
+	Element getElement() {
 		return element;
 	}
 	
-	public Vocabulary getVocabulary() {
+	String getValue() {
+		return getElement().getTextContent();
+	}
+	
+	Vocabulary getVocabulary() {
 		return vocabulary;
 	}
 	

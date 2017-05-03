@@ -32,6 +32,7 @@ import com.github.i49.pulp.api.core.Manifest;
 import com.github.i49.pulp.api.core.PublicationResource;
 import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.core.Spine.Page;
+import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.Property;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.StandardVocabulary;
@@ -49,7 +50,8 @@ class PackageDocumentParser3 implements PackageDocumentParser {
 	private final Map<String, Manifest.Item> items = new HashMap<>();
 	
 	private Rendition rendition;
-	@SuppressWarnings("unused")
+	private Metadata metadata;
+
 	private PropertyFactory propertyFactory;
 	private RenditionResourceFinder resourceFinder;
 
@@ -61,6 +63,7 @@ class PackageDocumentParser3 implements PackageDocumentParser {
 			RenditionResourceFinder resourceFinder) {
 		
 		this.rendition = rendition;
+		this.metadata = rendition.getMetadata();
 		this.propertyFactory = propertyFactory;
 		this.resourceFinder = resourceFinder;
 		
@@ -85,8 +88,12 @@ class PackageDocumentParser3 implements PackageDocumentParser {
 	protected void parseMetadata(Element element) {
 		List<MetadataEntry> entries = fetchMetadataEntries(element);
 		for (MetadataEntry entry: entries) {
+			Property p = null;
 			if (entry.getVocabulary() == StandardVocabulary.DCMES) {
-				//parseDublinCoreProperty(entry);
+				p = parseDublinCoreProperty(entry);
+			}
+			if (p != null) {
+				this.metadata.add(p);
 			}
 		}
 	}
@@ -123,22 +130,25 @@ class PackageDocumentParser3 implements PackageDocumentParser {
 			return parseIdentifier(entry);
 		case "title":
 			return parseTitle(entry);
-		case "lanaguage":
+		case "language":
 			return parseLanguage(entry);
 		}
-		throw new EpubException("Unknown Dublin Core element.");
+		return null;
+		//throw new EpubException("Unknown Dublin Core element.");
 	}
 	
 	protected Property parseIdentifier(MetadataEntry entry) {
-		return null;
+		Property p = propertyFactory.newIdentifier(entry.getValue());
+		return p;
 	}
 
 	protected Property parseTitle(MetadataEntry entry) {
-		return null;
+		Property p = propertyFactory.newTitle(entry.getValue());
+		return p;
 	}
 
 	protected Property parseLanguage(MetadataEntry entry) {
-		return null;
+		return propertyFactory.newLanguage(entry.getValue());
 	}
 	
 	protected void parseManifest(Element element) {
