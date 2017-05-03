@@ -26,6 +26,7 @@ import java.util.NoSuchElementException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.github.i49.pulp.api.core.Publication;
 import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.impl.publication.StandardMediaType;
 import com.github.i49.pulp.impl.xml.Nodes;
@@ -33,17 +34,17 @@ import com.github.i49.pulp.impl.xml.Nodes;
 /**
  * Parser of EPUB Container Document version 1.0.
  */
-class ContainerDocumentParser1 extends ContainerDocumentParser {
+class ContainerDocumentParser1 implements ContainerDocumentParser {
 
 	private final List<Element> rootfiles = new ArrayList<>();
 	
 	@Override
-	public Iterator<Rendition> parse(Document document) {
+	public Iterator<Rendition> parse(Document document, Publication publication) {
 		Element rootElement = document.getDocumentElement();
 		assertOn(rootElement).contains("rootfiles");
 		Iterator<Element> it = Nodes.children(rootElement, NAMESPACE_URI);
 		parseRootfiles(it.next());
-		return new RenditionIterator();
+		return new RenditionIterator(publication);
 	}
 		
 	protected void parseRootfiles(Element rootfiles) {
@@ -70,7 +71,12 @@ class ContainerDocumentParser1 extends ContainerDocumentParser {
 	
 	protected class RenditionIterator implements Iterator<Rendition> {
 
+		private final Publication publication;
 		private int nextIndex = 0;
+		
+		RenditionIterator(Publication publication) {
+			this.publication= publication;
+		}
 		
 		@Override
 		public boolean hasNext() {
@@ -88,7 +94,7 @@ class ContainerDocumentParser1 extends ContainerDocumentParser {
 		
 		protected Rendition createRendition(Element rootfile) {
 			String location = rootfile.getAttribute("full-path");
-			return getPublication().addRendition(location);
+			return this.publication.addRendition(location);
 		}
 	}
 }

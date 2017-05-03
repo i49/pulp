@@ -98,14 +98,14 @@ class EpubPublicationWriter3 implements PublicationWriter {
 	}
 	
 	private void writeContainerDocument(Publication publication) {
-		ContainerDocumentBuilder builder = new ContainerDocumentBuilder(documentBuilder);
-		Document document = builder.build(publication);
+		ContainerDocumentGenerator generator = new ContainerDocumentGenerator(documentBuilder);
+		Document document = generator.generateDocument(publication);
 		writeXmlDocument(AbstractContainer.CONTAINER_DOCUMENT_LOCATION, document);
 	}
 
 	private void writePackageDocument(Rendition rendition) {
-		PackageDocumentBuilder builder = new PackageDocumentBuilder(documentBuilder); 
-		Document document = builder.rendition(rendition).build();
+		PackageDocumentGenerator generator = new PackageDocumentGenerator(documentBuilder); 
+		Document document = generator.generateDocument(rendition);
 		writeXmlDocument(rendition.getLocation().getPath(), document);
 	}
 

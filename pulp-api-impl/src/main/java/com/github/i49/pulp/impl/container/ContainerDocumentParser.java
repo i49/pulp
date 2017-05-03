@@ -16,25 +16,28 @@
 
 package com.github.i49.pulp.impl.container;
 
+import static com.github.i49.pulp.impl.xml.XmlAssertions.assertOn;
+
 import java.util.Iterator;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.core.Publication;
 import com.github.i49.pulp.api.core.Rendition;
 
-abstract class ContainerDocumentParser implements ContainerDocumentProcessor {
+interface ContainerDocumentParser extends ContainerDocumentProcessor {
 
-	private Publication publication;
+	static String probe(Document document) {
 	
-	public void setPublication(Publication publication) {
-		this.publication = publication;
+		Element rootElement = document.getDocumentElement();
+		
+		assertOn(rootElement)
+		.hasName("container", NAMESPACE_URI)
+		.hasNonEmptyAttribute("version");
+
+		return rootElement.getAttribute("version");
 	}
 	
-	public abstract Iterator<Rendition> parse(Document document);
-	
-	protected Publication getPublication() {
-		assert(publication != null);
-		return publication;
-	}
+	Iterator<Rendition> parse(Document document, Publication publication);
 }

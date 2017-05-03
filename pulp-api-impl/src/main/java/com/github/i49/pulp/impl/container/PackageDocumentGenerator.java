@@ -37,10 +37,10 @@ import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.Property;
 
 /**
- * A builder class to build a document carrying bibliographical and structural metadata 
- * about a given publication.
+ * A generator class to generate a document which carries bibliographical 
+ * and structural metadata about a given rendition.
  */
-class PackageDocumentBuilder implements PackageDocumentProcessor {
+class PackageDocumentGenerator implements PackageDocumentProcessor {
 
 	private static final String VERSION = "3.0";
 	private static final String UNIQUE_IDENTIFIER = "pub-id";
@@ -55,24 +55,24 @@ class PackageDocumentBuilder implements PackageDocumentProcessor {
 	private int nextNumber;
 	
 	/**
-	 * Construct this builder.
+	 * Construct this generator.
 	 */
-	public PackageDocumentBuilder(DocumentBuilder documentBuilder) {
+	PackageDocumentGenerator(DocumentBuilder documentBuilder) {
 		this.documentBuilder = documentBuilder;
 		this.nextNumber = 1;
 	}
 	
-	public PackageDocumentBuilder rendition(Rendition rendition) {
+	/**
+	 * Generates a package document.
+	 * 
+	 * @param rendition the rendition to be written.
+	 * @return generated package document.
+	 */
+	Document generateDocument(Rendition rendition) {
+		
 		this.rendition = rendition;
 		this.packageBase = rendition.getLocation().resolve(".");
-		return this;
-	}
-	
-	/**
-	 * Builds the package document.
-	 * @return built package document.
-	 */
-	public Document build() {
+
 		document = this.documentBuilder.newDocument();
 
 		Element root = document.createElementNS(NAMESPACE_URI, "package");

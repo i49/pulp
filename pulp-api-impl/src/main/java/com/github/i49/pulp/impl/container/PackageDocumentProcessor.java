@@ -19,10 +19,9 @@ package com.github.i49.pulp.impl.container;
 import com.github.i49.pulp.api.metadata.StandardVocabulary;
 
 /**
- * Base type for builder and parser. 
+ * Base type for generators and parsers.
  */
-
-public interface PackageDocumentProcessor {
+interface PackageDocumentProcessor {
 
 	static final String NAMESPACE_URI = EpubVocabulary.PACKAGE_DOCUMENT.getNamespaceURI();
 	static final String DC_NAMESPACE_URI = StandardVocabulary.DCMES.getURI().toString();

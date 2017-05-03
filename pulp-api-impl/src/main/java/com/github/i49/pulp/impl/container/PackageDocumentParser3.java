@@ -30,8 +30,10 @@ import org.w3c.dom.Element;
 import com.github.i49.pulp.api.core.EpubException;
 import com.github.i49.pulp.api.core.Manifest;
 import com.github.i49.pulp.api.core.PublicationResource;
+import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.core.Spine.Page;
 import com.github.i49.pulp.api.metadata.Property;
+import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.StandardVocabulary;
 import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.xml.Nodes;
@@ -39,15 +41,29 @@ import com.github.i49.pulp.impl.xml.Nodes;
 /**
  * Parser of EPUB Package Document version 3.0.
  */
-class PackageDocumentParser3 extends PackageDocumentParser {
+class PackageDocumentParser3 implements PackageDocumentParser {
 	
 	/*
 	 * Map object for mapping item ids to items.
 	 */
 	private final Map<String, Manifest.Item> items = new HashMap<>();
+	
+	private Rendition rendition;
+	@SuppressWarnings("unused")
+	private PropertyFactory propertyFactory;
+	private RenditionResourceFinder resourceFinder;
 
 	@Override
-	public void parse(Document document) {
+	public void parse(
+			Document document,
+			Rendition rendition,
+			PropertyFactory propertyFactory,
+			RenditionResourceFinder resourceFinder) {
+		
+		this.rendition = rendition;
+		this.propertyFactory = propertyFactory;
+		this.resourceFinder = resourceFinder;
+		
 		Element rootElement = document.getDocumentElement();
 		assertOn(rootElement).contains("metadata", "manifest", "spine");
 		
@@ -145,8 +161,8 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 	}
 	
 	protected Manifest.Item addManifestItem(String href, String mediaType) {
-		PublicationResource resource = getResourceFinder().findResource(href, mediaType);
-		return getRendition().getManifest().add(resource);
+		PublicationResource resource = this.resourceFinder.findResource(href, mediaType);
+		return this.rendition.getManifest().add(resource);
 	}
 	
 	protected void addProperties(Manifest.Item item, String properties) {
@@ -172,7 +188,7 @@ class PackageDocumentParser3 extends PackageDocumentParser {
 			if (item == null) {
 				throw new EpubException(Messages.MANIFEST_ITEM_ID_MISSING(idref));
 			}
-			Page page = getRendition().getSpine().append(item);
+			Page page = this.rendition.getSpine().append(item);
 			if ("no".equals(child.getAttribute("linear"))) {
 				page.linear(false);
 			}

@@ -38,15 +38,15 @@ import com.github.i49.pulp.api.spi.EpubServiceProvider;
 import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.xml.XmlServices;
 
+/**
+ * An implementation of {@link PublicationReader}.
+ */
 public class EpubPublicationReader implements PublicationReader, RenditionResourceFinder {
 
 	private final ReadableContainer container;
 	private final EpubServiceProvider service;
 	private final DocumentBuilder documentBuilder;
 
-	private final ContainerDocumentParserFactory containerParserFactory;
-	private final PackageDocumentParserFactory packageParserFactory;
-	
 	private String currentLocation;
 	
 	private Publication publication;
@@ -57,8 +57,6 @@ public class EpubPublicationReader implements PublicationReader, RenditionResour
 		this.container = loader;
 		this.service = service;
 		this.documentBuilder = XmlServices.newBuilder();
-		this.containerParserFactory = new ContainerDocumentParserFactory();
-		this.packageParserFactory = new PackageDocumentParserFactory();
 	}
 
 	@Override
@@ -95,9 +93,16 @@ public class EpubPublicationReader implements PublicationReader, RenditionResour
 	protected Iterator<Rendition> parseContainerDocument(Publication publication) throws IOException, SAXException {
 		String location = AbstractContainer.CONTAINER_DOCUMENT_LOCATION;
 		Document document = readXmlDocument(location);
-		ContainerDocumentParser parser = this.containerParserFactory.newParser(document);
-		parser.setPublication(publication);
-		return parser.parse(document);
+		ContainerDocumentParser parser = createContainerDocumentParser(document);
+		return parser.parse(document, publication);
+	}
+	
+	protected ContainerDocumentParser createContainerDocumentParser(Document document) {
+		String version = ContainerDocumentParser.probe(document);
+		if ("1.0".equals(version)) {
+			return new ContainerDocumentParser1();
+		}
+		throw new EpubException(Messages.XML_DOCUMENT_VERSION_UNSUPPORTED(version));
 	}
 	
 	protected void buildRendition(Rendition rendition) throws IOException, SAXException {
@@ -105,9 +110,16 @@ public class EpubPublicationReader implements PublicationReader, RenditionResour
 		this.currentResourceFactory = service.createResourceBuilderFactory(rendition.getLocation());
 		String location = rendition.getLocation().getPath();
 		Document document = readXmlDocument(location);
-		PackageDocumentParser parser = this.packageParserFactory.newParser(document);
-		parser.setRenditionToBuild(rendition, this);
-		parser.parse(document);
+		PackageDocumentParser parser = createPackageDocumentParser(document);
+		parser.parse(document, rendition, service.createPropertyFactory(), this);
+	}
+	
+	protected PackageDocumentParser createPackageDocumentParser(Document document) {
+		String version = PackageDocumentParser.probe(document);
+		if ("3.0".equals(version)) {
+			return new PackageDocumentParser3();
+		}
+		throw new EpubException(Messages.XML_DOCUMENT_VERSION_UNSUPPORTED(version));
 	}
 	
 	private Document readXmlDocument(String location) throws IOException, SAXException {

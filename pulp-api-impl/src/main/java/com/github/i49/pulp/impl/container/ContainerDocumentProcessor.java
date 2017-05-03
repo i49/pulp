@@ -17,9 +17,9 @@
 package com.github.i49.pulp.impl.container;
 
 /**
- * Base type for builder and parser. 
+ * Base type for generators and parsers. 
  */
-public interface ContainerDocumentProcessor {
+interface ContainerDocumentProcessor {
 
 	static final String NAMESPACE_URI = EpubVocabulary.CONTAINER_DOCUMENT.getNamespaceURI();
 }
