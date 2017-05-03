@@ -23,10 +23,11 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.w3c.dom.Element;
 
@@ -48,31 +49,29 @@ class MetadataParser3 implements MetadataParser {
 	
 	private final Metadata metadata;
 	private final PropertyFactory factory;
+	private final String uniqueIdentifier;
 	
-	MetadataParser3(Metadata metadata, PropertyFactory factory) {
+	MetadataParser3(Metadata metadata, PropertyFactory factory, String uniqueIdentifier) {
 		this.metadata = metadata;
 		this.factory = factory;
+		this.uniqueIdentifier = uniqueIdentifier;
 	}
 	
 	@Override
 	public void parse(Element element) {
 		List<MetadataEntry> entries = fetchMetadataEntries(element);
 		for (MetadataEntry entry: entries) {
-			Property p = null;
 			if (entry.getVocabulary() == StandardVocabulary.DCMES) {
-				p = parseDublinCoreElement(entry);
+				parseDublinCoreElement(entry);
 			} else {
-				p = parseMetaElement(entry);
-			}
-			if (p != null) {
-				this.metadata.add(p);
+				parseMetaElement(entry);
 			}
 		}
 	}
 	
 	protected List<MetadataEntry> fetchMetadataEntries(Element metadata) {
-		Map<String, MetadataEntry> map = new HashMap<>();
 		List<MetadataEntry> entries = new ArrayList<>();
+		List<Element> refinements = new ArrayList<>();
 
 		Iterator<Element> it = Nodes.children(metadata);
 		while (it.hasNext()) {
@@ -84,6 +83,7 @@ class MetadataParser3 implements MetadataParser {
 				String localName = child.getLocalName();
 				if ("meta".equals(localName)) {
 					if (child.hasAttribute("refines")) {
+						refinements.add(child);
 					} else {
 						entry = new MetadataEntry(child);
 					}
@@ -91,16 +91,39 @@ class MetadataParser3 implements MetadataParser {
 			}
 			if (entry != null) {
 				entries.add(entry);
-				String id = child.getAttribute("id");
-				if (id != null) {
-					map.put(id, entry);
-				}
 			}
 		}
 		
+		return refineEntries(entries, refinements);
+	}
+	
+	protected List<MetadataEntry> refineEntries(List<MetadataEntry> entries, List<Element> refinements) {
+		Map<String, MetadataEntry> map = createEntryMap(entries);
+		for (Element r: refinements) {
+			String target = r.getAttribute("refines").trim();
+			if (target.startsWith("#")) {
+				String id = target.substring(1);
+				MetadataEntry entry = map.get(id);
+				if (entry != null) {
+					entry.addRefinement(r);
+				}
+			}
+		}
 		return entries;
 	}
 	
+	protected Map<String, MetadataEntry> createEntryMap(List<MetadataEntry> entries) {
+		return entries.stream()
+				.filter(MetadataEntry::hasId)
+				.collect(Collectors.toMap(MetadataEntry::getId, Function.identity()));
+	}
+	
+	/**
+	 * Parses one of Dublin Core Metadata Element and add the parsed property.
+	 * 
+	 * @param entry a child of the metadata element.
+	 * @return added property.
+	 */
 	protected Property parseDublinCoreElement(MetadataEntry entry) {
 		String localName = entry.getElement().getLocalName();
 		switch (localName) {
@@ -135,6 +158,7 @@ class MetadataParser3 implements MetadataParser {
 		case "type":
 			return parseType(entry);
 		}
+		// TODO:
 		throw new EpubException("Unknown Dublin Core element.");
 	}
 	
@@ -157,81 +181,112 @@ class MetadataParser3 implements MetadataParser {
 	
 	protected Property parseContributor(MetadataEntry entry) {
 		Relator.Builder<Contributor> b = factory.getContributorBuilder(entry.getValue());
-		return b.build();
+		Property p = buildRelator(b, entry);
+		return append(p);
 	}
 
 	protected Property parseCoverage(MetadataEntry entry) {
 		Property p = factory.newCoverage(entry.getValue());
-		return p;
+		return append(p);
 	}
 
 	protected Property parseCreator(MetadataEntry entry) {
 		Relator.Builder<Creator> b = factory.getCreatorBuilder(entry.getValue());
-		return b.build();
+		Property p = buildRelator(b, entry);
+		return append(p);
 	}
 
 	protected Property parseDate(MetadataEntry entry) {
 		OffsetDateTime dateTime = convertDateTime(entry.getValue());
-		return factory.newDate(dateTime);
+		Property p = factory.newDate(dateTime);
+		return append(p);
 	}
 
 	protected Property parseDescription(MetadataEntry entry) {
 		Property p = factory.newDescription(entry.getValue());
-		return p;
+		return append(p);
 	}
 
 	protected Property parseFormat(MetadataEntry entry) {
 		Property p = factory.newFormat(entry.getValue());
-		return p;
+		return append(p);
 	}
 	
 	protected Property parseIdentifier(MetadataEntry entry) {
 		Property p = factory.newIdentifier(entry.getValue());
+		if (entry.hasId(this.uniqueIdentifier)) {
+			prepend(p);
+		} else {
+			append(p);
+		}
 		return p;
 	}
 
 	protected Property parseLanguage(MetadataEntry entry) {
-		return factory.newLanguage(entry.getValue());
+		Property p = factory.newLanguage(entry.getValue());
+		return append(p);
 	}
 
 	protected Property parsePublisher(MetadataEntry entry) {
 		Relator.Builder<Publisher> b = factory.getPublisherBuilder(entry.getValue());
-		return b.build();
+		Property p = buildRelator(b, entry);
+		return append(p);
 	}
 
 	protected Property parseRelation(MetadataEntry entry) {
 		Property p = factory.newRelation(entry.getValue());
-		return p;
+		return append(p);
 	}
 
 	protected Property parseRights(MetadataEntry entry) {
 		Property p = factory.newRights(entry.getValue());
-		return p;
+		return append(p);
 	}
 
 	protected Property parseSource(MetadataEntry entry) {
 		Property p = factory.newSource(entry.getValue());
-		return p;
+		return append(p);
 	}
 
 	protected Property parseSubject(MetadataEntry entry) {
 		Property p = factory.newSubject(entry.getValue());
-		return p;
+		return append(p);
 	}
 	
 	protected Property parseTitle(MetadataEntry entry) {
 		Property p = factory.newTitle(entry.getValue());
-		return p;
+		return append(p);
 	}
 
 	protected Property parseType(MetadataEntry entry) {
 		Property p = factory.newType(entry.getValue());
-		return p;
+		return append(p);
 	}
 	
 	protected Property parseModified(MetadataEntry entry) {
 		OffsetDateTime dateTime = convertDateTime(entry.getValue());
-		return factory.newModified(dateTime);
+		Property p = factory.newModified(dateTime);
+		return append(p);
+	}
+	
+	private Property prepend(Property p) {
+		this.metadata.getList(p.getTerm()).add(0, p);
+		return p;
+	}
+	
+	private Property append(Property p) {
+		this.metadata.add(p);
+		return p;
+	}
+
+	protected <T extends Relator> T buildRelator(Relator.Builder<T> builder, MetadataEntry entry) {
+		for (Element r: entry.getRefinements()) {
+			String term = r.getAttribute("property");
+			if ("file-as".equals(term)) {
+				builder.fileAs(r.getTextContent());
+			}
+		}
+		return builder.build();
 	}
 	
 	private static OffsetDateTime convertDateTime(String value) {

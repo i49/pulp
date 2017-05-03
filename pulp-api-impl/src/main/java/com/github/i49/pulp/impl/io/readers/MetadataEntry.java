@@ -16,6 +16,10 @@
 
 package com.github.i49.pulp.impl.io.readers;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.metadata.Vocabulary;
@@ -27,6 +31,7 @@ class MetadataEntry {
 
 	private final Element element;
 	private final Vocabulary vocabulary;
+	private List<Element> refinements;
 	
 	MetadataEntry(Element element) {
 		this.element = element;
@@ -42,6 +47,17 @@ class MetadataEntry {
 		return element;
 	}
 	
+	boolean hasId() {
+		return getElement().hasAttribute("id");
+	}
+	
+	boolean hasId(String identifier) {
+		return identifier.equals(getId());
+	}
+
+	String getId() {
+		return getElement().getAttribute("id");
+	}
 	
 	/**
 	 * Returns the value of this entry as a string.
@@ -54,6 +70,21 @@ class MetadataEntry {
 	
 	Vocabulary getVocabulary() {
 		return vocabulary;
+	}
+	
+	List<Element> getRefinements() {
+		if (this.refinements == null) {
+			return Collections.emptyList();
+		}
+		return this.refinements;
+	}
+	
+	void addRefinement(Element element) {
+		assert(element != null);
+		if (this.refinements == null) {
+			this.refinements = new ArrayList<>();
+		}
+		this.refinements.add(element);
 	}
 	
 	@Override

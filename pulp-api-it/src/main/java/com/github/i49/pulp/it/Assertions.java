@@ -17,6 +17,7 @@
 package com.github.i49.pulp.it;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.assertj.core.api.AbstractAssert;
@@ -55,10 +56,23 @@ public class Assertions {
 			super(actual, PropertyAssert.class);
 		}
 
-		public PropertyAssert isEqualTo(String value) {
+		public PropertyAssert hasValue(String value) {
 			isNotNull();
 			if (!actual.getValue().equals(value)) {
 				failWithMessage("Expected property value to be <%s> but was <%s>", value, actual.getValue());
+			}
+			return this;
+		}
+
+		public PropertyAssert hasNormalizedValue(String value) {
+			isNotNull();
+			Optional<String> container = actual.getNormalizedValue();
+			if (!container.isPresent()) {
+				failWithMessage("Expected normalized value to be <%s> but was <empty>", value);
+			}
+			String actualValue = container.get();
+			if (!actualValue.equals(value)) {
+				failWithMessage("Expected normalized value to be <%s> but was <%s>", value, actualValue);
 			}
 			return this;
 		}

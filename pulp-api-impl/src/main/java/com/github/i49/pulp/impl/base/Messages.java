@@ -23,12 +23,14 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.github.i49.pulp.api.metadata.Term;
+
 public final class Messages {
 
 	private static final String BUNDLE_BASE_NAME = Messages.class.getPackage().getName() + ".messages";
 	private static final ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_BASE_NAME);
 
-	/* core.publication package */
+	/* publication package */
 	
 	public static String RENDITION_ALREADY_EXISTS(String location) {
 		return format("RENDITION_ALREADY_EXISTS", location);
@@ -73,8 +75,14 @@ public final class Messages {
 	public static String CONTENT_SOURCE_MISSING(URI location) {
 		return format("CONTENT_SOURCE_MISSING", location);
 	}
+
+	/* metadata package */
 	
-	/* core.container package */
+	public static String METADATA_PROPERTY_NOT_FOUND(Term term) {
+		return format("METADATA_PROPERTY_NOT_FOUND", term);
+	}
+	
+	/* io package */
 	
 	public static String CONTAINER_NOT_FOUND(Path path) {
 		return format("CONTAINER_NOT_FOUND", path);
@@ -120,7 +128,7 @@ public final class Messages {
 		return format("XML_DOCUMENT_NOT_WELL_FORMED");
 	}
 	
-	/* core.xml package */
+	/* xml package */
 	
 	public static String XML_PARSER_MISCONFIGURED() {
 		return format("XML_PARSER_MISCONFIGURED");
@@ -161,7 +169,7 @@ public final class Messages {
 		return elements.stream().map(Messages::element).collect(Collectors.joining(separator));
 	}
 	
-	/* core.zip package */
+	/* zip package */
 	
 	public static String END_OF_CENTRAL_DIRECTORY_NOT_FOUND() {
 		return format("END_OF_CENTRAL_DIRECTORY_NOT_FOUND");

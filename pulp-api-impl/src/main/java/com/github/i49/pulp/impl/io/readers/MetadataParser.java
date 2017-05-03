@@ -22,13 +22,17 @@ import com.github.i49.pulp.api.metadata.StandardVocabulary;
 import com.github.i49.pulp.impl.io.containers.EpubVocabulary;
 
 /**
- * @author i49
- *
+ * Base parser interface for the metadata defined in EPUB specification
  */
 interface MetadataParser {
 
-	static final String NAMESPACE_URI = EpubVocabulary.PACKAGE_DOCUMENT.getNamespaceURI();
+	static final String NAMESPACE_URI = EpubVocabulary.PACKAGE_DOCUMENT.getURI().toString();
 	static final String DC_NAMESPACE_URI = StandardVocabulary.DCMES.getURI().toString();
 	
+	/**
+	 * Parses the metadata element and its descendants.
+	 * 
+	 * @param element the metadata element.
+	 */
 	void parse(Element element);
 }

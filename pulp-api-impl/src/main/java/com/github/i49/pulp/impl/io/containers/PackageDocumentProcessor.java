@@ -23,6 +23,6 @@ import com.github.i49.pulp.api.metadata.StandardVocabulary;
  */
 public interface PackageDocumentProcessor {
 
-	static final String NAMESPACE_URI = EpubVocabulary.PACKAGE_DOCUMENT.getNamespaceURI();
+	static final String NAMESPACE_URI = EpubVocabulary.PACKAGE_DOCUMENT.getURI().toString();
 	static final String DC_NAMESPACE_URI = StandardVocabulary.DCMES.getURI().toString();
 }

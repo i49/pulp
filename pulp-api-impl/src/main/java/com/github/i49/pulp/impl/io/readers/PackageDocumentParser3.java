@@ -59,13 +59,21 @@ class PackageDocumentParser3 implements PackageDocumentParser {
 		this.resourceFinder = resourceFinder;
 		
 		Element rootElement = document.getDocumentElement();
-		assertOn(rootElement).contains("metadata", "manifest", "spine");
+	
+		assertOn(rootElement)
+			.hasNonEmptyAttribute("unique-identifier")
+			.contains("metadata", "manifest", "spine");
+		
+		String uniqueIdentifier = rootElement.getAttribute("unique-identifier");
 		
 		Iterator<Element> it = Nodes.children(rootElement, NAMESPACE_URI);
 
 		Element element = it.next();
 		assertOn(element).hasName("metadata");
-		createMetadataParser(rendition.getMetadata(), propertyFactory).parse(element);
+	
+		MetadataParser metadataParser = createMetadataParser(
+				rendition.getMetadata(), propertyFactory, uniqueIdentifier);
+		metadataParser.parse(element);
 
 		element = it.next();
 		assertOn(element).hasName("manifest");
@@ -76,8 +84,8 @@ class PackageDocumentParser3 implements PackageDocumentParser {
 		parseSpine(element);
 	}
 	
-	protected MetadataParser createMetadataParser(Metadata metadata, PropertyFactory factory) {
-		return new MetadataParser3(metadata, factory);
+	protected MetadataParser createMetadataParser(Metadata metadata, PropertyFactory factory, String uniqueIdentifier) {
+		return new MetadataParser3(metadata, factory, uniqueIdentifier);
 	}
 	
 	protected void parseManifest(Element element) {

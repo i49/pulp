@@ -33,6 +33,7 @@ import com.github.i49.pulp.api.metadata.Property;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.ReleaseIdentifier;
 import com.github.i49.pulp.api.metadata.Term;
+import com.github.i49.pulp.impl.base.Messages;
 
 /**
  * The default implementation of {@link Metadata}.
@@ -95,7 +96,7 @@ public class DefaultMetadata implements Metadata {
 		checkNotNull(term, "term");
 		List<Property> list = terms.get(term);
 		if (list == null || list.isEmpty()) {
-			throw new NoSuchElementException();
+			throw new NoSuchElementException(Messages.METADATA_PROPERTY_NOT_FOUND(term));
 		}
 		return list.get(0);
 	}

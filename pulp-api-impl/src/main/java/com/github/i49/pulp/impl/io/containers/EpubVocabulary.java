@@ -16,19 +16,24 @@
 
 package com.github.i49.pulp.impl.io.containers;
 
-public enum EpubVocabulary {
+import java.net.URI;
+
+import com.github.i49.pulp.api.metadata.Vocabulary;
+
+public enum EpubVocabulary implements Vocabulary {
 	
 	CONTAINER_DOCUMENT("urn:oasis:names:tc:opendocument:xmlns:container"),
 	PACKAGE_DOCUMENT("http://www.idpf.org/2007/opf")
 	;
 	
-	private final String uri;
+	private final URI uri;
 
 	private EpubVocabulary(String uri) {
-		this.uri = uri;
+		this.uri = URI.create(uri);
 	}
 	
-	public String getNamespaceURI() {
+	@Override
+	public URI getURI() {
 		return uri;
 	}
 }
