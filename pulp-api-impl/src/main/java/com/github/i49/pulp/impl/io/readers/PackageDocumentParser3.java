@@ -18,10 +18,8 @@ package com.github.i49.pulp.impl.io.readers;
 
 import static com.github.i49.pulp.impl.xml.XmlAssertions.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.w3c.dom.Document;
@@ -33,9 +31,7 @@ import com.github.i49.pulp.api.core.PublicationResource;
 import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.core.Spine.Page;
 import com.github.i49.pulp.api.metadata.Metadata;
-import com.github.i49.pulp.api.metadata.Property;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
-import com.github.i49.pulp.api.metadata.StandardVocabulary;
 import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.xml.Nodes;
 
@@ -50,9 +46,6 @@ class PackageDocumentParser3 implements PackageDocumentParser {
 	private final Map<String, Manifest.Item> items = new HashMap<>();
 	
 	private Rendition rendition;
-	private Metadata metadata;
-
-	private PropertyFactory propertyFactory;
 	private RenditionResourceFinder resourceFinder;
 
 	@Override
@@ -63,8 +56,6 @@ class PackageDocumentParser3 implements PackageDocumentParser {
 			RenditionResourceFinder resourceFinder) {
 		
 		this.rendition = rendition;
-		this.metadata = rendition.getMetadata();
-		this.propertyFactory = propertyFactory;
 		this.resourceFinder = resourceFinder;
 		
 		Element rootElement = document.getDocumentElement();
@@ -74,7 +65,7 @@ class PackageDocumentParser3 implements PackageDocumentParser {
 
 		Element element = it.next();
 		assertOn(element).hasName("metadata");
-		parseMetadata(element);
+		createMetadataParser(rendition.getMetadata(), propertyFactory).parse(element);
 
 		element = it.next();
 		assertOn(element).hasName("manifest");
@@ -85,70 +76,8 @@ class PackageDocumentParser3 implements PackageDocumentParser {
 		parseSpine(element);
 	}
 	
-	protected void parseMetadata(Element element) {
-		List<MetadataEntry> entries = fetchMetadataEntries(element);
-		for (MetadataEntry entry: entries) {
-			Property p = null;
-			if (entry.getVocabulary() == StandardVocabulary.DCMES) {
-				p = parseDublinCoreProperty(entry);
-			}
-			if (p != null) {
-				this.metadata.add(p);
-			}
-		}
-	}
-	
-	protected List<MetadataEntry> fetchMetadataEntries(Element metadata) {
-		Map<String, MetadataEntry> map = new HashMap<>();
-		List<MetadataEntry> entries = new ArrayList<>();
-
-		Iterator<Element> it = Nodes.children(metadata);
-		while (it.hasNext()) {
-			Element child = it.next();
-			MetadataEntry entry = null;
-			if (DC_NAMESPACE_URI.equals(child.getNamespaceURI())) {
-				entry = new MetadataEntry(child, StandardVocabulary.DCMES);
-			} else if (NAMESPACE_URI.equals(child.getNamespaceURI())) {
-				entry = new MetadataEntry(child);
-			}
-			if (entry != null) {
-				entries.add(entry);
-				String id = child.getAttribute("id");
-				if (id != null) {
-					map.put(id, entry);
-				}
-			}
-		}
-		
-		return entries;
-	}
-
-	protected Property parseDublinCoreProperty(MetadataEntry entry) {
-		String localName = entry.getElement().getLocalName();
-		switch (localName) {
-		case "identifier":
-			return parseIdentifier(entry);
-		case "title":
-			return parseTitle(entry);
-		case "language":
-			return parseLanguage(entry);
-		}
-		return null;
-		//throw new EpubException("Unknown Dublin Core element.");
-	}
-	
-	protected Property parseIdentifier(MetadataEntry entry) {
-		Property p = propertyFactory.newIdentifier(entry.getValue());
-		return p;
-	}
-
-	protected Property parseTitle(MetadataEntry entry) {
-		Property p = propertyFactory.newTitle(entry.getValue());
-		return p;
-	}
-
-	protected Property parseLanguage(MetadataEntry entry) {
-		return propertyFactory.newLanguage(entry.getValue());
+	protected MetadataParser createMetadataParser(Metadata metadata, PropertyFactory factory) {
+		return new MetadataParser3(metadata, factory);
 	}
 	
 	protected void parseManifest(Element element) {

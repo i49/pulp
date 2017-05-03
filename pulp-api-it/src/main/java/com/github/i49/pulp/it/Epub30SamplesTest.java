@@ -77,9 +77,19 @@ public class Epub30SamplesTest {
 			Rendition r = p.getDefaultRendition();
 			
 			Metadata m = r.getMetadata();
-			assertThat(m.get(BasicTerm.IDENTIFIER).getValue()).isEqualTo("urn:isbn:9781449328030");
-			assertThat(m.get(BasicTerm.TITLE).getValue()).isEqualTo("Accessible EPUB 3");
-			assertThat(m.get(BasicTerm.LANGUAGE).getValue()).isEqualTo("en");
+			assertThat(m.getNumberOfProperties()).isEqualTo(14);
+			assertThat(m.get(BasicTerm.IDENTIFIER)).isEqualTo("urn:isbn:9781449328030");
+			assertThat(m.get(BasicTerm.TITLE)).isEqualTo("Accessible EPUB 3");
+			assertThat(m.get(BasicTerm.LANGUAGE)).isEqualTo("en");
+			assertThat(m.get(BasicTerm.CREATOR)).isEqualTo("Matt Garrish");
+			assertThat(m.getList(BasicTerm.CONTRIBUTOR)).containsExactly(
+				"O’Reilly Production Services", "David Futato", "Robert Romano", 
+				"Brian Sawyer", "Dan Fauxsmith", "Karen Montgomery"
+				);
+			assertThat(m.get(BasicTerm.PUBLISHER)).isEqualTo("O’Reilly Media, Inc.");
+			assertThat(m.get(BasicTerm.RIGHTS)).isEqualTo("Copyright © 2012 O’Reilly Media, Inc");
+			assertThat(m.get(BasicTerm.DATE)).isEqualTo("2012-02-20T00:00:00Z");
+			assertThat(m.get(BasicTerm.MODIFIED)).isEqualTo("2012-10-24T15:30:00Z");
 			
 			Manifest mf = r.getManifest();
 			assertThat(mf.getNumberOfItems()).isEqualTo(35);
@@ -102,13 +112,24 @@ public class Epub30SamplesTest {
 			assertThat(p.getNumberOfRenditions()).isEqualTo(1);
 			
 			Rendition r = p.getDefaultRendition();
+
+			Metadata m = r.getMetadata();
+			assertThat(m.get(BasicTerm.IDENTIFIER)).isEqualTo("code.google.com.epub-samples.cc-shared-culture");
+			assertThat(m.get(BasicTerm.TITLE)).isEqualTo("Creative Commons - A Shared Culture");
+			assertThat(m.get(BasicTerm.LANGUAGE)).isEqualTo("en-US");
+			assertThat(m.get(BasicTerm.CREATOR)).isEqualTo("Jesse Dylan");
+			assertThat(m.get(BasicTerm.PUBLISHER)).isEqualTo("Creative Commons");
+			assertThat(m.get(BasicTerm.CONTRIBUTOR)).isEqualTo("mgylling");
+			assertThat(m.get(BasicTerm.DESCRIPTION)).isEqualTo("Multiple video tests (see Navigation Document (toc) for details)");
+			assertThat(m.get(BasicTerm.RIGHTS)).isEqualTo("This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike (CC BY-NC-SA) license.");
+			assertThat(m.get(BasicTerm.MODIFIED)).isEqualTo("2012-01-20T12:47:00Z");
 			
-			Manifest m = r.getManifest();
-			assertThat(m.getNumberOfItems()).isEqualTo(21);
+			Manifest mf = r.getManifest();
+			assertThat(mf.getNumberOfItems()).isEqualTo(21);
 	
-			assertThat(m.get("images/326261902_3fa36f548d.jpg").isCoverImage()).isTrue();
-			assertThat(m.get("xhtml/p20.xhtml").isScripted()).isTrue();
-			assertThat(m.get("xhtml/toc.xhtml").isNavigation()).isTrue();
+			assertThat(mf.get("images/326261902_3fa36f548d.jpg").isCoverImage()).isTrue();
+			assertThat(mf.get("xhtml/p20.xhtml").isScripted()).isTrue();
+			assertThat(mf.get("xhtml/toc.xhtml").isNavigation()).isTrue();
 	
 			Spine s = r.getSpine();
 			assertThat(s.getNumberOfPages()).isEqualTo(8);
@@ -126,12 +147,28 @@ public class Epub30SamplesTest {
 	
 			Rendition r = p.getDefaultRendition();
 	
-			Manifest m = r.getManifest();
-			assertThat(m.getNumberOfItems()).isEqualTo(7);
+			Metadata m = r.getMetadata();
+			assertThat(m.get(BasicTerm.IDENTIFIER)).isEqualTo("http://www.gutenberg.org/ebooks/25545");
+			assertThat(m.get(BasicTerm.TITLE)).isEqualTo("Children's Literature");
+			assertThat(m.get(BasicTerm.LANGUAGE)).isEqualTo("en");
+			assertThat(m.get(BasicTerm.CREATOR)).isEqualTo("Charles Madison Curry");
+		
+			assertThat(m.getList(BasicTerm.SUBJECT)).containsExactly(
+					"Children -- Books and reading",
+					"Children's literature -- Study and teaching"
+					);
+			assertThat(m.get(BasicTerm.SOURCE)).isEqualTo("http://www.gutenberg.org/files/25545/25545-h/25545-h.htm");
+			assertThat(m.get(BasicTerm.RIGHTS)).isEqualTo("Public domain in the USA.");
+
+			assertThat(m.get(BasicTerm.DATE)).isEqualTo("2008-05-20T00:00:00Z");
+			assertThat(m.get(BasicTerm.MODIFIED)).isEqualTo("2010-02-17T04:39:13Z");
+
+			Manifest mf = r.getManifest();
+			assertThat(mf.getNumberOfItems()).isEqualTo(7);
 	
-			assertThat(m.get("images/cover.png").isCoverImage()).isTrue();
-			assertThat(m.get("nav.xhtml").isScripted()).isTrue();
-			assertThat(m.get("nav.xhtml").isNavigation()).isTrue();
+			assertThat(mf.get("images/cover.png").isCoverImage()).isTrue();
+			assertThat(mf.get("nav.xhtml").isScripted()).isTrue();
+			assertThat(mf.get("nav.xhtml").isNavigation()).isTrue();
 	
 			Spine s = r.getSpine();
 			assertThat(s.getNumberOfPages()).isEqualTo(3);

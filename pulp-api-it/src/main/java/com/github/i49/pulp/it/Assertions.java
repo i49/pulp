@@ -16,13 +16,26 @@
 
 package com.github.i49.pulp.it;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.assertj.core.api.AbstractAssert;
+import org.assertj.core.api.AbstractListAssert;
 
 import com.github.i49.pulp.api.core.Spine;
 import com.github.i49.pulp.api.core.Spine.Page;
+import com.github.i49.pulp.api.metadata.Property;
 
 public class Assertions {
 
+	public static PropertyAssert assertThat(Property actual) {
+		return new PropertyAssert(actual);
+	}
+
+	public static PropertyListAssert assertThat(List<Property> actual) {
+		return new PropertyListAssert(actual);
+	}
+	
 	/**
 	 * Provides assertion on an instance of {@link Spine}. 
 	 * 
@@ -34,6 +47,41 @@ public class Assertions {
 	}
 	
 	private Assertions() {
+	}
+	
+	public static class PropertyAssert extends AbstractAssert<PropertyAssert, Property> {
+		
+		private PropertyAssert(Property actual) {
+			super(actual, PropertyAssert.class);
+		}
+
+		public PropertyAssert isEqualTo(String value) {
+			isNotNull();
+			if (!actual.getValue().equals(value)) {
+				failWithMessage("Expected property value to be <%s> but was <%s>", value, actual.getValue());
+			}
+			return this;
+		}
+	}
+	
+	public static class PropertyListAssert extends AbstractListAssert<PropertyListAssert, List<Property>, Property, PropertyAssert> {
+
+		private PropertyListAssert(List<Property> actual) {
+			super(actual, PropertyListAssert.class);
+		}
+		
+		public PropertyListAssert containsExactly(String... values) {
+			isNotNull();
+			List<String> actualValues = actual.stream().map(Property::getValue).collect(Collectors.toList());
+			org.assertj.core.api.Assertions.assertThat(actualValues).containsExactly(values);
+			return this;
+		}
+		
+		@Override
+		protected PropertyAssert toAssert(Property value, String description) {
+			PropertyAssert assertion = new PropertyAssert(value);
+			return assertion;
+		}
 	}
 
 	public static class SpineAssert extends AbstractAssert<SpineAssert, Spine> {

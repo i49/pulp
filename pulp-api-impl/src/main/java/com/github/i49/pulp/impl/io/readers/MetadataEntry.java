@@ -42,6 +42,12 @@ class MetadataEntry {
 		return element;
 	}
 	
+	
+	/**
+	 * Returns the value of this entry as a string.
+	 * 
+	 * @return the value of this entry.
+	 */
 	String getValue() {
 		return getElement().getTextContent();
 	}
