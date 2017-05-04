@@ -46,4 +46,14 @@ public interface Term {
 	default URI getURI() {
 		return getVocabulary().getURI().resolve(getName());
 	}
+	
+	/**
+	 * Checks if the property of this term is repeatable.
+	 * By default this method returns {@code true}.
+	 *  
+	 * @return {@code true} if the property of this term is repeatable, {@code false} otherwise.
+	 */
+	default boolean isRepeatable() {
+		return true;
+	}
 }

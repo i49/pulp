@@ -16,6 +16,7 @@
 
 package com.github.i49.pulp.api.metadata;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -23,21 +24,74 @@ import java.util.Set;
 /**
  * A set of meta information describing a EPUB publication and its renditions.
  */
-public interface Metadata {
+public interface Metadata extends Iterable<Property> {
 
 	/**
-	 * Returns the <i>release identifier</i> of the publication
-	 * that uniquely identifies a specific version of it.
+	 * Adds the specified property to this metadata if it is not already present.
 	 * 
-	 * <p>Release identifier of the publication consists of  the following two properties:</p>
-	 * <ul>
-	 * <li>identifier of the publication</li>
-	 * <li>last modification date-time of the publication</li>
-	 * </ul>
+	 * <p>Calling this method is equivalent to the following code.</p>
+	 * <pre>{@code
+	 * getList(property.getTerm()).add(property);
+	 * }</pre>
 	 * 
-	 * @return the release identifier of the publication, never be {@code null}.
+	 * @param property the property to add.
+	 * @return {@code true} if this metadata did not already contain the specified property. 
+	 * @throws IllegalArgumentException if {@code property} is {@code null}.
+	 * @throws IllegalStateException if the maximum number of properties were already added.
 	 */
-	ReleaseIdentifier getReleaseIdentifier();
+	boolean add(Property property);
+
+	/**
+	 * Clears all properties in this metadata.
+	 * All mandatory properties are cleared also.
+	 */
+	void clear();
+
+	/**
+	 * Checks if this metadata contains any properties of the specific term.
+	 * 
+	 * @param term the term of the property.
+	 * @return {@code true} if this metadata contains any properties of the term, {@code false} otherwise.
+	 * @throws IllegalArgumentException if {@code term} is {@code null}.
+	 */
+	boolean contains(Term term);
+	
+	/**
+	 * Adds the required properties to this metadata if they do not exist.
+	 * 
+	 * <p>The properties of the following terms are added by default.</p>
+	 * <dl>
+	 * <dt>identifier</dt>
+	 * <dd>A UUID is randomly generated.</dd>
+	 * <dt>title</dt>
+	 * <dd>A default title is added.</dd>
+	 * <dt>language</dt>
+	 * <dd>The language of the current locale is added.</dd>
+	 * <dt>modified</dt>
+	 * <dd>Current time is added.</dd>
+	 * </dl>
+	 */
+	void fillMissingProperties();
+
+	/**
+	 * Returns the first property of the specific term.
+	 * If this metadata contains more than one properties of the term,
+	 * only the first one will be returned.
+	 * This method can be called safely only if calling {@link #contains(Term)} returns {@code true}. 
+	 * 
+	 * @param term the term of the property to retrieve.
+	 * @return the property contained in this metadata, never be {@code null}.
+	 * @throws IllegalArgumentException if {@code term} is {@code null}.
+	 * @throws NoSuchElementException if this metadata does not contain any properties of the specific term.
+	 */
+	Property get(Term term);
+	
+	/**
+	 * Returns all properties in this metadata.
+	 * 
+	 * @return an iterator over all properties in this metadata.
+	 */
+	Iterator<Property> getAllProperties();
 	
 	/**
 	 * Returns the total number of the properties contained in this metadata.
@@ -56,13 +110,18 @@ public interface Metadata {
 	int getNumberOfProperties(Term term);
 
 	/**
-	 * Checks if this metadata contains any properties of the specific term.
+	 * Returns the <i>release identifier</i> of the publication
+	 * that uniquely identifies a specific version of it.
 	 * 
-	 * @param term the term of the property.
-	 * @return {@code true} if this metadata contains any properties of the term, {@code false} otherwise.
-	 * @throws IllegalArgumentException if {@code term} is {@code null}.
+	 * <p>Release identifier of the publication consists of  the following two properties:</p>
+	 * <ul>
+	 * <li>identifier of the publication</li>
+	 * <li>last modification date-time of the publication</li>
+	 * </ul>
+	 * 
+	 * @return the release identifier of the publication, never be {@code null}.
 	 */
-	boolean contains(Term term);
+	ReleaseIdentifier getReleaseIdentifier();
 	
 	/**
 	 * Returns all terms that have at least one property in this metadata.
@@ -70,19 +129,6 @@ public interface Metadata {
 	 * @return the set of terms, never be {@code null}.
 	 */
 	Set<Term> getTerms();
-	
-	/**
-	 * Returns the first property of the specific term.
-	 * If this metadata contains more than one properties of the term,
-	 * only the first one will be returned.
-	 * This method can be called safely only if calling {@link #contains(Term)} returns {@code true}. 
-	 * 
-	 * @param term the term of the property to retrieve.
-	 * @return the property contained in this metadata, never be {@code null}.
-	 * @throws IllegalArgumentException if {@code term} is {@code null}.
-	 * @throws NoSuchElementException if this metadata does not contain any properties of the specific term.
-	 */
-	Property get(Term term);
 	
 	/**
 	 * Returns the list containing all properties of the specific term.
@@ -95,25 +141,22 @@ public interface Metadata {
 	List<Property> getList(Term term);
 	
 	/**
-	 * Clears all properties in this metadata.
-	 * All mandatory properties are cleared also.
+	 * Checks if this metadata contains all required properties.
+	 * 
+	 * @return {@code true} if all required properties exist in this metadata, {@code false} otherwise.
 	 */
-	void clear();
-
+	boolean isFilled();
+	
 	/**
-	 * Adds the specified property to this metadata if it is not already present.
+	 * Returns an iterator over the properties in this metadata.
+	 * Calling this method is equivalent to calling {@link #getAllProperties()}.
 	 * 
-	 * <p>Calling this method is equivalent to the following code.</p>
-	 * <pre>{@code
-	 * getList(property.getTerm()).add(property);
-	 * }</pre>
-	 * 
-	 * @param property the property to add.
-	 * @return {@code true} if this metadata did not already contain the specified property. 
-	 * @throws IllegalArgumentException if {@code property} is {@code null}.
-	 * @throws IllegalStateException if the maximum number of properties were already added.
+	 * @return an iterator over the properties.
 	 */
-	boolean add(Property property);
+	@Override
+	default Iterator<Property> iterator() {
+		return getAllProperties();
+	}
 	
 	/**
 	 * Removes the specified property from this metadata.
@@ -126,24 +169,6 @@ public interface Metadata {
 	 * @param property the property to remove.
 	 * @return {@code true} if this metadata contained the specified property.
 	 * @throws IllegalArgumentException if {@code property} is {@code null}.
-	 * @throws IllegalStateException if {@code property} must be maintained in the metadata.
 	 */
 	boolean remove(Property property);
-	
-	/**
-	 * Adds the required properties to this metadata if they does not exist.
-	 * 
-	 * <p>The properties of the following terms are added by default.</p>
-	 * <dl>
-	 * <dt>identifier</dt>
-	 * <dd>A UUID is randomly generated.</dd>
-	 * <dt>title</dt>
-	 * <dd>A default title is added.</dd>
-	 * <dt>language</dt>
-	 * <dd>The language of the current locale is added.</dd>
-	 * <dt>modified</dt>
-	 * <dd>Current time is added.</dd>
-	 * </dl>
-	 */
-	void addMandatory();
 }

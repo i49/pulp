@@ -72,7 +72,7 @@ class MetadataLoader {
 		try (InputStream s = stream) {
 			loadMetadata(m);
 		}
-		m.addMandatory();
+		m.fillMissingProperties();
 	}
 
 	private void loadMetadata(Metadata m) {

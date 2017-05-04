@@ -19,11 +19,9 @@ package com.github.i49.pulp.impl.metadata;
 import static com.github.i49.pulp.impl.base.Preconditions.*;
 
 import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -33,6 +31,8 @@ import com.github.i49.pulp.api.metadata.Property;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.ReleaseIdentifier;
 import com.github.i49.pulp.api.metadata.Term;
+import com.github.i49.pulp.impl.base.AbstractListMap;
+import com.github.i49.pulp.impl.base.ListMap;
 import com.github.i49.pulp.impl.base.Messages;
 
 /**
@@ -40,7 +40,8 @@ import com.github.i49.pulp.impl.base.Messages;
  */
 public class DefaultMetadata implements Metadata {
 	
-	private final Map<Term, List<Property>> terms = new HashMap<>();
+	// all properties categorized by terms.
+	private final ListMap<Term, Property> terms = new PropertyListMap();
 	private final ReleaseIdentifier releaseIdentifier;
 	private final PropertyFactory propertyFactory;
 
@@ -53,91 +54,28 @@ public class DefaultMetadata implements Metadata {
 	}
 
 	@Override
-	public ReleaseIdentifier getReleaseIdentifier() {
-		return releaseIdentifier;
+	public boolean add(Property property) {
+		checkNotNull(property, "property");
+		List<Property> values = terms.getValues(property.getTerm());
+		if (values.contains(property)) {
+			return false;
+		}
+		return values.add(property);
 	}
 
-	@Override
-	public int getNumberOfProperties() {
-		int total = 0;
-		for (List<Property> list: terms.values()) {
-			total += list.size();
-		}
-		return total;
-	}
-	
-	@Override
-	public int getNumberOfProperties(Term term) {
-		checkNotNull(term, "term");
-		List<Property> list = terms.get(term);
-		return (list != null) ? list.size() : 0;
-	}
-	
-	@Override
-	public boolean contains(Term term) {
-		checkNotNull(term, "term");
-		List<Property> list = terms.get(term);
-		return (list != null && !list.isEmpty());
-	}
-	
-	@Override
-	public Set<Term> getTerms() {
-		Set<Term> terms = new HashSet<>();
-		for (Term term: this.terms.keySet()) {
-			if (!this.terms.get(term).isEmpty()) {
-				terms.add(term);
-			}
-		}
-		return terms;
-	}
-	
-	@Override
-	public Property get(Term term) {
-		checkNotNull(term, "term");
-		List<Property> list = terms.get(term);
-		if (list == null || list.isEmpty()) {
-			throw new NoSuchElementException(Messages.METADATA_PROPERTY_NOT_FOUND(term));
-		}
-		return list.get(0);
-	}
-	
-	@Override
-	public List<Property> getList(Term term) {
-		checkNotNull(term, "term");
-		List<Property> list = terms.get(term);
-		if (list == null) {
-			list = addList(term);
-		}
-		return list;
-	}
-	
 	@Override
 	public void clear() {
 		this.terms.clear();
 	}
 	
 	@Override
-	public boolean add(Property property) {
-		checkNotNull(property, "property");
-		List<Property> list = getList(property.getTerm());
-		if (list.contains(property)) {
-			return false;
-		}
-		return list.add(property);
+	public boolean contains(Term term) {
+		checkNotNull(term, "term");
+		return terms.containsKey(term);
 	}
-	
+
 	@Override
-	public boolean remove(Property property) {
-		checkNotNull(property, "property");
-		List<Property> list = terms.get(property.getTerm());
-		if (list == null) {
-			return false;
-		}
-		return list.remove(property);
-	}
-	
-	@Override
-	public void addMandatory() {
+	public void fillMissingProperties() {
 		if (!contains(BasicTerm.IDENTIFIER)) {
 			add(getFactory().newIdentifier());
 		}
@@ -153,15 +91,77 @@ public class DefaultMetadata implements Metadata {
 		}
 	}
 	
-	private List<Property> addList(Term term) {
-		assert(term != null);
-		boolean multiple = !(term == BasicTerm.DATE || term == BasicTerm.MODIFIED);
-		List<Property> list = new PropertyList(term, multiple);
-		terms.put(term, list);
-		return list;
+	@Override
+	public Property get(Term term) {
+		checkNotNull(term, "term");
+		if (!terms.containsKey(term)) {
+			throw new NoSuchElementException(Messages.METADATA_PROPERTY_NOT_FOUND(term));
+		}
+		return terms.getValues(term).get(0);
+	}
+
+	@Override
+	public Iterator<Property> getAllProperties() {
+		return terms.valueIterator();
+	}
+	
+	@Override
+	public int getNumberOfProperties() {
+		return terms.size();
+	}
+	
+	@Override
+	public int getNumberOfProperties(Term term) {
+		checkNotNull(term, "term");
+		return terms.size(term);
+	}
+	
+	@Override
+	public ReleaseIdentifier getReleaseIdentifier() {
+		return releaseIdentifier;
+	}
+
+	@Override
+	public Set<Term> getTerms() {
+		return terms.keySet();
+	}
+	
+	@Override
+	public List<Property> getList(Term term) {
+		checkNotNull(term, "term");
+		return terms.getValues(term);
+	}
+	
+	@Override
+	public boolean isFilled() {
+		return (
+			contains(BasicTerm.IDENTIFIER) &&
+			contains(BasicTerm.TITLE) &&
+			contains(BasicTerm.LANGUAGE) &&
+			contains(BasicTerm.MODIFIED)
+		);
+	}
+	
+	@Override
+	public boolean remove(Property property) {
+		checkNotNull(property, "property");
+		Term term = property.getTerm();
+		if (terms.containsKey(term)) {
+			return terms.getValues(term).remove(property);
+		} else {
+			return false;
+		}
 	}
 	
 	private PropertyFactory getFactory() {
 		return propertyFactory;
+	}
+	
+	private static class PropertyListMap extends AbstractListMap<Term, Property> {
+
+		@Override
+		protected List<Property> createList(Term term) {
+			return new PropertyList(term, term.isRepeatable());
+		}
 	}
 }

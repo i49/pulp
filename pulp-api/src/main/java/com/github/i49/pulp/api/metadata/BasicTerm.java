@@ -131,13 +131,27 @@ public enum BasicTerm implements Term {
 		this.name = name;
 	}
 			
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Vocabulary getVocabulary() {
 		return vocabulary;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getName() {
 		return name;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isRepeatable() {
+		return this != DATE && this != MODIFIED;
 	}
 }
