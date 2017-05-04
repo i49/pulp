@@ -30,6 +30,6 @@ public interface Type extends Property {
 	 */
 	@Override
 	default Term getTerm() {
-		return BasicTerm.TYPE;
+		return DublinCore.TYPE;
 	}
 }

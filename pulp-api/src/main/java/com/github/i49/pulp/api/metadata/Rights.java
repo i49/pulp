@@ -28,6 +28,6 @@ public interface Rights extends TextTypeProperty {
 	 */
 	@Override
 	default Term getTerm() {
-		return BasicTerm.RIGHTS;
+		return DublinCore.RIGHTS;
 	}
 }

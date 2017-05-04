@@ -28,6 +28,6 @@ public interface Description extends TextTypeProperty {
 	 */
 	@Override
 	default Term getTerm() {
-		return BasicTerm.DESCRIPTION;
+		return DublinCore.DESCRIPTION;
 	}
 }

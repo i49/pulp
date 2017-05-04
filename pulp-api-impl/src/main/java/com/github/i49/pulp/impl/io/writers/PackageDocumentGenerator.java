@@ -32,7 +32,8 @@ import org.w3c.dom.Element;
 import com.github.i49.pulp.api.core.Manifest;
 import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.core.Spine;
-import com.github.i49.pulp.api.metadata.BasicTerm;
+import com.github.i49.pulp.api.metadata.DublinCore;
+import com.github.i49.pulp.api.metadata.DublinCoreTerm;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.Property;
 import com.github.i49.pulp.impl.io.containers.PackageDocumentProcessor;
@@ -118,7 +119,7 @@ class PackageDocumentGenerator implements PackageDocumentProcessor {
 	
 	private void addIdentifiers(Element parent, Metadata metadata) {
 		boolean first = true;
-		for (Property p: metadata.getList(BasicTerm.IDENTIFIER)) {
+		for (Property p: metadata.getList(DublinCore.IDENTIFIER)) {
 			Element e = createMetadataEntry("dc:identifier", p.getValue());
 			if (first) {
 				first = false;
@@ -129,50 +130,50 @@ class PackageDocumentGenerator implements PackageDocumentProcessor {
 	}
 	
 	private void addTitles(Element parent, Metadata metadata) {
-		for (Property p: metadata.getList(BasicTerm.TITLE)) {
+		for (Property p: metadata.getList(DublinCore.TITLE)) {
 			Element e = createMetadataEntry("dc:title", p.getValue());
 			parent.appendChild(e);
 		}
 	}
 
 	private void addLanguages(Element parent, Metadata metadata) {
-		for (Property p: metadata.getList(BasicTerm.LANGUAGE)) {
+		for (Property p: metadata.getList(DublinCore.LANGUAGE)) {
 			Element e = createMetadataEntry("dc:language", p.getValue());
 			parent.appendChild(e);
 		}
 	}
 	
 	private void addCreators(Element parent, Metadata metadata) {
-		for (Property p: metadata.getList(BasicTerm.CREATOR)) {
+		for (Property p: metadata.getList(DublinCore.CREATOR)) {
 			Element e = createMetadataEntry("dc:creator", p.getValue());
 			parent.appendChild(e);
 		}
 	}
 
 	private void addContributors(Element parent, Metadata metadata) {
-		for (Property p: metadata.getList(BasicTerm.CONTRIBUTOR)) {
+		for (Property p: metadata.getList(DublinCore.CONTRIBUTOR)) {
 			Element e = createMetadataEntry("dc:contributor", p.getValue());
 			parent.appendChild(e);
 		}
 	}
 	
 	private void addPublishers(Element parent, Metadata metadata) {
-		for (Property p: metadata.getList(BasicTerm.PUBLISHER)) {
+		for (Property p: metadata.getList(DublinCore.PUBLISHER)) {
 			Element e = createMetadataEntry("dc:publisher", p.getValue());
 			parent.appendChild(e);
 		}
 	}
 	
 	private void addDate(Element parent, Metadata metadata) {
-		if (metadata.contains(BasicTerm.DATE)) {
-			Property p = metadata.get(BasicTerm.DATE);
+		if (metadata.contains(DublinCore.DATE)) {
+			Property p = metadata.get(DublinCore.DATE);
 			Element e = createMetadataEntry("dc:date", p.getValue());
 			parent.appendChild(e);
 		}
 	}
 
 	private void addLastModified(Element parent, Metadata metadata) {
-		Property p = metadata.get(BasicTerm.MODIFIED);
+		Property p = metadata.get(DublinCoreTerm.MODIFIED);
 		Element e = createMetadataEntry("meta", p.getValue());
 		e.setAttribute("property", "dcterms:modified");
 		parent.appendChild(e);

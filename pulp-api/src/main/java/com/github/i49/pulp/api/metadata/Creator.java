@@ -19,7 +19,7 @@ package com.github.i49.pulp.api.metadata;
 /**
  * A metadata property that represents the name of a person, organization, etc. 
  * responsible for the creation of the content of the EPUB rendition.
- * This type represents {@link BasicTerm#CREATOR}.
+ * This type represents {@link DublinCore#CREATOR}.
  * 
  * @see <a href="http://dublincore.org/documents/dces/#creator">Dublin Core Metadata Element Set, Version 1.1</a> 
  */
@@ -30,6 +30,6 @@ public interface Creator extends Relator {
 	 */
 	@Override
 	default Term getTerm() {
-		return BasicTerm.CREATOR;
+		return DublinCore.CREATOR;
 	}
 }

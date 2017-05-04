@@ -54,7 +54,7 @@ public class MetadataTest {
 	public void add_shouldAddFirstProperty() {
 		Creator p = f.newCreator("John Smith");
 		assertThat(m.add(p)).isTrue();
-		List<Property> list = m.getList(BasicTerm.CREATOR);
+		List<Property> list = m.getList(DublinCore.CREATOR);
 		assertThat(list).hasSize(1);
 		assertThat(list).contains(p);
 	}
@@ -63,7 +63,7 @@ public class MetadataTest {
 	public void add_shouldAddSecondProprety() {
 		Title p = f.newTitle("The Catcher in the Rye");
 		assertThat(m.add(p)).isTrue();
-		List<Property> list = m.getList(BasicTerm.TITLE);
+		List<Property> list = m.getList(DublinCore.TITLE);
 		assertThat(list).hasSize(1);
 		assertThat(list).contains(p);
 	}
@@ -73,7 +73,7 @@ public class MetadataTest {
 		Creator p = f.newCreator("John Smith");
 		assertThat(m.add(p)).isTrue();
 		assertThat(m.add(p)).isFalse();
-		List<Property> list = m.getList(BasicTerm.CREATOR);
+		List<Property> list = m.getList(DublinCore.CREATOR);
 		assertThat(list).hasSize(1);
 		assertThat(list).contains(p);
 	}
@@ -96,12 +96,12 @@ public class MetadataTest {
 	@Test
 	public void contains_shouldReturnTrueIfPropertyExists() {
 		m.add(f.newTitle("Untitled"));
-		assertThat(m.contains(BasicTerm.TITLE)).isTrue();
+		assertThat(m.contains(DublinCore.TITLE)).isTrue();
 	}
 
 	@Test
 	public void contains_shouldReturnFalseIfPropertyDoesNotExist() {
-		assertThat(m.contains(BasicTerm.CREATOR)).isFalse();
+		assertThat(m.contains(DublinCore.CREATOR)).isFalse();
 	}
 
 	/* fillMissingProperties() */
@@ -111,19 +111,19 @@ public class MetadataTest {
 		m.fillMissingProperties();
 		assertThat(m.getNumberOfProperties()).isEqualTo(4);
 		
-		Identifier identifier = (Identifier)m.get(BasicTerm.IDENTIFIER);
+		Identifier identifier = (Identifier)m.get(DublinCore.IDENTIFIER);
 		assertThat(identifier).isNotNull();
 		assertThat(identifier.getValue()).isNotBlank();
 	
-		Title title = (Title)m.get(BasicTerm.TITLE);
+		Title title = (Title)m.get(DublinCore.TITLE);
 		assertThat(title).isNotNull();
 		assertThat(title.getValue()).isNotBlank();
 
-		Language language = (Language)m.get(BasicTerm.LANGUAGE);
+		Language language = (Language)m.get(DublinCore.LANGUAGE);
 		assertThat(language).isNotNull();
 		assertThat(language.getLanguage()).isEqualTo(Locale.getDefault());
 
-		Modified modified = (Modified)m.get(BasicTerm.MODIFIED);
+		Modified modified = (Modified)m.get(DublinCoreTerm.MODIFIED);
 		assertThat(modified).isNotNull();
 	}
 	
@@ -134,8 +134,8 @@ public class MetadataTest {
 		assertThat(m.getNumberOfProperties()).isEqualTo(1);
 		m.fillMissingProperties();
 		assertThat(m.getNumberOfProperties()).isEqualTo(4);
-		assertThat(m.getNumberOfProperties(BasicTerm.TITLE)).isEqualTo(1);
-		assertThat(m.get(BasicTerm.TITLE)).isSameAs(p);
+		assertThat(m.getNumberOfProperties(DublinCore.TITLE)).isEqualTo(1);
+		assertThat(m.get(DublinCore.TITLE)).isSameAs(p);
 	}
 	
 	/* get(Term) */
@@ -143,16 +143,16 @@ public class MetadataTest {
 	@Test
 	public void get_shouldReturnPropertyIfExists() {
 		m.add(f.newTitle("Untitled"));
-		Property p = m.get(BasicTerm.TITLE);
+		Property p = m.get(DublinCore.TITLE);
 		assertThat(p).isNotNull();
-		assertThat(p.getTerm()).isSameAs(BasicTerm.TITLE);
+		assertThat(p.getTerm()).isSameAs(DublinCore.TITLE);
 		assertThat(p.getValue()).isNotBlank();
 	}
 	
 	@Test
 	public void get_shouldThrowExceptionIfPropertyDoesNotExist() {
 		Throwable thrown = catchThrowable(()->{
-			m.get(BasicTerm.CREATOR);
+			m.get(DublinCore.CREATOR);
 		});
 		assertThat(thrown).isInstanceOf(NoSuchElementException.class);
 	}
@@ -184,17 +184,17 @@ public class MetadataTest {
 	@Test
 	public void getList_shouldReturnNonEmptyListIfPropertyExists() {
 		m.add(f.newTitle("Untitled"));
-		List<Property> list = m.getList(BasicTerm.TITLE);
+		List<Property> list = m.getList(DublinCore.TITLE);
 		assertThat(list).isNotNull();
 		assertThat(list).hasSize(1);
 		Property p = list.get(0);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.TITLE);
+		assertThat(p.getTerm()).isSameAs(DublinCore.TITLE);
 		assertThat(p.getValue()).isNotBlank();
 	}
 	
 	@Test
 	public void getList_shouldReturnEmptyListIfPropertyDoesNotExit() {
-		List<Property> list = m.getList(BasicTerm.CREATOR);
+		List<Property> list = m.getList(DublinCore.CREATOR);
 		assertThat(list).isNotNull();
 		assertThat(list).hasSize(0);
 	}
@@ -217,20 +217,20 @@ public class MetadataTest {
 	@Test
 	public void getNumberOfProperties_shouldReturnCorrectNumber() {
 		m.fillMissingProperties();
-		assertThat(m.getNumberOfProperties(BasicTerm.IDENTIFIER)).isEqualTo(1);
-		assertThat(m.getNumberOfProperties(BasicTerm.TITLE)).isEqualTo(1);
-		assertThat(m.getNumberOfProperties(BasicTerm.LANGUAGE)).isEqualTo(1);
-		assertThat(m.getNumberOfProperties(BasicTerm.MODIFIED)).isEqualTo(1);
+		assertThat(m.getNumberOfProperties(DublinCore.IDENTIFIER)).isEqualTo(1);
+		assertThat(m.getNumberOfProperties(DublinCore.TITLE)).isEqualTo(1);
+		assertThat(m.getNumberOfProperties(DublinCore.LANGUAGE)).isEqualTo(1);
+		assertThat(m.getNumberOfProperties(DublinCoreTerm.MODIFIED)).isEqualTo(1);
 	}
 
 	@Test
 	public void getNumberOfProperties_shouldReturnZeroIfPropertyDoesNotExist() {
-		assertThat(m.getNumberOfProperties(BasicTerm.CONTRIBUTOR)).isEqualTo(0);
-		assertThat(m.getNumberOfProperties(BasicTerm.COVERAGE)).isEqualTo(0);
-		assertThat(m.getNumberOfProperties(BasicTerm.CREATOR)).isEqualTo(0);
-		assertThat(m.getNumberOfProperties(BasicTerm.DATE)).isEqualTo(0);
-		assertThat(m.getNumberOfProperties(BasicTerm.SOURCE)).isEqualTo(0);
-		assertThat(m.getNumberOfProperties(BasicTerm.SUBJECT)).isEqualTo(0);
+		assertThat(m.getNumberOfProperties(DublinCore.CONTRIBUTOR)).isEqualTo(0);
+		assertThat(m.getNumberOfProperties(DublinCore.COVERAGE)).isEqualTo(0);
+		assertThat(m.getNumberOfProperties(DublinCore.CREATOR)).isEqualTo(0);
+		assertThat(m.getNumberOfProperties(DublinCore.DATE)).isEqualTo(0);
+		assertThat(m.getNumberOfProperties(DublinCore.SOURCE)).isEqualTo(0);
+		assertThat(m.getNumberOfProperties(DublinCore.SUBJECT)).isEqualTo(0);
 	}
 	
 	/* getReleaseIdentifier() */
@@ -256,8 +256,8 @@ public class MetadataTest {
 		m.fillMissingProperties();
 		Set<Term> terms = m.getTerms();
 		assertThat(terms).contains(
-				BasicTerm.IDENTIFIER, BasicTerm.TITLE, BasicTerm.LANGUAGE, BasicTerm.MODIFIED, 
-				BasicTerm.CREATOR);
+				DublinCore.IDENTIFIER, DublinCore.TITLE, DublinCore.LANGUAGE, DublinCoreTerm.MODIFIED, 
+				DublinCore.CREATOR);
 	}
 	
 	/* isFilled */
@@ -283,11 +283,11 @@ public class MetadataTest {
 		Title p = f.newTitle("Untitled");
 		m.add(p);
 		assertThat(m.getNumberOfProperties()).isEqualTo(1);
-		assertThat(m.contains(BasicTerm.TITLE)).isTrue();
+		assertThat(m.contains(DublinCore.TITLE)).isTrue();
 		
 		assertThat(m.remove(p)).isTrue();
 		assertThat(m.getNumberOfProperties()).isEqualTo(0);
-		assertThat(m.contains(BasicTerm.TITLE)).isFalse();
+		assertThat(m.contains(DublinCore.TITLE)).isFalse();
 	}
 	
 	@Test

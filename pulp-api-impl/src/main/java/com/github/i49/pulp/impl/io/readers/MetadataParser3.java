@@ -33,9 +33,9 @@ import java.util.stream.Collectors;
 import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.core.EpubException;
-import com.github.i49.pulp.api.metadata.BasicTerm;
 import com.github.i49.pulp.api.metadata.Contributor;
 import com.github.i49.pulp.api.metadata.Creator;
+import com.github.i49.pulp.api.metadata.DublinCoreTerm;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.Property;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
@@ -195,7 +195,7 @@ class MetadataParser3 implements MetadataParser {
 			localName = name;
 		}
 		Term term = findTerm(prefix, localName);
-		if (term == BasicTerm.MODIFIED) {
+		if (term == DublinCoreTerm.MODIFIED) {
 			return parseModified(entry);
 		} else if (term != null) {
 			

@@ -12,8 +12,9 @@ import org.junit.Test;
 
 import com.github.i49.pulp.api.core.Epub;
 import com.github.i49.pulp.api.core.Rendition;
-import com.github.i49.pulp.api.metadata.BasicTerm;
+import com.github.i49.pulp.api.metadata.DublinCore;
 import com.github.i49.pulp.api.metadata.Date;
+import com.github.i49.pulp.api.metadata.DublinCoreTerm;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.Modified;
 import com.github.i49.pulp.api.metadata.Property;
@@ -35,25 +36,25 @@ public class MetadataLoaderTest {
 			MetadataLoader loader = MetadataLoader.from(s);
 			loader.load(m);
 		}
-		List<Property> list = m.getList(BasicTerm.IDENTIFIER);
+		List<Property> list = m.getList(DublinCore.IDENTIFIER);
 		assertThat(list).hasSize(1);
 		assertThat(list.get(0).getValue()).isEqualTo("idpf.epub31.samples.moby-dick.xhtml");
-		list = m.getList(BasicTerm.TITLE);
+		list = m.getList(DublinCore.TITLE);
 		assertThat(list).hasSize(1);
 		assertThat(list.get(0).getValue()).isEqualTo("Moby-Dick");
-		list = m.getList(BasicTerm.LANGUAGE);
+		list = m.getList(DublinCore.LANGUAGE);
 		assertThat(list).hasSize(1);
 		assertThat(list.get(0).getValue()).isEqualTo("en-US");
-		list = m.getList(BasicTerm.CREATOR);
+		list = m.getList(DublinCore.CREATOR);
 		assertThat(list).hasSize(1);
 		assertThat(list.get(0).getValue()).isEqualTo("Herman Melville");
-		list = m.getList(BasicTerm.PUBLISHER);
+		list = m.getList(DublinCore.PUBLISHER);
 		assertThat(list).hasSize(1);
 		assertThat(list.get(0).getValue()).isEqualTo("Harper & Brothers, Publishers");
-		list = m.getList(BasicTerm.DATE);
+		list = m.getList(DublinCore.DATE);
 		assertThat(list).hasSize(1);
 		assertThat(((Date)list.get(0)).getDateTime()).isEqualTo(OffsetDateTime.of(1851, 11, 14, 0, 0, 0, 0, ZoneOffset.UTC));
-		list = m.getList(BasicTerm.MODIFIED);
+		list = m.getList(DublinCoreTerm.MODIFIED);
 		assertThat(list).hasSize(1);
 		assertThat(((Modified)list.get(0)).getDateTime()).isEqualTo(OffsetDateTime.of(2016, 2, 5, 14, 40, 0, 0, ZoneOffset.UTC));
 	}

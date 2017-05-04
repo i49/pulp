@@ -18,7 +18,7 @@ package com.github.i49.pulp.api.metadata;
 
 /**
  * The publication date of the EPUB Publication. 
- * This type represents {@link BasicTerm#DATE}.
+ * This type represents {@link DublinCore#DATE}.
  */
 public interface Date extends DateTypeProperty {
 
@@ -27,6 +27,6 @@ public interface Date extends DateTypeProperty {
 	 */
 	@Override
 	default Term getTerm() {
-		return BasicTerm.DATE;
+		return DublinCore.DATE;
 	}
 }

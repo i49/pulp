@@ -37,7 +37,7 @@ public class TermRegistryTest {
 	
 	@Test
 	public void containsTerm_shouldReturnTrueForPredefinedTerms() {
-		for (Term t: BasicTerm.values()) {
+		for (Term t: DublinCore.values()) {
 			assertThat(registry.containsTerm(t)).isTrue();
 		}
 	}

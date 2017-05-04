@@ -22,9 +22,8 @@ import static com.github.i49.pulp.api.metadata.StandardVocabulary.*;
  * Basic terms generally used as metadata properties. 
  * 
  * @see <a href="http://dublincore.org/documents/dces/">Dublin Core Metadata Element Set, Version 1.1</a>
- * @see <a href="http://dublincore.org/documents/dcmi-terms/">DCMI Metadata Terms</a> 
  */
-public enum BasicTerm implements Term {
+public enum DublinCore implements Term {
 	
 	/**
 	 *  An entity responsible for making contributions to the resource.
@@ -116,17 +115,12 @@ public enum BasicTerm implements Term {
 	 * @see Type
 	 */
 	TYPE(DCMES, "type"),
-	
-	/**
-	 * Date on which the resource was changed.
-	 */
-	MODIFIED(DCTERMS, "modified")
 	;
 
 	private final Vocabulary vocabulary;
 	private final String name;
 	
-	private BasicTerm(Vocabulary vocabulary, String name) {
+	private DublinCore(Vocabulary vocabulary, String name) {
 		this.vocabulary = vocabulary;
 		this.name = name;
 	}
@@ -152,6 +146,6 @@ public enum BasicTerm implements Term {
 	 */
 	@Override
 	public boolean isRepeatable() {
-		return this != DATE && this != MODIFIED;
+		return this != DATE;
 	}
 }

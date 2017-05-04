@@ -31,7 +31,7 @@ public interface Identifier extends Property {
 	 */
 	@Override
 	default Term getTerm() {
-		return BasicTerm.IDENTIFIER;
+		return DublinCore.IDENTIFIER;
 	}
 	
 	/**

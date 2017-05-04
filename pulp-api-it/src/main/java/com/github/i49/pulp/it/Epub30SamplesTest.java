@@ -37,7 +37,8 @@ import com.github.i49.pulp.api.core.PublicationReader;
 import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.core.Spine;
 import com.github.i49.pulp.api.core.Spine.Page;
-import com.github.i49.pulp.api.metadata.BasicTerm;
+import com.github.i49.pulp.api.metadata.DublinCore;
+import com.github.i49.pulp.api.metadata.DublinCoreTerm;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.Property;
 
@@ -81,18 +82,18 @@ public class Epub30SamplesTest {
 			Metadata m = r.getMetadata();
 			assertThat(m.getNumberOfProperties()).isEqualTo(14);
 			
-			assertThat(m.get(BasicTerm.IDENTIFIER)).hasValue("urn:isbn:9781449328030");
-			assertThat(m.get(BasicTerm.TITLE)).hasValue("Accessible EPUB 3");
-			assertThat(m.get(BasicTerm.LANGUAGE)).hasValue("en");
-			assertThat(m.get(BasicTerm.CREATOR)).hasValue("Matt Garrish");
-			assertThat(m.getList(BasicTerm.CONTRIBUTOR)).containsExactly(
+			assertThat(m.get(DublinCore.IDENTIFIER)).hasValue("urn:isbn:9781449328030");
+			assertThat(m.get(DublinCore.TITLE)).hasValue("Accessible EPUB 3");
+			assertThat(m.get(DublinCore.LANGUAGE)).hasValue("en");
+			assertThat(m.get(DublinCore.CREATOR)).hasValue("Matt Garrish");
+			assertThat(m.getList(DublinCore.CONTRIBUTOR)).containsExactly(
 				"O’Reilly Production Services", "David Futato", "Robert Romano", 
 				"Brian Sawyer", "Dan Fauxsmith", "Karen Montgomery"
 				);
-			assertThat(m.get(BasicTerm.PUBLISHER)).hasValue("O’Reilly Media, Inc.");
-			assertThat(m.get(BasicTerm.RIGHTS)).hasValue("Copyright © 2012 O’Reilly Media, Inc");
-			assertThat(m.get(BasicTerm.DATE)).hasValue("2012-02-20T00:00:00Z");
-			assertThat(m.get(BasicTerm.MODIFIED)).hasValue("2012-10-24T15:30:00Z");
+			assertThat(m.get(DublinCore.PUBLISHER)).hasValue("O’Reilly Media, Inc.");
+			assertThat(m.get(DublinCore.RIGHTS)).hasValue("Copyright © 2012 O’Reilly Media, Inc");
+			assertThat(m.get(DublinCore.DATE)).hasValue("2012-02-20T00:00:00Z");
+			assertThat(m.get(DublinCoreTerm.MODIFIED)).hasValue("2012-10-24T15:30:00Z");
 			
 			Manifest mf = r.getManifest();
 			assertThat(mf.getNumberOfItems()).isEqualTo(35);
@@ -117,15 +118,15 @@ public class Epub30SamplesTest {
 			Rendition r = p.getDefaultRendition();
 
 			Metadata m = r.getMetadata();
-			assertThat(m.get(BasicTerm.IDENTIFIER)).hasValue("code.google.com.epub-samples.cc-shared-culture");
-			assertThat(m.get(BasicTerm.TITLE)).hasValue("Creative Commons - A Shared Culture");
-			assertThat(m.get(BasicTerm.LANGUAGE)).hasValue("en-US");
-			assertThat(m.get(BasicTerm.CREATOR)).hasValue("Jesse Dylan");
-			assertThat(m.get(BasicTerm.PUBLISHER)).hasValue("Creative Commons");
-			assertThat(m.get(BasicTerm.CONTRIBUTOR)).hasValue("mgylling");
-			assertThat(m.get(BasicTerm.DESCRIPTION)).hasValue("Multiple video tests (see Navigation Document (toc) for details)");
-			assertThat(m.get(BasicTerm.RIGHTS)).hasValue("This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike (CC BY-NC-SA) license.");
-			assertThat(m.get(BasicTerm.MODIFIED)).hasValue("2012-01-20T12:47:00Z");
+			assertThat(m.get(DublinCore.IDENTIFIER)).hasValue("code.google.com.epub-samples.cc-shared-culture");
+			assertThat(m.get(DublinCore.TITLE)).hasValue("Creative Commons - A Shared Culture");
+			assertThat(m.get(DublinCore.LANGUAGE)).hasValue("en-US");
+			assertThat(m.get(DublinCore.CREATOR)).hasValue("Jesse Dylan");
+			assertThat(m.get(DublinCore.PUBLISHER)).hasValue("Creative Commons");
+			assertThat(m.get(DublinCore.CONTRIBUTOR)).hasValue("mgylling");
+			assertThat(m.get(DublinCore.DESCRIPTION)).hasValue("Multiple video tests (see Navigation Document (toc) for details)");
+			assertThat(m.get(DublinCore.RIGHTS)).hasValue("This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike (CC BY-NC-SA) license.");
+			assertThat(m.get(DublinCoreTerm.MODIFIED)).hasValue("2012-01-20T12:47:00Z");
 			
 			Manifest mf = r.getManifest();
 			assertThat(mf.getNumberOfItems()).isEqualTo(21);
@@ -152,32 +153,32 @@ public class Epub30SamplesTest {
 	
 			Metadata m = r.getMetadata();
 			assertThat(m.getNumberOfProperties()).isEqualTo(12);
-			assertThat(m.get(BasicTerm.IDENTIFIER)).hasValue("http://www.gutenberg.org/ebooks/25545");
+			assertThat(m.get(DublinCore.IDENTIFIER)).hasValue("http://www.gutenberg.org/ebooks/25545");
 			
-			List<Property> titles = m.getList(BasicTerm.TITLE);
+			List<Property> titles = m.getList(DublinCore.TITLE);
 			assertThat(titles).hasSize(2);
 			assertThat(titles.get(0)).hasValue("Children's Literature");
 			assertThat(titles.get(1)).hasValue("A Textbook of Sources for Teachers and Teacher-Training Classes");
 		
-			assertThat(m.get(BasicTerm.LANGUAGE)).hasValue("en");
+			assertThat(m.get(DublinCore.LANGUAGE)).hasValue("en");
 			
-			List<Property> creators = m.getList(BasicTerm.CREATOR);
+			List<Property> creators = m.getList(DublinCore.CREATOR);
 			assertThat(creators).hasSize(2);
 			assertThat(creators.get(0)).hasValue("Charles Madison Curry");
 			assertThat(creators.get(0)).hasNormalizedValue("Curry, Charles Madison");
 			assertThat(creators.get(1)).hasValue("Erle Elsworth Clippinger");
 			assertThat(creators.get(1)).hasNormalizedValue("Clippinger, Erle Elsworth");
 		
-			List<Property> subjects = m.getList(BasicTerm.SUBJECT);
+			List<Property> subjects = m.getList(DublinCore.SUBJECT);
 			assertThat(subjects).hasSize(2);
 			assertThat(subjects.get(0)).hasValue("Children -- Books and reading");
 			assertThat(subjects.get(1)).hasValue("Children's literature -- Study and teaching");
 			
-			assertThat(m.get(BasicTerm.SOURCE)).hasValue("http://www.gutenberg.org/files/25545/25545-h/25545-h.htm");
-			assertThat(m.get(BasicTerm.RIGHTS)).hasValue("Public domain in the USA.");
+			assertThat(m.get(DublinCore.SOURCE)).hasValue("http://www.gutenberg.org/files/25545/25545-h/25545-h.htm");
+			assertThat(m.get(DublinCore.RIGHTS)).hasValue("Public domain in the USA.");
 
-			assertThat(m.get(BasicTerm.DATE)).hasValue("2008-05-20T00:00:00Z");
-			assertThat(m.get(BasicTerm.MODIFIED)).hasValue("2010-02-17T04:39:13Z");
+			assertThat(m.get(DublinCore.DATE)).hasValue("2008-05-20T00:00:00Z");
+			assertThat(m.get(DublinCoreTerm.MODIFIED)).hasValue("2010-02-17T04:39:13Z");
 
 			Manifest mf = r.getManifest();
 			assertThat(mf.getNumberOfItems()).isEqualTo(7);

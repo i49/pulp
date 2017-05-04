@@ -28,6 +28,6 @@ public interface Format extends Property {
 	 */
 	@Override
 	default Term getTerm() {
-		return BasicTerm.FORMAT;
+		return DublinCore.FORMAT;
 	}
 }

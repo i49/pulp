@@ -47,7 +47,7 @@ public class PropertyFactoryTest {
 	public void newContributor_shouldCreateContributor() {
 		String name = "John Smith";
 		Contributor p = factory.newContributor(name);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.CONTRIBUTOR);
+		assertThat(p.getTerm()).isSameAs(DublinCore.CONTRIBUTOR);
 		assertThat(p.getValue()).isEqualTo(name);
 		assertThat(p.getNormalizedValue()).isEmpty();
 		assertThat(p.getLanguage()).isEmpty();
@@ -78,7 +78,7 @@ public class PropertyFactoryTest {
 	public void newContributor_shouldCreateContributorWithLanguage() {
 		String name = "Hans Schmidt";
 		Contributor p = factory.newContributor(name, Locale.GERMAN);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.CONTRIBUTOR);
+		assertThat(p.getTerm()).isSameAs(DublinCore.CONTRIBUTOR);
 		assertThat(p.getValue()).isEqualTo(name);
 		assertThat(p.getNormalizedValue()).isEmpty();
 		assertThat(p.getLanguage()).hasValue(Locale.GERMAN);
@@ -93,7 +93,7 @@ public class PropertyFactoryTest {
 	public void newCoverage_shouldCreateCoverage() {
 		String text = "17th century";
 		Coverage p = factory.newCoverage(text);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.COVERAGE);
+		assertThat(p.getTerm()).isSameAs(DublinCore.COVERAGE);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).isEmpty();
 		assertThat(p.getDirection()).isEmpty();
@@ -105,7 +105,7 @@ public class PropertyFactoryTest {
 	public void newCoverage_shouldCreateCoverageWithLanguage() {
 		String text = "17th century";
 		Coverage p = factory.newCoverage(text, Locale.ENGLISH);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.COVERAGE);
+		assertThat(p.getTerm()).isSameAs(DublinCore.COVERAGE);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).hasValue(Locale.ENGLISH);
 		assertThat(p.getDirection()).isEmpty();
@@ -117,7 +117,7 @@ public class PropertyFactoryTest {
 	public void newCreator_shouldCreateCreator() {
 		String name = "John Smith";
 		Creator p = factory.newCreator(name);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.CREATOR);
+		assertThat(p.getTerm()).isSameAs(DublinCore.CREATOR);
 		assertThat(p.getValue()).isEqualTo(name);
 		assertThat(p.getNormalizedValue()).isEmpty();
 		assertThat(p.getLanguage()).isEmpty();
@@ -148,7 +148,7 @@ public class PropertyFactoryTest {
 	public void newCreator_shouldCreateCreatorWithLanguage() {
 		String name = "Hans Schmidt";
 		Creator p = factory.newCreator(name, Locale.GERMAN);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.CREATOR);
+		assertThat(p.getTerm()).isSameAs(DublinCore.CREATOR);
 		assertThat(p.getValue()).isEqualTo(name);
 		assertThat(p.getNormalizedValue()).isEmpty();
 		assertThat(p.getLanguage()).hasValue(Locale.GERMAN);
@@ -163,7 +163,7 @@ public class PropertyFactoryTest {
 	public void newDate_shouldCreateDateOfSpecifiedDateTime() {
 		OffsetDateTime dateTime = OffsetDateTime.of(2017, 4, 23, 1, 2, 3, 0, ZoneOffset.ofHours(9));
 		Date p = factory.newDate(dateTime);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.DATE);
+		assertThat(p.getTerm()).isSameAs(DublinCore.DATE);
 		assertThat(p.getValue()).isEqualTo("2017-04-22T16:02:03Z");
 		assertThat(p.getDateTime()).isEqualTo(dateTime);
 	}
@@ -182,7 +182,7 @@ public class PropertyFactoryTest {
 	public void newDescription_shouldCreateDescription() {
 		String text = "Illustrated guide to airport markings and lighting signals.";
 		Description p = factory.newDescription(text);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.DESCRIPTION);
+		assertThat(p.getTerm()).isSameAs(DublinCore.DESCRIPTION);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).isEmpty();
 		assertThat(p.getDirection()).isEmpty();
@@ -210,7 +210,7 @@ public class PropertyFactoryTest {
 	public void newDescription_shouldCreateDescriptionWithLanguage() {
 		String text = "Illustrated guide to airport markings and lighting signals.";
 		Description p = factory.newDescription(text, Locale.ENGLISH);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.DESCRIPTION);
+		assertThat(p.getTerm()).isSameAs(DublinCore.DESCRIPTION);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).hasValue(Locale.ENGLISH);
 		assertThat(p.getDirection()).isEmpty();
@@ -222,7 +222,7 @@ public class PropertyFactoryTest {
 	public void newFormat_shouldCreateFormat() {
 		String value = "application/epub+zip";
 		Format p = factory.newFormat(value);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.FORMAT);
+		assertThat(p.getTerm()).isSameAs(DublinCore.FORMAT);
 		assertThat(p.getValue()).isEqualTo(value);
 	}
 	
@@ -231,7 +231,7 @@ public class PropertyFactoryTest {
 	@Test
 	public void newIdentifier_shouldCreateRandomIdentifier() {
 		Identifier identifier = factory.newIdentifier();
-		assertThat(identifier.getTerm()).isSameAs(BasicTerm.IDENTIFIER);
+		assertThat(identifier.getTerm()).isSameAs(DublinCore.IDENTIFIER);
 		assertThat(identifier.getValue()).startsWith("urn:uuid:");
 		assertThat(identifier.getScheme()).hasValue(IdentifierScheme.UUID);
 		assertThat(identifier.getSchemeURI()).isEmpty();
@@ -243,7 +243,7 @@ public class PropertyFactoryTest {
 	public void newIdentifier_shouldCreateIdentifierWithValue() {
 		String value = "urn:isbn:0451450523";
 		Identifier identifier = factory.newIdentifier(value);
-		assertThat(identifier.getTerm()).isSameAs(BasicTerm.IDENTIFIER);
+		assertThat(identifier.getTerm()).isSameAs(DublinCore.IDENTIFIER);
 		assertThat(identifier.getValue()).isEqualTo(value);
 		assertThat(identifier.getScheme()).isEmpty();
 		assertThat(identifier.getSchemeURI()).isEmpty();
@@ -271,7 +271,7 @@ public class PropertyFactoryTest {
 	public void newIdentifier_shouldCreateIdentifierWithValueAndScheme() {
 		String value = "urn:isbn:0451450523";
 		Identifier identifier = factory.newIdentifier(value, IdentifierScheme.ISBN);
-		assertThat(identifier.getTerm()).isSameAs(BasicTerm.IDENTIFIER);
+		assertThat(identifier.getTerm()).isSameAs(DublinCore.IDENTIFIER);
 		assertThat(identifier.getValue()).isEqualTo(value);
 		assertThat(identifier.getScheme()).hasValue(IdentifierScheme.ISBN);
 		assertThat(identifier.getSchemeURI()).isEmpty();
@@ -282,7 +282,7 @@ public class PropertyFactoryTest {
 	@Test
 	public void newLanguage_shouldCreateLanguageByLanguageTag() {
 		Language p = factory.newLanguage("en-US");
-		assertThat(p.getTerm()).isSameAs(BasicTerm.LANGUAGE);
+		assertThat(p.getTerm()).isSameAs(DublinCore.LANGUAGE);
 		assertThat(p.getValue()).isEqualTo("en-US");
 		assertThat(p.getLanguage()).isEqualTo(Locale.forLanguageTag("en-US"));
 	}
@@ -317,7 +317,7 @@ public class PropertyFactoryTest {
 	public void newLanguage_shouldCreateLanguageByLocale() {
 		Locale language = Locale.forLanguageTag("en-US");
 		Language p = factory.newLanguage(language);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.LANGUAGE);
+		assertThat(p.getTerm()).isSameAs(DublinCore.LANGUAGE);
 		assertThat(p.getValue()).isEqualTo("en-US");
 		assertThat(p.getLanguage()).isSameAs(language);
 	}
@@ -326,7 +326,7 @@ public class PropertyFactoryTest {
 	public void newLanguage_shouldCreateLanguageByPredefinedLocale() {
 		Locale language = Locale.FRENCH;
 		Language p = factory.newLanguage(language);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.LANGUAGE);
+		assertThat(p.getTerm()).isSameAs(DublinCore.LANGUAGE);
 		assertThat(p.getValue()).isEqualTo("fr");
 		assertThat(p.getLanguage()).isSameAs(language);
 	}
@@ -337,7 +337,7 @@ public class PropertyFactoryTest {
 	public void newModified_shouldCreateModifiedOfSpecifiedDateTime() {
 		OffsetDateTime dateTime = OffsetDateTime.of(2017, 4, 23, 1, 2, 3, 0, ZoneOffset.ofHours(9));
 		Modified p = factory.newModified(dateTime);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.MODIFIED);
+		assertThat(p.getTerm()).isSameAs(DublinCoreTerm.MODIFIED);
 		assertThat(p.getValue()).isEqualTo("2017-04-22T16:02:03Z");
 		assertThat(p.getDateTime()).isEqualTo(dateTime);
 	}
@@ -356,7 +356,7 @@ public class PropertyFactoryTest {
 	public void newPublisher_shouldCreatePublisher() {
 		String name = "O’Reilly Media, Inc.";
 		Publisher p = factory.newPublisher(name);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.PUBLISHER);
+		assertThat(p.getTerm()).isSameAs(DublinCore.PUBLISHER);
 		assertThat(p.getValue()).isEqualTo(name);
 		assertThat(p.getNormalizedValue()).isEmpty();
 		assertThat(p.getLanguage()).isEmpty();
@@ -387,7 +387,7 @@ public class PropertyFactoryTest {
 	public void newPublisher_shouldCreatePublisherWithLanguage() {
 		String name = "Lagardère Publishing";
 		Publisher p = factory.newPublisher(name, Locale.FRENCH);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.PUBLISHER);
+		assertThat(p.getTerm()).isSameAs(DublinCore.PUBLISHER);
 		assertThat(p.getValue()).isEqualTo(name);
 		assertThat(p.getNormalizedValue()).isEmpty();
 		assertThat(p.getLanguage()).hasValue(Locale.FRENCH);
@@ -402,7 +402,7 @@ public class PropertyFactoryTest {
 	public void newRelation_shouldCreateRelation() {
 		String text = "\"Two Lives\" [Resource is a collection of two novellas, one of which is \"Reading Turgenev\"]";
 		Relation p = factory.newRelation(text);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.RELATION);
+		assertThat(p.getTerm()).isSameAs(DublinCore.RELATION);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).isEmpty();
 		assertThat(p.getDirection()).isEmpty();
@@ -414,7 +414,7 @@ public class PropertyFactoryTest {
 	public void newRelation_shouldCreateRelationWithLanguage() {
 		String text = "\"Two Lives\" [Resource is a collection of two novellas, one of which is \"Reading Turgenev\"]";
 		Relation p = factory.newRelation(text, Locale.ENGLISH);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.RELATION);
+		assertThat(p.getTerm()).isSameAs(DublinCore.RELATION);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).hasValue(Locale.ENGLISH);
 		assertThat(p.getDirection()).isEmpty();
@@ -426,7 +426,7 @@ public class PropertyFactoryTest {
 	public void newRights_shouldCreateRights() {
 		String text = "Access limited to members";
 		Rights p = factory.newRights(text);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.RIGHTS);
+		assertThat(p.getTerm()).isSameAs(DublinCore.RIGHTS);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).isEmpty();
 		assertThat(p.getDirection()).isEmpty();
@@ -438,7 +438,7 @@ public class PropertyFactoryTest {
 	public void newRights_shouldCreateRightsWithLanguage() {
 		String text = "Access limited to members";
 		Rights p = factory.newRights(text, Locale.ENGLISH);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.RIGHTS);
+		assertThat(p.getTerm()).isSameAs(DublinCore.RIGHTS);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).hasValue(Locale.ENGLISH);
 		assertThat(p.getDirection()).isEmpty();
@@ -450,7 +450,7 @@ public class PropertyFactoryTest {
 	public void newSource_shouldCreateSource() {
 		String value = "http://www.gutenberg.org/files/25545/25545-h/25545-h.htm";
 		Source p = factory.newSource(value);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.SOURCE);
+		assertThat(p.getTerm()).isSameAs(DublinCore.SOURCE);
 		assertThat(p.getValue()).isEqualTo(value);
 		assertThat(p.getScheme()).isEmpty();
 	}
@@ -461,7 +461,7 @@ public class PropertyFactoryTest {
 	public void newSubject_shouldCreateSubject() {
 		String value = "Olympic skiing";
 		Subject p = factory.newSubject(value);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.SUBJECT);
+		assertThat(p.getTerm()).isSameAs(DublinCore.SUBJECT);
 		assertThat(p.getValue()).isEqualTo(value);
 		assertThat(p.getAuthority()).isEmpty();
 		assertThat(p.getScheme()).isEmpty();
@@ -474,7 +474,7 @@ public class PropertyFactoryTest {
 	public void newSubject_shouldCreateSubjectWithAuthority() {
 		String value = "FICTION / Occult & Supernatural";
 		Subject p = factory.newSubject(value, SubjectAuthority.BISAC, "FIC024000");
-		assertThat(p.getTerm()).isSameAs(BasicTerm.SUBJECT);
+		assertThat(p.getTerm()).isSameAs(DublinCore.SUBJECT);
 		assertThat(p.getValue()).isEqualTo(value);
 		assertThat(p.getAuthority()).hasValue(SubjectAuthority.BISAC);
 		assertThat(p.getScheme()).isEmpty();
@@ -488,7 +488,7 @@ public class PropertyFactoryTest {
 		String value = "Number Theory";
 		URI scheme = URI.create("http://www.ams.org/msc/msc2010.html");
 		Subject p = factory.newSubject(value, scheme, "11");
-		assertThat(p.getTerm()).isSameAs(BasicTerm.SUBJECT);
+		assertThat(p.getTerm()).isSameAs(DublinCore.SUBJECT);
 		assertThat(p.getValue()).isEqualTo(value);
 		assertThat(p.getAuthority()).isEmpty();
 		assertThat(p.getScheme()).hasValue(scheme);
@@ -501,7 +501,7 @@ public class PropertyFactoryTest {
 	public void newType_shouldCreateType() {
 		String value = "logbook";
 		Type p = factory.newType(value);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.TYPE);
+		assertThat(p.getTerm()).isSameAs(DublinCore.TYPE);
 		assertThat(p.getValue()).isEqualTo(value);
 	}
 
@@ -510,7 +510,7 @@ public class PropertyFactoryTest {
 		String value = "dictionary";
 		Type p = factory.newType(value);
 		assertThat(p).isSameAs(PublicationType.DICTIONARY);
-		assertThat(p.getTerm()).isSameAs(BasicTerm.TYPE);
+		assertThat(p.getTerm()).isSameAs(DublinCore.TYPE);
 		assertThat(p.getValue()).isEqualTo(value);
 	}
 }

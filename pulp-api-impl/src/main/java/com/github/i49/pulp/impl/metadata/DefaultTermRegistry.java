@@ -22,7 +22,8 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.github.i49.pulp.api.metadata.BasicTerm;
+import com.github.i49.pulp.api.metadata.DublinCore;
+import com.github.i49.pulp.api.metadata.DublinCoreTerm;
 import com.github.i49.pulp.api.metadata.StandardVocabulary;
 import com.github.i49.pulp.api.metadata.Term;
 import com.github.i49.pulp.api.metadata.TermRegistry;
@@ -43,7 +44,8 @@ public class DefaultTermRegistry implements TermRegistry {
 	 */
 	public DefaultTermRegistry() {
 		registerVocabularies(StandardVocabulary.class);
-		registerTerms(BasicTerm.class);
+		registerTerms(DublinCore.class);
+		registerTerms(DublinCoreTerm.class);
 	}
 
 	@Override

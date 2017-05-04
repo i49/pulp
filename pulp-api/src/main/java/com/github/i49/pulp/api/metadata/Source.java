@@ -30,7 +30,7 @@ public interface Source extends Property {
 	 */
 	@Override
 	default Term getTerm() {
-		return BasicTerm.SOURCE;
+		return DublinCore.SOURCE;
 	}
 	
 	/**

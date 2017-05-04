@@ -18,7 +18,7 @@ package com.github.i49.pulp.api.metadata;
 
 /**
  * The last modification date of the EPUB Publication. 
- * This type represents {@link BasicTerm#MODIFIED}.
+ * This type represents {@link DublinCoreTerm#MODIFIED}.
  */
 public interface Modified extends DateTypeProperty {
 
@@ -27,6 +27,6 @@ public interface Modified extends DateTypeProperty {
 	 */
 	@Override
 	default Term getTerm() {
-		return BasicTerm.MODIFIED;
+		return DublinCoreTerm.MODIFIED;
 	}
 }

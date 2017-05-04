@@ -17,19 +17,38 @@
 package com.github.i49.pulp.api.metadata;
 
 /**
- * The spatial or temporal topic of the resource, the spatial applicability of the resource, 
- * or the jurisdiction under which the resource is relevant.
- * This type represents {@link DublinCore#COVERAGE}.
+ * Dublin Core Metadata Terms
  *
- * @see <a href="http://dublincore.org/documents/dces/#coverage">Dublin Core Metadata Element Set, Version 1.1</a> 
+ * @see <a href="http://dublincore.org/documents/dcmi-terms/">DCMI Metadata Terms</a> 
  */
-public interface Coverage extends TextTypeProperty {
+public enum DublinCoreTerm implements Term {
+	/**
+	 * Date on which the resource was changed.
+	 */
+	MODIFIED
+	;
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	default Term getTerm() {
-		return DublinCore.COVERAGE;
+	public String getName() {
+		return name().toLowerCase();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Vocabulary getVocabulary() {
+		return StandardVocabulary.DCTERMS;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isRepeatable() {
+		return this != MODIFIED;
 	}
 }

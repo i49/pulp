@@ -28,7 +28,7 @@ public interface Language extends Property {
 	 */
 	@Override
 	default Term getTerm() {
-		return BasicTerm.LANGUAGE;
+		return DublinCore.LANGUAGE;
 	}
 	
 	/**

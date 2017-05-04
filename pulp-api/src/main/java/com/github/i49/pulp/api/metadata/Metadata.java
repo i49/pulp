@@ -103,7 +103,7 @@ public interface Metadata extends Iterable<Property> {
 	/**
 	 * Returns the number of the properties of the specific term contained in this metadata.
 	 * 
-	 * @param term the term of the properties to count, such as {@link BasicTerm#TITLE}.
+	 * @param term the term of the properties to count, such as {@link DublinCore#TITLE}.
 	 * @return the number of the properties of the specific term in this metadata.
 	 * @throws IllegalArgumentException if {@code term} is {@code null}.
 	 */

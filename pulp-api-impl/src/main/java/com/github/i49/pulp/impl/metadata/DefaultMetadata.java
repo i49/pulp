@@ -25,7 +25,8 @@ import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import com.github.i49.pulp.api.metadata.BasicTerm;
+import com.github.i49.pulp.api.metadata.DublinCore;
+import com.github.i49.pulp.api.metadata.DublinCoreTerm;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.Property;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
@@ -80,16 +81,16 @@ public class DefaultMetadata implements Metadata {
 
 	@Override
 	public void fillMissingProperties() {
-		if (!contains(BasicTerm.IDENTIFIER)) {
+		if (!contains(DublinCore.IDENTIFIER)) {
 			add(getFactory().newIdentifier());
 		}
-		if (!contains(BasicTerm.TITLE)) {
+		if (!contains(DublinCore.TITLE)) {
 			add(getFactory().newTitle("untitled"));
 		}
-		if (!contains(BasicTerm.LANGUAGE)) {
+		if (!contains(DublinCore.LANGUAGE)) {
 			add(getFactory().newLanguage(Locale.getDefault()));
 		}
-		if (!contains(BasicTerm.MODIFIED)) {
+		if (!contains(DublinCoreTerm.MODIFIED)) {
 			OffsetDateTime now = OffsetDateTime.now();
 			add(getFactory().newModified(now));
 		}
@@ -139,10 +140,10 @@ public class DefaultMetadata implements Metadata {
 	@Override
 	public boolean isFilled() {
 		return (
-			contains(BasicTerm.IDENTIFIER) &&
-			contains(BasicTerm.TITLE) &&
-			contains(BasicTerm.LANGUAGE) &&
-			contains(BasicTerm.MODIFIED)
+			contains(DublinCore.IDENTIFIER) &&
+			contains(DublinCore.TITLE) &&
+			contains(DublinCore.LANGUAGE) &&
+			contains(DublinCoreTerm.MODIFIED)
 		);
 	}
 	

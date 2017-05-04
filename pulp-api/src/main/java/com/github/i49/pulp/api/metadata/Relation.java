@@ -28,6 +28,6 @@ public interface Relation extends TextTypeProperty {
 	 */
 	@Override
 	default Term getTerm() {
-		return BasicTerm.RELATION;
+		return DublinCore.RELATION;
 	}
 }

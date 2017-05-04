@@ -28,6 +28,6 @@ public interface Publisher extends Relator {
 	 */
 	@Override
 	default Term getTerm() {
-		return BasicTerm.PUBLISHER;
+		return DublinCore.PUBLISHER;
 	}
 }

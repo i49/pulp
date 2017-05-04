@@ -31,7 +31,7 @@ public interface Subject extends Property {
 	 */
 	@Override
 	default Term getTerm() {
-		return BasicTerm.SUBJECT;
+		return DublinCore.SUBJECT;
 	}
 	
 	/**

@@ -30,7 +30,7 @@ public interface Title extends TextTypeProperty, AlternativeProvider {
 	 */
 	@Override
 	default Term getTerm() {
-		return BasicTerm.TITLE;
+		return DublinCore.TITLE;
 	}
 
 	/**

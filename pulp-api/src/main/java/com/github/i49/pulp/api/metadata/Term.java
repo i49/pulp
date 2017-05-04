@@ -20,7 +20,7 @@ import java.net.URI;
 
 /**
  * A term in a vocabulary. 
- * The instances of this type are defined as the members of {@link BasicTerm} enumeration.
+ * The instances of this type are defined as the members of {@link DublinCore} enumeration.
  */
 public interface Term {
 

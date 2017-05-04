@@ -47,7 +47,7 @@ public class PropertyListTest {
 	public void add_shouldAddPropertyAtLast() {
 		Creator p1 = f.newCreator("Lewis Carroll");
 		Creator p2 = f.newCreator("John Tenniel");
-		List<Property> list = m.getList(BasicTerm.CREATOR);
+		List<Property> list = m.getList(DublinCore.CREATOR);
 		list.add(p1);
 		list.add(p2);
 		assertThat(list.size()).isEqualTo(2);
@@ -57,7 +57,7 @@ public class PropertyListTest {
 	
 	@Test
 	public void add_shouldThrowExceptionIfPropertyIsNull() {
-		List<Property> list = m.getList(BasicTerm.CREATOR);
+		List<Property> list = m.getList(DublinCore.CREATOR);
 		Throwable thrown = catchThrowable(()->{
 			list.add(null);
 		});
@@ -66,7 +66,7 @@ public class PropertyListTest {
 
 	@Test
 	public void add_shouldThrowExceptionIfPropertyHasWrongTerm() {
-		List<Property> list = m.getList(BasicTerm.CREATOR);
+		List<Property> list = m.getList(DublinCore.CREATOR);
 		Contributor p = f.newContributor("John Smith");
 		Throwable thrown = catchThrowable(()->{
 			list.add(p);
@@ -77,7 +77,7 @@ public class PropertyListTest {
 	@Test
 	public void add_shouldThrowExceptionIfPropertyAlreadyExists() {
 		Creator p = f.newCreator("Lewis Carroll");
-		List<Property> list = m.getList(BasicTerm.CREATOR);
+		List<Property> list = m.getList(DublinCore.CREATOR);
 		list.add(p);
 		Throwable thrown = catchThrowable(()->{
 			list.add(p);
@@ -89,7 +89,7 @@ public class PropertyListTest {
 	public void add_shouldThrowExceptionIfMultipleDatePropertiesAdded() {
 		Date p1 = f.newDate(OffsetDateTime.now());
 		Date p2 = f.newDate(OffsetDateTime.now());
-		List<Property> list = m.getList(BasicTerm.DATE);
+		List<Property> list = m.getList(DublinCore.DATE);
 		list.add(p1);
 		Throwable thrown = catchThrowable(()->{
 			list.add(p2);
@@ -101,7 +101,7 @@ public class PropertyListTest {
 	public void add_shouldThrowExceptionIfMultipleModifiedPropertiesAdded() {
 		Modified p1 = f.newModified(OffsetDateTime.now());
 		Modified p2 = f.newModified(OffsetDateTime.now());
-		List<Property> list = m.getList(BasicTerm.MODIFIED);
+		List<Property> list = m.getList(DublinCoreTerm.MODIFIED);
 		list.add(p1);
 		Throwable thrown = catchThrowable(()->{
 			list.add(p2);
@@ -113,7 +113,7 @@ public class PropertyListTest {
 	
 	@Test
 	public void remove_shouldRemovePropertyAtSpecifiedPosition() {
-		List<Property> list = m.getList(BasicTerm.TITLE);
+		List<Property> list = m.getList(DublinCore.TITLE);
 		list.add(f.newTitle("Default Title"));
 		Title p = f.newTitle("THE LORD OF THE RINGS"); 
 		list.add(p);
@@ -127,7 +127,7 @@ public class PropertyListTest {
 	
 	@Test
 	public void remove_shouldRemoveSpecifiedProperty() {
-		List<Property> list = m.getList(BasicTerm.TITLE);
+		List<Property> list = m.getList(DublinCore.TITLE);
 		list.add(f.newTitle("Default Title"));
 		Title p = f.newTitle("THE LORD OF THE RINGS"); 
 		list.add(p);
@@ -141,7 +141,7 @@ public class PropertyListTest {
 	
 	@Test
 	public void clear_shouldClearAllPropertiesFromList() {
-		List<Property> list = m.getList(BasicTerm.CREATOR);
+		List<Property> list = m.getList(DublinCore.CREATOR);
 		list.add(f.newCreator("Lewis Carroll"));
 		list.add(f.newCreator("John Tenniel"));
 		assertThat(list).hasSize(2);
