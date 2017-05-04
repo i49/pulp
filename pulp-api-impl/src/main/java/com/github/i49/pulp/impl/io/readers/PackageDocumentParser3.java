@@ -18,6 +18,7 @@ package com.github.i49.pulp.impl.io.readers;
 
 import static com.github.i49.pulp.impl.xml.XmlAssertions.*;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -31,8 +32,11 @@ import com.github.i49.pulp.api.core.PublicationResource;
 import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.core.Spine.Page;
 import com.github.i49.pulp.api.metadata.Metadata;
-import com.github.i49.pulp.api.metadata.PropertyFactory;
+import com.github.i49.pulp.api.metadata.TermRegistry;
+import com.github.i49.pulp.api.metadata.Vocabulary;
+import com.github.i49.pulp.api.spi.EpubService;
 import com.github.i49.pulp.impl.base.Messages;
+import com.github.i49.pulp.impl.io.containers.PrefixRegistry;
 import com.github.i49.pulp.impl.xml.Nodes;
 
 /**
@@ -40,39 +44,48 @@ import com.github.i49.pulp.impl.xml.Nodes;
  */
 class PackageDocumentParser3 implements PackageDocumentParser {
 	
+	private final PrefixRegistry prefixRegistry = new PrefixRegistry();
 	/*
 	 * Map object for mapping item ids to items.
 	 */
 	private final Map<String, Manifest.Item> items = new HashMap<>();
 	
+	private String uniqueIdentifier;
+	
+	private EpubService service;
+	private TermRegistry termRegistry;
 	private Rendition rendition;
 	private RenditionResourceFinder resourceFinder;
-
+	
 	@Override
 	public void parse(
 			Document document,
 			Rendition rendition,
-			PropertyFactory propertyFactory,
+			EpubService service,
 			RenditionResourceFinder resourceFinder) {
 		
+		this.service = service;
+		this.termRegistry = service.getPropertyTermRegistry();
 		this.rendition = rendition;
 		this.resourceFinder = resourceFinder;
 		
-		Element rootElement = document.getDocumentElement();
+		parseRoot(document.getDocumentElement());
+	}
 	
+	protected void parseRoot(Element rootElement) {
+
 		assertOn(rootElement)
 			.hasNonEmptyAttribute("unique-identifier")
 			.contains("metadata", "manifest", "spine");
 		
-		String uniqueIdentifier = rootElement.getAttribute("unique-identifier");
+		parseRootAttributes(rootElement);
 		
 		Iterator<Element> it = Nodes.children(rootElement, NAMESPACE_URI);
 
 		Element element = it.next();
 		assertOn(element).hasName("metadata");
 	
-		MetadataParser metadataParser = createMetadataParser(
-				rendition.getMetadata(), propertyFactory, uniqueIdentifier);
+		MetadataParser metadataParser = createMetadataParser(rendition.getMetadata());
 		metadataParser.parse(element);
 
 		element = it.next();
@@ -84,8 +97,40 @@ class PackageDocumentParser3 implements PackageDocumentParser {
 		parseSpine(element);
 	}
 	
-	protected MetadataParser createMetadataParser(Metadata metadata, PropertyFactory factory, String uniqueIdentifier) {
-		return new MetadataParser3(metadata, factory, uniqueIdentifier);
+	protected void parseRootAttributes(Element rootElement) {
+		this.uniqueIdentifier = rootElement.getAttribute("unique-identifier").trim();
+		
+		if (rootElement.hasAttribute("prefix")) {
+			String prefixes = rootElement.getAttribute("prefix").trim();
+			parsePrefixes(prefixes);
+		}
+	}
+	
+	protected void parsePrefixes(String prefixes) {
+		if (prefixes.isEmpty()) {
+			return;
+		}
+		String[] parts = prefixes.split("\\s+");
+		for (int i = 0; i + 1 < parts.length; i += 2) {
+			String first = parts[i].trim();
+			String second = parts[i + 1].trim();
+			if (first.endsWith(":")) {
+				String prefix = first.substring(0, first.length() - 1);
+				URI uri = URI.create(second);
+				if (uri != null) {
+					addVocabulary(prefix, uri);
+				}
+			}
+		}
+	}
+	
+	protected void addVocabulary(String prefix, URI uri) {
+		Vocabulary v = this.termRegistry.getVocabulary(uri);
+		this.prefixRegistry.put(prefix , v);
+	}
+	
+	protected MetadataParser createMetadataParser(Metadata metadata) {
+		return new MetadataParser3(metadata, this.service, this.prefixRegistry, this.uniqueIdentifier);
 	}
 	
 	protected void parseManifest(Element element) {

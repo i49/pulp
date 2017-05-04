@@ -40,6 +40,10 @@ import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.Publisher;
 import com.github.i49.pulp.api.metadata.Relator;
 import com.github.i49.pulp.api.metadata.StandardVocabulary;
+import com.github.i49.pulp.api.metadata.TermRegistry;
+import com.github.i49.pulp.api.spi.EpubService;
+import com.github.i49.pulp.impl.base.Messages;
+import com.github.i49.pulp.impl.io.containers.PrefixRegistry;
 import com.github.i49.pulp.impl.xml.Nodes;
 
 /**
@@ -48,12 +52,18 @@ import com.github.i49.pulp.impl.xml.Nodes;
 class MetadataParser3 implements MetadataParser {
 	
 	private final Metadata metadata;
+	@SuppressWarnings("unused")
+	private final TermRegistry termRegistry;
 	private final PropertyFactory factory;
+	@SuppressWarnings("unused")
+	private final PrefixRegistry prefixRegistry;
 	private final String uniqueIdentifier;
 	
-	MetadataParser3(Metadata metadata, PropertyFactory factory, String uniqueIdentifier) {
+	MetadataParser3(Metadata metadata, EpubService service, PrefixRegistry prefixRegistry, String uniqueIdentifier) {
 		this.metadata = metadata;
-		this.factory = factory;
+		this.termRegistry = service.getPropertyTermRegistry();
+		this.factory = service.createPropertyFactory();
+		this.prefixRegistry = prefixRegistry;
 		this.uniqueIdentifier = uniqueIdentifier;
 	}
 	
@@ -126,6 +136,7 @@ class MetadataParser3 implements MetadataParser {
 	 */
 	protected Property parseDublinCoreElement(MetadataEntry entry) {
 		String localName = entry.getElement().getLocalName();
+		
 		switch (localName) {
 		case "contributor":
 			return parseContributor(entry);
@@ -158,8 +169,7 @@ class MetadataParser3 implements MetadataParser {
 		case "type":
 			return parseType(entry);
 		}
-		// TODO:
-		throw new EpubException("Unknown Dublin Core element.");
+		throw new EpubException(Messages.METADATA_DC_ELEMENT_UNKNOWN(localName));
 	}
 	
 	protected Property parseMetaElement(MetadataEntry entry) {

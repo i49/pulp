@@ -109,11 +109,11 @@ public class EpubPublicationReader implements PublicationReader, RenditionResour
 	
 	protected void buildRendition(Rendition rendition) throws IOException, SAXException {
 		this.currentRendition = rendition;
-		this.currentResourceFactory = service.createResourceBuilderFactory(rendition.getLocation());
+		this.currentResourceFactory = this.service.createResourceBuilderFactory(rendition.getLocation());
 		String location = rendition.getLocation().getPath();
 		Document document = readXmlDocument(location);
 		PackageDocumentParser parser = createPackageDocumentParser(document);
-		parser.parse(document, rendition, service.createPropertyFactory(), this);
+		parser.parse(document, rendition, this.service, this);
 	}
 	
 	protected PackageDocumentParser createPackageDocumentParser(Document document) {

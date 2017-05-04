@@ -112,6 +112,10 @@ public final class Messages {
 		return format("CONTAINER_MIMETYPE_UNEXPECTED", path, mimetype);
 	}
 	
+	public static String METADATA_DC_ELEMENT_UNKNOWN(String name) {
+		return format("METADATA_DC_ELEMENT_UNKNOWN", name);
+	}
+	
 	public static String MANIFEST_ITEM_ID_MISSING(String id) {
 		return format("MANIFEST_ITEM_ID_MISSING", id);
 	}

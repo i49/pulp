@@ -22,7 +22,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.core.Rendition;
-import com.github.i49.pulp.api.metadata.PropertyFactory;
+import com.github.i49.pulp.api.spi.EpubService;
 import com.github.i49.pulp.impl.io.containers.PackageDocumentProcessor;
 
 /**
@@ -52,8 +52,8 @@ interface PackageDocumentParser extends PackageDocumentProcessor {
 	 * 
 	 * @param document the package document.
 	 * @param rendition the rendition to build.
-	 * @param propertyFactory the factory for producing metadata properties.
+	 * @param service the service which will provide API components.
 	 * @param resourceFinder the finder to find the resources required by the rendition.
 	 */
-	void parse(Document document, Rendition rendition, PropertyFactory propertyFactory, RenditionResourceFinder resourceFinder);
+	void parse(Document document, Rendition rendition, EpubService service, RenditionResourceFinder resourceFinder);
 }

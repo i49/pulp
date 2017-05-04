@@ -195,5 +195,10 @@ public class DefaultTermRegistry implements TermRegistry {
 		public URI getURI() {
 			return uri;
 		}
+		
+		@Override
+		public String toString() {
+			return getURI().toString();
+		}
 	}
 }

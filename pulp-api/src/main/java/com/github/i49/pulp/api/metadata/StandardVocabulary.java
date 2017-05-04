@@ -23,12 +23,18 @@ import java.net.URI;
  */
 public enum StandardVocabulary implements Vocabulary {
 
-	/**  EPUB Meta Properties Vocabulary */ 
-	EPUB_META("http://idpf.org/epub/vocab/package/meta/#"),
 	/* Dublin Core Metadata Element Set */
 	DCMES("http://purl.org/dc/elements/1.1/"),
 	/* DCMI Metadata Terms */
-	DCTERMS("http://purl.org/dc/terms/")
+	DCTERMS("http://purl.org/dc/terms/"),
+	EPUB_A11Y("http://www.idpf.org/epub/vocab/package/a11y/#"),
+	EPUB_MEDIA("http://www.idpf.org/epub/vocab/overlays/#"),
+	EPUB_RENDITION("http://www.idpf.org/vocab/rendition/#"),
+	EPUB_SC("http://idpf.org/epub/vocab/sc/#"),
+	MARC("http://id.loc.gov/vocabulary/"),
+	ONIX("http://www.editeur.org/ONIX/book/codelists/current.html#"),
+	SCHEMA("http://schema.org/"),
+	XSD("http://www.w3.org/2001/XMLSchema#")
 	;
 	
 	private final URI uri;
