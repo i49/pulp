@@ -27,11 +27,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.core.EpubException;
+import com.github.i49.pulp.api.metadata.BasicTerm;
 import com.github.i49.pulp.api.metadata.Contributor;
 import com.github.i49.pulp.api.metadata.Creator;
 import com.github.i49.pulp.api.metadata.Metadata;
@@ -40,7 +42,9 @@ import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.Publisher;
 import com.github.i49.pulp.api.metadata.Relator;
 import com.github.i49.pulp.api.metadata.StandardVocabulary;
+import com.github.i49.pulp.api.metadata.Term;
 import com.github.i49.pulp.api.metadata.TermRegistry;
+import com.github.i49.pulp.api.metadata.Vocabulary;
 import com.github.i49.pulp.api.spi.EpubService;
 import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.io.containers.PrefixRegistry;
@@ -52,12 +56,13 @@ import com.github.i49.pulp.impl.xml.Nodes;
 class MetadataParser3 implements MetadataParser {
 	
 	private final Metadata metadata;
-	@SuppressWarnings("unused")
 	private final TermRegistry termRegistry;
 	private final PropertyFactory factory;
-	@SuppressWarnings("unused")
 	private final PrefixRegistry prefixRegistry;
 	private final String uniqueIdentifier;
+
+	private static final Logger log = Logger.getLogger(MetadataParser3.class.getName());
+	private static final Vocabulary DEFAULT_VOCABULARY = StandardVocabulary.EPUB_META;
 	
 	MetadataParser3(Metadata metadata, EpubService service, PrefixRegistry prefixRegistry, String uniqueIdentifier) {
 		this.metadata = metadata;
@@ -87,9 +92,8 @@ class MetadataParser3 implements MetadataParser {
 		while (it.hasNext()) {
 			Element child = it.next();
 			MetadataEntry entry = null;
-			if (DC_NAMESPACE_URI.equals(child.getNamespaceURI())) {
-				entry = new MetadataEntry(child, StandardVocabulary.DCMES);
-			} else if (NAMESPACE_URI.equals(child.getNamespaceURI())) {
+			String namespace = child.getNamespaceURI();
+			if (NAMESPACE_URI.equals(namespace)) {
 				String localName = child.getLocalName();
 				if ("meta".equals(localName)) {
 					if (child.hasAttribute("refines")) {
@@ -98,6 +102,8 @@ class MetadataParser3 implements MetadataParser {
 						entry = new MetadataEntry(child);
 					}
 				}
+			} else if (DC_NAMESPACE_URI.equals(namespace)) {
+				entry = new MetadataEntry(child, StandardVocabulary.DCMES);
 			}
 			if (entry != null) {
 				entries.add(entry);
@@ -174,19 +180,46 @@ class MetadataParser3 implements MetadataParser {
 	
 	protected Property parseMetaElement(MetadataEntry entry) {
 		String name = entry.getElement().getAttribute("property");
-		String[] parts = name.split(":");
+		Property p = parseMetaElement(entry, name);
+		return p;
+	}
+	
+	protected Property parseMetaElement(MetadataEntry entry, String name) {
+		String[] parts = name.split(":", 2);
 		String prefix = null;
-		String localName = name;
+		String localName = null;
 		if (parts.length >= 2) {
 			prefix = parts[0];
 			localName = parts[1];
+		} else {
+			localName = name;
 		}
-		if ("dcterms".equals(prefix)) {
-			if ("modified".equals(localName)) {
-				return parseModified(entry);
-			}
+		Term term = findTerm(prefix, localName);
+		if (term == BasicTerm.MODIFIED) {
+			return parseModified(entry);
+		} else if (term != null) {
+			
 		}
 		return null;
+	}
+	
+	protected Term findTerm(String prefix, String localName) {
+		Vocabulary vocabulary = findVocabulary(prefix);
+		if (vocabulary == null) {
+			return null;
+		}
+		return this.termRegistry.getTerm(vocabulary, localName);
+	}
+	
+	protected Vocabulary findVocabulary(String prefix) {
+		Vocabulary vocabulary = DEFAULT_VOCABULARY;
+		if (prefix != null) {
+			vocabulary = this.prefixRegistry.get(prefix);
+			if (vocabulary == null) {
+				log.warning(Messages.METADATA_PROPERTY_PREFIX_IGNORED(prefix));
+			}
+		}
+		return vocabulary;
 	}
 	
 	protected Property parseContributor(MetadataEntry entry) {

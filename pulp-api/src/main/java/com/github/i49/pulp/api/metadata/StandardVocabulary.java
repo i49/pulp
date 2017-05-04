@@ -29,6 +29,7 @@ public enum StandardVocabulary implements Vocabulary {
 	DCTERMS("http://purl.org/dc/terms/"),
 	EPUB_A11Y("http://www.idpf.org/epub/vocab/package/a11y/#"),
 	EPUB_MEDIA("http://www.idpf.org/epub/vocab/overlays/#"),
+	EPUB_META("http://idpf.org/epub/vocab/package/meta/#"),
 	EPUB_RENDITION("http://www.idpf.org/vocab/rendition/#"),
 	EPUB_SC("http://idpf.org/epub/vocab/sc/#"),
 	MARC("http://id.loc.gov/vocabulary/"),

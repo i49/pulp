@@ -32,7 +32,7 @@ public class PrefixRegistry {
 	private static final Map<String, Vocabulary> RESERVED_PREFIXES = new HashMap<>();
 	
 	static {
-		// reserved prefixes for package metadata.
+		// Adds all reserved prefixes for package metadata.
 		add("a11y", StandardVocabulary.EPUB_A11Y);
 		add("dcterms", StandardVocabulary.DCTERMS);
 		add("epubsc", StandardVocabulary.EPUB_SC);
