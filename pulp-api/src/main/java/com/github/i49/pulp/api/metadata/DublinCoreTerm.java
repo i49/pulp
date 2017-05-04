@@ -25,23 +25,13 @@ public enum DublinCoreTerm implements Term {
 	/**
 	 * Date on which the resource was changed.
 	 */
-	MODIFIED
+	MODIFIED(PropertyType.DATE)
 	;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getName() {
-		return name().toLowerCase();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Vocabulary getVocabulary() {
-		return StandardVocabulary.DCTERMS;
+	private final PropertyType type;
+	
+	private DublinCoreTerm(PropertyType type) {
+		this.type = type;
 	}
 	
 	/**
@@ -50,5 +40,34 @@ public enum DublinCoreTerm implements Term {
 	@Override
 	public boolean isRepeatable() {
 		return this != MODIFIED;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String localName() {
+		return name().toLowerCase();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return qualifiedName();
+	}
+	
+	@Override
+	public PropertyType type() {
+		return type;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Vocabulary vocabulary() {
+		return StandardVocabulary.DCTERMS;
 	}
 }

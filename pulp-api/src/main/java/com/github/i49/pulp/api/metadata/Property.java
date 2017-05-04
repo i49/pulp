@@ -31,6 +31,15 @@ public interface Property {
 	Term getTerm();
 	
 	/**
+	 * Return the type of this property.
+	 * 
+	 * @return the type of this property.
+	 */
+	default PropertyType getType() {
+		return getTerm().type();
+	}
+	
+	/**
 	 * Returns the value of this property.
 	 * 
 	 * @return the value of this property.

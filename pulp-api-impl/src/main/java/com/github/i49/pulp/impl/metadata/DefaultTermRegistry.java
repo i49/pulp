@@ -24,6 +24,7 @@ import java.util.Map;
 
 import com.github.i49.pulp.api.metadata.DublinCore;
 import com.github.i49.pulp.api.metadata.DublinCoreTerm;
+import com.github.i49.pulp.api.metadata.PropertyType;
 import com.github.i49.pulp.api.metadata.StandardVocabulary;
 import com.github.i49.pulp.api.metadata.Term;
 import com.github.i49.pulp.api.metadata.TermRegistry;
@@ -51,7 +52,7 @@ public class DefaultTermRegistry implements TermRegistry {
 	@Override
 	public boolean containsTerm(Term term) {
 		checkNotNull(term, "term");
-		Vocabulary v = term.getVocabulary();
+		Vocabulary v = term.vocabulary();
 		if (!vocabularyMap.containsValue(v)) {
 			return false;
 		}
@@ -99,7 +100,7 @@ public class DefaultTermRegistry implements TermRegistry {
 		if (containsTerm(term)) {
 			// TODO:
 			throw new IllegalStateException();
-		} else if (containsVocabulary(term.getVocabulary())) {
+		} else if (containsVocabulary(term.vocabulary())) {
 			doRegisterTerm(term);
 		} else {
 			// TODO:
@@ -135,18 +136,18 @@ public class DefaultTermRegistry implements TermRegistry {
 	}
 	
 	private Term createTerm(Vocabulary vocabulary, String name) {
-		return new DynamicTerm(vocabulary, name);
+		return new TemporaryTerm(vocabulary, name);
 	}
 	
 	private Vocabulary createVocabulary(URI uri) {
-		return new DynamicVocabulary(uri);
+		return new TemporaryVocabulary(uri);
 	}
 	
 	private void doRegisterTerm(Term term) {
 		assert(term != null);
-		Map<String, Term> terms = this.termMap.get(term.getVocabulary());
+		Map<String, Term> terms = this.termMap.get(term.vocabulary());
 		assert(terms != null);
-		terms.put(term.getName(), term);
+		terms.put(term.localName(), term);
 	}
 	
 	private void doRegisterVocabulary(Vocabulary vocabulary) {
@@ -156,14 +157,14 @@ public class DefaultTermRegistry implements TermRegistry {
 	}
 	
 	/**
-	 * Dynamically generated {@link Term}.
+	 * Temporarily generated {@link Term}.
 	 */
-	private static class DynamicTerm implements Term {
+	private static class TemporaryTerm implements Term {
 		
 		private final Vocabulary vocabulary;
 		private final String name;
 		
-		DynamicTerm(Vocabulary vocabulary, String name) {
+		TemporaryTerm(Vocabulary vocabulary, String name) {
 			assert(vocabulary != null);
 			assert(name != null);
 			this.vocabulary = vocabulary;
@@ -171,24 +172,34 @@ public class DefaultTermRegistry implements TermRegistry {
 		}
 
 		@Override
-		public String getName() {
+		public String localName() {
 			return name;
+		}
+		
+		@Override
+		public String toString() {
+			return qualifiedName();
+		}
+		
+		@Override
+		public PropertyType type() {
+			return PropertyType.GENERIC;
 		}
 
 		@Override
-		public Vocabulary getVocabulary() {
+		public Vocabulary vocabulary() {
 			return vocabulary;
 		}
 	}
 	
 	/**
-	 * Dynamically generated {@link Vocabulary}.
+	 * Temporarily generated {@link Vocabulary}.
 	 */
-	private static class DynamicVocabulary implements Vocabulary {
+	private static class TemporaryVocabulary implements Vocabulary {
 		
 		private final URI uri;
 		
-		DynamicVocabulary(URI uri) {
+		TemporaryVocabulary(URI uri) {
 			assert(uri != null);
 			this.uri = uri;
 		}

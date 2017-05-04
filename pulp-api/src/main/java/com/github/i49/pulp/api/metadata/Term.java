@@ -16,36 +16,11 @@
 
 package com.github.i49.pulp.api.metadata;
 
-import java.net.URI;
-
 /**
  * A term in a vocabulary. 
  * The instances of this type are defined as the members of {@link DublinCore} enumeration.
  */
 public interface Term {
-
-	/**
-	 * Returns the name of this term.
-	 * 
-	 * @return the name of this term.
-	 */
-	String getName();
-	
-	/**
-	 * Returns the URI of this term.
-	 * 
-	 * @return the URI of this term.
-	 */
-	default URI getURI() {
-		return getVocabulary().getURI().resolve(getName());
-	}
-
-	/**
-	 * Returns the vocabulary to which this term belongs.
-	 * 
-	 * @return the vocabulary to which this term belongs.
-	 */
-	Vocabulary getVocabulary();
 
 	/**
 	 * Checks if the property of this term is repeatable.
@@ -56,4 +31,34 @@ public interface Term {
 	default boolean isRepeatable() {
 		return true;
 	}
+
+	/**
+	 * Returns the local name of this term.
+	 * 
+	 * @return the local name of this term, never be {@code null}.
+	 */
+	String localName();
+	
+	/**
+	 * Returns the qualified name of this term.
+	 * 
+	 * @return the qualified name of this term, never be {@code null}.
+	 */
+	default String qualifiedName() {
+		return vocabulary().getURI().resolve(localName()).toString();
+	}
+	
+	/**
+	 * Returns the property type of this term.
+	 * 
+	 * @return the type of the property, never be {@code null}.
+	 */
+	PropertyType type();
+
+	/**
+	 * Returns the vocabulary to which this term belongs.
+	 * 
+	 * @return the vocabulary to which this term belongs, never be {@code null}.
+	 */
+	Vocabulary vocabulary();
 }

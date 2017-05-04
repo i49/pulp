@@ -16,8 +16,6 @@
 
 package com.github.i49.pulp.api.metadata;
 
-import static com.github.i49.pulp.api.metadata.StandardVocabulary.*;
-
 /**
  * Basic terms generally used as metadata properties. 
  * 
@@ -29,7 +27,7 @@ public enum DublinCore implements Term {
 	 *  An entity responsible for making contributions to the resource.
 	 * @see Contributor
 	 */
-	CONTRIBUTOR(DCMES, "contributor"),
+	CONTRIBUTOR(PropertyType.RELATOR),
 
 	/** 
 	 * The spatial or temporal topic of the resource, 
@@ -37,115 +35,129 @@ public enum DublinCore implements Term {
 	 * or the jurisdiction under which the resource is relevant.
 	 * @see Coverage
 	 */
-	COVERAGE(DCMES, "coverage"),
+	COVERAGE(PropertyType.TEXT),
 
 	/**
 	 * An entity primarily responsible for making the resource.
 	 * @see Creator
 	 */
-	CREATOR(DCMES, "creator"),
+	CREATOR(PropertyType.RELATOR),
 	
 	/**
 	 * A point or period of time associated with an event in the lifecycle of the resource.
 	 */
-	DATE(DCMES, "date"),
+	DATE(PropertyType.DATE),
 	
 	/**
 	 * An account of the resource.
 	 * @see Description
 	 */
-	DESCRIPTION(DCMES, "description"),
+	DESCRIPTION(PropertyType.TEXT),
 
 	/** 
 	 * The file format, physical medium, or dimensions of the resource. 
 	 * @see Format
 	 */
-	FORMAT(DCMES, "format"),
+	FORMAT(PropertyType.TEXT),
 
 	/** 
 	 * An unambiguous reference to the resource within a given context.
 	 * @see Identifier
 	 */
-	IDENTIFIER(DCMES, "identifier"),
+	IDENTIFIER(PropertyType.IDENTIFIER),
 
 	/**
 	 * A language of the resource.
 	 * @see Language
 	 */ 
-	LANGUAGE(DCMES, "language"),
+	LANGUAGE(PropertyType.LANGUAGE),
 	
 	/**
 	 * An entity responsible for making the resource available.
 	 * @see Publisher
 	 */
-	PUBLISHER(DCMES, "publisher"),
+	PUBLISHER(PropertyType.RELATOR),
 	
 	/**
 	 * A related resource.
 	 * @see Relation
 	 */
-	RELATION(DCMES, "relation"),
+	RELATION(PropertyType.TEXT),
 	
 	/**
 	 * Information about rights held in and over the resource.
 	 * @see Rights
 	 */
-	RIGHTS(DCMES, "rights"),
+	RIGHTS(PropertyType.TEXT),
 	
 	/**
 	 * A related resource from which the described resource is derived.
 	 * @see Source
 	 */
-	SOURCE(DCMES, "source"),
+	SOURCE(PropertyType.TEXT),
 	
 	/**
 	 * The topic of the resource.
 	 * @see Subject
 	 */
-	SUBJECT(DCMES, "subject"),
+	SUBJECT(PropertyType.TEXT),
 	
 	/**
 	 * A name given to the resource.
 	 * @see Title
 	 */
-	TITLE(DCMES, "title"),
+	TITLE(PropertyType.TITLE),
 	
 	/**
 	 * The nature or genre of the resource.
 	 * @see Type
 	 */
-	TYPE(DCMES, "type"),
+	TYPE(PropertyType.TEXT),
 	;
 
-	private final Vocabulary vocabulary;
-	private final String name;
+	private final PropertyType type;
 	
-	private DublinCore(Vocabulary vocabulary, String name) {
-		this.vocabulary = vocabulary;
-		this.name = name;
+	private DublinCore(PropertyType type) {
+		this.type = type;
 	}
 			
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Vocabulary getVocabulary() {
-		return vocabulary;
+	public boolean isRepeatable() {
+		return this != DATE;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getName() {
-		return name;
+	public String localName() {
+		return name().toLowerCase();
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isRepeatable() {
-		return this != DATE;
+	public String toString() {
+		return qualifiedName();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public PropertyType type() {
+		return type;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Vocabulary vocabulary() {
+		return StandardVocabulary.DCMES;
 	}
 }
