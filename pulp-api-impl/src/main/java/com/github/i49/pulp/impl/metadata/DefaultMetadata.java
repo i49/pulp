@@ -31,6 +31,7 @@ import com.github.i49.pulp.api.metadata.Property;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.ReleaseIdentifier;
 import com.github.i49.pulp.api.metadata.Term;
+import com.github.i49.pulp.api.metadata.TermRegistry;
 import com.github.i49.pulp.impl.base.AbstractListMap;
 import com.github.i49.pulp.impl.base.ListMap;
 import com.github.i49.pulp.impl.base.Messages;
@@ -40,22 +41,25 @@ import com.github.i49.pulp.impl.base.Messages;
  */
 public class DefaultMetadata implements Metadata {
 	
+	private final TermRegistry termRegistry;
+	private final PropertyFactory propertyFactory;
+
 	// all properties categorized by terms.
 	private final ListMap<Term, Property> terms = new PropertyListMap();
 	private final ReleaseIdentifier releaseIdentifier;
-	private final PropertyFactory propertyFactory;
 
 	/**
 	 * Constructs the new metadata.
 	 */
-	public DefaultMetadata(PropertyFactory propertyFactory) {
-		this.releaseIdentifier = new DefaultReleaseIdentifier(this);
+	public DefaultMetadata(TermRegistry termRegistry, PropertyFactory propertyFactory) {
+		this.termRegistry = termRegistry;
 		this.propertyFactory = propertyFactory;
+		this.releaseIdentifier = new DefaultReleaseIdentifier(this);
 	}
 
 	@Override
 	public boolean add(Property property) {
-		checkNotNull(property, "property");
+		validate(property, "property");
 		List<Property> values = terms.getValues(property.getTerm());
 		if (values.contains(property)) {
 			return false;
@@ -70,7 +74,7 @@ public class DefaultMetadata implements Metadata {
 	
 	@Override
 	public boolean contains(Term term) {
-		checkNotNull(term, "term");
+		validate(term, "term");
 		return terms.containsKey(term);
 	}
 
@@ -93,7 +97,7 @@ public class DefaultMetadata implements Metadata {
 	
 	@Override
 	public Property get(Term term) {
-		checkNotNull(term, "term");
+		validate(term, "term");
 		if (!terms.containsKey(term)) {
 			throw new NoSuchElementException(Messages.METADATA_PROPERTY_NOT_FOUND(term));
 		}
@@ -112,7 +116,7 @@ public class DefaultMetadata implements Metadata {
 	
 	@Override
 	public int getNumberOfProperties(Term term) {
-		checkNotNull(term, "term");
+		validate(term, "term");
 		return terms.size(term);
 	}
 	
@@ -128,7 +132,7 @@ public class DefaultMetadata implements Metadata {
 	
 	@Override
 	public List<Property> getList(Term term) {
-		checkNotNull(term, "term");
+		validate(term, "term");
 		return terms.getValues(term);
 	}
 	
@@ -144,7 +148,7 @@ public class DefaultMetadata implements Metadata {
 	
 	@Override
 	public boolean remove(Property property) {
-		checkNotNull(property, "property");
+		validate(property, "property");
 		Term term = property.getTerm();
 		if (terms.containsKey(term)) {
 			return terms.getValues(term).remove(property);
@@ -155,6 +159,23 @@ public class DefaultMetadata implements Metadata {
 	
 	private PropertyFactory getFactory() {
 		return propertyFactory;
+	}
+	
+	private void validate(Property property, String name) {
+		checkNotNull(property, name);
+		Term term = property.getTerm();
+		if (!termRegistry.containsTerm(term)) {
+			// TODO
+			throw new IllegalArgumentException();
+		}
+	}
+	
+	private void validate(Term term, String name) {
+		checkNotNull(term, name);
+		if (!termRegistry.containsTerm(term)) {
+			// TODO
+			throw new IllegalArgumentException();
+		}
 	}
 	
 	private static class PropertyListMap extends AbstractListMap<Term, Property> {

@@ -26,11 +26,13 @@ import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.core.PublicationWriterFactory;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
+import com.github.i49.pulp.api.metadata.TermRegistry;
 import com.github.i49.pulp.api.spi.EpubServiceProvider;
 import com.github.i49.pulp.impl.io.readers.DefaultPublicationReaderFactory;
 import com.github.i49.pulp.impl.io.writers.DefaultPublicationWriterFactory;
 import com.github.i49.pulp.impl.metadata.DefaultMetadata;
 import com.github.i49.pulp.impl.metadata.DefaultPropertyFactory;
+import com.github.i49.pulp.impl.metadata.DefaultTermRegistry;
 import com.github.i49.pulp.impl.publication.MediaTypeRegistry;
 import com.github.i49.pulp.impl.publication.DefaultPublication;
 import com.github.i49.pulp.impl.publication.DefaultPublicationResourceBuilderFactory;
@@ -38,12 +40,18 @@ import com.github.i49.pulp.impl.publication.DefaultPublicationResourceBuilderFac
 /**
  * The default implementation of {@link EpubServiceProvider} interface.
  */
-class DefaultEpubServiceProvider implements EpubServiceProvider {
+class DefaultEpubService implements EpubServiceProvider {
 	
 	private final MediaTypeRegistry typeRegistry = new MediaTypeRegistry();
+	private final TermRegistry termRegistry = new DefaultTermRegistry();
 	private final PropertyFactory propertyFactory = new DefaultPropertyFactory();
 	
-	DefaultEpubServiceProvider() {
+	DefaultEpubService() {
+	}
+	
+	@Override
+	public PropertyFactory createPropertyFactory() {
+		return this.propertyFactory;
 	}
 	
 	@Override
@@ -57,22 +65,22 @@ class DefaultEpubServiceProvider implements EpubServiceProvider {
 	}
 	
 	@Override
-	public PublicationWriterFactory createWriterFactory() {
-		return new DefaultPublicationWriterFactory();
-	}
-
-	@Override
-	public PropertyFactory createPropertyFactory() {
-		return this.propertyFactory;
-	}
-	
-	@Override
 	public PublicationResourceBuilderFactory createResourceBuilderFactory(URI baseURI) {
 		checkNotNull(baseURI, "baseURI");
 		return new DefaultPublicationResourceBuilderFactory(baseURI, this.typeRegistry);
 	}
 
+	@Override
+	public PublicationWriterFactory createWriterFactory() {
+		return new DefaultPublicationWriterFactory();
+	}
+
+	@Override
+	public TermRegistry getPropertyTermRegistry() {
+		return termRegistry;
+	}
+	
 	private Metadata createMetadata() {
-		return new DefaultMetadata(this.propertyFactory);
+		return new DefaultMetadata(this.termRegistry, this.propertyFactory);
 	}
 }

@@ -26,12 +26,20 @@ import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.core.PublicationWriter;
 import com.github.i49.pulp.api.core.PublicationWriterFactory;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
+import com.github.i49.pulp.api.metadata.TermRegistry;
 
 /**
  * Service Provider Interface (SPI) to be implemented by API implementor.
  * This type is for internal use and the users of the API need not to care this interface.
  */
 public interface EpubServiceProvider {
+	
+	/**
+	 * Creates an instance of factory that can be used to produce metadata properties.
+	 * 
+	 * @return an instance of metadata property factory.
+	 */
+	PropertyFactory createPropertyFactory();
 	
 	/**
 	 * Creates an empty publication.
@@ -48,20 +56,6 @@ public interface EpubServiceProvider {
 	PublicationReaderFactory createReaderFactory();
 
 	/**
-	 * Creates an instance of factory that can be used to produce {@link PublicationWriter}.
-	 * 
-	 * @return an instance of publication writer factory.
-	 */
-	PublicationWriterFactory createWriterFactory();
-	
-	/**
-	 * Creates an instance of factory that can be used to produce metadata properties.
-	 * 
-	 * @return an instance of metadata property factory.
-	 */
-	PropertyFactory createPropertyFactory();
-	
-	/**
 	 * Creates an instance of factory that can be used to produce {@link PublicationResourceBuilder}.
 	 * 
 	 * @param baseURI the base location to be used by the builders.
@@ -69,4 +63,18 @@ public interface EpubServiceProvider {
 	 * @throws IllegalArgumentException if given {@code baseURI} is {@code null}.
 	 */
 	PublicationResourceBuilderFactory createResourceBuilderFactory(URI baseURI);
+
+	/**
+	 * Creates an instance of factory that can be used to produce {@link PublicationWriter}.
+	 * 
+	 * @return an instance of publication writer factory.
+	 */
+	PublicationWriterFactory createWriterFactory();
+	
+	/**
+	 * Returns the registry of property terms.
+	 * 
+	 * @return the registry of property terms.
+	 */
+	TermRegistry getPropertyTermRegistry();
 }

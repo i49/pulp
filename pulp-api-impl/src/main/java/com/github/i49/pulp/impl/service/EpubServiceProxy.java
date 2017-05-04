@@ -23,22 +23,28 @@ import com.github.i49.pulp.api.core.PublicationReaderFactory;
 import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.core.PublicationWriterFactory;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
+import com.github.i49.pulp.api.metadata.TermRegistry;
 import com.github.i49.pulp.api.spi.EpubServiceProvider;
 
 /**
  * The Proxy of {@link EpubServiceProvider} implementation.
  * This class will be instantiated per a thread.
  * All these instances bypass every method invocation to 
- * the shared single instance of {@link DefaultEpubServiceProvider}.
+ * the shared single instance of {@link DefaultEpubService}.
  */
-public class EpubServiceProviderProxy implements EpubServiceProvider {
+public class EpubServiceProxy implements EpubServiceProvider {
 
 	// The singleton of {@link EpubServiceProviderImpl} shared by all threads.
-	private static final EpubServiceProvider SINGLETON = new DefaultEpubServiceProvider();
+	private static final EpubServiceProvider SINGLETON = new DefaultEpubService();
 	
-	public EpubServiceProviderProxy() {
+	public EpubServiceProxy() {
 	}
 
+	@Override
+	public PropertyFactory createPropertyFactory() {
+		return SINGLETON.createPropertyFactory();
+	}
+	
 	@Override
 	public Publication createPublication() {
 		return SINGLETON.createPublication();
@@ -50,17 +56,17 @@ public class EpubServiceProviderProxy implements EpubServiceProvider {
 	}
 
 	@Override
+	public PublicationResourceBuilderFactory createResourceBuilderFactory(URI baseURI) {
+		return SINGLETON.createResourceBuilderFactory(baseURI);
+	}
+
+	@Override
 	public PublicationWriterFactory createWriterFactory() {
 		return SINGLETON.createWriterFactory();
 	}
 
 	@Override
-	public PropertyFactory createPropertyFactory() {
-		return SINGLETON.createPropertyFactory();
-	}
-	
-	@Override
-	public PublicationResourceBuilderFactory createResourceBuilderFactory(URI baseURI) {
-		return SINGLETON.createResourceBuilderFactory(baseURI);
+	public TermRegistry getPropertyTermRegistry() {
+		return SINGLETON.getPropertyTermRegistry();
 	}
 }

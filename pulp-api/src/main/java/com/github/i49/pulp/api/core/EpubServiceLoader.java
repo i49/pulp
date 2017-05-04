@@ -29,12 +29,12 @@ final class EpubServiceLoader {
 	private static final ThreadLocal<ServiceLoader<EpubServiceProvider>> threadLoader = new ThreadLocalLoader();
 	
 	/**
-	 * Returns the service provider of {@link EpubServiceProvider} type. 
+	 * Returns the service of {@link EpubServiceProvider} type. 
 	 * 
-	 * @return found service provider.
+	 * @return found service.
 	 * @throws EpubException if API implementation was not found.
 	 */
-	static EpubServiceProvider getProvider() {
+	static EpubServiceProvider getService() {
 		Iterator<EpubServiceProvider> it = threadLoader.get().iterator();
 		if (it.hasNext()) {
 			return it.next();

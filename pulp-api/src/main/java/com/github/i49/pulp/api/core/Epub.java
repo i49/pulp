@@ -16,12 +16,13 @@
 
 package com.github.i49.pulp.api.core;
 
-import static com.github.i49.pulp.api.core.EpubServiceLoader.getProvider;
+import static com.github.i49.pulp.api.core.EpubServiceLoader.getService;
 
 import java.net.URI;
 import java.nio.file.Path;
 
 import com.github.i49.pulp.api.metadata.PropertyFactory;
+import com.github.i49.pulp.api.metadata.TermRegistry;
 
 /**
  * Factory class for creating EPUB processing objects.
@@ -38,13 +39,23 @@ import com.github.i49.pulp.api.metadata.PropertyFactory;
 public final class Epub {
 
 	/**
+	 * Creates an instance of {@link PropertyFactory} that can produce metadata properties.
+	 * 
+	 * @return newly created {@link PropertyFactory}.
+	 * @throws EpubException if API implementation was not found.
+	 */
+	public static PropertyFactory createPropertyFactory() {
+		return getService().createPropertyFactory();
+	}
+	
+	/**
 	 * Creates an empty publication.
 	 * 
 	 * @return an empty publication.
 	 * @throws EpubException if API implementation was not found.
 	 */
 	public static Publication createPublication() {
-		return getProvider().createPublication();
+		return getService().createPublication();
 	}
 	
 	/**
@@ -66,9 +77,21 @@ public final class Epub {
 	 * @throws EpubException if API implementation was not found.
 	 */
 	public static PublicationReaderFactory createReaderFactory() {
-		return getProvider().createReaderFactory();
+		return getService().createReaderFactory();
 	}
 
+	/**
+	 * Creates an instance of {@link PublicationResourceBuilderFactory} that can be used to create {@link PublicationResourceBuilder}.
+	 *
+	 * @param baseURI the base location to be used by the builders, must be a valid local location.
+	 * @return created publication resource builder factory.
+	 * @throws IllegalArgumentException if given {@code baseURI} is not a valid local location or {@code null}.
+	 * @throws EpubException if API implementation was not found.
+	 */
+	public static PublicationResourceBuilderFactory createResourceBuilderFactory(URI baseURI) {
+		return getService().createResourceBuilderFactory(baseURI);
+	}
+	
 	/**
 	 * Creates an instance of {@link PublicationWriter} that can write a publication to the given output stream.
 	 * 
@@ -88,29 +111,11 @@ public final class Epub {
 	 * @throws EpubException if API implementation was not found.
 	 */
 	public static PublicationWriterFactory createWriterFactory() {
-		return getProvider().createWriterFactory();
+		return getService().createWriterFactory();
 	}
 
-	/**
-	 * Creates an instance of {@link PropertyFactory} that can produce metadata properties.
-	 * 
-	 * @return newly created {@link PropertyFactory}.
-	 * @throws EpubException if API implementation was not found.
-	 */
-	public static PropertyFactory createPropertyFactory() {
-		return getProvider().createPropertyFactory();
-	}
-	
-	/**
-	 * Creates an instance of {@link PublicationResourceBuilderFactory} that can be used to create {@link PublicationResourceBuilder}.
-	 *
-	 * @param baseURI the base location to be used by the builders, must be a valid local location.
-	 * @return created publication resource builder factory.
-	 * @throws IllegalArgumentException if given {@code baseURI} is not a valid local location or {@code null}.
-	 * @throws EpubException if API implementation was not found.
-	 */
-	public static PublicationResourceBuilderFactory createResourceBuilderFactory(URI baseURI) {
-		return getProvider().createResourceBuilderFactory(baseURI);
+	public static TermRegistry getPropertyTermRegistry() {
+		return getService().getPropertyTermRegistry();
 	}
 	
 	private Epub() {}

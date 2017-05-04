@@ -25,13 +25,6 @@ import java.net.URI;
 public interface Term {
 
 	/**
-	 * Returns the vocabulary containing this term.
-	 * 
-	 * @return the vocabulary containing this term.
-	 */
-	Vocabulary getVocabulary();
-	
-	/**
 	 * Returns the name of this term.
 	 * 
 	 * @return the name of this term.
@@ -46,7 +39,14 @@ public interface Term {
 	default URI getURI() {
 		return getVocabulary().getURI().resolve(getName());
 	}
-	
+
+	/**
+	 * Returns the vocabulary to which this term belongs.
+	 * 
+	 * @return the vocabulary to which this term belongs.
+	 */
+	Vocabulary getVocabulary();
+
 	/**
 	 * Checks if the property of this term is repeatable.
 	 * By default this method returns {@code true}.
