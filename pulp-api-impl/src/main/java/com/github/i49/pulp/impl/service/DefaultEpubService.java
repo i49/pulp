@@ -27,7 +27,7 @@ import com.github.i49.pulp.api.core.PublicationWriterFactory;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.TermRegistry;
-import com.github.i49.pulp.api.spi.EpubServiceProvider;
+import com.github.i49.pulp.api.spi.EpubService;
 import com.github.i49.pulp.impl.io.readers.DefaultPublicationReaderFactory;
 import com.github.i49.pulp.impl.io.writers.DefaultPublicationWriterFactory;
 import com.github.i49.pulp.impl.metadata.DefaultMetadata;
@@ -38,9 +38,9 @@ import com.github.i49.pulp.impl.publication.DefaultPublication;
 import com.github.i49.pulp.impl.publication.DefaultPublicationResourceBuilderFactory;
 
 /**
- * The default implementation of {@link EpubServiceProvider} interface.
+ * The default implementation of {@link EpubService} interface.
  */
-class DefaultEpubService implements EpubServiceProvider {
+class DefaultEpubService implements EpubService {
 	
 	private final MediaTypeRegistry typeRegistry = new MediaTypeRegistry();
 	private final TermRegistry termRegistry = new DefaultTermRegistry();

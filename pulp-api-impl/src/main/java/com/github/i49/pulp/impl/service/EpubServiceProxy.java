@@ -24,18 +24,18 @@ import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.core.PublicationWriterFactory;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.TermRegistry;
-import com.github.i49.pulp.api.spi.EpubServiceProvider;
+import com.github.i49.pulp.api.spi.EpubService;
 
 /**
- * The Proxy of {@link EpubServiceProvider} implementation.
+ * The Proxy of {@link EpubService} implementation.
  * This class will be instantiated per a thread.
  * All these instances bypass every method invocation to 
  * the shared single instance of {@link DefaultEpubService}.
  */
-public class EpubServiceProxy implements EpubServiceProvider {
+public class EpubServiceProxy implements EpubService {
 
 	// The singleton of {@link EpubServiceProviderImpl} shared by all threads.
-	private static final EpubServiceProvider SINGLETON = new DefaultEpubService();
+	private static final EpubService SINGLETON = new DefaultEpubService();
 	
 	public EpubServiceProxy() {
 	}

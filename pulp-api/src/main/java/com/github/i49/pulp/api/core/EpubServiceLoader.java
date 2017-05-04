@@ -19,23 +19,23 @@ package com.github.i49.pulp.api.core;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
-import com.github.i49.pulp.api.spi.EpubServiceProvider;
+import com.github.i49.pulp.api.spi.EpubService;
 
 /**
- * A helper class for loading {@link EpubServiceProvider}.
+ * A helper class for loading {@link EpubService}.
  */
 final class EpubServiceLoader {
 
-	private static final ThreadLocal<ServiceLoader<EpubServiceProvider>> threadLoader = new ThreadLocalLoader();
+	private static final ThreadLocal<ServiceLoader<EpubService>> threadLoader = new ThreadLocalLoader();
 	
 	/**
-	 * Returns the service of {@link EpubServiceProvider} type. 
+	 * Returns the service of {@link EpubService} type. 
 	 * 
 	 * @return found service.
 	 * @throws EpubException if API implementation was not found.
 	 */
-	static EpubServiceProvider getService() {
-		Iterator<EpubServiceProvider> it = threadLoader.get().iterator();
+	static EpubService getService() {
+		Iterator<EpubService> it = threadLoader.get().iterator();
 		if (it.hasNext()) {
 			return it.next();
 		}
@@ -43,12 +43,12 @@ final class EpubServiceLoader {
 	}
 	
 	/**
-	 * Thread-local loader class of {@link EpubServiceProvider}.
+	 * Thread-local loader class of {@link EpubService}.
 	 */
-	private static class ThreadLocalLoader extends ThreadLocal<ServiceLoader<EpubServiceProvider>> {
+	private static class ThreadLocalLoader extends ThreadLocal<ServiceLoader<EpubService>> {
 		@Override
-		protected ServiceLoader<EpubServiceProvider> initialValue() {
-			return ServiceLoader.load(EpubServiceProvider.class);
+		protected ServiceLoader<EpubService> initialValue() {
+			return ServiceLoader.load(EpubService.class);
 		}
 	}
 }

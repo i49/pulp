@@ -34,7 +34,7 @@ import com.github.i49.pulp.api.core.PublicationResource;
 import com.github.i49.pulp.api.core.PublicationResourceBuilder;
 import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.core.Rendition;
-import com.github.i49.pulp.api.spi.EpubServiceProvider;
+import com.github.i49.pulp.api.spi.EpubService;
 import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.io.containers.AbstractContainer;
 import com.github.i49.pulp.impl.io.containers.ReadableContainer;
@@ -46,7 +46,7 @@ import com.github.i49.pulp.impl.xml.XmlServices;
 public class EpubPublicationReader implements PublicationReader, RenditionResourceFinder {
 
 	private final ReadableContainer container;
-	private final EpubServiceProvider service;
+	private final EpubService service;
 	private final DocumentBuilder documentBuilder;
 
 	private String currentLocation;
@@ -55,7 +55,7 @@ public class EpubPublicationReader implements PublicationReader, RenditionResour
 	private Rendition currentRendition;
 	private PublicationResourceBuilderFactory currentResourceFactory;
 	
-	public EpubPublicationReader(ReadableContainer loader, EpubServiceProvider service) {
+	public EpubPublicationReader(ReadableContainer loader, EpubService service) {
 		this.container = loader;
 		this.service = service;
 		this.documentBuilder = XmlServices.newBuilder();

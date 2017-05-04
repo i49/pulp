@@ -27,7 +27,7 @@ import java.util.zip.ZipException;
 import com.github.i49.pulp.api.core.EpubException;
 import com.github.i49.pulp.api.core.PublicationReader;
 import com.github.i49.pulp.api.core.PublicationReaderFactory;
-import com.github.i49.pulp.api.spi.EpubServiceProvider;
+import com.github.i49.pulp.api.spi.EpubService;
 import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.io.containers.ReadableContainer;
 import com.github.i49.pulp.impl.io.containers.ReadableZipContainer;
@@ -37,14 +37,14 @@ import com.github.i49.pulp.impl.io.containers.ReadableZipContainer;
  */
 public class DefaultPublicationReaderFactory implements PublicationReaderFactory {
 
-	private final EpubServiceProvider service;
+	private final EpubService service;
 	
 	/**
 	 * Constructs this factory.
 	 * 
 	 * @param service the EPUB service.
 	 */
-	public DefaultPublicationReaderFactory(EpubServiceProvider service) {
+	public DefaultPublicationReaderFactory(EpubService service) {
 		assert(service != null);
 		this.service = service;
 	}

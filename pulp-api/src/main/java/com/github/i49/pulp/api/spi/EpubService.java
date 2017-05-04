@@ -32,7 +32,7 @@ import com.github.i49.pulp.api.metadata.TermRegistry;
  * Service Provider Interface (SPI) to be implemented by API implementor.
  * This type is for internal use and the users of the API need not to care this interface.
  */
-public interface EpubServiceProvider {
+public interface EpubService {
 	
 	/**
 	 * Creates an instance of factory that can be used to produce metadata properties.
