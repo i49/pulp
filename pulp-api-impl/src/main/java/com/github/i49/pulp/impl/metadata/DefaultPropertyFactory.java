@@ -26,11 +26,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.github.i49.pulp.api.metadata.Contributor;
-import com.github.i49.pulp.api.metadata.Coverage;
 import com.github.i49.pulp.api.metadata.Creator;
 import com.github.i49.pulp.api.metadata.DateProperty;
-import com.github.i49.pulp.api.metadata.Description;
-import com.github.i49.pulp.api.metadata.Direction;
 import com.github.i49.pulp.api.metadata.DublinCore;
 import com.github.i49.pulp.api.metadata.DublinCoreTerm;
 import com.github.i49.pulp.api.metadata.SimpleProperty;
@@ -41,13 +38,12 @@ import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.PropertyType;
 import com.github.i49.pulp.api.metadata.PublicationType;
 import com.github.i49.pulp.api.metadata.Publisher;
-import com.github.i49.pulp.api.metadata.Relation;
 import com.github.i49.pulp.api.metadata.Relator;
-import com.github.i49.pulp.api.metadata.Rights;
 import com.github.i49.pulp.api.metadata.Source;
 import com.github.i49.pulp.api.metadata.Subject;
 import com.github.i49.pulp.api.metadata.SubjectAuthority;
 import com.github.i49.pulp.api.metadata.Term;
+import com.github.i49.pulp.api.metadata.TextProperty;
 import com.github.i49.pulp.api.metadata.Title;
 import com.github.i49.pulp.impl.base.Messages;
 
@@ -112,24 +108,9 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	}
 
 	@Override
-	public Coverage newCoverage(String text) {
+	public TextProperty newCoverage(String text) {
 		checkNotBlank(text, "text");
-		return new DefaultCoverage(text, Optional.empty(), Optional.empty());
-	}
-
-	@Override
-	public Coverage newCoverage(String text, Locale language) {
-		checkNotBlank(text, "text");
-		checkNotNull(language, "language");
-		return new DefaultCoverage(text, Optional.of(language), Optional.empty());
-	}
-
-	@Override
-	public Coverage newCoverage(String text, Locale language, Direction direction) {
-		checkNotBlank(text, "text");
-		checkNotNull(language, "language");
-		checkNotNull(direction, "direction");
-		return new DefaultCoverage(text, Optional.of(language), Optional.of(direction));
+		return new DefaultTextProperty(DublinCore.COVERAGE, text);
 	}
 
 	@Override
@@ -149,24 +130,9 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	}
 	
 	@Override
-	public Description newDescription(String text) {
+	public TextProperty newDescription(String text) {
 		checkNotBlank(text, "text");
-		return new DefaultDescription(text, Optional.empty(), Optional.empty());
-	}
-
-	@Override
-	public Description newDescription(String text, Locale language) {
-		checkNotBlank(text, "text");
-		checkNotNull(language, "language");
-		return new DefaultDescription(text, Optional.of(language), Optional.empty());
-	}
-
-	@Override
-	public Description newDescription(String text, Locale language, Direction direction) {
-		checkNotBlank(text, "text");
-		checkNotNull(language, "language");
-		checkNotNull(direction, "direction");
-		return new DefaultDescription(text, Optional.of(language), Optional.of(direction));
+		return new DefaultTextProperty(DublinCore.DESCRIPTION, text);
 	}
 
 	@Override
@@ -217,45 +183,15 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	}
 
 	@Override
-	public Relation newRelation(String text) {
+	public TextProperty newRelation(String text) {
 		checkNotBlank(text, "text");
-		return new DefaultRelation(text, Optional.empty(), Optional.empty());
+		return new DefaultTextProperty(DublinCore.RELATION, text);
 	}
 
 	@Override
-	public Relation newRelation(String text, Locale language) {
+	public TextProperty newRights(String text) {
 		checkNotBlank(text, "text");
-		checkNotNull(language, "language");
-		return new DefaultRelation(text, Optional.of(language), Optional.empty());
-	}
-
-	@Override
-	public Relation newRelation(String text, Locale language, Direction direction) {
-		checkNotBlank(text, "text");
-		checkNotNull(language, "language");
-		checkNotNull(direction, "direction");
-		return new DefaultRelation(text, Optional.of(language), Optional.of(direction));
-	}
-
-	@Override
-	public Rights newRights(String text) {
-		checkNotBlank(text, "text");
-		return new DefaultRights(text, Optional.empty(), Optional.empty());
-	}
-
-	@Override
-	public Rights newRights(String text, Locale language) {
-		checkNotBlank(text, "text");
-		checkNotNull(language, "language");
-		return new DefaultRights(text, Optional.of(language), Optional.empty());
-	}
-
-	@Override
-	public Rights newRights(String text, Locale language, Direction direction) {
-		checkNotBlank(text, "text");
-		checkNotNull(language, "language");
-		checkNotNull(direction, "direction");
-		return new DefaultRights(text, Optional.of(language), Optional.of(direction));
+		return new DefaultTextProperty(DublinCore.RIGHTS, text);
 	}
 
 	@Override

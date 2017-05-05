@@ -25,7 +25,7 @@ import com.github.i49.pulp.api.metadata.Title;
 /**
  * The default implementation of {@link Title} property.
  */
-class DefaultTitle extends AbstractTextTypeProperty implements Title {
+class DefaultTitle extends DefaultTextProperty implements Title {
 	
 	private final Optional<String> normalizedValue;
 	private final Optional<Representation> alternative;

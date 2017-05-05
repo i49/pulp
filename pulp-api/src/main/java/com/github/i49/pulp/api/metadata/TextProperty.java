@@ -22,8 +22,15 @@ import java.util.Optional;
 /**
  * A metadata property that has a human-readable text as its value.
  */
-public interface TextTypeProperty extends TypedProperty<String> {
+public interface TextProperty extends TypedProperty<String> {
 
+	/**
+	 * Returns the direction of the text.
+	 * 
+	 * @return the direction of the text, such as left-to-right and right-to-left.
+	 */
+	Optional<Direction> getDirection();
+	
 	/**
 	 * Returns the language of the text.
 	 * 
@@ -32,11 +39,42 @@ public interface TextTypeProperty extends TypedProperty<String> {
 	Optional<Locale> getLanguage();
 	
 	/**
-	 * Returns the direction of the text.
+	 * Clears the assigned direction of this text.
 	 * 
-	 * @return the direction of the text, such as left-to-right and right-to-left.
+	 * @return this property.
 	 */
-	Optional<Direction> getDirection();
+	TextProperty resetDirection();
+
+	/**
+	 * Clears the assigned language of this text.
+	 * 
+	 * @return this property.
+	 */
+	TextProperty resetLanguage();
+	
+	/**
+	 * Assigns a new direction to this property.
+	 * 
+	 * @param direction the direction of the text.
+	 * @return this property.
+	 * @throws IllegalArgumentException if {@code direction} is {@code null}.
+	 */
+	TextProperty setDirection(Direction direction);
+	
+	/**
+	 * Assigns a new language to this property.
+	 * 
+	 * @param language the language of the text.
+	 * @return this property.
+	 * @throws IllegalArgumentException if {@code language} is {@code null}.
+	 */
+	TextProperty setLanguage(Locale language);
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	TextProperty setValue(String value);
 
 	/**
 	 * A builder for building a text-type property.
@@ -44,7 +82,7 @@ public interface TextTypeProperty extends TypedProperty<String> {
 	 * @param <P> the type of the property to build.
 	 * @param <T> actual builder type which extends this builder.
 	 */
-	public interface Builder<P extends TextTypeProperty, T extends Builder<P, T>> extends Property.Builder<P> {
+	public interface Builder<P extends TextProperty, T extends Builder<P, T>> extends Property.Builder<P> {
 
 		/**
 		 * Optionally specifies the language of the text.

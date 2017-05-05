@@ -125,35 +125,14 @@ public interface PropertyFactory {
 	Contributor newContributor(String name, Locale language);
 
 	/**
-	 * Creates an instance of {@link Coverage} property.
+	 * Creates an instance of {@link DublinCore#COVERAGE} property.
 	 * 
 	 * @param text the text describing the coverage.
-	 * @return newly created {@link Coverage}.
+	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code text} was invalid.
 	 */
-	Coverage newCoverage(String text);
+	TextProperty newCoverage(String text);
 
-	/**
-	 * Creates an instance of {@link Coverage} property with the language specified.
-	 * 
-	 * @param text the text describing the coverage.
-	 * @param language the language used for the text.
-	 * @return newly created {@link Coverage}.
-	 * @throws IllegalArgumentException if one of arguments was invalid.
-	 */
-	Coverage newCoverage(String text, Locale language);
-
-	/**
-	 * Creates an instance of {@link Coverage} property with the language and the direction specified.
-	 * 
-	 * @param text the text describing the coverage.
-	 * @param language the language used for the text.
-	 * @param direction the direction of the text.
-	 * @return newly created {@link Coverage}.
-	 * @throws IllegalArgumentException if one of arguments was invalid.
-	 */
-	Coverage newCoverage(String text, Locale language, Direction direction);
-	
 	/**
 	 * Creates an instance of {@link Creator} property.
 	 * 
@@ -174,35 +153,14 @@ public interface PropertyFactory {
 	Creator newCreator(String name, Locale language);
 	
 	/**
-	 * Creates an instance of {@link Description} property.
+	 * Creates an instance of {@link DublinCore#DESCRIPTION} property.
 	 * 
 	 * @param text the description of the rendition.
-	 * @return newly created {@link Description}.
+	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code text} was invalid.
 	 */
-	Description newDescription(String text);
+	TextProperty newDescription(String text);
 
-	/**
-	 * Creates an instance of {@link Description} property with the language specified.
-	 * 
-	 * @param text the description of the rendition.
-	 * @param language the language of the description. 
-	 * @return newly created {@link Description}.
-	 * @throws IllegalArgumentException if one of arguments was invalid.
-	 */
-	Description newDescription(String text, Locale language);
-
-	/**
-	 * Creates an instance of {@link Description} property with the language and the direction specified.
-	 * 
-	 * @param text the description of the rendition.
-	 * @param language the language of the description. 
-	 * @param direction the text direction of the description.
-	 * @return newly created {@link Description}.
-	 * @throws IllegalArgumentException if one of arguments was invalid.
-	 */
-	Description newDescription(String text, Locale language, Direction direction);
-	
 	/**
 	 * Creates an instance of {@link DublinCore#FORMAT}.
 	 * 
@@ -278,65 +236,23 @@ public interface PropertyFactory {
 	Publisher newPublisher(String name, Locale language);
 
 	/**
-	 * Creates an instance of {@link Relation} property.
+	 * Creates an instance of {@link DublinCore#RELATION} property.
 	 * 
 	 * @param text the text describing the related resource.
-	 * @return newly created {@link Relation}.
+	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code text} was invalid.
 	 */
-	Relation newRelation(String text);
+	TextProperty newRelation(String text);
 
 	/**
-	 * Creates an instance of {@link Relation} property with the language specified.
-	 * 
-	 * @param text the text describing the related resource.
-	 * @param language the language used for the text.
-	 * @return newly created {@link Relation}.
-	 * @throws IllegalArgumentException if one of arguments was invalid.
-	 */
-	Relation newRelation(String text, Locale language);
-
-	/**
-	 * Creates an instance of {@link Relation} property with the language and the direction specified.
-	 * 
-	 * @param text the text describing the related resource.
-	 * @param language the language used for the text.
-	 * @param direction the text direction of the text.
-	 * @return newly created {@link Relation}.
-	 * @throws IllegalArgumentException if one of arguments was invalid.
-	 */
-	Relation newRelation(String text, Locale language, Direction direction);
-	
-	/**
-	 * Creates an instance of {@link Rights} property.
+	 * Creates an instance of {@link DublinCore#RIGHTS} property.
 	 * 
 	 * @param text the text describing the rights.
-	 * @return newly created {@link Rights}.
+	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code text} was invalid.
 	 */
-	Rights newRights(String text);
+	TextProperty newRights(String text);
 
-	/**
-	 * Creates an instance of {@link Rights} property with the language specified.
-	 * 
-	 * @param text the text describing the rights.
-	 * @param language the language used for the text.
-	 * @return newly created {@link Rights}.
-	 * @throws IllegalArgumentException if one of arguments was invalid.
-	 */
-	Rights newRights(String text, Locale language);
-
-	/**
-	 * Creates an instance of {@link Rights} property with the language and the direction specified.
-	 * 
-	 * @param text the text describing the rights.
-	 * @param language the language used for the text.
-	 * @param direction the text direction of the text.
-	 * @return newly created {@link Rights}.
-	 * @throws IllegalArgumentException if one of arguments was invalid.
-	 */
-	Rights newRights(String text, Locale language, Direction direction);
-	
 	/**
 	 * Creates an instance of {@link Source} property.
 	 * 

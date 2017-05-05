@@ -92,22 +92,10 @@ public class PropertyFactoryTest {
 	@Test
 	public void newCoverage_shouldCreateCoverage() {
 		String text = "17th century";
-		Coverage p = factory.newCoverage(text);
+		TextProperty p = factory.newCoverage(text);
 		assertThat(p.getTerm()).isSameAs(DublinCore.COVERAGE);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).isEmpty();
-		assertThat(p.getDirection()).isEmpty();
-	}
-
-	/* newCoverage(String, Locale) */
-	
-	@Test
-	public void newCoverage_shouldCreateCoverageWithLanguage() {
-		String text = "17th century";
-		Coverage p = factory.newCoverage(text, Locale.ENGLISH);
-		assertThat(p.getTerm()).isSameAs(DublinCore.COVERAGE);
-		assertThat(p.getValue()).isEqualTo(text);
-		assertThat(p.getLanguage()).hasValue(Locale.ENGLISH);
 		assertThat(p.getDirection()).isEmpty();
 	}
 
@@ -181,7 +169,7 @@ public class PropertyFactoryTest {
 	@Test
 	public void newDescription_shouldCreateDescription() {
 		String text = "Illustrated guide to airport markings and lighting signals.";
-		Description p = factory.newDescription(text);
+		TextProperty p = factory.newDescription(text);
 		assertThat(p.getTerm()).isSameAs(DublinCore.DESCRIPTION);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).isEmpty();
@@ -202,18 +190,6 @@ public class PropertyFactoryTest {
 			factory.newDescription("   ");
 		});
 		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
-	}
-	
-	/* newDescription(String, Locale) */
-	
-	@Test
-	public void newDescription_shouldCreateDescriptionWithLanguage() {
-		String text = "Illustrated guide to airport markings and lighting signals.";
-		Description p = factory.newDescription(text, Locale.ENGLISH);
-		assertThat(p.getTerm()).isSameAs(DublinCore.DESCRIPTION);
-		assertThat(p.getValue()).isEqualTo(text);
-		assertThat(p.getLanguage()).hasValue(Locale.ENGLISH);
-		assertThat(p.getDirection()).isEmpty();
 	}
 	
 	/* newFormat() */
@@ -389,49 +365,25 @@ public class PropertyFactoryTest {
 	@Test
 	public void newRelation_shouldCreateRelation() {
 		String text = "\"Two Lives\" [Resource is a collection of two novellas, one of which is \"Reading Turgenev\"]";
-		Relation p = factory.newRelation(text);
+		TextProperty p = factory.newRelation(text);
 		assertThat(p.getTerm()).isSameAs(DublinCore.RELATION);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).isEmpty();
 		assertThat(p.getDirection()).isEmpty();
 	}
 
-	/* newRelation(String, Locale) */
-
-	@Test
-	public void newRelation_shouldCreateRelationWithLanguage() {
-		String text = "\"Two Lives\" [Resource is a collection of two novellas, one of which is \"Reading Turgenev\"]";
-		Relation p = factory.newRelation(text, Locale.ENGLISH);
-		assertThat(p.getTerm()).isSameAs(DublinCore.RELATION);
-		assertThat(p.getValue()).isEqualTo(text);
-		assertThat(p.getLanguage()).hasValue(Locale.ENGLISH);
-		assertThat(p.getDirection()).isEmpty();
-	}
-	
 	/* newRighs(String) */
 	
 	@Test
 	public void newRights_shouldCreateRights() {
 		String text = "Access limited to members";
-		Rights p = factory.newRights(text);
+		TextProperty p = factory.newRights(text);
 		assertThat(p.getTerm()).isSameAs(DublinCore.RIGHTS);
 		assertThat(p.getValue()).isEqualTo(text);
 		assertThat(p.getLanguage()).isEmpty();
 		assertThat(p.getDirection()).isEmpty();
 	}
 
-	/* newRighs(String, Locale) */
-
-	@Test
-	public void newRights_shouldCreateRightsWithLanguage() {
-		String text = "Access limited to members";
-		Rights p = factory.newRights(text, Locale.ENGLISH);
-		assertThat(p.getTerm()).isSameAs(DublinCore.RIGHTS);
-		assertThat(p.getValue()).isEqualTo(text);
-		assertThat(p.getLanguage()).hasValue(Locale.ENGLISH);
-		assertThat(p.getDirection()).isEmpty();
-	}
-	
 	/* newSource(String) */
 	
 	@Test

@@ -25,7 +25,7 @@ import com.github.i49.pulp.api.metadata.Term;
 /**
  * A skeletal implementation of {@link Relator}.
  */
-abstract class AbstractRelator<P extends Relator> extends AbstractTextTypeProperty implements Relator {
+abstract class AbstractRelator<P extends Relator> extends DefaultTextProperty implements Relator {
 
 	private final Optional<String> normalizedValue;
 	private final Optional<Representation> alternative;
