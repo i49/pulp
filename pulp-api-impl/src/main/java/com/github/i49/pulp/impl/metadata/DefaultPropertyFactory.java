@@ -33,7 +33,7 @@ import com.github.i49.pulp.api.metadata.Description;
 import com.github.i49.pulp.api.metadata.Direction;
 import com.github.i49.pulp.api.metadata.DublinCore;
 import com.github.i49.pulp.api.metadata.DublinCoreTerm;
-import com.github.i49.pulp.api.metadata.FormatProperty;
+import com.github.i49.pulp.api.metadata.SimpleProperty;
 import com.github.i49.pulp.api.metadata.GenericProperty;
 import com.github.i49.pulp.api.metadata.IdentifierProperty;
 import com.github.i49.pulp.api.metadata.LanguageProperty;
@@ -49,7 +49,6 @@ import com.github.i49.pulp.api.metadata.Subject;
 import com.github.i49.pulp.api.metadata.SubjectAuthority;
 import com.github.i49.pulp.api.metadata.Term;
 import com.github.i49.pulp.api.metadata.Title;
-import com.github.i49.pulp.api.metadata.TypeProperty;
 import com.github.i49.pulp.impl.base.Messages;
 
 /**
@@ -171,9 +170,9 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	}
 
 	@Override
-	public FormatProperty newFormat(String value) {
+	public SimpleProperty newFormat(String value) {
 		checkNotBlank(value, "value");
-		return new DefaultFormatProperty(value);
+		return new DefaultSimpleProperty(DublinCore.FORMAT, value);
 	}
 
 	@Override
@@ -305,9 +304,12 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	}
 
 	@Override
-	public TypeProperty newType(String value) {
+	public SimpleProperty newType(String value) {
 		checkNotBlank(value, "value");
-		TypeProperty type = PREDEFINED_TYPES.get(value);
-		return (type != null) ? type : new DefaultTypeProperty(value);
+		SimpleProperty type = PREDEFINED_TYPES.get(value);
+		if (type != null) {
+			return type;
+		}
+		return new DefaultSimpleProperty(DublinCore.TYPE, value);
 	}
 }

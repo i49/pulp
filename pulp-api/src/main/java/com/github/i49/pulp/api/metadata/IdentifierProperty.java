@@ -24,7 +24,7 @@ import java.util.Optional;
  * 
  * @see <a href="http://dublincore.org/documents/dces/#identifier">Dublin Core Metadata Element Set, Version 1.1</a> 
  */
-public interface IdentifierProperty extends Property<String> {
+public interface IdentifierProperty extends TypedProperty<String> {
 
 	/**
 	 * Returns the scheme used for this identifier.

@@ -54,7 +54,7 @@ public class MetadataTest {
 	public void add_shouldAddFirstProperty() {
 		Creator p = f.newCreator("John Smith");
 		assertThat(m.add(p)).isTrue();
-		List<Property<?>> list = m.getList(DublinCore.CREATOR);
+		List<Property> list = m.getList(DublinCore.CREATOR);
 		assertThat(list).hasSize(1);
 		assertThat(list).contains(p);
 	}
@@ -63,7 +63,7 @@ public class MetadataTest {
 	public void add_shouldAddSecondProprety() {
 		Title p = f.newTitle("The Catcher in the Rye");
 		assertThat(m.add(p)).isTrue();
-		List<Property<?>> list = m.getList(DublinCore.TITLE);
+		List<Property> list = m.getList(DublinCore.TITLE);
 		assertThat(list).hasSize(1);
 		assertThat(list).contains(p);
 	}
@@ -73,7 +73,7 @@ public class MetadataTest {
 		Creator p = f.newCreator("John Smith");
 		assertThat(m.add(p)).isTrue();
 		assertThat(m.add(p)).isFalse();
-		List<Property<?>> list = m.getList(DublinCore.CREATOR);
+		List<Property> list = m.getList(DublinCore.CREATOR);
 		assertThat(list).hasSize(1);
 		assertThat(list).contains(p);
 	}
@@ -143,7 +143,7 @@ public class MetadataTest {
 	@Test
 	public void get_shouldReturnPropertyIfExists() {
 		m.add(f.newTitle("Untitled"));
-		Property<?> p = m.get(DublinCore.TITLE);
+		Property p = m.get(DublinCore.TITLE);
 		assertThat(p).isNotNull();
 		assertThat(p.getTerm()).isSameAs(DublinCore.TITLE);
 		assertThat(p.getValueAsString()).isNotBlank();
@@ -161,21 +161,21 @@ public class MetadataTest {
 	
 	@Test
 	public void getAllProperties_shouldReturnEmptyIteratorByDefault() {
-		Iterator<Property<?>> it = m.getAllProperties();
+		Iterator<Property> it = m.getAllProperties();
 		assertThat(it).isEmpty();
 	}
 	
 	@Test
 	public void getAllPropreties_shouldReturnIteratorOverProperties() {
-		Property<?> p1 = f.newIdentifier();
-		Property<?> p2 = f.newTitle("title");
-		Property<?> p3 = f.newTitle("subtitle");
-		Property<?> p4 = f.newModified(OffsetDateTime.now());
+		Property p1 = f.newIdentifier();
+		Property p2 = f.newTitle("title");
+		Property p3 = f.newTitle("subtitle");
+		Property p4 = f.newModified(OffsetDateTime.now());
 		m.add(p1);
 		m.add(p2);
 		m.add(p3);
 		m.add(p4);
-		Iterator<Property<?>> it = m.getAllProperties();
+		Iterator<Property> it = m.getAllProperties();
 		assertThat(it).hasSize(4).contains(p1, p2, p3, p4);
 	}
 	
@@ -184,17 +184,17 @@ public class MetadataTest {
 	@Test
 	public void getList_shouldReturnNonEmptyListIfPropertyExists() {
 		m.add(f.newTitle("Untitled"));
-		List<Property<?>> list = m.getList(DublinCore.TITLE);
+		List<Property> list = m.getList(DublinCore.TITLE);
 		assertThat(list).isNotNull();
 		assertThat(list).hasSize(1);
-		Property<?> p = list.get(0);
+		Property p = list.get(0);
 		assertThat(p.getTerm()).isSameAs(DublinCore.TITLE);
 		assertThat(p.getValueAsString()).isNotBlank();
 	}
 	
 	@Test
 	public void getList_shouldReturnEmptyListIfPropertyDoesNotExit() {
-		List<Property<?>> list = m.getList(DublinCore.CREATOR);
+		List<Property> list = m.getList(DublinCore.CREATOR);
 		assertThat(list).isNotNull();
 		assertThat(list).hasSize(0);
 	}

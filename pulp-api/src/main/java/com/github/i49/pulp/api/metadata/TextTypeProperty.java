@@ -22,7 +22,7 @@ import java.util.Optional;
 /**
  * A metadata property that has a human-readable text as its value.
  */
-public interface TextTypeProperty extends Property {
+public interface TextTypeProperty extends TypedProperty<String> {
 
 	/**
 	 * Returns the language of the text.

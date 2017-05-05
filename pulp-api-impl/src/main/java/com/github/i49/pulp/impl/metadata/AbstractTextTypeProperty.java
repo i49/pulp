@@ -26,7 +26,7 @@ import com.github.i49.pulp.api.metadata.TextTypeProperty;
 /**
  * A skeletal implementation of {@link TextTypeProperty}.
  */
-abstract class AbstractTextTypeProperty extends AbstractProperty implements TextTypeProperty {
+abstract class AbstractTextTypeProperty extends AbstractProperty<String> implements TextTypeProperty {
 	
 	private final String value;
 	private final Optional<Locale> language;

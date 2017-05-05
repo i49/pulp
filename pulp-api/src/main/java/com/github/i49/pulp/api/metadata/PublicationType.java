@@ -21,7 +21,7 @@ package com.github.i49.pulp.api.metadata;
  * 
  * @see TypeProperty
  */
-public enum PublicationType implements TypeProperty {
+public enum PublicationType implements SimpleProperty {
 	
 	/** Identifies that the EPUB Publication represents a dictionary. */
 	DICTIONARY("dictionary"),

@@ -24,7 +24,7 @@ import com.github.i49.pulp.api.metadata.Source;
 /**
  * The default implementation of {@link Source} property.
  */
-class DefaultSource extends AbstractProperty implements Source {
+class DefaultSource extends AbstractProperty<String> implements Source {
 
 	private final String value;
 	private final Optional<String> scheme;

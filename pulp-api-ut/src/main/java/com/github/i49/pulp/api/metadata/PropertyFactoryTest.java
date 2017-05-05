@@ -221,7 +221,7 @@ public class PropertyFactoryTest {
 	@Test
 	public void newFormat_shouldCreateFormat() {
 		String value = "application/epub+zip";
-		FormatProperty p = factory.newFormat(value);
+		SimpleProperty p = factory.newFormat(value);
 		assertThat(p.getTerm()).isSameAs(DublinCore.FORMAT);
 		assertThat(p.getValue()).isEqualTo(value);
 	}
@@ -488,7 +488,7 @@ public class PropertyFactoryTest {
 	@Test
 	public void newType_shouldCreateType() {
 		String value = "logbook";
-		TypeProperty p = factory.newType(value);
+		SimpleProperty p = factory.newType(value);
 		assertThat(p.getTerm()).isSameAs(DublinCore.TYPE);
 		assertThat(p.getValue()).isEqualTo(value);
 	}
@@ -496,7 +496,7 @@ public class PropertyFactoryTest {
 	@Test
 	public void newType_shouldCreatePredefinedType() {
 		String value = "dictionary";
-		TypeProperty p = factory.newType(value);
+		SimpleProperty p = factory.newType(value);
 		assertThat(p).isSameAs(PublicationType.DICTIONARY);
 		assertThat(p.getTerm()).isSameAs(DublinCore.TYPE);
 		assertThat(p.getValue()).isEqualTo(value);

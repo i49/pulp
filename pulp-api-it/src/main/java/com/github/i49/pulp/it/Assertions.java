@@ -29,11 +29,11 @@ import com.github.i49.pulp.api.metadata.Property;
 
 public class Assertions {
 
-	public static PropertyAssert assertThat(Property<?> actual) {
+	public static PropertyAssert assertThat(Property actual) {
 		return new PropertyAssert(actual);
 	}
 
-	public static PropertyListAssert assertThat(List<Property<?>> actual) {
+	public static PropertyListAssert assertThat(List<Property> actual) {
 		return new PropertyListAssert(actual);
 	}
 	
@@ -50,16 +50,17 @@ public class Assertions {
 	private Assertions() {
 	}
 	
-	public static class PropertyAssert extends AbstractAssert<PropertyAssert, Property<?>> {
+	public static class PropertyAssert extends AbstractAssert<PropertyAssert, Property> {
 		
-		private PropertyAssert(Property<?> actual) {
+		private PropertyAssert(Property actual) {
 			super(actual, PropertyAssert.class);
 		}
 
 		public PropertyAssert hasValue(String value) {
 			isNotNull();
-			if (!actual.getValueAsString().equals(value)) {
-				failWithMessage("Expected property value to be <%s> but was <%s>", value, actual.getValue());
+			String actualValue = actual.getValueAsString();
+			if (!actualValue.equals(value)) {
+				failWithMessage("Expected property value to be <%s> but was <%s>", value, actualValue);
 			}
 			return this;
 		}
@@ -78,9 +79,9 @@ public class Assertions {
 		}
 	}
 	
-	public static class PropertyListAssert extends AbstractListAssert<PropertyListAssert, List<Property<?>>, Property<?>, PropertyAssert> {
+	public static class PropertyListAssert extends AbstractListAssert<PropertyListAssert, List<Property>, Property, PropertyAssert> {
 
-		private PropertyListAssert(List<Property<?>> actual) {
+		private PropertyListAssert(List<Property> actual) {
 			super(actual, PropertyListAssert.class);
 		}
 		
@@ -92,7 +93,7 @@ public class Assertions {
 		}
 		
 		@Override
-		protected PropertyAssert toAssert(Property<?> value, String description) {
+		protected PropertyAssert toAssert(Property value, String description) {
 			PropertyAssert assertion = new PropertyAssert(value);
 			return assertion;
 		}

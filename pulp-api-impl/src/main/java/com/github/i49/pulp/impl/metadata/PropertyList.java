@@ -25,9 +25,9 @@ import com.github.i49.pulp.api.metadata.Term;
 /**
  * The list containing homogeneous properties. 
  */
-class PropertyList extends AbstractList<Property<?>> {
+class PropertyList extends AbstractList<Property> {
 	
-	private final ArrayList<Property<?>> delegate = new ArrayList<>();
+	private final ArrayList<Property> delegate = new ArrayList<>();
 	private final Term term;
 	private final boolean multiple;
 	
@@ -43,7 +43,7 @@ class PropertyList extends AbstractList<Property<?>> {
 	}
 
 	@Override
-	public Property<?> get(int index) {
+	public Property get(int index) {
 		return delegate.get(index);
 	}
 
@@ -53,13 +53,13 @@ class PropertyList extends AbstractList<Property<?>> {
 	}
 	
 	@Override
-	public Property<?> set(int index, Property<?> element) {
+	public Property set(int index, Property element) {
 		validate(element);
 		return delegate.set(index, element);
 	}
 
 	@Override
-	public void add(int index, Property<?> element) {
+	public void add(int index, Property element) {
 		validate(element);
 		if (!this.multiple && size() >= 1) {
 			throw new IllegalStateException("Cannot add more than one property for this term.");
@@ -68,11 +68,11 @@ class PropertyList extends AbstractList<Property<?>> {
 	}
 
 	@Override
-	public Property<?> remove(int index) {
+	public Property remove(int index) {
 		return delegate.remove(index);
 	}
 
-	private void validate(Property<?> element) {
+	private void validate(Property element) {
 		if (element == null) {
 			throw new NullPointerException("Property must not be null.");
 		} else if (element.getTerm() != this.term) {

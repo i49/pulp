@@ -16,27 +16,37 @@
 
 package com.github.i49.pulp.api.metadata;
 
-import java.util.Optional;
-
 /**
- * A related resource from which the described resource is derived.
+ * A metadata property which holds a typed value. 
  * 
- * @see <a href="http://dublincore.org/documents/dces/#source">Dublin Core Metadata Element Set, Version 1.1</a> 
+ * @param <V> the type of the property value.
  */
-public interface Source extends TypedProperty<String> {
-
+public interface TypedProperty<V> extends Property {
+	
+	/**
+	 * Returns the value of this property.
+	 * 
+	 * @return the value of this property.
+	 */
+	V getValue();
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	default Term getTerm() {
-		return DublinCore.SOURCE;
+	default String getValueAsString() {
+		return getValue().toString();
 	}
 	
 	/**
-	 * Returns the scheme used for describing this source.
+	 * Assigns a new value to this property.
 	 * 
-	 * @return the scheme used for describing this source.
+	 * @param value the value to assign.
+	 * @return this property.
+	 * @throws IllegalArgumentException if {@code value} is invalid.
+	 * @throws UnsupportedOperationException if this property is immutable.
 	 */
-	Optional<String> getScheme();
+	default TypedProperty<V> setValue(V value) {
+		throw new UnsupportedOperationException();
+	}
 }

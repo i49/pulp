@@ -35,21 +35,21 @@ public class MetadataLoaderTest {
 			MetadataLoader loader = MetadataLoader.from(s);
 			loader.load(m);
 		}
-		List<Property<?>> list = m.getList(DublinCore.IDENTIFIER);
+		List<Property> list = m.getList(DublinCore.IDENTIFIER);
 		assertThat(list).hasSize(1);
-		assertThat(list.get(0).getValue()).isEqualTo("idpf.epub31.samples.moby-dick.xhtml");
+		assertThat(list.get(0).getValueAsString()).isEqualTo("idpf.epub31.samples.moby-dick.xhtml");
 		list = m.getList(DublinCore.TITLE);
 		assertThat(list).hasSize(1);
-		assertThat(list.get(0).getValue()).isEqualTo("Moby-Dick");
+		assertThat(list.get(0).getValueAsString()).isEqualTo("Moby-Dick");
 		list = m.getList(DublinCore.LANGUAGE);
 		assertThat(list).hasSize(1);
 		assertThat(list.get(0).getValueAsString()).isEqualTo("en-US");
 		list = m.getList(DublinCore.CREATOR);
 		assertThat(list).hasSize(1);
-		assertThat(list.get(0).getValue()).isEqualTo("Herman Melville");
+		assertThat(list.get(0).getValueAsString()).isEqualTo("Herman Melville");
 		list = m.getList(DublinCore.PUBLISHER);
 		assertThat(list).hasSize(1);
-		assertThat(list.get(0).getValue()).isEqualTo("Harper & Brothers, Publishers");
+		assertThat(list.get(0).getValueAsString()).isEqualTo("Harper & Brothers, Publishers");
 		list = m.getList(DublinCore.DATE);
 		assertThat(list).hasSize(1);
 		assertThat(((DateProperty)list.get(0)).getValue()).isEqualTo(OffsetDateTime.of(1851, 11, 14, 0, 0, 0, 0, ZoneOffset.UTC));

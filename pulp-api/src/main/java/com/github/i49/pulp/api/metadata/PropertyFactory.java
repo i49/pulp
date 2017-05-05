@@ -57,7 +57,7 @@ public interface PropertyFactory {
 	
 	/**
 	 * Creates an instance of generic property.
-	 * The type of the term must be {@link PropertyType#GENERIC}.
+	 * Please note that The type of the term must be {@link PropertyType#GENERIC}.
 	 * 
 	 * @param term the term of the property.
 	 * @param value the value of the property.
@@ -204,13 +204,13 @@ public interface PropertyFactory {
 	Description newDescription(String text, Locale language, Direction direction);
 	
 	/**
-	 * Creates an instance of {@link FormatProperty} property.
+	 * Creates an instance of {@link DublinCore#FORMAT}.
 	 * 
 	 * @param value the value representing the format.
-	 * @return newly created {@link FormatProperty}.
-	 * @throws IllegalArgumentException if {@code format} was invalid.
+	 * @return newly created property.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	FormatProperty newFormat(String value);
+	SimpleProperty newFormat(String value);
 	
 	/**
 	 * Creates an instance of {@link IdentifierProperty} property by generating a random UUID.
@@ -407,14 +407,14 @@ public interface PropertyFactory {
 	Title newTitle(String value, Locale language);
 
 	/**
-	 * Creates an instance of {@link TypeProperty} property.
+	 * Creates an instance of {@link DublinCore#TYPE}.
 	 * <p>
 	 * The members of {@link PublicationType} are also available as instances.
 	 * </p>
 	 * 
 	 * @param value the value representing the type.
-	 * @return newly created {@link TypeProperty}.
+	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	TypeProperty newType(String value);
+	SimpleProperty newType(String value);
 }

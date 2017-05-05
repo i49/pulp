@@ -24,7 +24,7 @@ import java.util.Set;
 /**
  * A set of meta information describing a EPUB publication and its renditions.
  */
-public interface Metadata extends Iterable<Property<?>> {
+public interface Metadata extends Iterable<Property> {
 
 	/**
 	 * Adds the specified property to this metadata if it is not already present.
@@ -39,7 +39,7 @@ public interface Metadata extends Iterable<Property<?>> {
 	 * @throws IllegalArgumentException if {@code property} is {@code null}.
 	 * @throws IllegalStateException if the maximum number of properties were already added.
 	 */
-	boolean add(Property<?> property);
+	boolean add(Property property);
 
 	/**
 	 * Clears all properties in this metadata.
@@ -84,14 +84,14 @@ public interface Metadata extends Iterable<Property<?>> {
 	 * @throws IllegalArgumentException if {@code term} is {@code null}.
 	 * @throws NoSuchElementException if this metadata does not contain any properties of the specific term.
 	 */
-	Property<?> get(Term term);
+	Property get(Term term);
 	
 	/**
 	 * Returns all properties in this metadata.
 	 * 
 	 * @return an iterator over all properties in this metadata.
 	 */
-	Iterator<Property<?>> getAllProperties();
+	Iterator<Property> getAllProperties();
 	
 	/**
 	 * Returns the total number of the properties contained in this metadata.
@@ -138,7 +138,7 @@ public interface Metadata extends Iterable<Property<?>> {
 	 * @return the list of the properties contained in this metadata, never be {@code null}.
 	 * @throws IllegalArgumentException if {@code term} is {@code null}.
 	 */
-	List<Property<?>> getList(Term term);
+	List<Property> getList(Term term);
 	
 	/**
 	 * Checks if this metadata contains all required properties.
@@ -154,7 +154,7 @@ public interface Metadata extends Iterable<Property<?>> {
 	 * @return an iterator over the properties.
 	 */
 	@Override
-	default Iterator<Property<?>> iterator() {
+	default Iterator<Property> iterator() {
 		return getAllProperties();
 	}
 	
@@ -170,5 +170,5 @@ public interface Metadata extends Iterable<Property<?>> {
 	 * @return {@code true} if this metadata contained the specified property.
 	 * @throws IllegalArgumentException if {@code property} is {@code null}.
 	 */
-	boolean remove(Property<?> property);
+	boolean remove(Property property);
 }

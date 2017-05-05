@@ -26,7 +26,7 @@ import com.github.i49.pulp.api.metadata.SubjectAuthority;
 /**
  * The default implementation of {@link Subject} property.
  */
-class DefaultSubject extends AbstractProperty implements Subject {
+class DefaultSubject extends AbstractProperty<String> implements Subject {
 
 	private final String value;
 	private final Optional<SubjectAuthority> authority;

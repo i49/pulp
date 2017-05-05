@@ -24,7 +24,7 @@ import java.util.Optional;
  * 
  * @see <a href="http://dublincore.org/documents/dces/#subject">Dublin Core Metadata Element Set, Version 1.1</a> 
  */
-public interface Subject extends Property {
+public interface Subject extends TypedProperty<String> {
 	
 	/**
 	 * {@inheritDoc}

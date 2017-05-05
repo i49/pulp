@@ -144,7 +144,7 @@ class MetadataParser3 implements MetadataParser {
 	 * @param entry a child of the metadata element.
 	 * @return added property.
 	 */
-	protected Property<?> parseDublinCoreElement(MetadataEntry entry) {
+	protected Property parseDublinCoreElement(MetadataEntry entry) {
 		String localName = entry.getElement().getLocalName();
 		
 		switch (localName) {
@@ -182,13 +182,13 @@ class MetadataParser3 implements MetadataParser {
 		throw new EpubException(Messages.METADATA_DC_ELEMENT_UNKNOWN(localName));
 	}
 	
-	protected Property<?> parseMetaElement(MetadataEntry entry) {
+	protected Property parseMetaElement(MetadataEntry entry) {
 		String name = entry.getElement().getAttribute("property");
-		Property<?> p = parseMetaElement(entry, name);
+		Property p = parseMetaElement(entry, name);
 		return p;
 	}
 	
-	protected Property<?> parseMetaElement(MetadataEntry entry, String name) {
+	protected Property parseMetaElement(MetadataEntry entry, String name) {
 		String[] parts = name.split(":", 2);
 		String prefix = null;
 		String localName = null;
@@ -226,40 +226,40 @@ class MetadataParser3 implements MetadataParser {
 		return vocabulary;
 	}
 	
-	protected Property<?> parseContributor(MetadataEntry entry) {
+	protected Property parseContributor(MetadataEntry entry) {
 		Relator.Builder<Contributor> b = factory.getContributorBuilder(entry.getValue());
-		Property<?> p = buildRelator(b, entry);
+		Property p = buildRelator(b, entry);
 		return append(p);
 	}
 
-	protected Property<?> parseCoverage(MetadataEntry entry) {
-		Property<?> p = factory.newCoverage(entry.getValue());
+	protected Property parseCoverage(MetadataEntry entry) {
+		Property p = factory.newCoverage(entry.getValue());
 		return append(p);
 	}
 
-	protected Property<?> parseCreator(MetadataEntry entry) {
+	protected Property parseCreator(MetadataEntry entry) {
 		Relator.Builder<Creator> b = factory.getCreatorBuilder(entry.getValue());
-		Property<?> p = buildRelator(b, entry);
+		Property p = buildRelator(b, entry);
 		return append(p);
 	}
 
-	protected Property<?> parseDate(MetadataEntry entry) {
+	protected Property parseDate(MetadataEntry entry) {
 		OffsetDateTime dateTime = convertDateTime(entry.getValue());
-		Property<?> p = factory.newDate(dateTime);
+		Property p = factory.newDate(dateTime);
 		return append(p);
 	}
 
-	protected Property<?> parseDescription(MetadataEntry entry) {
-		Property<?> p = factory.newDescription(entry.getValue());
+	protected Property parseDescription(MetadataEntry entry) {
+		Property p = factory.newDescription(entry.getValue());
 		return append(p);
 	}
 
-	protected Property<?> parseFormat(MetadataEntry entry) {
-		Property<?> p = factory.newFormat(entry.getValue());
+	protected Property parseFormat(MetadataEntry entry) {
+		Property p = factory.newFormat(entry.getValue());
 		return append(p);
 	}
 	
-	protected Property<?> parseIdentifier(MetadataEntry entry) {
+	protected Property parseIdentifier(MetadataEntry entry) {
 		IdentifierProperty p = factory.newIdentifier(entry.getValue());
 		if (entry.hasId(this.uniqueIdentifier)) {
 			prepend(p);
@@ -269,64 +269,64 @@ class MetadataParser3 implements MetadataParser {
 		return p;
 	}
 
-	protected Property<?> parseLanguage(MetadataEntry entry) {
+	protected Property parseLanguage(MetadataEntry entry) {
 		LanguageProperty p = factory.newLanguage(entry.getValue());
 		return append(p);
 	}
 
-	protected Property<?> parsePublisher(MetadataEntry entry) {
+	protected Property parsePublisher(MetadataEntry entry) {
 		Relator.Builder<Publisher> b = factory.getPublisherBuilder(entry.getValue());
-		Property<?> p = buildRelator(b, entry);
+		Property p = buildRelator(b, entry);
 		return append(p);
 	}
 
-	protected Property<?> parseRelation(MetadataEntry entry) {
-		Property<?> p = factory.newRelation(entry.getValue());
+	protected Property parseRelation(MetadataEntry entry) {
+		Property p = factory.newRelation(entry.getValue());
 		return append(p);
 	}
 
-	protected Property<?> parseRights(MetadataEntry entry) {
-		Property<?> p = factory.newRights(entry.getValue());
+	protected Property parseRights(MetadataEntry entry) {
+		Property p = factory.newRights(entry.getValue());
 		return append(p);
 	}
 
-	protected Property<?> parseSource(MetadataEntry entry) {
-		Property<?> p = factory.newSource(entry.getValue());
+	protected Property parseSource(MetadataEntry entry) {
+		Property p = factory.newSource(entry.getValue());
 		return append(p);
 	}
 
-	protected Property<?> parseSubject(MetadataEntry entry) {
-		Property<?> p = factory.newSubject(entry.getValue());
+	protected Property parseSubject(MetadataEntry entry) {
+		Property p = factory.newSubject(entry.getValue());
 		return append(p);
 	}
 	
-	protected Property<?> parseTitle(MetadataEntry entry) {
-		Property<?> p = factory.newTitle(entry.getValue());
+	protected Property parseTitle(MetadataEntry entry) {
+		Property p = factory.newTitle(entry.getValue());
 		return append(p);
 	}
 
-	protected Property<?> parseType(MetadataEntry entry) {
-		Property<?> p = factory.newType(entry.getValue());
+	protected Property parseType(MetadataEntry entry) {
+		Property p = factory.newType(entry.getValue());
 		return append(p);
 	}
 	
-	protected Property<?> parseModified(MetadataEntry entry) {
+	protected Property parseModified(MetadataEntry entry) {
 		OffsetDateTime dateTime = convertDateTime(entry.getValue());
 		DateProperty p = factory.newModified(dateTime);
 		return append(p);
 	}
 	
-	protected Property<?> parseGenericProperty(MetadataEntry entry, Term term) {
+	protected Property parseGenericProperty(MetadataEntry entry, Term term) {
 		GenericProperty<String> p = factory.createGenericProperty(term, entry.getValue());
 		return append(p);
 	}
 	
-	private Property<?> prepend(Property<?> p) {
+	private Property prepend(Property p) {
 		this.metadata.getList(p.getTerm()).add(0, p);
 		return p;
 	}
 	
-	private Property<?> append(Property<?> p) {
+	private Property append(Property p) {
 		this.metadata.add(p);
 		return p;
 	}

@@ -18,11 +18,14 @@ package com.github.i49.pulp.impl.metadata;
 
 import com.github.i49.pulp.api.metadata.Property;
 import com.github.i49.pulp.api.metadata.Term;
+import com.github.i49.pulp.api.metadata.TypedProperty;
 
 /**
  * A skeletal implementation of {@link Property}.
+ * 
+ * @param <V> the type of the property value.
  */
-abstract class AbstractProperty<V> implements Property<V> {
+abstract class AbstractProperty<V> implements TypedProperty<V> {
 
 	private final Term term;
 	

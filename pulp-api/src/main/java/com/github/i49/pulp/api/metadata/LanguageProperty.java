@@ -21,7 +21,7 @@ import java.util.Locale;
 /**
  * The language of the content of the given rendition.
  */
-public interface LanguageProperty extends Property<Locale> {
+public interface LanguageProperty extends TypedProperty<Locale> {
 
 	/**
 	 * {@inheritDoc}

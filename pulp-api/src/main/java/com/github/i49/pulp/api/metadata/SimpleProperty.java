@@ -17,9 +17,7 @@
 package com.github.i49.pulp.api.metadata;
 
 /**
- * The file format, physical medium, or dimensions of the resource.
- * 
- * @see <a href="http://dublincore.org/documents/dces/#format">Dublin Core Metadata Element Set, Version 1.1</a> 
+ * Simple string-type property.
  */
-public interface FormatProperty extends Property<String> {
+public interface SimpleProperty extends TypedProperty<String> {
 }

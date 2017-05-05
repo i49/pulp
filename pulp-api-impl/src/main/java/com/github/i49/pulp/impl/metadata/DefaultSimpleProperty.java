@@ -16,18 +16,20 @@
 
 package com.github.i49.pulp.impl.metadata;
 
-import com.github.i49.pulp.api.metadata.DublinCore;
-import com.github.i49.pulp.api.metadata.TypeProperty;
+import static com.github.i49.pulp.impl.base.Preconditions.*;
+
+import com.github.i49.pulp.api.metadata.SimpleProperty;
+import com.github.i49.pulp.api.metadata.Term;
 
 /**
- * The default implementation of {@link TypeProperty}.
+ * The default implementation of {@link SimpleProperty}.
  */
-class DefaultTypeProperty extends AbstractProperty<String> implements TypeProperty {
+class DefaultSimpleProperty extends AbstractProperty<String> implements SimpleProperty {
 
-	private final String value;
-
-	public DefaultTypeProperty(String value) {
-		super(DublinCore.TYPE);
+	private String value;
+	
+	DefaultSimpleProperty(Term term, String value) {
+		super(term);
 		assert(value != null);
 		this.value = value.trim();
 	}
@@ -35,5 +37,12 @@ class DefaultTypeProperty extends AbstractProperty<String> implements TypeProper
 	@Override
 	public String getValue() {
 		return value;
+	}
+	
+	@Override
+	public DefaultSimpleProperty setValue(String value) {
+		checkNotBlank(value, "value");
+		this.value = value.trim();
+		return this;
 	}
 }
