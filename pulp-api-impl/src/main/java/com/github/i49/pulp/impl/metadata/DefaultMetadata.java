@@ -46,7 +46,7 @@ public class DefaultMetadata implements Metadata {
 	private final PropertyFactory propertyFactory;
 
 	// all properties categorized by terms.
-	private final ListMap<Term, Property> terms = new PropertyListMap();
+	private final ListMap<Term, Property<?>> terms = new PropertyListMap();
 	private final ReleaseIdentifier releaseIdentifier;
 
 	/**
@@ -59,9 +59,9 @@ public class DefaultMetadata implements Metadata {
 	}
 
 	@Override
-	public boolean add(Property property) {
+	public boolean add(Property<?> property) {
 		validate(property, "property");
-		List<Property> values = terms.getValues(property.getTerm());
+		List<Property<?>> values = terms.getValues(property.getTerm());
 		if (values.contains(property)) {
 			return false;
 		}
@@ -97,7 +97,7 @@ public class DefaultMetadata implements Metadata {
 	}
 	
 	@Override
-	public Property get(Term term) {
+	public Property<?> get(Term term) {
 		validate(term, "term");
 		if (!terms.containsKey(term)) {
 			throw new NoSuchElementException(Messages.METADATA_PROPERTY_NOT_FOUND(term));
@@ -106,7 +106,7 @@ public class DefaultMetadata implements Metadata {
 	}
 
 	@Override
-	public Iterator<Property> getAllProperties() {
+	public Iterator<Property<?>> getAllProperties() {
 		return terms.valueIterator();
 	}
 	
@@ -132,7 +132,7 @@ public class DefaultMetadata implements Metadata {
 	}
 	
 	@Override
-	public List<Property> getList(Term term) {
+	public List<Property<?>> getList(Term term) {
 		validate(term, "term");
 		return terms.getValues(term);
 	}
@@ -148,7 +148,7 @@ public class DefaultMetadata implements Metadata {
 	}
 	
 	@Override
-	public boolean remove(Property property) {
+	public boolean remove(Property<?> property) {
 		validate(property, "property");
 		Term term = property.getTerm();
 		if (terms.containsKey(term)) {
@@ -162,7 +162,7 @@ public class DefaultMetadata implements Metadata {
 		return propertyFactory;
 	}
 	
-	private void validate(Property property, String name) {
+	private void validate(Property<?> property, String name) {
 		checkNotNull(property, name);
 		Term term = property.getTerm();
 		if (!termRegistry.containsTerm(term)) {
@@ -179,10 +179,10 @@ public class DefaultMetadata implements Metadata {
 		}
 	}
 	
-	private static class PropertyListMap extends AbstractListMap<Term, Property> {
+	private static class PropertyListMap extends AbstractListMap<Term, Property<?>> {
 
 		@Override
-		protected List<Property> createList(Term term) {
+		protected List<Property<?>> createList(Term term) {
 			return new PropertyList(term, term.isRepeatable());
 		}
 	}

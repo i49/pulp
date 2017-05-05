@@ -17,6 +17,7 @@
 package com.github.i49.pulp.impl.metadata;
 
 import com.github.i49.pulp.api.metadata.Creator;
+import com.github.i49.pulp.api.metadata.DublinCore;
 import com.github.i49.pulp.api.metadata.Relator;
 
 /**
@@ -35,6 +36,6 @@ class DefaultCreator extends AbstractRelator<Creator> implements Creator {
 	}
 	
 	private DefaultCreator(DefaultRelatorBuilder<Creator> builder) {
-		super(builder);
+		super(DublinCore.CREATOR, builder);
 	}
 }

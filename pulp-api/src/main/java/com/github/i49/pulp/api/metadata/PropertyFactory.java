@@ -26,37 +26,48 @@ import java.util.Locale;
  * 
  * <p>The following properties can be instantiated via this interface.</p>
  * <ol>
- * <li>{@link Contributor}</li>
- * <li>{@link Coverage}</li>
- * <li>{@link Creator}</li>
- * <li>{@link Date}</li>
- * <li>{@link Description}</li>
- * <li>{@link Format}</li>
- * <li>{@link Identifier}</li>
- * <li>{@link Language}</li>
- * <li>{@link Publisher}</li>
- * <li>{@link Relation}</li>
- * <li>{@link Rights}</li>
- * <li>{@link Source}</li>
- * <li>{@link Subject}</li>
- * <li>{@link Title}</li>
- * <li>{@link Type}</li>
- * <li>{@link Modified}</li>
+ * <li>{@link DublinCore#CONTRIBUTOR}</li>
+ * <li>{@link DublinCore#COVERAGE}</li>
+ * <li>{@link DublinCore#CREATOR}</li>
+ * <li>{@link DublinCore#DATE}</li>
+ * <li>{@link DublinCore#DESCRIPTION}</li>
+ * <li>{@link DublinCore#FORMAT}</li>
+ * <li>{@link DublinCore#IDENTIFIER}</li>
+ * <li>{@link DublinCore#LANGUAGE}</li>
+ * <li>{@link DublinCore#PUBLISHER}</li>
+ * <li>{@link DublinCore#RELATION}</li>
+ * <li>{@link DublinCore#RIGHTS}</li>
+ * <li>{@link DublinCore#SOURCE}</li>
+ * <li>{@link DublinCore#SUBJECT}</li>
+ * <li>{@link DublinCore#TITLE}</li>
+ * <li>{@link DublinCore#TYPE}</li>
+ * <li>{@link DublinCoreTerm#MODIFIED}</li>
  * </ol>
  */
 public interface PropertyFactory {
 	
 	/**
+	 * Creates an property of {@link DublinCore#DATE}.
+	 * 
+	 * @param value the publication date and time.
+	 * @return newly created property.
+	 * @throws IllegalArgumentException if {@code value} is {@code null}.
+	 */
+	DateProperty newDate(OffsetDateTime value);
+	
+	/**
 	 * Creates an instance of generic property.
-	 *  
+	 * The type of the term must be {@link PropertyType#GENERIC}.
+	 * 
 	 * @param term the term of the property.
 	 * @param value the value of the property.
+	 * @param <V> the type of the value.
 	 * @return newly created property.
 	 * @throws IllegalArgumentException if any parameter are {@code null} 
 	 * or the type of the term does not match the type of the property to create.
 	 * The proper type of the term can be obtained by {@link Term#getType()}.  
 	 */
-	GenericProperty createGenericProperty(Term term, String value);
+	<V> GenericProperty<V> createGenericProperty(Term term, V value);
 	
 	/**
 	 * Creates a builder to build an instance of {@link Contributor} property.
@@ -163,15 +174,6 @@ public interface PropertyFactory {
 	Creator newCreator(String name, Locale language);
 	
 	/**
-	 * Creates an instance of {@link Date} property.
-	 * 
-	 * @param dateTime the publication date and time.
-	 * @return newly created {@link Date}.
-	 * @throws IllegalArgumentException if {@code dateTime} is {@code null}.
-	 */
-	Date newDate(OffsetDateTime dateTime);
-
-	/**
 	 * Creates an instance of {@link Description} property.
 	 * 
 	 * @param text the description of the rendition.
@@ -202,79 +204,59 @@ public interface PropertyFactory {
 	Description newDescription(String text, Locale language, Direction direction);
 	
 	/**
-	 * Creates an instance of {@link Format} property.
+	 * Creates an instance of {@link FormatProperty} property.
 	 * 
 	 * @param value the value representing the format.
-	 * @return newly created {@link Format}.
+	 * @return newly created {@link FormatProperty}.
 	 * @throws IllegalArgumentException if {@code format} was invalid.
 	 */
-	Format newFormat(String value);
+	FormatProperty newFormat(String value);
 	
 	/**
-	 * Creates an instance of {@link Identifier} property by generating a random UUID.
+	 * Creates an instance of {@link IdentifierProperty} property by generating a random UUID.
 	 * 
-	 * @return newly created {@link Identifier}.
+	 * @return newly created {@link IdentifierProperty}.
 	 */
-	Identifier newIdentifier();
+	IdentifierProperty newIdentifier();
 
 	/**
-	 * Creates an instance of {@link Identifier} property.
+	 * Creates an instance of {@link IdentifierProperty} property.
 	 * 
 	 * @param value the value of the identifier.
-	 * @return newly created {@link Identifier}.
+	 * @return newly created {@link IdentifierProperty}.
 	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	Identifier newIdentifier(String value);
+	IdentifierProperty newIdentifier(String value);
 
 	/**
-	 * Creates an instance of {@link Identifier} property with a explicit scheme.
-	 * 
-	 * @param value the value of the identifier.
-	 * @param scheme the scheme used for the identifier.
-	 * @return newly created {@link Identifier}.
-	 * @throws IllegalArgumentException if one of arguments was invalid.
-	 */
-	Identifier newIdentifier(String value, IdentifierScheme scheme);
-
-	/**
-	 * Creates an instance of {@link Identifier} property with a explicit scheme specified by URI.
-	 * 
-	 * @param value the value of the identifier.
-	 * @param schemeURI the URI representing the scheme used for the identifier.
-	 * @return newly created {@link Identifier}.
-	 * @throws IllegalArgumentException if one of arguments was invalid.
-	 */
-	Identifier newIdentifier(String value, URI schemeURI);
-
-	/**
-	 * Creates an instance of {@link Language} property
+	 * Creates an instance of {@link LanguageProperty} property
 	 * for the specified IETF BCP 47 language tag string.
 	 * 
 	 * @param languageTag the language tag defined in IETF BCP 47, such as "en-US".
-	 * @return newly created {@link Language}.
+	 * @return newly created {@link LanguageProperty}.
 	 * @throws IllegalArgumentException if {@code languageTag} was {@code null}.
 	 * @throws IllformedLocaleException if {@code languageTag} was ill-formed.
 	 * @see <a href="http://www.ietf.org/rfc/bcp/bcp47.txt">Tags for Identifying Languages; Matching of Language Tags.</a>
 	 */
-	Language newLanguage(String languageTag);
+	LanguageProperty newLanguage(String languageTag);
 	
 	/**
-	 * Creates an instance of {@link Language} property.
+	 * Creates an instance of {@link LanguageProperty} property.
 	 * 
 	 * @param language the value of the language.
-	 * @return newly created {@link Language}.
+	 * @return newly created {@link LanguageProperty}.
 	 * @throws IllegalArgumentException if {@code language} was invalid.
 	 */
-	Language newLanguage(Locale language);
+	LanguageProperty newLanguage(Locale language);
 	
 	/**
-	 * Creates an instance of {@link Modified} property.
+	 * Creates an property of {@link DublinCoreTerm#MODIFIED}.
 	 * 
-	 * @param dateTime the last modification date and time of the publication.
-	 * @return newly created {@link Modified}.
-	 * @throws IllegalArgumentException if {@code dateTime} is {@code null}.
+	 * @param value the last modification date and time of the publication.
+	 * @return newly created property.
+	 * @throws IllegalArgumentException if {@code value} is {@code null}.
 	 */
-	Modified newModified(OffsetDateTime dateTime);
+	DateProperty newModified(OffsetDateTime value);
 	
 	/**
 	 * Creates an instance of {@link Publisher} property.
@@ -425,14 +407,14 @@ public interface PropertyFactory {
 	Title newTitle(String value, Locale language);
 
 	/**
-	 * Creates an instance of {@link Type} property.
+	 * Creates an instance of {@link TypeProperty} property.
 	 * <p>
 	 * The members of {@link PublicationType} are also available as instances.
 	 * </p>
 	 * 
 	 * @param value the value representing the type.
-	 * @return newly created {@link Type}.
+	 * @return newly created {@link TypeProperty}.
 	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	Type newType(String value);
+	TypeProperty newType(String value);
 }

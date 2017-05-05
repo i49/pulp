@@ -17,16 +17,9 @@
 package com.github.i49.pulp.api.metadata;
 
 /**
- * The last modification date of the EPUB Publication. 
- * This type represents {@link DublinCoreTerm#MODIFIED}.
+ * The file format, physical medium, or dimensions of the resource.
+ * 
+ * @see <a href="http://dublincore.org/documents/dces/#format">Dublin Core Metadata Element Set, Version 1.1</a> 
  */
-public interface Modified extends DateTypeProperty {
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	default Term getTerm() {
-		return DublinCoreTerm.MODIFIED;
-	}
+public interface FormatProperty extends Property<String> {
 }

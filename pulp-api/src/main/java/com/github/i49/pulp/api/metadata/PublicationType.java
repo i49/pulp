@@ -17,11 +17,11 @@
 package com.github.i49.pulp.api.metadata;
 
 /**
- * The publication types predefined for the {@link Type} property in metadata.
+ * The publication types predefined for the {@link TypeProperty} property in metadata.
  * 
- * @see Type
+ * @see TypeProperty
  */
-public enum PublicationType implements Type {
+public enum PublicationType implements TypeProperty {
 	
 	/** Identifies that the EPUB Publication represents a dictionary. */
 	DICTIONARY("dictionary"),
@@ -50,6 +50,14 @@ public enum PublicationType implements Type {
 	 */
 	private PublicationType(String value) {
 		this.value = value;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Term getTerm() {
+		return DublinCore.TYPE;
 	}
 	
 	/**

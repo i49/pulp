@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.api.metadata;
+package com.github.i49.pulp.impl.metadata;
 
-import java.util.Locale;
+import com.github.i49.pulp.api.metadata.DublinCore;
+import com.github.i49.pulp.api.metadata.TypeProperty;
 
 /**
- * The language of the content of the given rendition.
+ * The default implementation of {@link TypeProperty}.
  */
-public interface Language extends Property {
+class DefaultTypeProperty extends AbstractProperty<String> implements TypeProperty {
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	default Term getTerm() {
-		return DublinCore.LANGUAGE;
+	private final String value;
+
+	public DefaultTypeProperty(String value) {
+		super(DublinCore.TYPE);
+		assert(value != null);
+		this.value = value.trim();
 	}
-	
-	/**
-	 * Returns the language as an instance of {@link Locale}.
-	 * @return the language.
-	 */
-	Locale getLanguage();
+
+	@Override
+	public String getValue() {
+		return value;
+	}
 }

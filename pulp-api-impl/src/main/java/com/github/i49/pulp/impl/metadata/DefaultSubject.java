@@ -19,6 +19,7 @@ package com.github.i49.pulp.impl.metadata;
 import java.net.URI;
 import java.util.Optional;
 
+import com.github.i49.pulp.api.metadata.DublinCore;
 import com.github.i49.pulp.api.metadata.Subject;
 import com.github.i49.pulp.api.metadata.SubjectAuthority;
 
@@ -33,6 +34,7 @@ class DefaultSubject extends AbstractProperty implements Subject {
 	private final Optional<String> code;
 	
 	public DefaultSubject(String value) {
+		super(DublinCore.SUBJECT);
 		assert(value != null);
 		this.value = value.trim();
 		this.authority = Optional.empty();
@@ -41,6 +43,7 @@ class DefaultSubject extends AbstractProperty implements Subject {
 	}
 
 	public DefaultSubject(String value, SubjectAuthority authority, String code) {
+		super(DublinCore.SUBJECT);
 		assert(value != null && authority != null && code != null);
 		this.value = value.trim();
 		this.authority = Optional.of(authority);
@@ -49,6 +52,7 @@ class DefaultSubject extends AbstractProperty implements Subject {
 	}
 
 	public DefaultSubject(String value, URI scheme, String code) {
+		super(DublinCore.SUBJECT);
 		assert(value != null && scheme != null && code != null);
 		this.value = value.trim();
 		this.authority = Optional.empty();

@@ -21,7 +21,7 @@ import java.util.Optional;
 /**
  * A property composing the metadata for the given rendition.
  */
-public interface Property {
+public interface Property<V> {
 
 	/**
 	 * Returns the term of this property.
@@ -44,7 +44,16 @@ public interface Property {
 	 * 
 	 * @return the value of this property.
 	 */
-	String getValue();
+	V getValue();
+	
+	/**
+	 * Returns the value of this property as string.
+	 * 
+	 * @return the string representation of the property value.
+	 */
+	default String getValueAsString() {
+		return getValue().toString();
+	}
 	
 	/**
 	 * Returns the normalized form of the value of this property.
@@ -54,6 +63,18 @@ public interface Property {
 	 */
 	default Optional<String> getNormalizedValue() {
 		return Optional.empty();
+	}
+	
+	/**
+	 * Assigns a new value to this property.
+	 * 
+	 * @param value the value to assign.
+	 * @return this property.
+	 * @throws IllegalArgumentException if {@code value} is invalid.
+	 * @throws UnsupportedOperationException if this property is immutable.
+	 */
+	default Property<V> setValue(V value) {
+		throw new UnsupportedOperationException();
 	}
 	
 	/**

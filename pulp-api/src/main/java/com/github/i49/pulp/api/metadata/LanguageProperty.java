@@ -14,24 +14,18 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.impl.metadata;
+package com.github.i49.pulp.api.metadata;
 
-import com.github.i49.pulp.api.metadata.Type;
+import java.util.Locale;
 
 /**
- * The default implementation of {@link Type} property.
+ * The language of the content of the given rendition.
  */
-class DefaultType extends AbstractProperty implements Type {
+public interface LanguageProperty extends Property<Locale> {
 
-	private final String value;
-
-	public DefaultType(String value) {
-		assert(value != null);
-		this.value = value.trim();
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public String getValue() {
-		return value;
-	}
+	LanguageProperty setValue(Locale value);
 }

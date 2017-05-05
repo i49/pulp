@@ -20,6 +20,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 import com.github.i49.pulp.api.metadata.Direction;
+import com.github.i49.pulp.api.metadata.Term;
 import com.github.i49.pulp.api.metadata.TextTypeProperty;
 
 /**
@@ -31,14 +32,16 @@ abstract class AbstractTextTypeProperty extends AbstractProperty implements Text
 	private final Optional<Locale> language;
 	private final Optional<Direction> direction;
 	
-	protected AbstractTextTypeProperty(String value, Optional<Locale> language, Optional<Direction> direction) {
+	protected AbstractTextTypeProperty(Term term, String value, Optional<Locale> language, Optional<Direction> direction) {
+		super(term);
 		assert(value != null);
 		this.value = value.trim();
 		this.language = language;
 		this.direction = direction;
 	}
 	
-	protected AbstractTextTypeProperty(AbstractPropertyBuilder<?, ?> builder) {
+	protected AbstractTextTypeProperty(Term term, AbstractPropertyBuilder<?, ?> builder) {
+		super(term);
 		this.value = builder.getValue();
 		this.language = builder.getLanguage();
 		this.direction = builder.getDirection();

@@ -17,6 +17,7 @@
 package com.github.i49.pulp.impl.metadata;
 
 import com.github.i49.pulp.api.metadata.Contributor;
+import com.github.i49.pulp.api.metadata.DublinCore;
 import com.github.i49.pulp.api.metadata.Relator;
 
 /**
@@ -35,6 +36,6 @@ class DefaultContributor extends AbstractRelator<Contributor> implements Contrib
 	}
 	
 	private DefaultContributor(DefaultRelatorBuilder<Contributor> builder) {
-		super(builder);
+		super(DublinCore.CONTRIBUTOR, builder);
 	}
 }

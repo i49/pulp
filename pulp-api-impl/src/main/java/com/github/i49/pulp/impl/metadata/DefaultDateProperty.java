@@ -16,34 +16,45 @@
 
 package com.github.i49.pulp.impl.metadata;
 
+import static com.github.i49.pulp.impl.base.Preconditions.*;
+
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
-import com.github.i49.pulp.api.metadata.DateTypeProperty;
+import com.github.i49.pulp.api.metadata.DateProperty;
+import com.github.i49.pulp.api.metadata.Term;
 
 /**
- * A skeletal implementation of {@link DateTypeProperty}.
+ * The default implementation of {@link DateProperty}.
  */
-abstract class AbstractDateTypeProperty extends AbstractProperty implements DateTypeProperty {
+class DefaultDateProperty extends AbstractProperty<OffsetDateTime> implements DateProperty {
 
 	private static final DateTimeFormatter ISO8601_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	
-	private final OffsetDateTime dateTime;
+	private OffsetDateTime value;
 	
-	protected AbstractDateTypeProperty(OffsetDateTime dateTime) {
-		assert(dateTime != null);
-		this.dateTime = dateTime;
+	DefaultDateProperty(Term term, OffsetDateTime value) {
+		super(term);
+		assert(value != null);
+		this.value = value;
 	}
 
 	@Override
-	public String getValue() {
-		OffsetDateTime utc = OffsetDateTime.ofInstant(getDateTime().toInstant(), ZoneOffset.UTC);
+	public OffsetDateTime getValue() {
+		return value;
+	}
+
+	@Override
+	public String getValueAsString() {
+		OffsetDateTime utc = OffsetDateTime.ofInstant(getValue().toInstant(), ZoneOffset.UTC);
 		return utc.format(ISO8601_FORMATTER);
 	}
 	
 	@Override
-	public OffsetDateTime getDateTime() {
-		return dateTime;
+	public DateProperty setValue(OffsetDateTime value) {
+		checkNotNull(value, "value");
+		this.value = value;
+		return this;
 	}
 }

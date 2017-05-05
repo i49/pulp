@@ -18,6 +18,7 @@ package com.github.i49.pulp.impl.metadata;
 
 import java.util.Optional;
 
+import com.github.i49.pulp.api.metadata.DublinCore;
 import com.github.i49.pulp.api.metadata.Source;
 
 /**
@@ -29,6 +30,7 @@ class DefaultSource extends AbstractProperty implements Source {
 	private final Optional<String> scheme;
 	
 	public DefaultSource(String value, Optional<String> scheme) {
+		super(DublinCore.SOURCE);
 		assert(value != null);
 		this.value = value.trim();
 		this.scheme = scheme;

@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import com.github.i49.pulp.api.metadata.Coverage;
 import com.github.i49.pulp.api.metadata.Direction;
+import com.github.i49.pulp.api.metadata.DublinCore;
 
 /**
  * The default implementation of {@link Coverage} property.
@@ -28,6 +29,6 @@ import com.github.i49.pulp.api.metadata.Direction;
 class DefaultCoverage extends AbstractTextTypeProperty implements Coverage {
 
 	public DefaultCoverage(String value, Optional<Locale> language, Optional<Direction> direction) {
-		super(value, language, direction);
+		super(DublinCore.COVERAGE, value, language, direction);
 	}
 }

@@ -119,8 +119,8 @@ class PackageDocumentGenerator implements PackageDocumentProcessor {
 	
 	private void addIdentifiers(Element parent, Metadata metadata) {
 		boolean first = true;
-		for (Property p: metadata.getList(DublinCore.IDENTIFIER)) {
-			Element e = createMetadataEntry("dc:identifier", p.getValue());
+		for (Property<?> p: metadata.getList(DublinCore.IDENTIFIER)) {
+			Element e = createMetadataEntry("dc:identifier", p.getValueAsString());
 			if (first) {
 				first = false;
 				e.setAttribute("id", UNIQUE_IDENTIFIER);
@@ -130,51 +130,51 @@ class PackageDocumentGenerator implements PackageDocumentProcessor {
 	}
 	
 	private void addTitles(Element parent, Metadata metadata) {
-		for (Property p: metadata.getList(DublinCore.TITLE)) {
-			Element e = createMetadataEntry("dc:title", p.getValue());
+		for (Property<?> p: metadata.getList(DublinCore.TITLE)) {
+			Element e = createMetadataEntry("dc:title", p.getValueAsString());
 			parent.appendChild(e);
 		}
 	}
 
 	private void addLanguages(Element parent, Metadata metadata) {
-		for (Property p: metadata.getList(DublinCore.LANGUAGE)) {
-			Element e = createMetadataEntry("dc:language", p.getValue());
+		for (Property<?> p: metadata.getList(DublinCore.LANGUAGE)) {
+			Element e = createMetadataEntry("dc:language", p.getValueAsString());
 			parent.appendChild(e);
 		}
 	}
 	
 	private void addCreators(Element parent, Metadata metadata) {
-		for (Property p: metadata.getList(DublinCore.CREATOR)) {
-			Element e = createMetadataEntry("dc:creator", p.getValue());
+		for (Property<?> p: metadata.getList(DublinCore.CREATOR)) {
+			Element e = createMetadataEntry("dc:creator", p.getValueAsString());
 			parent.appendChild(e);
 		}
 	}
 
 	private void addContributors(Element parent, Metadata metadata) {
-		for (Property p: metadata.getList(DublinCore.CONTRIBUTOR)) {
-			Element e = createMetadataEntry("dc:contributor", p.getValue());
+		for (Property<?> p: metadata.getList(DublinCore.CONTRIBUTOR)) {
+			Element e = createMetadataEntry("dc:contributor", p.getValueAsString());
 			parent.appendChild(e);
 		}
 	}
 	
 	private void addPublishers(Element parent, Metadata metadata) {
-		for (Property p: metadata.getList(DublinCore.PUBLISHER)) {
-			Element e = createMetadataEntry("dc:publisher", p.getValue());
+		for (Property<?> p: metadata.getList(DublinCore.PUBLISHER)) {
+			Element e = createMetadataEntry("dc:publisher", p.getValueAsString());
 			parent.appendChild(e);
 		}
 	}
 	
 	private void addDate(Element parent, Metadata metadata) {
 		if (metadata.contains(DublinCore.DATE)) {
-			Property p = metadata.get(DublinCore.DATE);
-			Element e = createMetadataEntry("dc:date", p.getValue());
+			Property<?> p = metadata.get(DublinCore.DATE);
+			Element e = createMetadataEntry("dc:date", p.getValueAsString());
 			parent.appendChild(e);
 		}
 	}
 
 	private void addLastModified(Element parent, Metadata metadata) {
-		Property p = metadata.get(DublinCoreTerm.MODIFIED);
-		Element e = createMetadataEntry("meta", p.getValue());
+		Property<?> p = metadata.get(DublinCoreTerm.MODIFIED);
+		Element e = createMetadataEntry("meta", p.getValueAsString());
 		e.setAttribute("property", "dcterms:modified");
 		parent.appendChild(e);
 	}

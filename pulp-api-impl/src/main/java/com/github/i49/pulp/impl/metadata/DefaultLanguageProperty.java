@@ -16,29 +16,40 @@
 
 package com.github.i49.pulp.impl.metadata;
 
+import static com.github.i49.pulp.impl.base.Preconditions.checkNotNull;
+
 import java.util.Locale;
 
-import com.github.i49.pulp.api.metadata.Language;
+import com.github.i49.pulp.api.metadata.DublinCore;
+import com.github.i49.pulp.api.metadata.LanguageProperty;
 
 /**
- * The default implementation of {@link Language} property.
+ * The default implementation of {@link LanguageProperty} property.
  */
-class DefaultLanguage extends AbstractProperty implements Language {
+class DefaultLanguageProperty extends AbstractProperty<Locale> implements LanguageProperty {
 
-	private final Locale value;
+	private Locale value;
 	
-	public DefaultLanguage(Locale value) {
+	public DefaultLanguageProperty(Locale value) {
+		super(DublinCore.LANGUAGE);
 		assert(value != null);
 		this.value = value;
 	}
 
 	@Override
-	public String getValue() {
+	public Locale getValue() {
+		return value;
+	}
+
+	@Override
+	public String getValueAsString() {
 		return value.toLanguageTag();
 	}
 
 	@Override
-	public Locale getLanguage() {
-		return value;
+	public LanguageProperty setValue(Locale value) {
+		checkNotNull(value, "value");
+		this.value = value;
+		return this;
 	}
 }

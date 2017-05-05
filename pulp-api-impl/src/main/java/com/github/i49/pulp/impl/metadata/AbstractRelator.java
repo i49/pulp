@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import com.github.i49.pulp.api.metadata.Relator;
 import com.github.i49.pulp.api.metadata.Representation;
+import com.github.i49.pulp.api.metadata.Term;
 
 /**
  * A skeletal implementation of {@link Relator}.
@@ -35,8 +36,8 @@ abstract class AbstractRelator<P extends Relator> extends AbstractTextTypeProper
 	 * 
 	 * @param builder the builder for building an instance of this class.
 	 */
-	protected AbstractRelator(DefaultRelatorBuilder<P> builder) {
-		super(builder);
+	protected AbstractRelator(Term term, DefaultRelatorBuilder<P> builder) {
+		super(term, builder);
 		this.normalizedValue = builder.getNormalizedValue();
 		this.alternative = builder.getAlternative();
 		this.role = builder.getRole();
@@ -48,8 +49,8 @@ abstract class AbstractRelator<P extends Relator> extends AbstractTextTypeProper
 	 * @param builder the builder for building an instance of this class.
 	 * @param role the role of this relator.
 	 */
-	protected AbstractRelator(DefaultRelatorBuilder<P> builder, String role) {
-		super(builder);
+	protected AbstractRelator(Term term, DefaultRelatorBuilder<P> builder, String role) {
+		super(term, builder);
 		this.normalizedValue = builder.getNormalizedValue();
 		this.alternative = builder.getAlternative();
 		this.role = Optional.ofNullable(role);

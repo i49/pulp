@@ -20,6 +20,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 import com.github.i49.pulp.api.metadata.Direction;
+import com.github.i49.pulp.api.metadata.DublinCore;
 import com.github.i49.pulp.api.metadata.Rights;
 
 /**
@@ -28,7 +29,7 @@ import com.github.i49.pulp.api.metadata.Rights;
 class DefaultRights extends AbstractTextTypeProperty implements Rights {
 
 	public DefaultRights(String value, Optional<Locale> language, Optional<Direction> direction) {
-		super(value, language, direction);
+		super(DublinCore.RIGHTS, value, language, direction);
 	}
 }
 

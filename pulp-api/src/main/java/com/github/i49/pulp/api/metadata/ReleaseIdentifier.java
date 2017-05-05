@@ -26,14 +26,14 @@ public interface ReleaseIdentifier {
 	 * 
 	 * @return the unique identifier of the rendition.
 	 */
-	Identifier getUniqueIdentifier();
+	IdentifierProperty getUniqueIdentifier();
 	
 	/**
 	 * Returns the last modification date and time of the rendition.
 	 * 
 	 * @return the last modification date and time of the rendition.
 	 */
-	Modified getLastModificationDate();
+	DateProperty getLastModificationDate();
 	
 	/**
 	 * Returns the string representation of this release identifier.

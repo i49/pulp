@@ -28,15 +28,15 @@ import java.util.Optional;
 import com.github.i49.pulp.api.metadata.Contributor;
 import com.github.i49.pulp.api.metadata.Coverage;
 import com.github.i49.pulp.api.metadata.Creator;
-import com.github.i49.pulp.api.metadata.Date;
+import com.github.i49.pulp.api.metadata.DateProperty;
 import com.github.i49.pulp.api.metadata.Description;
 import com.github.i49.pulp.api.metadata.Direction;
-import com.github.i49.pulp.api.metadata.Format;
+import com.github.i49.pulp.api.metadata.DublinCore;
+import com.github.i49.pulp.api.metadata.DublinCoreTerm;
+import com.github.i49.pulp.api.metadata.FormatProperty;
 import com.github.i49.pulp.api.metadata.GenericProperty;
-import com.github.i49.pulp.api.metadata.Identifier;
-import com.github.i49.pulp.api.metadata.IdentifierScheme;
-import com.github.i49.pulp.api.metadata.Language;
-import com.github.i49.pulp.api.metadata.Modified;
+import com.github.i49.pulp.api.metadata.IdentifierProperty;
+import com.github.i49.pulp.api.metadata.LanguageProperty;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.PropertyType;
 import com.github.i49.pulp.api.metadata.PublicationType;
@@ -49,7 +49,7 @@ import com.github.i49.pulp.api.metadata.Subject;
 import com.github.i49.pulp.api.metadata.SubjectAuthority;
 import com.github.i49.pulp.api.metadata.Term;
 import com.github.i49.pulp.api.metadata.Title;
-import com.github.i49.pulp.api.metadata.Type;
+import com.github.i49.pulp.api.metadata.TypeProperty;
 import com.github.i49.pulp.impl.base.Messages;
 
 /**
@@ -68,14 +68,14 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	}
 
 	@Override
-	public GenericProperty createGenericProperty(Term term, String value) {
+	public <V> GenericProperty<V> createGenericProperty(Term term, V value) {
 		checkNotNull(term, "term");
-		checkNotBlank(value, "value");
+		checkNotNull(value, "value");
 		if (term.getType() != PropertyType.GENERIC) {
 			throw new IllegalArgumentException(
 					Messages.METADATA_PROPERTY_TYPE_MISMATCHED(PropertyType.GENERIC, term));
 		}
-		return new DefaultGenericProperty(term, value);
+		return new DefaultGenericProperty<V>(term, value);
 	}
 	
 	@Override
@@ -144,9 +144,9 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	}
 
 	@Override
-	public Date newDate(OffsetDateTime dateTime) {
-		checkNotNull(dateTime, "dateTime");
-		return new DefaultDate(dateTime);
+	public DateProperty newDate(OffsetDateTime value) {
+		checkNotNull(value, "value");
+		return new DefaultDateProperty(DublinCore.DATE, value);
 	}
 	
 	@Override
@@ -171,38 +171,24 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	}
 
 	@Override
-	public Format newFormat(String value) {
+	public FormatProperty newFormat(String value) {
 		checkNotBlank(value, "value");
-		return new DefaultFormat(value);
+		return new DefaultFormatProperty(value);
 	}
 
 	@Override
-	public Identifier newIdentifier() {
-		return DefaultIdentifier.ofRandomUUID();
+	public IdentifierProperty newIdentifier() {
+		return DefaultIdentifierProperty.ofRandomUUID();
 	}
 
 	@Override
-	public Identifier newIdentifier(String value) {
+	public IdentifierProperty newIdentifier(String value) {
 		checkNotBlank(value, "value");
-		return new DefaultIdentifier(value);
+		return new DefaultIdentifierProperty(value);
 	}
 
 	@Override
-	public Identifier newIdentifier(String value, IdentifierScheme scheme) {
-		checkNotBlank(value, "value");
-		checkNotNull(scheme, "scheme");
-		return new DefaultIdentifier(value, scheme);
-	}
-
-	@Override
-	public Identifier newIdentifier(String value, URI schemeURI) {
-		checkNotBlank(value, "value");
-		checkNotNull(schemeURI, "schemeURI");
-		return new DefaultIdentifier(value, schemeURI);
-	}
-
-	@Override
-	public Language newLanguage(String languageTag) {
+	public LanguageProperty newLanguage(String languageTag) {
 		checkNotBlank(languageTag, "languageTag");
 		languageTag = languageTag.trim();
 		Locale locale = new Locale.Builder().setLanguageTag(languageTag).build();
@@ -210,15 +196,15 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	}
 
 	@Override
-	public Language newLanguage(Locale language) {
+	public LanguageProperty newLanguage(Locale language) {
 		checkNotNull(language, "language");
-		return new DefaultLanguage(language);
+		return new DefaultLanguageProperty(language);
 	}
 	
 	@Override
-	public Modified newModified(OffsetDateTime dateTime) {
-		checkNotNull(dateTime, "dateTime");
-		return new DefaultModified(dateTime);
+	public DateProperty newModified(OffsetDateTime value) {
+		checkNotNull(value, "value");
+		return new DefaultDateProperty(DublinCoreTerm.MODIFIED, value);
 	}
 	
 	@Override
@@ -319,9 +305,9 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	}
 
 	@Override
-	public Type newType(String value) {
+	public TypeProperty newType(String value) {
 		checkNotBlank(value, "value");
-		Type type = PREDEFINED_TYPES.get(value);
-		return (type != null) ? type : new DefaultType(value);
+		TypeProperty type = PREDEFINED_TYPES.get(value);
+		return (type != null) ? type : new DefaultTypeProperty(value);
 	}
 }

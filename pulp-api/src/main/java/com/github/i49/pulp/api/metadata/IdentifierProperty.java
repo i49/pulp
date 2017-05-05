@@ -24,16 +24,8 @@ import java.util.Optional;
  * 
  * @see <a href="http://dublincore.org/documents/dces/#identifier">Dublin Core Metadata Element Set, Version 1.1</a> 
  */
-public interface Identifier extends Property {
+public interface IdentifierProperty extends Property<String> {
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	default Term getTerm() {
-		return DublinCore.IDENTIFIER;
-	}
-	
 	/**
 	 * Returns the scheme used for this identifier.
 	 * 
@@ -47,4 +39,35 @@ public interface Identifier extends Property {
 	 * @return the URI representing the scheme used for this identifier. 
 	 */
 	Optional<URI> getSchemeURI();
+	
+	/**
+	 * Clears the scheme assigned.
+	 * 
+	 * @return this property.
+	 */
+	IdentifierProperty resetScheme();
+	
+	/**
+	 * Assigns the scheme for this identifier.
+	 * 
+	 * @param scheme the scheme of this identifier.
+	 * @return this property.
+	 * @throws IllegalArgumentException if {@code scheme} is {@code null}.
+	 */
+	IdentifierProperty setScheme(IdentifierScheme scheme);
+
+	/**
+	 * Assigns the URI which represents the scheme for this identifier.
+	 * 
+	 * @param uri the URI of the scheme.
+	 * @return this property.
+	 * @throws IllegalArgumentException if {@code uri} is {@code null}.
+	 */
+	IdentifierProperty setSchemeURI(URI uri);
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	IdentifierProperty setValue(String value);
 }

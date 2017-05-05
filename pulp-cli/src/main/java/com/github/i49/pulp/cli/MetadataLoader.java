@@ -31,11 +31,10 @@ import org.yaml.snakeyaml.Yaml;
 
 import com.github.i49.pulp.api.core.Epub;
 import com.github.i49.pulp.api.metadata.Creator;
-import com.github.i49.pulp.api.metadata.Date;
-import com.github.i49.pulp.api.metadata.Identifier;
-import com.github.i49.pulp.api.metadata.Language;
+import com.github.i49.pulp.api.metadata.DateProperty;
+import com.github.i49.pulp.api.metadata.IdentifierProperty;
+import com.github.i49.pulp.api.metadata.LanguageProperty;
 import com.github.i49.pulp.api.metadata.Metadata;
-import com.github.i49.pulp.api.metadata.Modified;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.Publisher;
 import com.github.i49.pulp.api.metadata.Title;
@@ -92,7 +91,7 @@ class MetadataLoader {
 	
 	private void parseIdentifiers(Metadata m, List<Entry> entries) {
 		for (Entry entry: entries) {
-			Identifier p = factory.newIdentifier(entry.getValue());
+			IdentifierProperty p = factory.newIdentifier(entry.getValue());
 			m.add(p);
 		}
 	}
@@ -106,7 +105,7 @@ class MetadataLoader {
 
 	private void parseLanguages(Metadata m, List<Entry> entries) {
 		for (Entry entry: entries) {
-			Language p = factory.newLanguage(Locale.forLanguageTag(entry.getValue()));
+			LanguageProperty p = factory.newLanguage(Locale.forLanguageTag(entry.getValue()));
 			m.add(p);
 		}
 	}
@@ -127,14 +126,14 @@ class MetadataLoader {
 
 	private void parseDate(Metadata m, OffsetDateTime value) {
 		if (value != null) {
-			Date p = factory.newDate(value);
+			DateProperty p = factory.newDate(value);
 			m.add(p);
 		}
 	}
 
 	private void parseModified(Metadata m, OffsetDateTime value) {
 		if (value != null) {
-			Modified p = factory.newModified(value);
+			DateProperty p = factory.newModified(value);
 			m.add(p);
 		}
 	}

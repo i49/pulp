@@ -167,21 +167,21 @@ public class Epub30SamplesTest {
 			assertThat(m.getNumberOfProperties()).isEqualTo(12);
 			assertThat(m.get(DublinCore.IDENTIFIER)).hasValue("http://www.gutenberg.org/ebooks/25545");
 			
-			List<Property> titles = m.getList(DublinCore.TITLE);
+			List<Property<?>> titles = m.getList(DublinCore.TITLE);
 			assertThat(titles).hasSize(2);
 			assertThat(titles.get(0)).hasValue("Children's Literature");
 			assertThat(titles.get(1)).hasValue("A Textbook of Sources for Teachers and Teacher-Training Classes");
 		
 			assertThat(m.get(DublinCore.LANGUAGE)).hasValue("en");
 			
-			List<Property> creators = m.getList(DublinCore.CREATOR);
+			List<Property<?>> creators = m.getList(DublinCore.CREATOR);
 			assertThat(creators).hasSize(2);
 			assertThat(creators.get(0)).hasValue("Charles Madison Curry");
 			assertThat(creators.get(0)).hasNormalizedValue("Curry, Charles Madison");
 			assertThat(creators.get(1)).hasValue("Erle Elsworth Clippinger");
 			assertThat(creators.get(1)).hasNormalizedValue("Clippinger, Erle Elsworth");
 		
-			List<Property> subjects = m.getList(DublinCore.SUBJECT);
+			List<Property<?>> subjects = m.getList(DublinCore.SUBJECT);
 			assertThat(subjects).hasSize(2);
 			assertThat(subjects.get(0)).hasValue("Children -- Books and reading");
 			assertThat(subjects.get(1)).hasValue("Children's literature -- Study and teaching");

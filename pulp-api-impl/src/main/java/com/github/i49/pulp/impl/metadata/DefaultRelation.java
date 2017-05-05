@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import com.github.i49.pulp.api.metadata.Description;
 import com.github.i49.pulp.api.metadata.Direction;
+import com.github.i49.pulp.api.metadata.DublinCore;
 import com.github.i49.pulp.api.metadata.Relation;
 
 /**
@@ -29,6 +30,6 @@ import com.github.i49.pulp.api.metadata.Relation;
 class DefaultRelation extends AbstractTextTypeProperty implements Relation {
 
 	public DefaultRelation(String value, Optional<Locale> language, Optional<Direction> direction) {
-		super(value, language, direction);
+		super(DublinCore.RELATION, value, language, direction);
 	}
 }

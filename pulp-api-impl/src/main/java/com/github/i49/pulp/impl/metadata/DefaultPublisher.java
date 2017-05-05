@@ -16,6 +16,7 @@
 
 package com.github.i49.pulp.impl.metadata;
 
+import com.github.i49.pulp.api.metadata.DublinCore;
 import com.github.i49.pulp.api.metadata.Publisher;
 import com.github.i49.pulp.api.metadata.Relator;
 
@@ -37,6 +38,6 @@ class DefaultPublisher extends AbstractRelator<Publisher> implements Publisher {
 	}
 	
 	private DefaultPublisher(DefaultRelatorBuilder<Publisher> builder) {
-		super(builder, ROLE);
+		super(DublinCore.PUBLISHER, builder, ROLE);
 	}
 }

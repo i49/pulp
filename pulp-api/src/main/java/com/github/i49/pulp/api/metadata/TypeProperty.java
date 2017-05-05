@@ -17,17 +17,11 @@
 package com.github.i49.pulp.api.metadata;
 
 /**
- * The file format, physical medium, or dimensions of the resource.
+ * A metadata property used to indicate that 
+ * the given EPUB Publication is of a specialized type.
  * 
- * @see <a href="http://dublincore.org/documents/dces/#format">Dublin Core Metadata Element Set, Version 1.1</a> 
+ * @see <a href="http://dublincore.org/documents/dces/#type">Dublin Core Metadata Element Set, Version 1.1</a> 
+ * @see PublicationType
  */
-public interface Format extends Property {
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	default Term getTerm() {
-		return DublinCore.FORMAT;
-	}
+public interface TypeProperty extends Property<String> {
 }

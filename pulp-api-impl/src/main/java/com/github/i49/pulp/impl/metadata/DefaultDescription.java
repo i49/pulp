@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import com.github.i49.pulp.api.metadata.Description;
 import com.github.i49.pulp.api.metadata.Direction;
+import com.github.i49.pulp.api.metadata.DublinCore;
 
 /**
  * The default implementation of {@link Description} property.
@@ -28,6 +29,6 @@ import com.github.i49.pulp.api.metadata.Direction;
 class DefaultDescription extends AbstractTextTypeProperty implements Description {
 
 	public DefaultDescription(String value, Optional<Locale> language, Optional<Direction> direction) {
-		super(value, language, direction);
+		super(DublinCore.DESCRIPTION, value, language, direction);
 	}
 }

@@ -162,10 +162,10 @@ public class PropertyFactoryTest {
 	@Test
 	public void newDate_shouldCreateDateOfSpecifiedDateTime() {
 		OffsetDateTime dateTime = OffsetDateTime.of(2017, 4, 23, 1, 2, 3, 0, ZoneOffset.ofHours(9));
-		Date p = factory.newDate(dateTime);
+		DateProperty p = factory.newDate(dateTime);
 		assertThat(p.getTerm()).isSameAs(DublinCore.DATE);
-		assertThat(p.getValue()).isEqualTo("2017-04-22T16:02:03Z");
-		assertThat(p.getDateTime()).isEqualTo(dateTime);
+		assertThat(p.getValue()).isEqualTo(dateTime);
+		assertThat(p.getValueAsString()).isEqualTo("2017-04-22T16:02:03Z");
 	}
 
 	@Test 
@@ -221,7 +221,7 @@ public class PropertyFactoryTest {
 	@Test
 	public void newFormat_shouldCreateFormat() {
 		String value = "application/epub+zip";
-		Format p = factory.newFormat(value);
+		FormatProperty p = factory.newFormat(value);
 		assertThat(p.getTerm()).isSameAs(DublinCore.FORMAT);
 		assertThat(p.getValue()).isEqualTo(value);
 	}
@@ -230,9 +230,9 @@ public class PropertyFactoryTest {
 	
 	@Test
 	public void newIdentifier_shouldCreateRandomIdentifier() {
-		Identifier identifier = factory.newIdentifier();
+		IdentifierProperty identifier = factory.newIdentifier();
 		assertThat(identifier.getTerm()).isSameAs(DublinCore.IDENTIFIER);
-		assertThat(identifier.getValue()).startsWith("urn:uuid:");
+		assertThat(identifier.getValueAsString()).startsWith("urn:uuid:");
 		assertThat(identifier.getScheme()).hasValue(IdentifierScheme.UUID);
 		assertThat(identifier.getSchemeURI()).isEmpty();
 	}
@@ -242,7 +242,7 @@ public class PropertyFactoryTest {
 	@Test
 	public void newIdentifier_shouldCreateIdentifierWithValue() {
 		String value = "urn:isbn:0451450523";
-		Identifier identifier = factory.newIdentifier(value);
+		IdentifierProperty identifier = factory.newIdentifier(value);
 		assertThat(identifier.getTerm()).isSameAs(DublinCore.IDENTIFIER);
 		assertThat(identifier.getValue()).isEqualTo(value);
 		assertThat(identifier.getScheme()).isEmpty();
@@ -265,26 +265,14 @@ public class PropertyFactoryTest {
 		assertThat(thrown).isInstanceOf(IllegalArgumentException .class);
 	}
 
-	/* newIdentifier(String, IdentifierScheme) */
-	
-	@Test
-	public void newIdentifier_shouldCreateIdentifierWithValueAndScheme() {
-		String value = "urn:isbn:0451450523";
-		Identifier identifier = factory.newIdentifier(value, IdentifierScheme.ISBN);
-		assertThat(identifier.getTerm()).isSameAs(DublinCore.IDENTIFIER);
-		assertThat(identifier.getValue()).isEqualTo(value);
-		assertThat(identifier.getScheme()).hasValue(IdentifierScheme.ISBN);
-		assertThat(identifier.getSchemeURI()).isEmpty();
-	}
-	
 	/* newLanguage(String) */
 
 	@Test
 	public void newLanguage_shouldCreateLanguageByLanguageTag() {
-		Language p = factory.newLanguage("en-US");
+		LanguageProperty p = factory.newLanguage("en-US");
 		assertThat(p.getTerm()).isSameAs(DublinCore.LANGUAGE);
-		assertThat(p.getValue()).isEqualTo("en-US");
-		assertThat(p.getLanguage()).isEqualTo(Locale.forLanguageTag("en-US"));
+		assertThat(p.getValue()).isEqualTo(Locale.forLanguageTag("en-US"));
+		assertThat(p.getValueAsString()).isEqualTo("en-US");
 	}
 	
 	@Test
@@ -316,19 +304,19 @@ public class PropertyFactoryTest {
 	@Test
 	public void newLanguage_shouldCreateLanguageByLocale() {
 		Locale language = Locale.forLanguageTag("en-US");
-		Language p = factory.newLanguage(language);
+		LanguageProperty p = factory.newLanguage(language);
 		assertThat(p.getTerm()).isSameAs(DublinCore.LANGUAGE);
-		assertThat(p.getValue()).isEqualTo("en-US");
-		assertThat(p.getLanguage()).isSameAs(language);
+		assertThat(p.getValue()).isSameAs(language);
+		assertThat(p.getValueAsString()).isEqualTo("en-US");
 	}
 
 	@Test
 	public void newLanguage_shouldCreateLanguageByPredefinedLocale() {
 		Locale language = Locale.FRENCH;
-		Language p = factory.newLanguage(language);
+		LanguageProperty p = factory.newLanguage(language);
 		assertThat(p.getTerm()).isSameAs(DublinCore.LANGUAGE);
-		assertThat(p.getValue()).isEqualTo("fr");
-		assertThat(p.getLanguage()).isSameAs(language);
+		assertThat(p.getValue()).isSameAs(language);
+		assertThat(p.getValueAsString()).isEqualTo("fr");
 	}
 	
 	/* newModified(OffsetDateTime) */
@@ -336,10 +324,10 @@ public class PropertyFactoryTest {
 	@Test
 	public void newModified_shouldCreateModifiedOfSpecifiedDateTime() {
 		OffsetDateTime dateTime = OffsetDateTime.of(2017, 4, 23, 1, 2, 3, 0, ZoneOffset.ofHours(9));
-		Modified p = factory.newModified(dateTime);
+		DateProperty p = factory.newModified(dateTime);
 		assertThat(p.getTerm()).isSameAs(DublinCoreTerm.MODIFIED);
-		assertThat(p.getValue()).isEqualTo("2017-04-22T16:02:03Z");
-		assertThat(p.getDateTime()).isEqualTo(dateTime);
+		assertThat(p.getValue()).isEqualTo(dateTime);
+		assertThat(p.getValueAsString()).isEqualTo("2017-04-22T16:02:03Z");
 	}
 
 	@Test 
@@ -500,7 +488,7 @@ public class PropertyFactoryTest {
 	@Test
 	public void newType_shouldCreateType() {
 		String value = "logbook";
-		Type p = factory.newType(value);
+		TypeProperty p = factory.newType(value);
 		assertThat(p.getTerm()).isSameAs(DublinCore.TYPE);
 		assertThat(p.getValue()).isEqualTo(value);
 	}
@@ -508,7 +496,7 @@ public class PropertyFactoryTest {
 	@Test
 	public void newType_shouldCreatePredefinedType() {
 		String value = "dictionary";
-		Type p = factory.newType(value);
+		TypeProperty p = factory.newType(value);
 		assertThat(p).isSameAs(PublicationType.DICTIONARY);
 		assertThat(p.getTerm()).isSameAs(DublinCore.TYPE);
 		assertThat(p.getValue()).isEqualTo(value);

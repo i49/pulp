@@ -18,6 +18,7 @@ package com.github.i49.pulp.impl.metadata;
 
 import java.util.Optional;
 
+import com.github.i49.pulp.api.metadata.DublinCore;
 import com.github.i49.pulp.api.metadata.Representation;
 import com.github.i49.pulp.api.metadata.Title;
 
@@ -34,7 +35,7 @@ class DefaultTitle extends AbstractTextTypeProperty implements Title {
 	}
 	
 	private DefaultTitle(Builder builder) {
-		super(builder);
+		super(DublinCore.TITLE, builder);
 		this.normalizedValue = builder.getNormalizedValue();
 		this.alternative = builder.getAlternative();
 	}

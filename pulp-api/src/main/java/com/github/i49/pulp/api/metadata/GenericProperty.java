@@ -19,6 +19,8 @@ package com.github.i49.pulp.api.metadata;
 /**
  * Generic property.
  */
-public interface GenericProperty extends Property {
-
+public interface GenericProperty<V> extends Property<V> {
+	
+	@Override
+	GenericProperty<V> setValue(V value);
 }

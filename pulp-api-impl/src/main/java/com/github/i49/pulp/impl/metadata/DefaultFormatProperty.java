@@ -14,22 +14,26 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.api.metadata;
+package com.github.i49.pulp.impl.metadata;
+
+import com.github.i49.pulp.api.metadata.DublinCore;
+import com.github.i49.pulp.api.metadata.FormatProperty;
 
 /**
- * A metadata property used to indicate that 
- * the given EPUB Publication is of a specialized type.
- * 
- * @see <a href="http://dublincore.org/documents/dces/#type">Dublin Core Metadata Element Set, Version 1.1</a> 
- * @see PublicationType
+ * The default implementation of {@link FormatProperty}.
  */
-public interface Type extends Property {
+class DefaultFormatProperty extends AbstractProperty<String> implements FormatProperty {
 
-	/**
-	 * {@inheritDoc}
-	 */
+	private final String value;
+	
+	public DefaultFormatProperty(String value) {
+		super(DublinCore.FORMAT);
+		assert(value != null);
+		this.value = value.trim();
+	}
+
 	@Override
-	default Term getTerm() {
-		return DublinCore.TYPE;
+	public String getValue() {
+		return value;
 	}
 }

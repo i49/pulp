@@ -16,11 +16,11 @@
 
 package com.github.i49.pulp.impl.metadata;
 
+import com.github.i49.pulp.api.metadata.DateProperty;
 import com.github.i49.pulp.api.metadata.DublinCore;
 import com.github.i49.pulp.api.metadata.DublinCoreTerm;
-import com.github.i49.pulp.api.metadata.Identifier;
+import com.github.i49.pulp.api.metadata.IdentifierProperty;
 import com.github.i49.pulp.api.metadata.Metadata;
-import com.github.i49.pulp.api.metadata.Modified;
 import com.github.i49.pulp.api.metadata.ReleaseIdentifier;
 
 /**
@@ -35,13 +35,13 @@ public class DefaultReleaseIdentifier implements ReleaseIdentifier {
 	}
 
 	@Override
-	public Identifier getUniqueIdentifier() {
-		return (Identifier)metadata.get(DublinCore.IDENTIFIER);
+	public IdentifierProperty getUniqueIdentifier() {
+		return (IdentifierProperty)metadata.get(DublinCore.IDENTIFIER);
 	}
 
 	@Override
-	public Modified getLastModificationDate() {
-		return (Modified)metadata.get(DublinCoreTerm.MODIFIED);
+	public DateProperty getLastModificationDate() {
+		return (DateProperty)metadata.get(DublinCoreTerm.MODIFIED);
 	}
 	
 	@Override
