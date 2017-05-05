@@ -37,7 +37,7 @@ import com.github.i49.pulp.api.metadata.LanguageProperty;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.Publisher;
-import com.github.i49.pulp.api.metadata.Title;
+import com.github.i49.pulp.api.metadata.TitleProperty;
 
 /**
  * A loader class to load publication metadata from YAML files.
@@ -98,7 +98,7 @@ class MetadataLoader {
 
 	private void parseTitles(Metadata m, List<Entry> entries) {
 		for (Entry entry: entries) {
-			Title p = factory.newTitle(entry.getValue());
+			TitleProperty p = factory.newTitle(entry.getValue());
 			m.add(p);
 		}
 	}

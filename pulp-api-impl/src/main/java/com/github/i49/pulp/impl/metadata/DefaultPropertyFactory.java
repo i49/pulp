@@ -44,7 +44,7 @@ import com.github.i49.pulp.api.metadata.Subject;
 import com.github.i49.pulp.api.metadata.SubjectAuthority;
 import com.github.i49.pulp.api.metadata.Term;
 import com.github.i49.pulp.api.metadata.TextProperty;
-import com.github.i49.pulp.api.metadata.Title;
+import com.github.i49.pulp.api.metadata.TitleProperty;
 import com.github.i49.pulp.impl.base.Messages;
 
 /**
@@ -89,12 +89,6 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	public Relator.Builder<Publisher> getPublisherBuilder(String name) {
 		checkNotBlank(name, "name");
 		return DefaultPublisher.builder(name);
-	}
-
-	@Override
-	public Title.Builder getTitleBuilder(String value) {
-		checkNotBlank(value, "value");
-		return DefaultTitle.builder(value);
 	}
 
 	@Override
@@ -230,13 +224,9 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	}
 
 	@Override
-	public Title newTitle(String value) {
-		return getTitleBuilder(value).build();
-	}
-
-	@Override
-	public Title newTitle(String value, Locale language) {
-		return getTitleBuilder(value).language(language).build();
+	public TitleProperty newTitle(String value) {
+		checkNotBlank(value, "value");
+		return new DefaultTitleProperty(DublinCore.TITLE, value);
 	}
 
 	@Override

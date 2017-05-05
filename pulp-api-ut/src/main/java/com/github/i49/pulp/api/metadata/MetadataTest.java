@@ -61,7 +61,7 @@ public class MetadataTest {
 	
 	@Test
 	public void add_shouldAddSecondProprety() {
-		Title p = f.newTitle("The Catcher in the Rye");
+		TitleProperty p = f.newTitle("The Catcher in the Rye");
 		assertThat(m.add(p)).isTrue();
 		List<Property> list = m.getList(DublinCore.TITLE);
 		assertThat(list).hasSize(1);
@@ -115,7 +115,7 @@ public class MetadataTest {
 		assertThat(identifier).isNotNull();
 		assertThat(identifier.getValueAsString()).isNotBlank();
 	
-		Title title = (Title)m.get(DublinCore.TITLE);
+		TitleProperty title = (TitleProperty)m.get(DublinCore.TITLE);
 		assertThat(title).isNotNull();
 		assertThat(title.getValueAsString()).isNotBlank();
 
@@ -129,7 +129,7 @@ public class MetadataTest {
 	
 	@Test
 	public void fillMissingProperties_shouldNotAddPropertyAlreadPresent() {
-		Title p = f.newTitle("The Catcher in the Rye");
+		TitleProperty p = f.newTitle("The Catcher in the Rye");
 		m.add(p);
 		assertThat(m.getNumberOfProperties()).isEqualTo(1);
 		m.fillMissingProperties();
@@ -280,7 +280,7 @@ public class MetadataTest {
 
 	@Test
 	public void remove_shouldRemoveSpecifiedProperty() {
-		Title p = f.newTitle("Untitled");
+		TitleProperty p = f.newTitle("Untitled");
 		m.add(p);
 		assertThat(m.getNumberOfProperties()).isEqualTo(1);
 		assertThat(m.contains(DublinCore.TITLE)).isTrue();

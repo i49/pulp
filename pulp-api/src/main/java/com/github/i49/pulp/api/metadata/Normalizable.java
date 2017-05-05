@@ -16,31 +16,35 @@
 
 package com.github.i49.pulp.api.metadata;
 
-import java.util.Locale;
+import java.util.Optional;
 
 /**
- * An alternative representation of a metadata property value.
- * This instance can attached to the following metadata properties.
- * <ul>
- * <li>{@link Creator}</li>
- * <li>{@link Contributor}</li>
- * <li>{@link Publisher}</li>
- * <li>{@link TitleProperty}</li>
- * </ul>
+ * Property that can have normalized value.
+ * 
+ * @param <S> the type of the extended interface.
  */
-public interface Representation {
+public interface Normalizable<S> {
 
 	/**
-	 * Returns the alternative representation of the property.
+	 * Assigns the normalized form of the property value.
 	 * 
-	 * @return the alternative representation.
+	 * @param value the normalized value.
+	 * @return this property.
+	 * @throws IllegalArgumentException if {@code value} is invalid.
 	 */
-	String getValue();
+	S fileAs(String value);
 	
 	/**
-	 * Returns the language used for the alternative representation.
+	 * Returns the normalized form of the value of this property.
 	 * 
-	 * @return the language used for the alternative representation.
+	 * @return the normalized form of the property value.
 	 */
-	Locale getLanguage();
+	Optional<String> getNormalizedValue_();
+	
+	/**
+	 * Clears the normalized value assigned.
+	 * 
+	 * @return this property.
+	 */
+	S resetNormalizedValue();
 }

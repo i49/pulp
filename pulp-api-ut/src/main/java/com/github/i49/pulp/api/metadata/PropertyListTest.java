@@ -115,7 +115,7 @@ public class PropertyListTest {
 	public void remove_shouldRemovePropertyAtSpecifiedPosition() {
 		List<Property> list = m.getList(DublinCore.TITLE);
 		list.add(f.newTitle("Default Title"));
-		Title p = f.newTitle("THE LORD OF THE RINGS"); 
+		TitleProperty p = f.newTitle("THE LORD OF THE RINGS"); 
 		list.add(p);
 		assertThat(list).hasSize(2);
 		list.remove(0);
@@ -129,7 +129,7 @@ public class PropertyListTest {
 	public void remove_shouldRemoveSpecifiedProperty() {
 		List<Property> list = m.getList(DublinCore.TITLE);
 		list.add(f.newTitle("Default Title"));
-		Title p = f.newTitle("THE LORD OF THE RINGS"); 
+		TitleProperty p = f.newTitle("THE LORD OF THE RINGS"); 
 		list.add(p);
 		assertThat(list).hasSize(2);
 		list.remove(list.get(0));

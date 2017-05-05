@@ -23,36 +23,35 @@ import java.util.Locale;
  * 
  * @see <a href="http://dublincore.org/documents/dces/#title">Dublin Core Metadata Element Set, Version 1.1</a> 
  */
-public interface Title extends TextProperty, AlternativeProvider {
+public interface TitleProperty extends TextProperty, Normalizable<TitleProperty>, AlternativeProvider {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	default Term getTerm() {
-		return DublinCore.TITLE;
-	}
+	TitleProperty resetDirection();
 
 	/**
-	 * A builder for building an instance of {@link Title} property.
+	 * {@inheritDoc}
 	 */
-	public interface Builder extends TextProperty.Builder<Title, Builder> {
-
-		/**
-		 * Optionally specifies the normalized form of the title.
-		 * 
-		 * @param value the title in the normalized form.
-		 * @return this builder.
-		 */
-		Builder fileAs(String value);
-		
-		/**
-		 * Optionally specifies the alternative representation of the title.
-		 * 
-		 * @param value the alternative representation of the title.
-		 * @param language the language used for the alternative representation.
-		 * @return this builder.
-		 */
-		Builder alternative(String value, Locale language);
-	}
+	@Override
+	TitleProperty resetLanguage();
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	TitleProperty setDirection(Direction direction);
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	TitleProperty setLanguage(Locale language);
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	TitleProperty setValue(String value);
 }

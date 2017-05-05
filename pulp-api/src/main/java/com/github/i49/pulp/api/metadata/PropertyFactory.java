@@ -97,15 +97,6 @@ public interface PropertyFactory {
 	Relator.Builder<Publisher> getPublisherBuilder(String name);
 	
 	/**
-	 * Creates a builder to build an instance of {@link Title} property.
-	 * 
-	 * @param value the value of the title.
-	 * @return a builder for building {@link Title}.
-	 * @throws IllegalArgumentException if {@code value} was invalid.
-	 */
-	Title.Builder getTitleBuilder(String value);
-
-	/**
 	 * Creates an instance of {@link Contributor} property.
 	 * 
 	 * @param name the name of the person or organization.
@@ -304,23 +295,13 @@ public interface PropertyFactory {
 	Subject newSubject(String value, URI scheme, String code);
 	
 	/**
-	 * Creates an instance of {@link Title} property.
+	 * Creates an instance of {@link TitleProperty} property.
 	 * 
 	 * @param value the value of the title.
-	 * @return newly created {@link Title}.
+	 * @return newly created {@link TitleProperty}.
 	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	Title newTitle(String value);
-
-	/**
-	 * Creates an instance of {@link Title} property with a specific language.
-	 * 
-	 * @param value the value of the title.
-	 * @param language the language used for the title.
-	 * @return newly created {@link Title}.
-	 * @throws IllegalArgumentException if one of arguments was invalid.
-	 */
-	Title newTitle(String value, Locale language);
+	TitleProperty newTitle(String value);
 
 	/**
 	 * Creates an instance of {@link DublinCore#TYPE}.
