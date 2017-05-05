@@ -45,7 +45,19 @@ import java.util.Locale;
  * </ol>
  */
 public interface PropertyFactory {
-
+	
+	/**
+	 * Creates an instance of generic property.
+	 *  
+	 * @param term the term of the property.
+	 * @param value the value of the property.
+	 * @return newly created property.
+	 * @throws IllegalArgumentException if any parameter are {@code null} 
+	 * or the type of the term does not match the type of the property to create.
+	 * The proper type of the term can be obtained by {@link Term#getType()}.  
+	 */
+	GenericProperty createGenericProperty(Term term, String value);
+	
 	/**
 	 * Creates a builder to build an instance of {@link Contributor} property.
 	 * 

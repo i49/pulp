@@ -36,6 +36,7 @@ import com.github.i49.pulp.api.core.EpubException;
 import com.github.i49.pulp.api.metadata.Contributor;
 import com.github.i49.pulp.api.metadata.Creator;
 import com.github.i49.pulp.api.metadata.DublinCoreTerm;
+import com.github.i49.pulp.api.metadata.GenericProperty;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.Property;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
@@ -198,7 +199,7 @@ class MetadataParser3 implements MetadataParser {
 		if (term == DublinCoreTerm.MODIFIED) {
 			return parseModified(entry);
 		} else if (term != null) {
-			
+			return parseGenericProperty(entry, term);
 		}
 		return null;
 	}
@@ -309,6 +310,11 @@ class MetadataParser3 implements MetadataParser {
 	protected Property parseModified(MetadataEntry entry) {
 		OffsetDateTime dateTime = convertDateTime(entry.getValue());
 		Property p = factory.newModified(dateTime);
+		return append(p);
+	}
+	
+	protected Property parseGenericProperty(MetadataEntry entry, Term term) {
+		GenericProperty p = factory.createGenericProperty(term, entry.getValue());
 		return append(p);
 	}
 	

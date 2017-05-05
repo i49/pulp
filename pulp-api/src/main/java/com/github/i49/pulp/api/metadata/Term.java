@@ -23,6 +23,20 @@ package com.github.i49.pulp.api.metadata;
 public interface Term {
 
 	/**
+	 * Returns the property type of this term.
+	 * 
+	 * @return the type of the property, never be {@code null}.
+	 */
+	PropertyType getType();
+
+	/**
+	 * Returns the vocabulary to which this term belongs.
+	 * 
+	 * @return the vocabulary to which this term belongs, never be {@code null}.
+	 */
+	Vocabulary getVocabulary();
+
+	/**
 	 * Checks if the property of this term is repeatable.
 	 * By default this method returns {@code true}.
 	 *  
@@ -33,32 +47,22 @@ public interface Term {
 	}
 
 	/**
-	 * Returns the local name of this term.
+	 * Returns the name of this term within the vocabulary.
 	 * 
-	 * @return the local name of this term, never be {@code null}.
+	 * <p>e.g. "title" for {@link DublinCore#TITLE}</p>
+	 * 
+	 * @return the name of this term within the vocabulary, never be {@code null}.
 	 */
 	String localName();
 	
 	/**
-	 * Returns the qualified name of this term.
+	 * Returns the name of this term qualified with the vocabulary URI.
 	 * 
-	 * @return the qualified name of this term, never be {@code null}.
+	 * <p>e.g. "http://purl.org/dc/elements/1.1/title" for {@link DublinCore#TITLE}</p>
+	 * 
+	 * @return the name of this term qualified with the vocabulary URI, never be {@code null}.
 	 */
 	default String qualifiedName() {
-		return vocabulary().getURI().resolve(localName()).toString();
+		return getVocabulary().getURI().resolve(localName()).toString();
 	}
-	
-	/**
-	 * Returns the property type of this term.
-	 * 
-	 * @return the type of the property, never be {@code null}.
-	 */
-	PropertyType type();
-
-	/**
-	 * Returns the vocabulary to which this term belongs.
-	 * 
-	 * @return the vocabulary to which this term belongs, never be {@code null}.
-	 */
-	Vocabulary vocabulary();
 }

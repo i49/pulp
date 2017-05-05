@@ -21,6 +21,7 @@ import static com.github.i49.pulp.impl.base.Preconditions.checkNotNull;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import com.github.i49.pulp.api.metadata.DublinCore;
 import com.github.i49.pulp.api.metadata.DublinCoreTerm;
@@ -44,15 +45,15 @@ public class DefaultTermRegistry implements TermRegistry {
 	 * and registered automatically.
 	 */
 	public DefaultTermRegistry() {
-		registerVocabularies(StandardVocabulary.class);
-		registerTerms(DublinCore.class);
-		registerTerms(DublinCoreTerm.class);
+		registerAllVocabularies(StandardVocabulary.class);
+		registerAllTerms(DublinCore.class);
+		registerAllTerms(DublinCoreTerm.class);
 	}
-
+	
 	@Override
 	public boolean containsTerm(Term term) {
 		checkNotNull(term, "term");
-		Vocabulary v = term.vocabulary();
+		Vocabulary v = term.getVocabulary();
 		if (!vocabularyMap.containsValue(v)) {
 			return false;
 		}
@@ -61,9 +62,55 @@ public class DefaultTermRegistry implements TermRegistry {
 	}
 
 	@Override
+	public boolean containsTerm(URI uri, String name) {
+		checkNotNull(uri, "uri");
+		checkNotNull(name, "name");
+		Vocabulary v = this.vocabularyMap.get(uri);
+		if (v == null) {
+			return false;
+		}
+		return this.termMap.get(v).containsKey(name);
+	}
+	
+	@Override
+	public boolean containsVocabulary(URI uri) {
+		checkNotNull(uri, "uri");
+		return this.vocabularyMap.containsKey(uri);
+	}
+	
+	@Override
 	public boolean containsVocabulary(Vocabulary vocabulary) {
 		checkNotNull(vocabulary, "vocabulary");
 		return this.vocabularyMap.containsValue(vocabulary);
+	}
+	
+	@Override
+	public Optional<Vocabulary> findVocabulary(URI uri) {
+		checkNotNull(uri, "uri");
+		return Optional.ofNullable(this.vocabularyMap.get(uri));
+	}
+
+	@Override
+	public Optional<Term> findTerm(URI uri, String name) {
+		checkNotNull(uri, "uri");
+		checkNotNull(name, "name");
+		Vocabulary v = this.vocabularyMap.get(uri);
+		if (v == null) {
+			return Optional.empty();
+		}
+		Map<String, Term> terms = this.termMap.get(v);
+		return Optional.ofNullable(terms.get(name));
+	}
+
+	@Override
+	public Optional<Term> findTerm(Vocabulary vocabulary, String name) {
+		checkNotNull(vocabulary, "vocabulary");
+		checkNotNull(name, "name");
+		Map<String, Term> terms = this.termMap.get(vocabulary);
+		if (terms == null) {
+			return Optional.empty();
+		}
+		return Optional.ofNullable(terms.get(name));
 	}
 	
 	@Override
@@ -95,24 +142,32 @@ public class DefaultTermRegistry implements TermRegistry {
 	}
 
 	@Override
+	public <T extends Enum<T> & Term> void registerAllTerms(Class<T> clazz) {
+		checkNotNull(clazz, "clazz");
+		for (Term t: clazz.getEnumConstants()) {
+			registerTerm(t);
+		}
+	}
+
+	@Override
+	public <T extends Enum<T> & Vocabulary> void registerAllVocabularies(Class<T> clazz) {
+		checkNotNull(clazz, "clazz");
+		for (Vocabulary v: clazz.getEnumConstants()) {
+			registerVocabulary(v);
+		}
+	}
+	
+	@Override
 	public void registerTerm(Term term) {
 		checkNotNull(term, "term");
 		if (containsTerm(term)) {
 			// TODO:
 			throw new IllegalStateException();
-		} else if (containsVocabulary(term.vocabulary())) {
+		} else if (containsVocabulary(term.getVocabulary())) {
 			doRegisterTerm(term);
 		} else {
 			// TODO:
 			throw new IllegalStateException();
-		}
-	}
-
-	@Override
-	public <T extends Enum<T> & Term> void registerTerms(Class<T> clazz) {
-		checkNotNull(clazz, "clazz");
-		for (Term t: clazz.getEnumConstants()) {
-			registerTerm(t);
 		}
 	}
 
@@ -127,14 +182,6 @@ public class DefaultTermRegistry implements TermRegistry {
 		}
 	}
 
-	@Override
-	public <T extends Enum<T> & Vocabulary> void registerVocabularies(Class<T> clazz) {
-		checkNotNull(clazz, "clazz");
-		for (Vocabulary v: clazz.getEnumConstants()) {
-			registerVocabulary(v);
-		}
-	}
-	
 	private Term createTerm(Vocabulary vocabulary, String name) {
 		return new TemporaryTerm(vocabulary, name);
 	}
@@ -145,7 +192,7 @@ public class DefaultTermRegistry implements TermRegistry {
 	
 	private void doRegisterTerm(Term term) {
 		assert(term != null);
-		Map<String, Term> terms = this.termMap.get(term.vocabulary());
+		Map<String, Term> terms = this.termMap.get(term.getVocabulary());
 		assert(terms != null);
 		terms.put(term.localName(), term);
 	}
@@ -182,12 +229,12 @@ public class DefaultTermRegistry implements TermRegistry {
 		}
 		
 		@Override
-		public PropertyType type() {
+		public PropertyType getType() {
 			return PropertyType.GENERIC;
 		}
 
 		@Override
-		public Vocabulary vocabulary() {
+		public Vocabulary getVocabulary() {
 			return vocabulary;
 		}
 	}

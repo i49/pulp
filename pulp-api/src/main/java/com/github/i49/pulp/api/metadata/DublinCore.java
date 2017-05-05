@@ -125,6 +125,22 @@ public enum DublinCore implements Term {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public PropertyType getType() {
+		return type;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Vocabulary getVocabulary() {
+		return StandardVocabulary.DCMES;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public boolean isRepeatable() {
 		return this != DATE;
 	}
@@ -143,21 +159,5 @@ public enum DublinCore implements Term {
 	@Override
 	public String toString() {
 		return qualifiedName();
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public PropertyType type() {
-		return type;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Vocabulary vocabulary() {
-		return StandardVocabulary.DCMES;
 	}
 }

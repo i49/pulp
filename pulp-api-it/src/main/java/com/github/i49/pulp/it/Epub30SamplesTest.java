@@ -19,10 +19,12 @@ package com.github.i49.pulp.it;
 import static com.github.i49.pulp.it.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
 
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 
@@ -41,6 +43,8 @@ import com.github.i49.pulp.api.metadata.DublinCore;
 import com.github.i49.pulp.api.metadata.DublinCoreTerm;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.Property;
+import com.github.i49.pulp.api.metadata.Term;
+import com.github.i49.pulp.api.metadata.TermRegistry;
 
 /**
  * Tests of reading EPUB 3.0 samples.
@@ -50,12 +54,14 @@ public class Epub30SamplesTest {
 	private static final Logger log = Logger.getLogger(Epub30SamplesTest.class.getName()); 
 
 	private static Path basePath;
+	private static TermRegistry termRegistry;
 	
 	@BeforeClass
 	public static void setUpOnce() {
 		String samplesHome = System.getenv("EPUB3_SAMPLES_HOME");
 		Assume.assumeNotNull(samplesHome);
 		basePath = Paths.get(samplesHome).resolve("30");
+		termRegistry = Epub.getPropertyTermRegistry();
 	}
 	
 	protected void read(String filename, Consumer<Publication> consumer) {
@@ -118,6 +124,7 @@ public class Epub30SamplesTest {
 			Rendition r = p.getDefaultRendition();
 
 			Metadata m = r.getMetadata();
+			assertThat(m.getNumberOfProperties()).isEqualTo(10);
 			assertThat(m.get(DublinCore.IDENTIFIER)).hasValue("code.google.com.epub-samples.cc-shared-culture");
 			assertThat(m.get(DublinCore.TITLE)).hasValue("Creative Commons - A Shared Culture");
 			assertThat(m.get(DublinCore.LANGUAGE)).hasValue("en-US");
@@ -127,6 +134,11 @@ public class Epub30SamplesTest {
 			assertThat(m.get(DublinCore.DESCRIPTION)).hasValue("Multiple video tests (see Navigation Document (toc) for details)");
 			assertThat(m.get(DublinCore.RIGHTS)).hasValue("This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike (CC BY-NC-SA) license.");
 			assertThat(m.get(DublinCoreTerm.MODIFIED)).hasValue("2012-01-20T12:47:00Z");
+
+			URI cc = URI.create("http://creativecommons.org/ns#");
+			Optional<Term> term = termRegistry.findTerm(cc, "attributionURL");
+			assertThat(term).isNotEmpty();
+			assertThat(m.get(term.get())).hasValue("http://creativecommons.org/videos/a-shared-culture");
 			
 			Manifest mf = r.getManifest();
 			assertThat(mf.getNumberOfItems()).isEqualTo(21);

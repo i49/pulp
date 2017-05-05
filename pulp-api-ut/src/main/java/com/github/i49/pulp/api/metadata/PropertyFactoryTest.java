@@ -40,7 +40,7 @@ public class PropertyFactoryTest {
 	public void setUp() {
 		factory = Epub.createPropertyFactory();
 	}
-
+	
 	/* newContributor(String) */
 	
 	@Test

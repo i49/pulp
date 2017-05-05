@@ -36,7 +36,7 @@ public interface Property {
 	 * @return the type of this property.
 	 */
 	default PropertyType getType() {
-		return getTerm().type();
+		return getTerm().getType();
 	}
 	
 	/**

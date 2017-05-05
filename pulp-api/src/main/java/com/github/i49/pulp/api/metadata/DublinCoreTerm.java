@@ -34,6 +34,19 @@ public enum DublinCoreTerm implements Term {
 		this.type = type;
 	}
 	
+	@Override
+	public PropertyType getType() {
+		return type;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Vocabulary getVocabulary() {
+		return StandardVocabulary.DCTERMS;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -56,18 +69,5 @@ public enum DublinCoreTerm implements Term {
 	@Override
 	public String toString() {
 		return qualifiedName();
-	}
-	
-	@Override
-	public PropertyType type() {
-		return type;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Vocabulary vocabulary() {
-		return StandardVocabulary.DCTERMS;
 	}
 }

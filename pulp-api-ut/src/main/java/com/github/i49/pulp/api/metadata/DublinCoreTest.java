@@ -26,6 +26,20 @@ import org.junit.Test;
  */
 public class DublinCoreTest {
 	
+	/* getType() */
+	
+	@Test
+	public void getType_shouldReturnTypeOfTerm() {
+		assertThat(TITLE.getType()).isSameAs(PropertyType.TITLE);
+	}
+	
+	/* getVocabulary() */
+
+	@Test
+	public void getVocabulary_shouldReturnDCMES() {
+		assertThat(TITLE.getVocabulary()).isSameAs(StandardVocabulary.DCMES);
+	}
+
 	/* isRepeatable() */
 	
 	@Test
@@ -52,12 +66,5 @@ public class DublinCoreTest {
 	@Test
 	public void qualifiedName_shouldReturnQualifiedName() {
 		assertThat(TITLE.qualifiedName()).isEqualTo("http://purl.org/dc/elements/1.1/title");
-	}
-
-	/* vocabulary() */
-
-	@Test
-	public void vocabulary_shouldReturnDCMES() {
-		assertThat(TITLE.vocabulary()).isSameAs(StandardVocabulary.DCMES);
 	}
 }

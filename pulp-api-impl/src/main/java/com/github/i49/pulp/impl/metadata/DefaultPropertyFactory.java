@@ -32,11 +32,13 @@ import com.github.i49.pulp.api.metadata.Date;
 import com.github.i49.pulp.api.metadata.Description;
 import com.github.i49.pulp.api.metadata.Direction;
 import com.github.i49.pulp.api.metadata.Format;
+import com.github.i49.pulp.api.metadata.GenericProperty;
 import com.github.i49.pulp.api.metadata.Identifier;
 import com.github.i49.pulp.api.metadata.IdentifierScheme;
 import com.github.i49.pulp.api.metadata.Language;
 import com.github.i49.pulp.api.metadata.Modified;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
+import com.github.i49.pulp.api.metadata.PropertyType;
 import com.github.i49.pulp.api.metadata.PublicationType;
 import com.github.i49.pulp.api.metadata.Publisher;
 import com.github.i49.pulp.api.metadata.Relation;
@@ -45,8 +47,10 @@ import com.github.i49.pulp.api.metadata.Rights;
 import com.github.i49.pulp.api.metadata.Source;
 import com.github.i49.pulp.api.metadata.Subject;
 import com.github.i49.pulp.api.metadata.SubjectAuthority;
+import com.github.i49.pulp.api.metadata.Term;
 import com.github.i49.pulp.api.metadata.Title;
 import com.github.i49.pulp.api.metadata.Type;
+import com.github.i49.pulp.impl.base.Messages;
 
 /**
  * The default implementation of {@link PropertyFactory}.
@@ -61,6 +65,17 @@ public class DefaultPropertyFactory implements PropertyFactory {
 		for (PublicationType type: PublicationType.values()) {
 			PREDEFINED_TYPES.put(type.getValue(), type);
 		}
+	}
+
+	@Override
+	public GenericProperty createGenericProperty(Term term, String value) {
+		checkNotNull(term, "term");
+		checkNotBlank(value, "value");
+		if (term.getType() != PropertyType.GENERIC) {
+			throw new IllegalArgumentException(
+					Messages.METADATA_PROPERTY_TYPE_MISMATCHED(PropertyType.GENERIC, term));
+		}
+		return new DefaultGenericProperty(term, value);
 	}
 	
 	@Override
