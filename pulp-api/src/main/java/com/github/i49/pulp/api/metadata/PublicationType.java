@@ -17,9 +17,7 @@
 package com.github.i49.pulp.api.metadata;
 
 /**
- * The publication types predefined for the {@link TypeProperty} property in metadata.
- * 
- * @see TypeProperty
+ * The publication types predefined for {@link DublinCore#TYPE}.
  */
 public enum PublicationType implements SimpleProperty {
 	

@@ -25,7 +25,6 @@ public enum DublinCore implements Term {
 	
 	/**
 	 *  An entity responsible for making contributions to the resource.
-	 * @see Contributor
 	 */
 	CONTRIBUTOR(PropertyType.RELATOR),
 
@@ -33,13 +32,11 @@ public enum DublinCore implements Term {
 	 * The spatial or temporal topic of the resource, 
 	 * the spatial applicability of the resource, 
 	 * or the jurisdiction under which the resource is relevant.
-	 * @see Coverage
 	 */
 	COVERAGE(PropertyType.TEXT),
 
 	/**
 	 * An entity primarily responsible for making the resource.
-	 * @see Creator
 	 */
 	CREATOR(PropertyType.RELATOR),
 	
@@ -50,67 +47,56 @@ public enum DublinCore implements Term {
 	
 	/**
 	 * An account of the resource.
-	 * @see Description
 	 */
 	DESCRIPTION(PropertyType.TEXT),
 
 	/** 
 	 * The file format, physical medium, or dimensions of the resource. 
-	 * @see Format
 	 */
 	FORMAT(PropertyType.SIMPLE),
 
 	/** 
 	 * An unambiguous reference to the resource within a given context.
-	 * @see Identifier
 	 */
 	IDENTIFIER(PropertyType.IDENTIFIER),
 
 	/**
 	 * A language of the resource.
-	 * @see Language
 	 */ 
 	LANGUAGE(PropertyType.LANGUAGE),
 	
 	/**
 	 * An entity responsible for making the resource available.
-	 * @see Publisher
 	 */
 	PUBLISHER(PropertyType.RELATOR),
 	
 	/**
 	 * A related resource.
-	 * @see Relation
 	 */
 	RELATION(PropertyType.TEXT),
 	
 	/**
 	 * Information about rights held in and over the resource.
-	 * @see Rights
 	 */
 	RIGHTS(PropertyType.TEXT),
 	
 	/**
 	 * A related resource from which the described resource is derived.
-	 * @see Source
 	 */
 	SOURCE(PropertyType.SOURCE),
 	
 	/**
 	 * The topic of the resource.
-	 * @see Subject
 	 */
 	SUBJECT(PropertyType.SUBJECT),
 	
 	/**
 	 * A name given to the resource.
-	 * @see Title
 	 */
 	TITLE(PropertyType.TITLE),
 	
 	/**
 	 * The nature or genre of the resource.
-	 * @see Type
 	 */
 	TYPE(PropertyType.SIMPLE),
 	;

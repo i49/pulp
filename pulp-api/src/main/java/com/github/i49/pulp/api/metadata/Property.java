@@ -45,9 +45,10 @@ public interface Property {
 	String getValueAsString();
 	
 	/**
-	 * Returns the same result as {@link #getValue()}.
+	 * Returns the string representation of this property.
+	 * Equivalent to {@link #getValueAsString()}.
 	 * 
-	 * @return the same result as {@link #getValue()}.
+	 * @return the string representation of this property.
 	 */
 	@Override
 	String toString();

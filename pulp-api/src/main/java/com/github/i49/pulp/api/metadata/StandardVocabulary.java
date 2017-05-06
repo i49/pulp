@@ -19,14 +19,22 @@ package com.github.i49.pulp.api.metadata;
 import java.net.URI;
 
 /**
- * Default and reserved vocabularies for metadata.
+ * Default and reserved vocabularies for metadata terms.
  */
 public enum StandardVocabulary implements Vocabulary {
 
-	/* Dublin Core Metadata Element Set */
+	/** 
+	 * Dublin Core Metadata Element Set.
+	 * The terms of this vocabulary are predefined in {@link DublinCore} enumeration.
+	 */
 	DCMES("http://purl.org/dc/elements/1.1/"),
-	/* DCMI Metadata Terms */
+	
+	/** 
+	 * DCMI Metadata Terms.
+	 * The terms of this vocabulary are predefined in {@link DublinCoreTerm} enumeration.
+	 */
 	DCTERMS("http://purl.org/dc/terms/"),
+	
 	EPUB_A11Y("http://www.idpf.org/epub/vocab/package/a11y/#"),
 	EPUB_MEDIA("http://www.idpf.org/epub/vocab/overlays/#"),
 	EPUB_META("http://idpf.org/epub/vocab/package/meta/#"),
@@ -35,6 +43,8 @@ public enum StandardVocabulary implements Vocabulary {
 	MARC("http://id.loc.gov/vocabulary/"),
 	ONIX("http://www.editeur.org/ONIX/book/codelists/current.html#"),
 	SCHEMA("http://schema.org/"),
+	
+	/** W3C XML Schema Definition. */
 	XSD("http://www.w3.org/2001/XMLSchema#")
 	;
 	

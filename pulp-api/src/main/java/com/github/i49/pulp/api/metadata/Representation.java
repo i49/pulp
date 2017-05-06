@@ -20,13 +20,6 @@ import java.util.Locale;
 
 /**
  * An alternative representation of a metadata property value.
- * This instance can attached to the following metadata properties.
- * <ul>
- * <li>{@link Creator}</li>
- * <li>{@link Contributor}</li>
- * <li>{@link Publisher}</li>
- * <li>{@link TitleProperty}</li>
- * </ul>
  */
 public interface Representation {
 

@@ -20,6 +20,7 @@ import java.util.Locale;
 
 /**
  * The language of the content of the given rendition.
+ * This property can be used solely for {@link DublinCore#LANGUAGE}.
  */
 public interface LanguageProperty extends TypedProperty<Locale> {
 

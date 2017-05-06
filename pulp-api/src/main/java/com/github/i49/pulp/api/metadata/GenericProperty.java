@@ -18,6 +18,7 @@ package com.github.i49.pulp.api.metadata;
 
 /**
  * General-purpose metadata property.
+ * This property can be used for {@link PropertyType#GENERIC}.
  * 
  * @param <V> the type of the property value.
  */

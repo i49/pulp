@@ -21,8 +21,7 @@ import java.util.Optional;
 
 /**
  * An identifier associated with the given Rendition, such as a UUID, DOI or ISBN.
- * 
- * @see <a href="http://dublincore.org/documents/dces/#identifier">Dublin Core Metadata Element Set, Version 1.1</a> 
+ * This property can be used solely for {@link DublinCore#IDENTIFIER}.
  */
 public interface IdentifierProperty extends TypedProperty<String> {
 
