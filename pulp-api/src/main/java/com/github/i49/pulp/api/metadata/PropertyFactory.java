@@ -60,7 +60,6 @@ public interface PropertyFactory {
 	 * 
 	 * @param term the term of the property.
 	 * @param value the value of the property.
-	 * @param <V> the type of the value.
 	 * @return newly created property.
 	 * @throws IllegalArgumentException if any parameter are {@code null} 
 	 * or the type of the term does not match the type of the property to create.

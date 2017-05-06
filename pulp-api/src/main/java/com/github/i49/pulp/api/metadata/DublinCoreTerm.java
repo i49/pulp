@@ -22,21 +22,79 @@ package com.github.i49.pulp.api.metadata;
  * @see <a href="http://dublincore.org/documents/dcmi-terms/">DCMI Metadata Terms</a> 
  */
 public enum DublinCoreTerm implements Term {
+	ABSTRACT("abstract"),
+	ACCESS_RIGHTS("accessRights"),
+	ACCRUAL_METHOD("accrualMethod"),
+	ACCRUAL_PERIODICITY("accrualPeriodicity"),
+	ACCRUAL_POLICY("accrualPolicy"),
+	ALTERNATIVE("alternative"),
+	AUDIENCE("audience"),
+	AVAILABLE("available"),
+	BIBLIOGRAPHIC_CITATION("bibliographicCitation"),
+	CONFORMS_TO("conformsTo"),
+	CONTRIBUTOR("contributor"),
+	COVERAGE("coverage"),
+	CREATED("created"),
+	CREATOR("creator"),
+	DATE("date"),
+	DATE_ACCEPTED("dateAccepted"),
+	DATE_COPYRIGHTED("dateCopyrighted"),
+	DATE_SUBMITTED("dateSubmitted"),
+	DESCRIPTION("description"),
+	EDUCATION_LEVEL("educationLevel"),
+	EXTENT("extent"),
+	FORMAT("format"),
+	HAS_FORMAT("hasFormat"),
+	HAS_PART("hasPart"),
+	HAS_VERSION("hasVersion"),
+	IDENTIFIER("identifier"),
+	INSTRUCTIONAL_METHOD("instructionalMethod"),
+	IS_FORMAT_OF("isFormatOf"),
+	IS_PART_OF("isPartOf"),
+	IS_REFERENCED_BY("isReferencedBy"),
+	IS_REPLACED_BY("isReplacedBy"),
+	IS_REQUIRED_BY("isRequiredBy"),
+	ISSUED("issued"),
+	IS_VERSION_OF("isVersionOf"),
+	LANGUAGE("language"),
+	LICENSE("license"),
+	MEDIATOR("mediator"),
+	MEDIUM("medium"),
 	/**
 	 * Date on which the resource was changed.
 	 */
-	MODIFIED(PropertyType.DATE)
+	MODIFIED("modified"),
+	PROVENANCE("provenance"),
+	PUBLISHER("publisher"),
+	REFERENCES("references"),
+	RELATION("relation"),
+	REPLACES("replaces"),
+	REQUIRES("requires"),
+	RIGHTS("rights"),
+	RIGHTS_HOLDER("rightsHolder"),
+	SOURCE("source"),
+	SPATIAL("spatial"),
+	SUBJECT("subject"),
+	TABLE_OF_CONTENTS("tableOfContents"),
+	TEMPORAL("temporal"),
+	TITLE("title"),
+	TYPE("type"),
+	VALID("valid") 
 	;
 
-	private final PropertyType type;
+	private final String name;
 	
-	private DublinCoreTerm(PropertyType type) {
-		this.type = type;
+	private DublinCoreTerm(String name) {
+		this.name = name;
 	}
 	
 	@Override
 	public PropertyType getType() {
-		return type;
+		if (this == MODIFIED) {
+			return PropertyType.DATE;
+		} else {
+			return PropertyType.GENERIC;
+		}
 	}
 	
 	/**
@@ -60,7 +118,7 @@ public enum DublinCoreTerm implements Term {
 	 */
 	@Override
 	public String localName() {
-		return name().toLowerCase();
+		return name;
 	}
 
 	/**

@@ -36,15 +36,33 @@ public enum StandardVocabulary implements Vocabulary {
 	DCTERMS("http://purl.org/dc/terms/"),
 	
 	EPUB_A11Y("http://www.idpf.org/epub/vocab/package/a11y/#"),
+	
+	/**
+	 * The vocabulary defined by EPUB Media Overlays specification.
+	 */
 	EPUB_MEDIA("http://www.idpf.org/epub/vocab/overlays/#"),
+	
 	EPUB_META("http://idpf.org/epub/vocab/package/meta/#"),
+	
 	EPUB_RENDITION("http://www.idpf.org/vocab/rendition/#"),
+	
 	EPUB_SC("http://idpf.org/epub/vocab/sc/#"),
+	
+	/**
+	 * A vocabulary commonly used by libraries for bibliographic metadata.
+	 */
 	MARC("http://id.loc.gov/vocabulary/"),
+	
+	/**
+	 * A vocabulary used for book supply chain metadata.
+	 */
 	ONIX("http://www.editeur.org/ONIX/book/codelists/current.html#"),
+	
 	SCHEMA("http://schema.org/"),
 	
-	/** W3C XML Schema Definition. */
+	/** 
+	 * Defines W3C XML Schema data types.
+	 */
 	XSD("http://www.w3.org/2001/XMLSchema#")
 	;
 	
