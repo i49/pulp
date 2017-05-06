@@ -51,7 +51,7 @@ public class PropertyFactoryTest {
 		assertThat(p.getNormalizedValue()).isEmpty();
 		assertThat(p.getLanguage()).isEmpty();
 		assertThat(p.getDirection()).isEmpty();
-		assertThat(p.getAlternativeRepresentation()).isEmpty();
+		assertThat(p.getAlternativeValue()).isEmpty();
 		assertThat(p.getRole()).isEmpty();
 	}
 
@@ -94,7 +94,7 @@ public class PropertyFactoryTest {
 		assertThat(p.getNormalizedValue()).isEmpty();
 		assertThat(p.getLanguage()).isEmpty();
 		assertThat(p.getDirection()).isEmpty();
-		assertThat(p.getAlternativeRepresentation()).isEmpty();
+		assertThat(p.getAlternativeValue()).isEmpty();
 		assertThat(p.getRole()).isEmpty();
 	}
 
@@ -294,7 +294,7 @@ public class PropertyFactoryTest {
 		assertThat(p.getNormalizedValue()).isEmpty();
 		assertThat(p.getLanguage()).isEmpty();
 		assertThat(p.getDirection()).isEmpty();
-		assertThat(p.getAlternativeRepresentation()).isEmpty();
+		assertThat(p.getAlternativeValue()).isEmpty();
 	}
 
 	@Test 
@@ -367,15 +367,6 @@ public class PropertyFactoryTest {
 	public void newType_shouldCreateType() {
 		String value = "logbook";
 		SimpleProperty p = factory.newType(value);
-		assertThat(p.getTerm()).isSameAs(DublinCore.TYPE);
-		assertThat(p.getValue()).isEqualTo(value);
-	}
-
-	@Test
-	public void newType_shouldCreatePredefinedType() {
-		String value = "dictionary";
-		SimpleProperty p = factory.newType(value);
-		assertThat(p).isSameAs(PublicationType.DICTIONARY);
 		assertThat(p.getTerm()).isSameAs(DublinCore.TYPE);
 		assertThat(p.getValue()).isEqualTo(value);
 	}

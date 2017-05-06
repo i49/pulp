@@ -16,48 +16,17 @@
 
 package com.github.i49.pulp.impl.metadata;
 
-import static com.github.i49.pulp.impl.base.Preconditions.*;
-
-import java.util.Optional;
-
-import com.github.i49.pulp.api.metadata.Representation;
 import com.github.i49.pulp.api.metadata.Term;
 import com.github.i49.pulp.api.metadata.TitleProperty;
 
 /**
  * The default implementation of {@link TitleProperty}.
  */
-class DefaultTitleProperty extends DefaultTextProperty<TitleProperty> implements TitleProperty {
+class DefaultTitleProperty 
+	extends MultilingualNormalizableTextProperty<TitleProperty>
+	implements TitleProperty {
 	
-	private String normalizedValue;
-	
-	private Optional<Representation> alternative;
-
 	DefaultTitleProperty(Term term, String value) {
 		super(term, value);
-		alternative = Optional.empty();
-	}
-	
-	@Override
-	public TitleProperty fileAs(String value) {
-		checkNotBlank(value, "value");
-		this.normalizedValue = value.trim();
-		return this;
-	}
-
-	@Override
-	public Optional<String> getNormalizedValue() {
-		return Optional.ofNullable(this.normalizedValue);
-	}
-	
-	@Override
-	public Optional<Representation> getAlternativeRepresentation() {
-		return alternative;
-	}
-
-	@Override
-	public TitleProperty resetNormalizedValue() {
-		this.normalizedValue = null;
-		return this;
 	}
 }

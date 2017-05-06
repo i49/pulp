@@ -21,19 +21,17 @@ import static com.github.i49.pulp.impl.base.Preconditions.*;
 import java.util.Optional;
 
 import com.github.i49.pulp.api.metadata.RelatorProperty;
-import com.github.i49.pulp.api.metadata.Representation;
 import com.github.i49.pulp.api.metadata.Term;
 
 /**
  * A skeletal implementation of {@link RelatorProperty}.
  */
-class DefaultRelatorProperty extends DefaultTextProperty<RelatorProperty> implements RelatorProperty {
+class DefaultRelatorProperty 
+	extends MultilingualNormalizableTextProperty<RelatorProperty>
+	implements RelatorProperty {
 
-	private String normalizedValue;
 	private String role;
 
-	private Optional<Representation> alternative;
-	
 	/**
 	 * Constructs this relator.
 	 * 
@@ -42,35 +40,11 @@ class DefaultRelatorProperty extends DefaultTextProperty<RelatorProperty> implem
 	 */
 	DefaultRelatorProperty(Term term, String value) {
 		super(term, value);
-		alternative = Optional.empty();
-	}
-	
-	@Override
-	public RelatorProperty fileAs(String value) {
-		checkNotBlank(value, "value");
-		this.normalizedValue = value.trim();
-		return this;
-	}
-	
-	@Override
-	public Optional<String> getNormalizedValue() {
-		return Optional.ofNullable(normalizedValue);
-	}
-	
-	@Override
-	public Optional<Representation> getAlternativeRepresentation() {
-		return alternative;
 	}
 	
 	@Override
 	public Optional<String> getRole() {
 		return Optional.ofNullable(role);
-	}
-	
-	@Override
-	public RelatorProperty resetNormalizedValue() {
-		this.normalizedValue = null;
-		return this;
 	}
 	
 	@Override 
@@ -81,6 +55,7 @@ class DefaultRelatorProperty extends DefaultTextProperty<RelatorProperty> implem
 	
 	@Override 
 	public RelatorProperty setRole(String role) {
+		checkNotNull(role, "role");
 		this.role = role;
 		return this;
 	}

@@ -16,8 +16,6 @@
 
 package com.github.i49.pulp.impl.metadata;
 
-import static com.github.i49.pulp.impl.base.Preconditions.checkNotNull;
-
 import com.github.i49.pulp.api.metadata.GenericProperty;
 import com.github.i49.pulp.api.metadata.PropertyType;
 import com.github.i49.pulp.api.metadata.Term;
@@ -25,25 +23,12 @@ import com.github.i49.pulp.api.metadata.Term;
 /**
  * The default implementation of {@link GenericProperty} property.
  */
-class DefaultGenericProperty<V> extends AbstractProperty<V> implements GenericProperty<V> {
+class DefaultGenericProperty 
+	extends MultilingualNormalizableTextProperty<GenericProperty>
+	implements GenericProperty {
 
-	private V value;
-	
-	public DefaultGenericProperty(Term term, V value) {
-		super(term);
+	public DefaultGenericProperty(Term term, String value) {
+		super(term, value);
 		assert(term.getType() == PropertyType.GENERIC);
-		this.value = value;
-	}
-
-	@Override
-	public V getValue() {
-		return value;
-	}
-	
-	@Override
-	public DefaultGenericProperty<V> setValue(V value) {
-		checkNotNull(value, "value");
-		this.value = value;
-		return this;
 	}
 }

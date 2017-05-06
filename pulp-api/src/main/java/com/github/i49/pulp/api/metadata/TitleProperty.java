@@ -23,7 +23,8 @@ import java.util.Locale;
  * 
  * @see <a href="http://dublincore.org/documents/dces/#title">Dublin Core Metadata Element Set, Version 1.1</a> 
  */
-public interface TitleProperty extends TextProperty, Normalizable<TitleProperty>, AlternativeProvider {
+public interface TitleProperty 
+	extends TextProperty, Multilingual<TitleProperty>, Normalizable<TitleProperty> {
 
 	/**
 	 * {@inheritDoc}

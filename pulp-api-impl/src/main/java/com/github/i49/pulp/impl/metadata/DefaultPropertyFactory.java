@@ -19,9 +19,7 @@ package com.github.i49.pulp.impl.metadata;
 import static com.github.i49.pulp.impl.base.Preconditions.*;
 
 import java.time.OffsetDateTime;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import com.github.i49.pulp.api.metadata.DateProperty;
 import com.github.i49.pulp.api.metadata.DublinCore;
@@ -32,7 +30,6 @@ import com.github.i49.pulp.api.metadata.IdentifierProperty;
 import com.github.i49.pulp.api.metadata.LanguageProperty;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.PropertyType;
-import com.github.i49.pulp.api.metadata.PublicationType;
 import com.github.i49.pulp.api.metadata.RelatorProperty;
 import com.github.i49.pulp.api.metadata.SourceProperty;
 import com.github.i49.pulp.api.metadata.SubjectProperty;
@@ -47,24 +44,15 @@ import com.github.i49.pulp.impl.base.Messages;
  */
 public class DefaultPropertyFactory implements PropertyFactory {
 	
-	// Predefined special publication types.
-	private static final Map<String, PublicationType> PREDEFINED_TYPES = new HashMap<>();
-	
-	static {
-		for (PublicationType type: PublicationType.values()) {
-			PREDEFINED_TYPES.put(type.getValue(), type);
-		}
-	}
-
 	@Override
-	public <V> GenericProperty<V> createGenericProperty(Term term, V value) {
+	public GenericProperty createGenericProperty(Term term, String value) {
 		checkNotNull(term, "term");
-		checkNotNull(value, "value");
+		checkNotBlank(value, "value");
 		if (term.getType() != PropertyType.GENERIC) {
 			throw new IllegalArgumentException(
 					Messages.METADATA_PROPERTY_TYPE_MISMATCHED(PropertyType.GENERIC, term));
 		}
-		return new DefaultGenericProperty<V>(term, value);
+		return new DefaultGenericProperty(term, value);
 	}
 	
 	public RelatorProperty newContributor(String value) {
@@ -172,10 +160,6 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	@Override
 	public SimpleProperty newType(String value) {
 		checkNotBlank(value, "value");
-		SimpleProperty type = PREDEFINED_TYPES.get(value);
-		if (type != null) {
-			return type;
-		}
 		return new DefaultSimpleProperty(DublinCore.TYPE, value);
 	}
 }

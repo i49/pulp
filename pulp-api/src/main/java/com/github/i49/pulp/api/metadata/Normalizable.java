@@ -23,7 +23,7 @@ import java.util.Optional;
  * 
  * @param <S> the type of the final descendant type.
  */
-public interface Normalizable<S> {
+public interface Normalizable<S extends Property> {
 
 	/**
 	 * Assigns the normalized form of the property value.

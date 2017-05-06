@@ -28,5 +28,11 @@ public interface LanguageProperty extends TypedProperty<Locale> {
 	 * {@inheritDoc}
 	 */
 	@Override
+	Locale getValue();
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	LanguageProperty setValue(Locale value);
 }

@@ -314,7 +314,7 @@ class MetadataParser3 implements MetadataParser {
 	}
 	
 	protected Property parseGenericProperty(MetadataEntry entry, Term term) {
-		GenericProperty<String> p = factory.createGenericProperty(term, entry.getValue());
+		GenericProperty p = factory.createGenericProperty(term, entry.getValue());
 		return append(p);
 	}
 	

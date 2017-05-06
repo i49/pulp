@@ -25,7 +25,8 @@ import java.util.Optional;
  * {@link DublinCore#CONTRIBUTOR}, {@link DublinCore#CREATOR},
  * {@link DublinCore#PUBLISHER} and so on.
  */
-public interface RelatorProperty extends TextProperty, Normalizable<RelatorProperty>, AlternativeProvider {
+public interface RelatorProperty 
+	extends TextProperty, Multilingual<RelatorProperty>, Normalizable<RelatorProperty> {
 
 	/**
 	 * Returns the role of this relator.

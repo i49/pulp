@@ -66,7 +66,7 @@ public interface PropertyFactory {
 	 * or the type of the term does not match the type of the property to create.
 	 * The proper type of the term can be obtained by {@link Term#getType()}.  
 	 */
-	<V> GenericProperty<V> createGenericProperty(Term term, V value);
+	GenericProperty createGenericProperty(Term term, String value);
 	
 	/**
 	 * Creates an instance of {@link DublinCore#CONTRIBUTOR} property.

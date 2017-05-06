@@ -16,17 +16,42 @@
 
 package com.github.i49.pulp.api.metadata;
 
+import java.util.Locale;
+
 /**
  * General-purpose metadata property.
  * This property can be used for {@link PropertyType#GENERIC}.
- * 
- * @param <V> the type of the property value.
  */
-public interface GenericProperty<V> extends TypedProperty<V> {
+public interface GenericProperty
+	extends TextProperty, Multilingual<GenericProperty>, Normalizable<GenericProperty> {
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	GenericProperty<V> setValue(V value);
+	GenericProperty resetDirection();
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	GenericProperty resetLanguage();
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	GenericProperty setDirection(Direction direction);
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	GenericProperty setLanguage(Locale language);
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	GenericProperty setValue(String value);
 }
