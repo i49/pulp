@@ -33,8 +33,6 @@ import java.util.stream.Collectors;
 import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.core.EpubException;
-import com.github.i49.pulp.api.metadata.Contributor;
-import com.github.i49.pulp.api.metadata.Creator;
 import com.github.i49.pulp.api.metadata.DateProperty;
 import com.github.i49.pulp.api.metadata.DublinCoreTerm;
 import com.github.i49.pulp.api.metadata.GenericProperty;
@@ -43,8 +41,7 @@ import com.github.i49.pulp.api.metadata.LanguageProperty;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.Property;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
-import com.github.i49.pulp.api.metadata.Publisher;
-import com.github.i49.pulp.api.metadata.Relator;
+import com.github.i49.pulp.api.metadata.RelatorProperty;
 import com.github.i49.pulp.api.metadata.StandardVocabulary;
 import com.github.i49.pulp.api.metadata.Term;
 import com.github.i49.pulp.api.metadata.TermRegistry;
@@ -227,8 +224,8 @@ class MetadataParser3 implements MetadataParser {
 	}
 	
 	protected Property parseContributor(MetadataEntry entry) {
-		Relator.Builder<Contributor> b = factory.getContributorBuilder(entry.getValue());
-		Property p = buildRelator(b, entry);
+		RelatorProperty p = factory.newContributor(entry.getValue());
+		refineRelator(p, entry);
 		return append(p);
 	}
 
@@ -238,8 +235,8 @@ class MetadataParser3 implements MetadataParser {
 	}
 
 	protected Property parseCreator(MetadataEntry entry) {
-		Relator.Builder<Creator> b = factory.getCreatorBuilder(entry.getValue());
-		Property p = buildRelator(b, entry);
+		RelatorProperty p = factory.newCreator(entry.getValue());
+		refineRelator(p, entry);
 		return append(p);
 	}
 
@@ -275,8 +272,8 @@ class MetadataParser3 implements MetadataParser {
 	}
 
 	protected Property parsePublisher(MetadataEntry entry) {
-		Relator.Builder<Publisher> b = factory.getPublisherBuilder(entry.getValue());
-		Property p = buildRelator(b, entry);
+		RelatorProperty p = factory.newPublisher(entry.getValue());
+		refineRelator(p, entry);
 		return append(p);
 	}
 
@@ -331,14 +328,13 @@ class MetadataParser3 implements MetadataParser {
 		return p;
 	}
 
-	protected <T extends Relator> T buildRelator(Relator.Builder<T> builder, MetadataEntry entry) {
+	protected void refineRelator(RelatorProperty p, MetadataEntry entry) {
 		for (Element r: entry.getRefinements()) {
 			String term = r.getAttribute("property");
 			if ("file-as".equals(term)) {
-				builder.fileAs(r.getTextContent());
+				p.fileAs(r.getTextContent());
 			}
 		}
-		return builder.build();
 	}
 	
 	private static OffsetDateTime convertDateTime(String value) {

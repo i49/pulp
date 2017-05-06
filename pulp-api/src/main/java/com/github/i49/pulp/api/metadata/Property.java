@@ -16,8 +16,6 @@
 
 package com.github.i49.pulp.api.metadata;
 
-import java.util.Optional;
-
 /**
  * A property composing the metadata for EPUB publication and rendition.
  */
@@ -47,35 +45,10 @@ public interface Property {
 	String getValueAsString();
 	
 	/**
-	 * Returns the normalized form of the value of this property.
-	 * By default this method returns an empty {@link Optional} instance.
-	 * 
-	 * @return the normalized form of the property value.
-	 */
-	default Optional<String> getNormalizedValue() {
-		return Optional.empty();
-	}
-	
-	/**
 	 * Returns the same result as {@link #getValue()}.
 	 * 
 	 * @return the same result as {@link #getValue()}.
 	 */
 	@Override
 	String toString();
-
-	/**
-	 * A builder for building a property.
-	 *
-	 * @param <P> the type of the property to build. 
-	 */
-	public interface Builder<P extends Property> {
-
-		/**
-		 * Builds a property.
-		 * 
-		 * @return a property built.
-		 */
-		P build();
-	}
 }

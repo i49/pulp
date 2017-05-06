@@ -25,6 +25,9 @@ public enum PropertyType {
 	IDENTIFIER,
 	LANGUAGE,
 	RELATOR,
+	SIMPLE,
+	SOURCE,
+	SUBJECT,
 	TEXT,
 	TITLE
 }

@@ -52,7 +52,7 @@ public class MetadataTest {
 	
 	@Test
 	public void add_shouldAddFirstProperty() {
-		Creator p = f.newCreator("John Smith");
+		RelatorProperty p = f.newCreator("John Smith");
 		assertThat(m.add(p)).isTrue();
 		List<Property> list = m.getList(DublinCore.CREATOR);
 		assertThat(list).hasSize(1);
@@ -70,7 +70,7 @@ public class MetadataTest {
 	
 	@Test
 	public void add_shouldReturnFalseIfPropertyAlreadyExists() {
-		Creator p = f.newCreator("John Smith");
+		RelatorProperty p = f.newCreator("John Smith");
 		assertThat(m.add(p)).isTrue();
 		assertThat(m.add(p)).isFalse();
 		List<Property> list = m.getList(DublinCore.CREATOR);
@@ -251,7 +251,7 @@ public class MetadataTest {
 
 	@Test
 	public void getTerms_shouldReturnAllTermsAdded() {
-		Creator p = f.newCreator("John Smith");
+		RelatorProperty p = f.newCreator("John Smith");
 		m.add(p);
 		m.fillMissingProperties();
 		Set<Term> terms = m.getTerms();
@@ -292,7 +292,7 @@ public class MetadataTest {
 	
 	@Test
 	public void remove_shouldReturnFalseIfPropertyDoesNotExist() {
-		Creator p = f.newCreator("John Smith");
+		RelatorProperty p = f.newCreator("John Smith");
 		assertThat(m.remove(p)).isFalse();
 	}
 }

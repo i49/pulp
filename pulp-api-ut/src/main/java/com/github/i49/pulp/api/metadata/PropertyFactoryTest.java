@@ -18,7 +18,6 @@ package com.github.i49.pulp.api.metadata;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.net.URI;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.IllformedLocaleException;
@@ -46,7 +45,7 @@ public class PropertyFactoryTest {
 	@Test
 	public void newContributor_shouldCreateContributor() {
 		String name = "John Smith";
-		Contributor p = factory.newContributor(name);
+		RelatorProperty p = factory.newContributor(name);
 		assertThat(p.getTerm()).isSameAs(DublinCore.CONTRIBUTOR);
 		assertThat(p.getValue()).isEqualTo(name);
 		assertThat(p.getNormalizedValue()).isEmpty();
@@ -72,21 +71,6 @@ public class PropertyFactoryTest {
 		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
 	}
 	
-	/* newContributor(String, Locale) */
-
-	@Test
-	public void newContributor_shouldCreateContributorWithLanguage() {
-		String name = "Hans Schmidt";
-		Contributor p = factory.newContributor(name, Locale.GERMAN);
-		assertThat(p.getTerm()).isSameAs(DublinCore.CONTRIBUTOR);
-		assertThat(p.getValue()).isEqualTo(name);
-		assertThat(p.getNormalizedValue()).isEmpty();
-		assertThat(p.getLanguage()).hasValue(Locale.GERMAN);
-		assertThat(p.getDirection()).isEmpty();
-		assertThat(p.getAlternativeRepresentation()).isEmpty();
-		assertThat(p.getRole()).isEmpty();
-	}
-	
 	/* newCoverage(String) */
 	
 	@Test
@@ -104,7 +88,7 @@ public class PropertyFactoryTest {
 	@Test
 	public void newCreator_shouldCreateCreator() {
 		String name = "John Smith";
-		Creator p = factory.newCreator(name);
+		RelatorProperty p = factory.newCreator(name);
 		assertThat(p.getTerm()).isSameAs(DublinCore.CREATOR);
 		assertThat(p.getValue()).isEqualTo(name);
 		assertThat(p.getNormalizedValue()).isEmpty();
@@ -128,21 +112,6 @@ public class PropertyFactoryTest {
 			factory.newCreator(" ");
 		});
 		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
-	}
-	
-	/* newCreator(String, Locale) */
-
-	@Test
-	public void newCreator_shouldCreateCreatorWithLanguage() {
-		String name = "Hans Schmidt";
-		Creator p = factory.newCreator(name, Locale.GERMAN);
-		assertThat(p.getTerm()).isSameAs(DublinCore.CREATOR);
-		assertThat(p.getValue()).isEqualTo(name);
-		assertThat(p.getNormalizedValue()).isEmpty();
-		assertThat(p.getLanguage()).hasValue(Locale.GERMAN);
-		assertThat(p.getDirection()).isEmpty();
-		assertThat(p.getAlternativeRepresentation()).isEmpty();
-		assertThat(p.getRole()).isEmpty();
 	}
 	
 	/* newDate(OffsetDateTime) */
@@ -319,14 +288,13 @@ public class PropertyFactoryTest {
 	@Test
 	public void newPublisher_shouldCreatePublisher() {
 		String name = "O’Reilly Media, Inc.";
-		Publisher p = factory.newPublisher(name);
+		RelatorProperty p = factory.newPublisher(name);
 		assertThat(p.getTerm()).isSameAs(DublinCore.PUBLISHER);
 		assertThat(p.getValue()).isEqualTo(name);
 		assertThat(p.getNormalizedValue()).isEmpty();
 		assertThat(p.getLanguage()).isEmpty();
 		assertThat(p.getDirection()).isEmpty();
 		assertThat(p.getAlternativeRepresentation()).isEmpty();
-		assertThat(p.getRole()).hasValue("pbl");
 	}
 
 	@Test 
@@ -343,21 +311,6 @@ public class PropertyFactoryTest {
 			factory.newPublisher(" ");
 		});
 		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
-	}
-	
-	/* newPublisher(String, Locale) */
-
-	@Test
-	public void newPublisher_shouldCreatePublisherWithLanguage() {
-		String name = "Lagardère Publishing";
-		Publisher p = factory.newPublisher(name, Locale.FRENCH);
-		assertThat(p.getTerm()).isSameAs(DublinCore.PUBLISHER);
-		assertThat(p.getValue()).isEqualTo(name);
-		assertThat(p.getNormalizedValue()).isEmpty();
-		assertThat(p.getLanguage()).hasValue(Locale.FRENCH);
-		assertThat(p.getDirection()).isEmpty();
-		assertThat(p.getAlternativeRepresentation()).isEmpty();
-		assertThat(p.getRole()).hasValue("pbl");
 	}
 	
 	/* newRelation(String) */
@@ -389,7 +342,7 @@ public class PropertyFactoryTest {
 	@Test
 	public void newSource_shouldCreateSource() {
 		String value = "http://www.gutenberg.org/files/25545/25545-h/25545-h.htm";
-		Source p = factory.newSource(value);
+		SourceProperty p = factory.newSource(value);
 		assertThat(p.getTerm()).isSameAs(DublinCore.SOURCE);
 		assertThat(p.getValue()).isEqualTo(value);
 		assertThat(p.getScheme()).isEmpty();
@@ -400,7 +353,7 @@ public class PropertyFactoryTest {
 	@Test
 	public void newSubject_shouldCreateSubject() {
 		String value = "Olympic skiing";
-		Subject p = factory.newSubject(value);
+		SubjectProperty p = factory.newSubject(value);
 		assertThat(p.getTerm()).isSameAs(DublinCore.SUBJECT);
 		assertThat(p.getValue()).isEqualTo(value);
 		assertThat(p.getAuthority()).isEmpty();
@@ -408,33 +361,6 @@ public class PropertyFactoryTest {
 		assertThat(p.getCode()).isEmpty();
 	}
 
-	/* newSubject(String, SubjectAuthority) */
-	
-	@Test
-	public void newSubject_shouldCreateSubjectWithAuthority() {
-		String value = "FICTION / Occult & Supernatural";
-		Subject p = factory.newSubject(value, SubjectAuthority.BISAC, "FIC024000");
-		assertThat(p.getTerm()).isSameAs(DublinCore.SUBJECT);
-		assertThat(p.getValue()).isEqualTo(value);
-		assertThat(p.getAuthority()).hasValue(SubjectAuthority.BISAC);
-		assertThat(p.getScheme()).isEmpty();
-		assertThat(p.getCode()).hasValue("FIC024000");
-	}
-
-	/* newSubject(String, URI) */
-	
-	@Test
-	public void newSubject_shouldCreateSubjectWithSchemeURI() {
-		String value = "Number Theory";
-		URI scheme = URI.create("http://www.ams.org/msc/msc2010.html");
-		Subject p = factory.newSubject(value, scheme, "11");
-		assertThat(p.getTerm()).isSameAs(DublinCore.SUBJECT);
-		assertThat(p.getValue()).isEqualTo(value);
-		assertThat(p.getAuthority()).isEmpty();
-		assertThat(p.getScheme()).hasValue(scheme);
-		assertThat(p.getCode()).hasValue("11");
-	}
-	
 	/* newType(String) */
 	
 	@Test

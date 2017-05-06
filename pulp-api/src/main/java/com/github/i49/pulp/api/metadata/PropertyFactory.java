@@ -16,7 +16,6 @@
 
 package com.github.i49.pulp.api.metadata;
 
-import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.IllformedLocaleException;
 import java.util.Locale;
@@ -70,50 +69,13 @@ public interface PropertyFactory {
 	<V> GenericProperty<V> createGenericProperty(Term term, V value);
 	
 	/**
-	 * Creates a builder to build an instance of {@link Contributor} property.
+	 * Creates an instance of {@link DublinCore#CONTRIBUTOR} property.
 	 * 
-	 * @param name the name of the person or organization.
-	 * @return a builder for building {@link Contributor}.
-	 * @throws IllegalArgumentException if {@code name} was invalid.
+	 * @param value the name of the person or organization.
+	 * @return newly created property.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	Relator.Builder<Contributor> getContributorBuilder(String name);
-
-	/**
-	 * Creates a builder to build an instance of {@link Creator} property.
-	 * 
-	 * @param name the name of the person or organization.
-	 * @return a builder for building {@link Creator}.
-	 * @throws IllegalArgumentException if {@code name} was invalid.
-	 */
-	Relator.Builder<Creator> getCreatorBuilder(String name);
-
-	/**
-	 * Creates a builder to build an instance of {@link Publisher} property.
-	 * 
-	 * @param name the name of the person or organization.
-	 * @return a builder for building {@link Publisher}.
-	 * @throws IllegalArgumentException if {@code name} was invalid.
-	 */
-	Relator.Builder<Publisher> getPublisherBuilder(String name);
-	
-	/**
-	 * Creates an instance of {@link Contributor} property.
-	 * 
-	 * @param name the name of the person or organization.
-	 * @return newly created {@link Contributor}.
-	 * @throws IllegalArgumentException if {@code name} was invalid.
-	 */
-	Contributor newContributor(String name);
-
-	/**
-	 * Creates an instance of {@link Contributor} property with a specific language.
-	 * 
-	 * @param name the name of the person or organization.
-	 * @param language the language used for the name.
-	 * @return newly created {@link Contributor}.
-	 * @throws IllegalArgumentException if one of arguments was invalid.
-	 */
-	Contributor newContributor(String name, Locale language);
+	RelatorProperty newContributor(String value);
 
 	/**
 	 * Creates an instance of {@link DublinCore#COVERAGE} property.
@@ -125,24 +87,14 @@ public interface PropertyFactory {
 	TextProperty newCoverage(String text);
 
 	/**
-	 * Creates an instance of {@link Creator} property.
+	 * Creates an instance of {@link DublinCore#CREATOR} property.
 	 * 
-	 * @param name the name of the person or organization.
-	 * @return newly created {@link Creator}.
-	 * @throws IllegalArgumentException if {@code name} was invalid.
+	 * @param value the name of the person or organization.
+	 * @return newly created property.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	Creator newCreator(String name);
+	RelatorProperty newCreator(String value);
 
-	/**
-	 * Creates an instance of {@link Creator} property with a specific language.
-	 * 
-	 * @param name the name of the person or organization.
-	 * @param language the language used for {@code name}.
-	 * @return newly created {@link Creator}.
-	 * @throws IllegalArgumentException if one of arguments was invalid.
-	 */
-	Creator newCreator(String name, Locale language);
-	
 	/**
 	 * Creates an instance of {@link DublinCore#DESCRIPTION} property.
 	 * 
@@ -208,23 +160,13 @@ public interface PropertyFactory {
 	DateProperty newModified(OffsetDateTime value);
 	
 	/**
-	 * Creates an instance of {@link Publisher} property.
+	 * Creates an instance of {@link DublinCore#PUBLISHER} property.
 	 * 
-	 * @param name the name of the person or organization.
-	 * @return newly created {@link Publisher}.
-	 * @throws IllegalArgumentException if {@code name} was invalid.
+	 * @param value the name of the person or organization.
+	 * @return newly created property.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	Publisher newPublisher(String name);
-
-	/**
-	 * Creates an instance of {@link Publisher} property with a specific language.
-	 * 
-	 * @param name the name of the person or organization.
-	 * @param language the language used for {@code name}.
-	 * @return newly created {@link Publisher}.
-	 * @throws IllegalArgumentException if one of arguments was invalid.
-	 */
-	Publisher newPublisher(String name, Locale language);
+	RelatorProperty newPublisher(String value);
 
 	/**
 	 * Creates an instance of {@link DublinCore#RELATION} property.
@@ -245,60 +187,28 @@ public interface PropertyFactory {
 	TextProperty newRights(String text);
 
 	/**
-	 * Creates an instance of {@link Source} property.
+	 * Creates an instance of {@link DublinCore#SOURCE} property.
 	 * 
 	 * @param value the text describing the source.
-	 * @return newly created {@link Source}.
+	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	Source newSource(String value);
+	SourceProperty newSource(String value);
 	
 	/**
-	 * Creates an instance of {@link Source} property with a specific scheme.
+	 * Creates an instance of {@link DublinCore#SUBJECT} property.
 	 * 
 	 * @param value the text describing the source.
-	 * @param scheme the scheme used to represent the source.
-	 * @return newly created {@link Source}.
-	 * @throws IllegalArgumentException if one of arguments was invalid.
-	 */
-	Source newSource(String value, String scheme);
-
-	/**
-	 * Creates an instance of {@link Subject} property.
-	 * 
-	 * @param value the text describing the source.
-	 * @return newly created {@link Subject}.
+	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	Subject newSubject(String value);
+	SubjectProperty newSubject(String value);
 
 	/**
-	 * Creates an instance of {@link Subject} property with a specific authority.
-	 * 
-	 * @param value the text describing the source.
-	 * @param authority the authority used for selecting the subject.
-	 * @param code the subject code specific in the authority. 
-	 * @return newly created {@link Subject}.
-	 * @throws IllegalArgumentException if one of arguments was invalid.
-	 */
-	Subject newSubject(String value, SubjectAuthority authority, String code);
-
-	/**
-	 * Creates an instance of {@link Subject} property with a specific scheme.
-	 * 
-	 * @param value the text describing the source.
-	 * @param scheme the scheme used for selecting the subject.
-	 * @param code the subject code specific in the scheme.
-	 * @return newly created {@link Subject}.
-	 * @throws IllegalArgumentException if one of arguments was invalid.
-	 */
-	Subject newSubject(String value, URI scheme, String code);
-	
-	/**
-	 * Creates an instance of {@link TitleProperty} property.
+	 * Creates an instance of {@link DublinCore#TITLE} property.
 	 * 
 	 * @param value the value of the title.
-	 * @return newly created {@link TitleProperty}.
+	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
 	TitleProperty newTitle(String value);

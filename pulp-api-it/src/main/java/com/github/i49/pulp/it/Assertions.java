@@ -25,6 +25,7 @@ import org.assertj.core.api.AbstractListAssert;
 
 import com.github.i49.pulp.api.core.Spine;
 import com.github.i49.pulp.api.core.Spine.Page;
+import com.github.i49.pulp.api.metadata.Normalizable;
 import com.github.i49.pulp.api.metadata.Property;
 
 public class Assertions {
@@ -67,13 +68,18 @@ public class Assertions {
 
 		public PropertyAssert hasNormalizedValue(String value) {
 			isNotNull();
-			Optional<String> container = actual.getNormalizedValue();
-			if (!container.isPresent()) {
-				failWithMessage("Expected normalized value to be <%s> but was <empty>", value);
-			}
-			String actualValue = container.get();
-			if (!actualValue.equals(value)) {
-				failWithMessage("Expected normalized value to be <%s> but was <%s>", value, actualValue);
+			if (actual instanceof Normalizable) {
+				Normalizable<?> actual = (Normalizable<?>)this.actual;
+				Optional<String> container = actual.getNormalizedValue();
+				if (!container.isPresent()) {
+					failWithMessage("Expected normalized value to be <%s> but was <empty>", value);
+				}
+				String actualValue = container.get();
+				if (!actualValue.equals(value)) {
+					failWithMessage("Expected normalized value to be <%s> but was <%s>", value, actualValue);
+				}
+			} else {
+				failWithMessage("Property does not have a normalized value");
 			}
 			return this;
 		}

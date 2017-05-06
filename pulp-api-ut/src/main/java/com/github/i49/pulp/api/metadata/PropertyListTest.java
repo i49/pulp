@@ -45,8 +45,8 @@ public class PropertyListTest {
 	
 	@Test
 	public void add_shouldAddPropertyAtLast() {
-		Creator p1 = f.newCreator("Lewis Carroll");
-		Creator p2 = f.newCreator("John Tenniel");
+		RelatorProperty p1 = f.newCreator("Lewis Carroll");
+		RelatorProperty p2 = f.newCreator("John Tenniel");
 		List<Property> list = m.getList(DublinCore.CREATOR);
 		list.add(p1);
 		list.add(p2);
@@ -67,7 +67,7 @@ public class PropertyListTest {
 	@Test
 	public void add_shouldThrowExceptionIfPropertyHasWrongTerm() {
 		List<Property> list = m.getList(DublinCore.CREATOR);
-		Contributor p = f.newContributor("John Smith");
+		RelatorProperty p = f.newContributor("John Smith");
 		Throwable thrown = catchThrowable(()->{
 			list.add(p);
 		});
@@ -76,7 +76,7 @@ public class PropertyListTest {
 
 	@Test
 	public void add_shouldThrowExceptionIfPropertyAlreadyExists() {
-		Creator p = f.newCreator("Lewis Carroll");
+		RelatorProperty p = f.newCreator("Lewis Carroll");
 		List<Property> list = m.getList(DublinCore.CREATOR);
 		list.add(p);
 		Throwable thrown = catchThrowable(()->{

@@ -30,13 +30,12 @@ import java.util.Map;
 import org.yaml.snakeyaml.Yaml;
 
 import com.github.i49.pulp.api.core.Epub;
-import com.github.i49.pulp.api.metadata.Creator;
 import com.github.i49.pulp.api.metadata.DateProperty;
 import com.github.i49.pulp.api.metadata.IdentifierProperty;
 import com.github.i49.pulp.api.metadata.LanguageProperty;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
-import com.github.i49.pulp.api.metadata.Publisher;
+import com.github.i49.pulp.api.metadata.RelatorProperty;
 import com.github.i49.pulp.api.metadata.TitleProperty;
 
 /**
@@ -112,14 +111,14 @@ class MetadataLoader {
 
 	private void parseCreators(Metadata m, List<Entry> entries) {
 		for (Entry entry: entries) {
-			Creator p = factory.newCreator(entry.getValue());
+			RelatorProperty p = factory.newCreator(entry.getValue());
 			m.add(p);
 		}
 	}
 
 	private void parsePublishers(Metadata m, List<Entry> entries) {
 		for (Entry entry: entries) {
-			Publisher p = factory.newPublisher(entry.getValue());
+			RelatorProperty p = factory.newPublisher(entry.getValue());
 			m.add(p);
 		}
 	}

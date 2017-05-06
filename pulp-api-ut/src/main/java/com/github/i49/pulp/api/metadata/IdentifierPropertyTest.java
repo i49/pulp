@@ -24,8 +24,7 @@ import org.junit.Test;
 import com.github.i49.pulp.api.core.Epub;
 
 /**
- * @author i49
- *
+ * Unit tests for {@link IdentifierProperty}.
  */
 public class IdentifierPropertyTest {
 

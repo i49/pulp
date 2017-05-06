@@ -44,7 +44,7 @@ public interface TypedProperty<V> extends Property {
 	 * @param value the value to assign.
 	 * @return this property.
 	 * @throws IllegalArgumentException if {@code value} is invalid.
-	 * @throws UnsupportedOperationException if this property is immutable.
+	 * @throws UnsupportedOperationException if this property is unmodifiable.
 	 */
 	default TypedProperty<V> setValue(V value) {
 		throw new UnsupportedOperationException();

@@ -20,44 +20,68 @@ import static com.github.i49.pulp.impl.base.Preconditions.*;
 
 import java.util.Optional;
 
+import com.github.i49.pulp.api.metadata.RelatorProperty;
 import com.github.i49.pulp.api.metadata.Representation;
 import com.github.i49.pulp.api.metadata.Term;
-import com.github.i49.pulp.api.metadata.TitleProperty;
 
 /**
- * The default implementation of {@link TitleProperty}.
+ * A skeletal implementation of {@link RelatorProperty}.
  */
-class DefaultTitleProperty extends DefaultTextProperty<TitleProperty> implements TitleProperty {
-	
-	private String normalizedValue;
-	
-	private Optional<Representation> alternative;
+class DefaultRelatorProperty extends DefaultTextProperty<RelatorProperty> implements RelatorProperty {
 
-	DefaultTitleProperty(Term term, String value) {
+	private String normalizedValue;
+	private String role;
+
+	private Optional<Representation> alternative;
+	
+	/**
+	 * Constructs this relator.
+	 * 
+	 * @param temr the term of this property.
+	 * @param name the name of the relator.
+	 */
+	DefaultRelatorProperty(Term term, String value) {
 		super(term, value);
 		alternative = Optional.empty();
 	}
 	
 	@Override
-	public TitleProperty fileAs(String value) {
+	public RelatorProperty fileAs(String value) {
 		checkNotBlank(value, "value");
 		this.normalizedValue = value.trim();
 		return this;
 	}
-
+	
 	@Override
 	public Optional<String> getNormalizedValue() {
-		return Optional.ofNullable(this.normalizedValue);
+		return Optional.ofNullable(normalizedValue);
 	}
 	
 	@Override
 	public Optional<Representation> getAlternativeRepresentation() {
 		return alternative;
 	}
-
+	
 	@Override
-	public TitleProperty resetNormalizedValue() {
+	public Optional<String> getRole() {
+		return Optional.ofNullable(role);
+	}
+	
+	@Override
+	public RelatorProperty resetNormalizedValue() {
 		this.normalizedValue = null;
+		return this;
+	}
+	
+	@Override 
+	public RelatorProperty resetRole() {
+		this.role = null;
+		return this;
+	}
+	
+	@Override 
+	public RelatorProperty setRole(String role) {
+		this.role = role;
 		return this;
 	}
 }

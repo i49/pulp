@@ -20,23 +20,36 @@ import java.util.Optional;
 
 /**
  * A related resource from which the described resource is derived.
- * 
- * @see <a href="http://dublincore.org/documents/dces/#source">Dublin Core Metadata Element Set, Version 1.1</a> 
+ * This property can be used for {@link DublinCore#SOURCE} and others.
  */
-public interface Source extends TypedProperty<String> {
+public interface SourceProperty extends TypedProperty<String> {
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	default Term getTerm() {
-		return DublinCore.SOURCE;
-	}
-	
 	/**
 	 * Returns the scheme used for describing this source.
 	 * 
 	 * @return the scheme used for describing this source.
 	 */
 	Optional<String> getScheme();
+
+	/**
+	 * Clears the assigned scheme of this source.
+	 * 
+	 * @return this property.
+	 */
+	SourceProperty resetScheme();
+
+	/**
+	 * Assigns a new scheme to this source.
+	 * 
+	 * @param scheme the scheme of the source.
+	 * @return this property.
+	 * @throws IllegalArgumentException if {@code scheme} is invalid.
+	 */
+	SourceProperty setScheme(String scheme);
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	SourceProperty setValue(String value);
 }

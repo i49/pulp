@@ -23,6 +23,9 @@ package com.github.i49.pulp.api.metadata;
  */
 public interface GenericProperty<V> extends TypedProperty<V> {
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	GenericProperty<V> setValue(V value);
 }

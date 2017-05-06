@@ -21,18 +21,9 @@ import java.util.Optional;
 
 /**
  * The topic of the EPUB rendition.
- * 
- * @see <a href="http://dublincore.org/documents/dces/#subject">Dublin Core Metadata Element Set, Version 1.1</a> 
+ * This property can be used for {@link DublinCore#SUBJECT} and others.
  */
-public interface Subject extends TypedProperty<String> {
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	default Term getTerm() {
-		return DublinCore.SUBJECT;
-	}
+public interface SubjectProperty extends TypedProperty<String> {
 	
 	/**
 	 * Returns the authority of this subject.
@@ -54,4 +45,36 @@ public interface Subject extends TypedProperty<String> {
 	 * @return the code of this subject.
 	 */
 	Optional<String> getCode();
+	
+	/**
+	 * Clears the authority, scheme and code assigned.
+	 * 
+	 * @return this property.
+	 */
+	SubjectProperty resetCode();
+	
+	/**
+	 * Assigns the authority and the code define by the authority.
+	 * 
+	 * @param authority the authority of this subject.
+	 * @param code the code of this subject defined by the authority.
+	 * @return this property.
+	 * @throws IllegalArgumentException if any parameters are invalid.
+	 */
+	SubjectProperty setCode(SubjectAuthority authority, String code);
+
+	/**
+	 * Assigns the scheme and the code define in the scheme.
+	 * 
+	 * @param scheme the URI which represents the scheme of the subject.
+	 * @param code the code of this subject defined by the scheme.
+	 * @return this property.
+	 * @throws IllegalArgumentException if any parameters are invalid.
+	 */
+	SubjectProperty setCode(URI scheme, String code);
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	SubjectProperty setValue(String value);
 }

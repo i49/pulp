@@ -18,15 +18,11 @@ package com.github.i49.pulp.impl.metadata;
 
 import static com.github.i49.pulp.impl.base.Preconditions.*;
 
-import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
 
-import com.github.i49.pulp.api.metadata.Contributor;
-import com.github.i49.pulp.api.metadata.Creator;
 import com.github.i49.pulp.api.metadata.DateProperty;
 import com.github.i49.pulp.api.metadata.DublinCore;
 import com.github.i49.pulp.api.metadata.DublinCoreTerm;
@@ -37,11 +33,9 @@ import com.github.i49.pulp.api.metadata.LanguageProperty;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.PropertyType;
 import com.github.i49.pulp.api.metadata.PublicationType;
-import com.github.i49.pulp.api.metadata.Publisher;
-import com.github.i49.pulp.api.metadata.Relator;
-import com.github.i49.pulp.api.metadata.Source;
-import com.github.i49.pulp.api.metadata.Subject;
-import com.github.i49.pulp.api.metadata.SubjectAuthority;
+import com.github.i49.pulp.api.metadata.RelatorProperty;
+import com.github.i49.pulp.api.metadata.SourceProperty;
+import com.github.i49.pulp.api.metadata.SubjectProperty;
 import com.github.i49.pulp.api.metadata.Term;
 import com.github.i49.pulp.api.metadata.TextProperty;
 import com.github.i49.pulp.api.metadata.TitleProperty;
@@ -73,48 +67,21 @@ public class DefaultPropertyFactory implements PropertyFactory {
 		return new DefaultGenericProperty<V>(term, value);
 	}
 	
-	@Override
-	public Relator.Builder<Contributor> getContributorBuilder(String name) {
-		checkNotBlank(name, "name");
-		return DefaultContributor.builder(name);
-	}
-
-	@Override
-	public Relator.Builder<Creator> getCreatorBuilder(String name) {
-		checkNotBlank(name, "name");
-		return DefaultCreator.builder(name);
-	}
-
-	@Override
-	public Relator.Builder<Publisher> getPublisherBuilder(String name) {
-		checkNotBlank(name, "name");
-		return DefaultPublisher.builder(name);
-	}
-
-	@Override
-	public Contributor newContributor(String name) {
-		return getContributorBuilder(name).build();
-	}
-
-	@Override
-	public Contributor newContributor(String name, Locale language) {
-		return getContributorBuilder(name).language(language).build();
+	public RelatorProperty newContributor(String value) {
+		checkNotBlank(value, "value");
+		return new DefaultRelatorProperty(DublinCore.CONTRIBUTOR, value);
 	}
 
 	@Override
 	public TextProperty newCoverage(String text) {
 		checkNotBlank(text, "text");
-		return new DefaultTextProperty(DublinCore.COVERAGE, text);
+		return new DefaultTextProperty<TextProperty>(DublinCore.COVERAGE, text);
 	}
 
 	@Override
-	public Creator newCreator(String name) {
-		return getCreatorBuilder(name).build();
-	}
-
-	@Override
-	public Creator newCreator(String name, Locale language) {
-		return getCreatorBuilder(name).language(language).build();
+	public RelatorProperty newCreator(String value) {
+		checkNotBlank(value, "value");
+		return new DefaultRelatorProperty(DublinCore.CREATOR, value);
 	}
 
 	@Override
@@ -126,7 +93,7 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	@Override
 	public TextProperty newDescription(String text) {
 		checkNotBlank(text, "text");
-		return new DefaultTextProperty(DublinCore.DESCRIPTION, text);
+		return new DefaultTextProperty<TextProperty>(DublinCore.DESCRIPTION, text);
 	}
 
 	@Override
@@ -167,60 +134,33 @@ public class DefaultPropertyFactory implements PropertyFactory {
 	}
 	
 	@Override
-	public Publisher newPublisher(String name) {
-		return getPublisherBuilder(name).build();
-	}
-
-	@Override
-	public Publisher newPublisher(String name, Locale language) {
-		return getPublisherBuilder(name).language(language).build();
+	public RelatorProperty newPublisher(String value) {
+		checkNotBlank(value, "value");
+		return new DefaultRelatorProperty(DublinCore.PUBLISHER, value);
 	}
 
 	@Override
 	public TextProperty newRelation(String text) {
 		checkNotBlank(text, "text");
-		return new DefaultTextProperty(DublinCore.RELATION, text);
+		return new DefaultTextProperty<TextProperty>(DublinCore.RELATION, text);
 	}
 
 	@Override
 	public TextProperty newRights(String text) {
 		checkNotBlank(text, "text");
-		return new DefaultTextProperty(DublinCore.RIGHTS, text);
+		return new DefaultTextProperty<TextProperty>(DublinCore.RIGHTS, text);
 	}
 
 	@Override
-	public Source newSource(String value) {
+	public SourceProperty newSource(String value) {
 		checkNotBlank(value, "value");
-		return new DefaultSource(value, Optional.empty());
+		return new DefaultSourceProperty(DublinCore.SOURCE, value);
 	}
 
 	@Override
-	public Source newSource(String value, String scheme) {
+	public SubjectProperty newSubject(String value) {
 		checkNotBlank(value, "value");
-		checkNotNull(scheme, "scheme");
-		return new DefaultSource(value, Optional.of(scheme));
-	}
-
-	@Override
-	public Subject newSubject(String value) {
-		checkNotBlank(value, "value");
-		return new DefaultSubject(value);
-	}
-
-	@Override
-	public Subject newSubject(String value, SubjectAuthority authority, String code) {
-		checkNotBlank(value, "value");
-		checkNotNull(authority, "authority");
-		checkNotBlank(code, "code");
-		return new DefaultSubject(value, authority, code);
-	}
-
-	@Override
-	public Subject newSubject(String value, URI scheme, String code) {
-		checkNotBlank(value, "value");
-		checkNotNull(scheme, "scheme");
-		checkNotBlank(code, "code");
-		return new DefaultSubject(value, scheme, code);
+		return new DefaultSubjectProperty(DublinCore.SUBJECT, value);
 	}
 
 	@Override

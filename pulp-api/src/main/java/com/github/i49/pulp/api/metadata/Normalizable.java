@@ -19,16 +19,16 @@ package com.github.i49.pulp.api.metadata;
 import java.util.Optional;
 
 /**
- * Property that can have normalized value.
+ * Property that can have normalized form of the property value.
  * 
- * @param <S> the type of the extended interface.
+ * @param <S> the type of the final descendant type.
  */
 public interface Normalizable<S> {
 
 	/**
 	 * Assigns the normalized form of the property value.
 	 * 
-	 * @param value the normalized value.
+	 * @param value the normalized property value.
 	 * @return this property.
 	 * @throws IllegalArgumentException if {@code value} is invalid.
 	 */
@@ -39,7 +39,7 @@ public interface Normalizable<S> {
 	 * 
 	 * @return the normalized form of the property value.
 	 */
-	Optional<String> getNormalizedValue_();
+	Optional<String> getNormalizedValue();
 	
 	/**
 	 * Clears the normalized value assigned.

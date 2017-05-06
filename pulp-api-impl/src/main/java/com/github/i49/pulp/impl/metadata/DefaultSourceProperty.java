@@ -20,44 +20,51 @@ import static com.github.i49.pulp.impl.base.Preconditions.*;
 
 import java.util.Optional;
 
-import com.github.i49.pulp.api.metadata.Representation;
+import com.github.i49.pulp.api.metadata.SourceProperty;
 import com.github.i49.pulp.api.metadata.Term;
-import com.github.i49.pulp.api.metadata.TitleProperty;
 
 /**
- * The default implementation of {@link TitleProperty}.
+ * The default implementation of {@link SourceProperty}.
  */
-class DefaultTitleProperty extends DefaultTextProperty<TitleProperty> implements TitleProperty {
-	
-	private String normalizedValue;
-	
-	private Optional<Representation> alternative;
+class DefaultSourceProperty extends AbstractProperty<String> implements SourceProperty {
 
-	DefaultTitleProperty(Term term, String value) {
-		super(term, value);
-		alternative = Optional.empty();
+	private String value;
+	private String scheme;
+	
+	public DefaultSourceProperty(Term term, String value) {
+		super(term);
+		assert(value != null);
+		this.value = value.trim();
+		this.scheme = null;
+	}
+
+	@Override
+	public String getValue() {
+		return value;
 	}
 	
 	@Override
-	public TitleProperty fileAs(String value) {
-		checkNotBlank(value, "value");
-		this.normalizedValue = value.trim();
+	public Optional<String> getScheme() {
+		return Optional.ofNullable(scheme);
+	}
+
+	@Override
+	public DefaultSourceProperty resetScheme() {
+		this.scheme = null;
 		return this;
 	}
 
 	@Override
-	public Optional<String> getNormalizedValue() {
-		return Optional.ofNullable(this.normalizedValue);
-	}
-	
-	@Override
-	public Optional<Representation> getAlternativeRepresentation() {
-		return alternative;
+	public DefaultSourceProperty setScheme(String scheme) {
+		checkNotBlank(scheme, "scheme");
+		this.scheme = scheme.trim();
+		return this;
 	}
 
 	@Override
-	public TitleProperty resetNormalizedValue() {
-		this.normalizedValue = null;
+	public DefaultSourceProperty setValue(String value) {
+		checkNotBlank(value, "value");
+		this.value = value.trim();
 		return this;
 	}
 }

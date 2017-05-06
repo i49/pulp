@@ -58,7 +58,7 @@ public enum DublinCore implements Term {
 	 * The file format, physical medium, or dimensions of the resource. 
 	 * @see Format
 	 */
-	FORMAT(PropertyType.TEXT),
+	FORMAT(PropertyType.SIMPLE),
 
 	/** 
 	 * An unambiguous reference to the resource within a given context.
@@ -94,13 +94,13 @@ public enum DublinCore implements Term {
 	 * A related resource from which the described resource is derived.
 	 * @see Source
 	 */
-	SOURCE(PropertyType.TEXT),
+	SOURCE(PropertyType.SOURCE),
 	
 	/**
 	 * The topic of the resource.
 	 * @see Subject
 	 */
-	SUBJECT(PropertyType.TEXT),
+	SUBJECT(PropertyType.SUBJECT),
 	
 	/**
 	 * A name given to the resource.
@@ -112,7 +112,7 @@ public enum DublinCore implements Term {
 	 * The nature or genre of the resource.
 	 * @see Type
 	 */
-	TYPE(PropertyType.TEXT),
+	TYPE(PropertyType.SIMPLE),
 	;
 
 	private final PropertyType type;

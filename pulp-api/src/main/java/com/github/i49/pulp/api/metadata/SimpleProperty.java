@@ -18,6 +18,8 @@ package com.github.i49.pulp.api.metadata;
 
 /**
  * Simple string-type property.
+ * This property can be used for
+ * {@link DublinCore#FORMAT}, {@link DublinCore#TYPE} and others.
  */
 public interface SimpleProperty extends TypedProperty<String> {
 }

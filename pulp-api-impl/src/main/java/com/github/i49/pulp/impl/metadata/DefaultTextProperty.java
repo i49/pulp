@@ -27,8 +27,10 @@ import com.github.i49.pulp.api.metadata.TextProperty;
 
 /**
  * A skeletal implementation of {@link TextProperty}.
+ * 
+ * @param <S> the final descendant interface.
  */
-class DefaultTextProperty extends AbstractProperty<String> implements TextProperty {
+class DefaultTextProperty<S extends TextProperty> extends AbstractProperty<String> implements TextProperty {
 	
 	private Direction direction;
 	private Locale language;
@@ -42,15 +44,6 @@ class DefaultTextProperty extends AbstractProperty<String> implements TextProper
 		this.value = value.trim();
 	}
 
-	protected DefaultTextProperty(Term term, AbstractPropertyBuilder<?, ?> builder) {
-		super(term);
-		Optional<Direction> direction = builder.getDirection();
-		Optional<Locale> language = builder.getLanguage();
-		this.direction = direction.isPresent() ? direction.get() : null;
-		this.language = language.isPresent() ? language.get() : null;
-		this.value = builder.getValue();
-	}
-	
 	@Override
 	public Optional<Direction> getDirection() {
 		return Optional.ofNullable(direction);
@@ -67,36 +60,41 @@ class DefaultTextProperty extends AbstractProperty<String> implements TextProper
 	}
 	
 	@Override
-	public TextProperty resetDirection() {
+	public S resetDirection() {
 		this.direction = null;
-		return this;
+		return self();
 	}
 
 	@Override
-	public TextProperty resetLanguage() {
+	public S resetLanguage() {
 		this.language = null;
-		return this;
+		return self();
 	}
 
 	@Override
-	public TextProperty setDirection(Direction direction) {
+	public S setDirection(Direction direction) {
 		checkNotNull(direction, "direction");
 		this.direction = direction;
-		return this;
+		return self();
 	}
 	
 	@Override
-	public TextProperty setLanguage(Locale language) {
+	public S setLanguage(Locale language) {
 		checkNotNull(language, "language");
 		this.language = language;
-		return this;
+		return self();
 	}
 
 	@Override
-	public TextProperty setValue(String value) {
+	public S setValue(String value) {
 		checkNotBlank(value, "value");
 		this.value = value.trim();
-		return this;
+		return self();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private S self() {
+		return (S)this;
 	}
 }
 
