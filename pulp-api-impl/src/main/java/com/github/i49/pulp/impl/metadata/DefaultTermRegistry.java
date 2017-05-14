@@ -23,13 +23,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import com.github.i49.pulp.api.metadata.DublinCore;
-import com.github.i49.pulp.api.metadata.DublinCoreTerm;
-import com.github.i49.pulp.api.metadata.PropertyType;
-import com.github.i49.pulp.api.metadata.StandardVocabulary;
-import com.github.i49.pulp.api.metadata.Term;
 import com.github.i49.pulp.api.metadata.TermRegistry;
-import com.github.i49.pulp.api.metadata.Vocabulary;
+import com.github.i49.pulp.api.vocabulary.Generic;
+import com.github.i49.pulp.api.vocabulary.Property;
+import com.github.i49.pulp.api.vocabulary.StandardVocabulary;
+import com.github.i49.pulp.api.vocabulary.Term;
+import com.github.i49.pulp.api.vocabulary.Vocabulary;
+import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
+import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
 
 /**
  * The default implementation of {@link TermRegistry}.
@@ -229,8 +230,8 @@ public class DefaultTermRegistry implements TermRegistry {
 		}
 		
 		@Override
-		public PropertyType getType() {
-			return PropertyType.GENERIC;
+		public Class<? extends Property> getType() {
+			return Generic.class;
 		}
 
 		@Override

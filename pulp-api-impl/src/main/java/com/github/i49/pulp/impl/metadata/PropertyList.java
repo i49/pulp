@@ -19,8 +19,8 @@ package com.github.i49.pulp.impl.metadata;
 import java.util.AbstractList;
 import java.util.ArrayList;
 
-import com.github.i49.pulp.api.metadata.Property;
-import com.github.i49.pulp.api.metadata.Term;
+import com.github.i49.pulp.api.vocabulary.Property;
+import com.github.i49.pulp.api.vocabulary.Term;
 
 /**
  * The list containing homogeneous properties. 

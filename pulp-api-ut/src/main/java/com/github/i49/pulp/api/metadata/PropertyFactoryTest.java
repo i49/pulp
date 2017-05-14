@@ -27,6 +27,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.i49.pulp.api.core.Epub;
+import com.github.i49.pulp.api.vocabulary.IdentifierScheme;
+import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
+import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
 
 /**
  * Unit tests for {@link PropertyFactory}.

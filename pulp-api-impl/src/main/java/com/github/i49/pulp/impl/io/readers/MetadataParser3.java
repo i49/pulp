@@ -33,20 +33,17 @@ import java.util.stream.Collectors;
 import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.core.EpubException;
-import com.github.i49.pulp.api.metadata.DateProperty;
-import com.github.i49.pulp.api.metadata.DublinCoreTerm;
-import com.github.i49.pulp.api.metadata.GenericProperty;
-import com.github.i49.pulp.api.metadata.IdentifierProperty;
-import com.github.i49.pulp.api.metadata.LanguageProperty;
 import com.github.i49.pulp.api.metadata.Metadata;
-import com.github.i49.pulp.api.metadata.Property;
-import com.github.i49.pulp.api.metadata.PropertyFactory;
-import com.github.i49.pulp.api.metadata.RelatorProperty;
-import com.github.i49.pulp.api.metadata.StandardVocabulary;
-import com.github.i49.pulp.api.metadata.Term;
 import com.github.i49.pulp.api.metadata.TermRegistry;
-import com.github.i49.pulp.api.metadata.Vocabulary;
 import com.github.i49.pulp.api.spi.EpubService;
+import com.github.i49.pulp.api.vocabulary.GenericText;
+import com.github.i49.pulp.api.vocabulary.Property;
+import com.github.i49.pulp.api.vocabulary.Relator;
+import com.github.i49.pulp.api.vocabulary.StandardVocabulary;
+import com.github.i49.pulp.api.vocabulary.Term;
+import com.github.i49.pulp.api.vocabulary.Vocabulary;
+import com.github.i49.pulp.api.vocabulary.dc.Identifier;
+import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.io.containers.PrefixRegistry;
 import com.github.i49.pulp.impl.xml.Nodes;
@@ -58,7 +55,6 @@ class MetadataParser3 implements MetadataParser {
 	
 	private final Metadata metadata;
 	private final TermRegistry termRegistry;
-	private final PropertyFactory factory;
 	private final PrefixRegistry prefixRegistry;
 	private final String uniqueIdentifier;
 
@@ -68,7 +64,6 @@ class MetadataParser3 implements MetadataParser {
 	MetadataParser3(Metadata metadata, EpubService service, PrefixRegistry prefixRegistry, String uniqueIdentifier) {
 		this.metadata = metadata;
 		this.termRegistry = service.getPropertyTermRegistry();
-		this.factory = service.createPropertyFactory();
 		this.prefixRegistry = prefixRegistry;
 		this.uniqueIdentifier = uniqueIdentifier;
 	}
@@ -224,119 +219,93 @@ class MetadataParser3 implements MetadataParser {
 	}
 	
 	protected Property parseContributor(MetadataEntry entry) {
-		RelatorProperty p = factory.newContributor(entry.getValue());
-		refineRelator(p, entry);
-		return append(p);
+		return buildRelator(metadata.add().contributor(entry.getValue()), entry);
 	}
 
 	protected Property parseCoverage(MetadataEntry entry) {
-		Property p = factory.newCoverage(entry.getValue());
-		return append(p);
+		return metadata.add().coverage(entry.getValue()).result();
 	}
 
 	protected Property parseCreator(MetadataEntry entry) {
-		RelatorProperty p = factory.newCreator(entry.getValue());
-		refineRelator(p, entry);
-		return append(p);
+		return buildRelator(metadata.add().creator(entry.getValue()), entry);
 	}
 
 	protected Property parseDate(MetadataEntry entry) {
 		OffsetDateTime dateTime = convertDateTime(entry.getValue());
-		Property p = factory.newDate(dateTime);
-		return append(p);
+		return metadata.add().date(dateTime).result();
 	}
 
 	protected Property parseDescription(MetadataEntry entry) {
-		Property p = factory.newDescription(entry.getValue());
-		return append(p);
+		return metadata.add().description(entry.getValue()).result();
 	}
 
 	protected Property parseFormat(MetadataEntry entry) {
-		Property p = factory.newFormat(entry.getValue());
-		return append(p);
+		return metadata.add().format(entry.getValue()).result();
 	}
 	
 	protected Property parseIdentifier(MetadataEntry entry) {
-		IdentifierProperty p = factory.newIdentifier(entry.getValue());
+		Identifier.Builder b = metadata.add().identifier(entry.getValue());
 		if (entry.hasId(this.uniqueIdentifier)) {
-			prepend(p);
+			//prepend(p);
 		} else {
-			append(p);
+			//append(p);
 		}
-		return p;
+		return b.result();
 	}
 
 	protected Property parseLanguage(MetadataEntry entry) {
-		LanguageProperty p = factory.newLanguage(entry.getValue());
-		return append(p);
+		return metadata.add().language(entry.getValue()).result();
 	}
 
 	protected Property parsePublisher(MetadataEntry entry) {
-		RelatorProperty p = factory.newPublisher(entry.getValue());
-		refineRelator(p, entry);
-		return append(p);
+		return buildRelator(metadata.add().publisher(entry.getValue()), entry);
 	}
 
 	protected Property parseRelation(MetadataEntry entry) {
-		Property p = factory.newRelation(entry.getValue());
-		return append(p);
+		return metadata.add().relation(entry.getValue()).result();
 	}
 
 	protected Property parseRights(MetadataEntry entry) {
-		Property p = factory.newRights(entry.getValue());
-		return append(p);
+		return metadata.add().rights(entry.getValue()).result();
 	}
 
 	protected Property parseSource(MetadataEntry entry) {
-		Property p = factory.newSource(entry.getValue());
-		return append(p);
+		return metadata.add().source(entry.getValue()).result();
 	}
 
 	protected Property parseSubject(MetadataEntry entry) {
-		Property p = factory.newSubject(entry.getValue());
-		return append(p);
+		return metadata.add().subject(entry.getValue()).result();
 	}
 	
 	protected Property parseTitle(MetadataEntry entry) {
-		Property p = factory.newTitle(entry.getValue());
-		return append(p);
+		return metadata.add().title(entry.getValue()).result();
 	}
 
 	protected Property parseType(MetadataEntry entry) {
-		Property p = factory.newType(entry.getValue());
-		return append(p);
+		return metadata.add().type(entry.getValue()).result();
 	}
 	
 	protected Property parseModified(MetadataEntry entry) {
 		OffsetDateTime dateTime = convertDateTime(entry.getValue());
-		DateProperty p = factory.newModified(dateTime);
-		return append(p);
+		return metadata.add().modifiled(dateTime).result();
 	}
 	
 	protected Property parseGenericProperty(MetadataEntry entry, Term term) {
-		GenericProperty p = factory.createGenericProperty(term, entry.getValue());
-		return append(p);
+		GenericText.Builder b = metadata.add().generic(term, entry.getValue());
+		return b.result();
 	}
 	
-	private Property prepend(Property p) {
-		this.metadata.getList(p.getTerm()).add(0, p);
-		return p;
-	}
-	
-	private Property append(Property p) {
-		this.metadata.add(p);
-		return p;
-	}
-
-	protected void refineRelator(RelatorProperty p, MetadataEntry entry) {
+	protected <T extends Relator, R extends Relator.Builder<T, R>> 
+	T buildRelator(Relator.Builder<T, R> builder, MetadataEntry entry) {
 		for (Element r: entry.getRefinements()) {
 			String term = r.getAttribute("property");
 			if ("file-as".equals(term)) {
-				p.fileAs(r.getTextContent());
+				builder.fileAs(r.getTextContent());
 			}
 		}
+		return builder.result();
 	}
-	
+
 	private static OffsetDateTime convertDateTime(String value) {
 		OffsetDateTime dateTime = null;
 		try {

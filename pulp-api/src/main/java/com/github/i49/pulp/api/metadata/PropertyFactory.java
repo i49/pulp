@@ -16,9 +16,8 @@
 
 package com.github.i49.pulp.api.metadata;
 
-import java.time.OffsetDateTime;
-import java.util.IllformedLocaleException;
-import java.util.Locale;
+import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
+import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
 
 /**
  * The factory for producing various kinds of properties of metadata.
@@ -52,7 +51,7 @@ public interface PropertyFactory {
 	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code value} is {@code null}.
 	 */
-	DateProperty newDate(OffsetDateTime value);
+	//	DateProperty newDate(OffsetDateTime value);
 	
 	/**
 	 * Creates an instance of generic property.
@@ -65,7 +64,7 @@ public interface PropertyFactory {
 	 * or the type of the term does not match the type of the property to create.
 	 * The proper type of the term can be obtained by {@link Term#getType()}.  
 	 */
-	GenericProperty createGenericProperty(Term term, String value);
+	//	GenericProperty createGenericProperty(Term term, String value);
 	
 	/**
 	 * Creates an instance of {@link DublinCore#CONTRIBUTOR} property.
@@ -74,7 +73,7 @@ public interface PropertyFactory {
 	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	RelatorProperty newContributor(String value);
+	//	RelatorProperty newContributor(String value);
 
 	/**
 	 * Creates an instance of {@link DublinCore#COVERAGE} property.
@@ -83,7 +82,7 @@ public interface PropertyFactory {
 	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code text} was invalid.
 	 */
-	TextProperty newCoverage(String text);
+	//	TextProperty newCoverage(String text);
 
 	/**
 	 * Creates an instance of {@link DublinCore#CREATOR} property.
@@ -92,7 +91,7 @@ public interface PropertyFactory {
 	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	RelatorProperty newCreator(String value);
+	//	RelatorProperty newCreator(String value);
 
 	/**
 	 * Creates an instance of {@link DublinCore#DESCRIPTION} property.
@@ -101,7 +100,7 @@ public interface PropertyFactory {
 	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code text} was invalid.
 	 */
-	TextProperty newDescription(String text);
+	//	TextProperty newDescription(String text);
 
 	/**
 	 * Creates an instance of {@link DublinCore#FORMAT}.
@@ -110,14 +109,14 @@ public interface PropertyFactory {
 	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	SimpleProperty newFormat(String value);
+	//	SimpleProperty newFormat(String value);
 	
 	/**
 	 * Creates an instance of {@link IdentifierProperty} property by generating a random UUID.
 	 * 
 	 * @return newly created {@link IdentifierProperty}.
 	 */
-	IdentifierProperty newIdentifier();
+	//	IdentifierProperty newIdentifier();
 
 	/**
 	 * Creates an instance of {@link IdentifierProperty} property.
@@ -126,7 +125,7 @@ public interface PropertyFactory {
 	 * @return newly created {@link IdentifierProperty}.
 	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	IdentifierProperty newIdentifier(String value);
+	//	IdentifierProperty newIdentifier(String value);
 
 	/**
 	 * Creates an instance of {@link LanguageProperty} property
@@ -138,7 +137,7 @@ public interface PropertyFactory {
 	 * @throws IllformedLocaleException if {@code languageTag} was ill-formed.
 	 * @see <a href="http://www.ietf.org/rfc/bcp/bcp47.txt">Tags for Identifying Languages; Matching of Language Tags.</a>
 	 */
-	LanguageProperty newLanguage(String languageTag);
+	//	LanguageProperty newLanguage(String languageTag);
 	
 	/**
 	 * Creates an instance of {@link LanguageProperty} property.
@@ -147,7 +146,7 @@ public interface PropertyFactory {
 	 * @return newly created {@link LanguageProperty}.
 	 * @throws IllegalArgumentException if {@code language} was invalid.
 	 */
-	LanguageProperty newLanguage(Locale language);
+	//	LanguageProperty newLanguage(Locale language);
 	
 	/**
 	 * Creates an property of {@link DublinCoreTerm#MODIFIED}.
@@ -156,7 +155,7 @@ public interface PropertyFactory {
 	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code value} is {@code null}.
 	 */
-	DateProperty newModified(OffsetDateTime value);
+	//	DateProperty newModified(OffsetDateTime value);
 	
 	/**
 	 * Creates an instance of {@link DublinCore#PUBLISHER} property.
@@ -165,7 +164,7 @@ public interface PropertyFactory {
 	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	RelatorProperty newPublisher(String value);
+	//	RelatorProperty newPublisher(String value);
 
 	/**
 	 * Creates an instance of {@link DublinCore#RELATION} property.
@@ -174,7 +173,7 @@ public interface PropertyFactory {
 	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code text} was invalid.
 	 */
-	TextProperty newRelation(String text);
+	//	TextProperty newRelation(String text);
 
 	/**
 	 * Creates an instance of {@link DublinCore#RIGHTS} property.
@@ -183,7 +182,7 @@ public interface PropertyFactory {
 	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code text} was invalid.
 	 */
-	TextProperty newRights(String text);
+	//	TextProperty newRights(String text);
 
 	/**
 	 * Creates an instance of {@link DublinCore#SOURCE} property.
@@ -192,7 +191,7 @@ public interface PropertyFactory {
 	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	SourceProperty newSource(String value);
+	//	SourceProperty newSource(String value);
 	
 	/**
 	 * Creates an instance of {@link DublinCore#SUBJECT} property.
@@ -201,7 +200,7 @@ public interface PropertyFactory {
 	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	SubjectProperty newSubject(String value);
+	//	SubjectProperty newSubject(String value);
 
 	/**
 	 * Creates an instance of {@link DublinCore#TITLE} property.
@@ -210,7 +209,7 @@ public interface PropertyFactory {
 	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	TitleProperty newTitle(String value);
+	//	TitleProperty newTitle(String value);
 
 	/**
 	 * Creates an instance of {@link DublinCore#TYPE}.
@@ -222,5 +221,5 @@ public interface PropertyFactory {
 	 * @return newly created property.
 	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
-	SimpleProperty newType(String value);
+	//	SimpleProperty newType(String value);
 }

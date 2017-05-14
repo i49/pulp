@@ -31,6 +31,9 @@ import org.junit.Test;
 import com.github.i49.pulp.api.core.Epub;
 import com.github.i49.pulp.api.core.Publication;
 import com.github.i49.pulp.api.core.Rendition;
+import com.github.i49.pulp.api.vocabulary.Term;
+import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
+import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
 
 /**
  * Unit tests for {@link Metadata}.

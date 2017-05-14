@@ -23,8 +23,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.github.i49.pulp.api.metadata.PropertyType;
-import com.github.i49.pulp.api.metadata.Term;
+import com.github.i49.pulp.api.vocabulary.Term;
 
 public final class Messages {
 
@@ -82,10 +81,12 @@ public final class Messages {
 	public static String METADATA_PROPERTY_NOT_FOUND(Term term) {
 		return format("METADATA_PROPERTY_NOT_FOUND", term);
 	}
-	
+
+	/*
 	public static String METADATA_PROPERTY_TYPE_MISMATCHED(PropertyType type, Term term) {
 		return format("METADATA_PROPERTY_TYPE_MISMATCHED", type, term);
 	}
+	*/
 	
 	/* io package */
 	

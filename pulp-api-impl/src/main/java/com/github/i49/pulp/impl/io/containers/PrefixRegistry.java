@@ -19,8 +19,8 @@ package com.github.i49.pulp.impl.io.containers;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.github.i49.pulp.api.metadata.StandardVocabulary;
-import com.github.i49.pulp.api.metadata.Vocabulary;
+import com.github.i49.pulp.api.vocabulary.StandardVocabulary;
+import com.github.i49.pulp.api.vocabulary.Vocabulary;
 
 /**
  * The registry of prefixes.

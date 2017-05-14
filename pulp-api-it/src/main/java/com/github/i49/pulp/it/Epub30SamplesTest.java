@@ -39,12 +39,12 @@ import com.github.i49.pulp.api.core.PublicationReader;
 import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.core.Spine;
 import com.github.i49.pulp.api.core.Spine.Page;
-import com.github.i49.pulp.api.metadata.DublinCore;
-import com.github.i49.pulp.api.metadata.DublinCoreTerm;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.Property;
-import com.github.i49.pulp.api.metadata.Term;
 import com.github.i49.pulp.api.metadata.TermRegistry;
+import com.github.i49.pulp.api.vocabulary.Term;
+import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
+import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
 
 /**
  * Tests of reading EPUB 3.0 samples.

@@ -18,23 +18,23 @@ package com.github.i49.pulp.impl.metadata;
 
 import static com.github.i49.pulp.impl.base.Preconditions.*;
 
-import java.time.OffsetDateTime;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import com.github.i49.pulp.api.metadata.DublinCore;
-import com.github.i49.pulp.api.metadata.DublinCoreTerm;
 import com.github.i49.pulp.api.metadata.Metadata;
-import com.github.i49.pulp.api.metadata.Property;
+import com.github.i49.pulp.api.metadata.PropertyBuilderSelector;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
+import com.github.i49.pulp.api.metadata.PropertyListerSelector;
+import com.github.i49.pulp.api.metadata.PropertyTesterSelector;
 import com.github.i49.pulp.api.metadata.ReleaseIdentifier;
-import com.github.i49.pulp.api.metadata.Term;
 import com.github.i49.pulp.api.metadata.TermRegistry;
-import com.github.i49.pulp.impl.base.AbstractListMap;
-import com.github.i49.pulp.impl.base.ListMap;
+import com.github.i49.pulp.api.vocabulary.Property;
+import com.github.i49.pulp.api.vocabulary.Term;
+import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
+import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.impl.base.Messages;
 
 /**
@@ -46,7 +46,13 @@ public class DefaultMetadata implements Metadata {
 	private final PropertyFactory propertyFactory;
 
 	// all properties categorized by terms.
-	private final ListMap<Term, Property> terms = new PropertyListMap();
+	private final PropertyMap propertyMap;
+	
+	private final PropertyBuilderSelector builder;
+	private final PropertyListerSelector finder;
+	private final PropertyListerSelector remover;
+	private final PropertyTesterSelector tester;
+
 	private final ReleaseIdentifier releaseIdentifier;
 
 	/**
@@ -55,13 +61,51 @@ public class DefaultMetadata implements Metadata {
 	public DefaultMetadata(TermRegistry termRegistry, PropertyFactory propertyFactory) {
 		this.termRegistry = termRegistry;
 		this.propertyFactory = propertyFactory;
+		
+		this.propertyMap = new PropertyMap();
+	
+		this.builder = new DefaultPropertyBuilderSelector(this.propertyMap);
+		this.finder = DefaultPropertyListerSelector.getFindingLister(this.propertyMap);
+		this.remover = DefaultPropertyListerSelector.getRemovingLister(this.propertyMap);
+		this.tester = DefaultPropertyTesterSelector.getExistenceTester(this.propertyMap);
+		
 		this.releaseIdentifier = new DefaultReleaseIdentifier(this);
 	}
 
 	@Override
+	public PropertyBuilderSelector add() {
+		return builder;
+	}
+	
+	@Override
+	public PropertyTesterSelector contains() {
+		return tester;
+	}
+	
+	@Override
+	public PropertyListerSelector find() {
+		return finder;
+	}
+
+	@Override
+	public void fillMissingProperties() {
+	}
+
+	@Override
+	public ReleaseIdentifier getReleaseIdentifier() {
+		return releaseIdentifier;
+	}
+	
+	@Override
+	public PropertyListerSelector remove() {
+		return remover;
+	}
+	
+	/*
+	@Override
 	public boolean add(Property property) {
 		validate(property, "property");
-		List<Property> values = terms.getValues(property.getTerm());
+		List<Property> values = propertyMap.getValues(property.getTerm());
 		if (values.contains(property)) {
 			return false;
 		}
@@ -70,71 +114,53 @@ public class DefaultMetadata implements Metadata {
 
 	@Override
 	public void clear() {
-		this.terms.clear();
+		this.propertyMap.clear();
 	}
 	
 	@Override
 	public boolean contains(Term term) {
 		validate(term, "term");
-		return terms.containsKey(term);
+		return propertyMap.containsKey(term);
 	}
 
 	@Override
 	public void fillMissingProperties() {
-		if (!contains(DublinCore.IDENTIFIER)) {
-			add(getFactory().newIdentifier());
-		}
-		if (!contains(DublinCore.TITLE)) {
-			add(getFactory().newTitle("untitled"));
-		}
-		if (!contains(DublinCore.LANGUAGE)) {
-			add(getFactory().newLanguage(Locale.getDefault()));
-		}
-		if (!contains(DublinCoreTerm.MODIFIED)) {
-			OffsetDateTime now = OffsetDateTime.now();
-			add(getFactory().newModified(now));
-		}
 	}
 	
 	@Override
 	public Property get(Term term) {
 		validate(term, "term");
-		if (!terms.containsKey(term)) {
+		if (!propertyMap.containsKey(term)) {
 			throw new NoSuchElementException(Messages.METADATA_PROPERTY_NOT_FOUND(term));
 		}
-		return terms.getValues(term).get(0);
+		return propertyMap.getValues(term).get(0);
 	}
 
 	@Override
 	public Iterator<Property> getAllProperties() {
-		return terms.valueIterator();
+		return propertyMap.valueIterator();
 	}
 	
 	@Override
 	public int getNumberOfProperties() {
-		return terms.size();
+		return propertyMap.size();
 	}
 	
 	@Override
 	public int getNumberOfProperties(Term term) {
 		validate(term, "term");
-		return terms.size(term);
+		return propertyMap.size(term);
 	}
 	
 	@Override
-	public ReleaseIdentifier getReleaseIdentifier() {
-		return releaseIdentifier;
-	}
-
-	@Override
 	public Set<Term> getTerms() {
-		return terms.keySet();
+		return propertyMap.keySet();
 	}
 	
 	@Override
 	public List<Property> getList(Term term) {
 		validate(term, "term");
-		return terms.getValues(term);
+		return propertyMap.getValues(term);
 	}
 	
 	@Override
@@ -151,8 +177,8 @@ public class DefaultMetadata implements Metadata {
 	public boolean remove(Property property) {
 		validate(property, "property");
 		Term term = property.getTerm();
-		if (terms.containsKey(term)) {
-			return terms.getValues(term).remove(property);
+		if (propertyMap.containsKey(term)) {
+			return propertyMap.getValues(term).remove(property);
 		} else {
 			return false;
 		}
@@ -178,12 +204,5 @@ public class DefaultMetadata implements Metadata {
 			throw new IllegalArgumentException();
 		}
 	}
-	
-	private static class PropertyListMap extends AbstractListMap<Term, Property> {
-
-		@Override
-		protected List<Property> createList(Term term) {
-			return new PropertyList(term, term.isRepeatable());
-		}
-	}
+	*/
 }

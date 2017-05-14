@@ -18,7 +18,7 @@ package com.github.i49.pulp.impl.io.readers;
 
 import org.w3c.dom.Element;
 
-import com.github.i49.pulp.api.metadata.StandardVocabulary;
+import com.github.i49.pulp.api.vocabulary.StandardVocabulary;
 import com.github.i49.pulp.impl.io.containers.EpubVocabulary;
 
 /**

@@ -16,6 +16,11 @@
 
 package com.github.i49.pulp.api.metadata;
 
+import java.util.Optional;
+
+import com.github.i49.pulp.api.vocabulary.dc.Identifier;
+import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
+
 /**
  * The release identifier to distinguish each version of the EPUB rendition.
  */
@@ -26,14 +31,14 @@ public interface ReleaseIdentifier {
 	 * 
 	 * @return the unique identifier of the rendition.
 	 */
-	IdentifierProperty getUniqueIdentifier();
+	Optional<Identifier> getUniqueIdentifier();
 	
 	/**
 	 * Returns the last modification date and time of the rendition.
 	 * 
 	 * @return the last modification date and time of the rendition.
 	 */
-	DateProperty getLastModificationDate();
+	Optional<Modified> getLastModificationDate();
 	
 	/**
 	 * Returns the string representation of this release identifier.

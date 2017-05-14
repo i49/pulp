@@ -21,21 +21,10 @@ import static com.github.i49.pulp.impl.base.Preconditions.*;
 import java.time.OffsetDateTime;
 import java.util.Locale;
 
-import com.github.i49.pulp.api.metadata.DateProperty;
-import com.github.i49.pulp.api.metadata.DublinCore;
-import com.github.i49.pulp.api.metadata.DublinCoreTerm;
-import com.github.i49.pulp.api.metadata.SimpleProperty;
-import com.github.i49.pulp.api.metadata.GenericProperty;
-import com.github.i49.pulp.api.metadata.IdentifierProperty;
-import com.github.i49.pulp.api.metadata.LanguageProperty;
 import com.github.i49.pulp.api.metadata.PropertyFactory;
-import com.github.i49.pulp.api.metadata.PropertyType;
-import com.github.i49.pulp.api.metadata.RelatorProperty;
-import com.github.i49.pulp.api.metadata.SourceProperty;
-import com.github.i49.pulp.api.metadata.SubjectProperty;
-import com.github.i49.pulp.api.metadata.Term;
-import com.github.i49.pulp.api.metadata.TextProperty;
-import com.github.i49.pulp.api.metadata.TitleProperty;
+import com.github.i49.pulp.api.vocabulary.Term;
+import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
+import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.impl.base.Messages;
 
 /**
@@ -43,7 +32,8 @@ import com.github.i49.pulp.impl.base.Messages;
  * Only one instance can be created for this class.
  */
 public class DefaultPropertyFactory implements PropertyFactory {
-	
+
+/*	
 	@Override
 	public GenericProperty createGenericProperty(Term term, String value) {
 		checkNotNull(term, "term");
@@ -162,4 +152,5 @@ public class DefaultPropertyFactory implements PropertyFactory {
 		checkNotBlank(value, "value");
 		return new DefaultSimpleProperty(DublinCore.TYPE, value);
 	}
+*/
 }

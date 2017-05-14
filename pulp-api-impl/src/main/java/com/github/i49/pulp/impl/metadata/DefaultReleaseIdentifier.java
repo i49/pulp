@@ -16,12 +16,12 @@
 
 package com.github.i49.pulp.impl.metadata;
 
-import com.github.i49.pulp.api.metadata.DateProperty;
-import com.github.i49.pulp.api.metadata.DublinCore;
-import com.github.i49.pulp.api.metadata.DublinCoreTerm;
-import com.github.i49.pulp.api.metadata.IdentifierProperty;
+import java.util.Optional;
+
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.ReleaseIdentifier;
+import com.github.i49.pulp.api.vocabulary.dc.Identifier;
+import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
 
 /**
  * The default implementation of {@link ReleaseIdentifier}.
@@ -35,21 +35,25 @@ public class DefaultReleaseIdentifier implements ReleaseIdentifier {
 	}
 
 	@Override
-	public IdentifierProperty getUniqueIdentifier() {
-		return (IdentifierProperty)metadata.get(DublinCore.IDENTIFIER);
+	public Optional<Identifier> getUniqueIdentifier() {
+		return metadata.find().identifier().first();
 	}
 
 	@Override
-	public DateProperty getLastModificationDate() {
-		return (DateProperty)metadata.get(DublinCoreTerm.MODIFIED);
+	public Optional<Modified> getLastModificationDate() {
+		return metadata.find().modified().first();
 	}
 	
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
-		b.append(getUniqueIdentifier().getValue());
+		getUniqueIdentifier().ifPresent(identifier->{
+			b.append(identifier.getValue());
+		});
 		b.append("@");
-		b.append(getLastModificationDate().getValue());
+		getLastModificationDate().ifPresent(modified->{
+			b.append(modified.getValue());
+		});
 		return b.toString();
 	}
 

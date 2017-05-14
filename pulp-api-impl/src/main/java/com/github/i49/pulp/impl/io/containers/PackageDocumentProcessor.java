@@ -16,7 +16,7 @@
 
 package com.github.i49.pulp.impl.io.containers;
 
-import com.github.i49.pulp.api.metadata.StandardVocabulary;
+import com.github.i49.pulp.api.vocabulary.StandardVocabulary;
 
 /**
  * Base type for generators and parsers.

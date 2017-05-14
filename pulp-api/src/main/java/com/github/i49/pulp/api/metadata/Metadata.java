@@ -21,11 +21,40 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import com.github.i49.pulp.api.vocabulary.Property;
+import com.github.i49.pulp.api.vocabulary.Term;
+import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
+
 /**
  * A set of meta information describing a EPUB publication and its renditions.
  */
-public interface Metadata extends Iterable<Property> {
+public interface Metadata {
+	
+	PropertyBuilderSelector add();
+	
+	PropertyTesterSelector contains();
+	
+	PropertyListerSelector find();
+	
+	void fillMissingProperties();
 
+	/**
+	 * Returns the <i>release identifier</i> of the publication
+	 * that uniquely identifies a specific version of it.
+	 * 
+	 * <p>Release identifier of the publication consists of the following two properties:</p>
+	 * <ul>
+	 * <li>identifier of the publication</li>
+	 * <li>last modification time of the publication</li>
+	 * </ul>
+	 * 
+	 * @return the release identifier of the publication, never be {@code null}.
+	 */
+	ReleaseIdentifier getReleaseIdentifier();
+	
+	PropertyListerSelector remove();
+	
+	
 	/**
 	 * Adds the specified property to this metadata if it is not already present.
 	 * 
@@ -39,13 +68,13 @@ public interface Metadata extends Iterable<Property> {
 	 * @throws IllegalArgumentException if {@code property} is {@code null}.
 	 * @throws IllegalStateException if the maximum number of properties were already added.
 	 */
-	boolean add(Property property);
+//	boolean add(Property property);
 
 	/**
 	 * Clears all properties in this metadata.
 	 * All mandatory properties are cleared also.
 	 */
-	void clear();
+//	void clear();
 
 	/**
 	 * Checks if this metadata contains any properties of the specific term.
@@ -54,7 +83,7 @@ public interface Metadata extends Iterable<Property> {
 	 * @return {@code true} if this metadata contains any properties of the term, {@code false} otherwise.
 	 * @throws IllegalArgumentException if {@code term} is {@code null}.
 	 */
-	boolean contains(Term term);
+//	boolean contains(Term term);
 	
 	/**
 	 * Adds the required properties to this metadata if they do not exist.
@@ -71,7 +100,7 @@ public interface Metadata extends Iterable<Property> {
 	 * <dd>Current time is added.</dd>
 	 * </dl>
 	 */
-	void fillMissingProperties();
+//	void fillMissingProperties();
 
 	/**
 	 * Returns the first property of the specific term.
@@ -84,21 +113,21 @@ public interface Metadata extends Iterable<Property> {
 	 * @throws IllegalArgumentException if {@code term} is {@code null}.
 	 * @throws NoSuchElementException if this metadata does not contain any properties of the specific term.
 	 */
-	Property get(Term term);
+//	Property get(Term term);
 	
 	/**
 	 * Returns all properties in this metadata.
 	 * 
 	 * @return an iterator over all properties in this metadata.
 	 */
-	Iterator<Property> getAllProperties();
+//	Iterator<Property> getAllProperties();
 	
 	/**
 	 * Returns the total number of the properties contained in this metadata.
 	 * 
 	 * @return the total number of the properties in this metadata.
 	 */
-	int getNumberOfProperties();
+//	int getNumberOfProperties();
 	
 	/**
 	 * Returns the number of the properties of the specific term contained in this metadata.
@@ -107,7 +136,7 @@ public interface Metadata extends Iterable<Property> {
 	 * @return the number of the properties of the specific term in this metadata.
 	 * @throws IllegalArgumentException if {@code term} is {@code null}.
 	 */
-	int getNumberOfProperties(Term term);
+//	int getNumberOfProperties(Term term);
 
 	/**
 	 * Returns the <i>release identifier</i> of the publication
@@ -121,14 +150,14 @@ public interface Metadata extends Iterable<Property> {
 	 * 
 	 * @return the release identifier of the publication, never be {@code null}.
 	 */
-	ReleaseIdentifier getReleaseIdentifier();
+//	ReleaseIdentifier getReleaseIdentifier();
 	
 	/**
 	 * Returns all terms that have at least one property in this metadata.
 	 * 
 	 * @return the set of terms, never be {@code null}.
 	 */
-	Set<Term> getTerms();
+//	Set<Term> getTerms();
 	
 	/**
 	 * Returns the list containing all properties of the specific term.
@@ -138,14 +167,14 @@ public interface Metadata extends Iterable<Property> {
 	 * @return the list of the properties contained in this metadata, never be {@code null}.
 	 * @throws IllegalArgumentException if {@code term} is {@code null}.
 	 */
-	List<Property> getList(Term term);
+//	List<Property> getList(Term term);
 	
 	/**
 	 * Checks if this metadata contains all required properties.
 	 * 
 	 * @return {@code true} if all required properties exist in this metadata, {@code false} otherwise.
 	 */
-	boolean isFilled();
+//	boolean isFilled();
 	
 	/**
 	 * Returns an iterator over the properties in this metadata.
@@ -153,10 +182,10 @@ public interface Metadata extends Iterable<Property> {
 	 * 
 	 * @return an iterator over the properties.
 	 */
-	@Override
-	default Iterator<Property> iterator() {
-		return getAllProperties();
-	}
+//	@Override
+//	default Iterator<Property> iterator() {
+//		return getAllProperties();
+//	}
 	
 	/**
 	 * Removes the specified property from this metadata.
@@ -170,5 +199,5 @@ public interface Metadata extends Iterable<Property> {
 	 * @return {@code true} if this metadata contained the specified property.
 	 * @throws IllegalArgumentException if {@code property} is {@code null}.
 	 */
-	boolean remove(Property property);
+//	boolean remove(Property property);
 }

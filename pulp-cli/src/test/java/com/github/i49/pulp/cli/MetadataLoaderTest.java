@@ -12,11 +12,11 @@ import org.junit.Test;
 
 import com.github.i49.pulp.api.core.Epub;
 import com.github.i49.pulp.api.core.Rendition;
-import com.github.i49.pulp.api.metadata.DublinCore;
 import com.github.i49.pulp.api.metadata.DateProperty;
-import com.github.i49.pulp.api.metadata.DublinCoreTerm;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.Property;
+import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
+import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.cli.MetadataLoader;
 
 public class MetadataLoaderTest {

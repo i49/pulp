@@ -22,6 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.i49.pulp.api.core.Epub;
+import com.github.i49.pulp.api.vocabulary.IdentifierScheme;
 
 /**
  * Unit tests for {@link IdentifierProperty}.
