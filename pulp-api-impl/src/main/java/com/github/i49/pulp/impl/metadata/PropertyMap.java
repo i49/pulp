@@ -16,6 +16,7 @@
 
 package com.github.i49.pulp.impl.metadata;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,6 +34,17 @@ class PropertyMap {
 	private final Map<Term, List<Property>> map = new HashMap<>();
 
 	public PropertyMap() {
+	}
+	
+	public boolean add(DeferredProperty<?> property) {
+		Term term = property.getTerm();
+		List<Property> list = map.get(term);
+		if (list == null) {
+			list = new ArrayList<>();
+			map.put(term, list);
+		}
+		list.add(property);
+		return true;
 	}
 	
 	public boolean contains(Term term) {

@@ -14,51 +14,50 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.impl.vocabulary;
+package com.github.i49.pulp.impl.metadata;
 
-import static com.github.i49.pulp.impl.base.Preconditions.*;
-
+import com.github.i49.pulp.api.vocabulary.Property;
 import com.github.i49.pulp.api.vocabulary.PropertyBuilder;
+import com.github.i49.pulp.api.vocabulary.Term;
 import com.github.i49.pulp.api.vocabulary.TypedProperty;
 
 /**
- * A skeletal implementation of {@link PropertyBuilder}.
+ *
  */
-public abstract class AbstractPropertyBuilder<V, T extends TypedProperty<V>, R extends PropertyBuilder<V, T, R>> 
-	implements PropertyBuilder<V, T, R> {
-
-	private V value;
-	// built property. 
-	private T property;
+public class DeferredProperty<V> implements Property {
 	
-	public V getValue() {
-		return value;
+	private final Term term;
+	private final PropertyBuilder<V, ?, ?> builder;
+	private TypedProperty<V> property;
+
+	public static <V> DeferredProperty<V> of(Term term, PropertyBuilder<V, ?, ?> builder) {
+		return new DeferredProperty<V>(term, builder);
+	}
+	
+	private DeferredProperty(Term term, PropertyBuilder<V, ?, ?> builder) {
+		this.term = term;
+		this.builder = builder;
 	}
 
 	@Override
-	public R value(V value) {
-		checkNotNull(value, "value");
-		this.value = value;
-		return self();
+	public Term getTerm() {
+		return term;
+	}
+
+	@Override
+	public Object getValue() {
+		return get().getValue();
+	}
+
+	@Override
+	public String getValueAsString() {
+		return get().getValueAsString();
 	}
 	
-	@Override
-	public T result() {
+	public Property get() {
 		if (property == null) {
-			property = build();
+			property = builder.result();
 		}
 		return property;
-	}
-	
-	/**
-	 * Builds the property. Should be implemented by concrete builder.
-	 * 
-	 * @return the built property.
-	 */
-	protected abstract T build();
-	
-	@SuppressWarnings("unchecked")
-	protected R self() {
-		return (R)this;
 	}
 }

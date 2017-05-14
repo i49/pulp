@@ -19,11 +19,11 @@ package com.github.i49.pulp.impl.vocabulary.dc;
 import java.time.OffsetDateTime;
 import java.util.Locale;
 
-import com.github.i49.pulp.api.vocabulary.Property;
 import com.github.i49.pulp.api.vocabulary.dc.Contributor;
 import com.github.i49.pulp.api.vocabulary.dc.Creator;
 import com.github.i49.pulp.api.vocabulary.dc.Date;
 import com.github.i49.pulp.api.vocabulary.dc.Language;
+import com.github.i49.pulp.api.vocabulary.dc.Publisher;
 import com.github.i49.pulp.impl.vocabulary.AbstractProperty;
 import com.github.i49.pulp.impl.vocabulary.AbstractPropertyBuilder;
 import com.github.i49.pulp.impl.vocabulary.AbstractRelator;
@@ -33,24 +33,24 @@ import com.github.i49.pulp.impl.vocabulary.AbstractRelator;
  */
 public class DublinCoreElements {
 	
-	public Creator.Builder creator(String value) {
-		return new CreatorBuilder().value(value);
+	public static Creator.Builder creator() {
+		return new CreatorBuilder();
 	}
 
-	public Contributor.Builder contributor(String value) {
-		return new ContributorBuilder().value(value);
+	public static Contributor.Builder contributor() {
+		return new ContributorBuilder();
 	}
 
-	public Date.Builder date(OffsetDateTime value) {
-		return new DateBuilder().value(value);
+	public static Date.Builder date() {
+		return new DateBuilder();
 	}
 
-	public Language.Builder langauge(Locale value) {
-		return new LanguageBuilder().value(value);
+	public static Language.Builder language() {
+		return new LanguageBuilder();
 	}
-	
-	private <T extends Property> T add(T p) {
-		return p;
+
+	public static Publisher.Builder publisher() {
+		return new PublisherBuilder();
 	}
 	
 	private static class DefaultContributor extends AbstractRelator implements Contributor {
@@ -60,13 +60,13 @@ public class DublinCoreElements {
 		}
 	}
 
-	private class ContributorBuilder 
+	private static class ContributorBuilder 
 		extends AbstractRelator.Builder<Contributor, Contributor.Builder>
 		implements Contributor.Builder {
 	
 		@Override
-		public Contributor result() {
-			return add(new DefaultContributor(this));
+		protected Contributor build() {
+			return new DefaultContributor(this);
 		}
 	}
 
@@ -77,13 +77,13 @@ public class DublinCoreElements {
 		}
 	}
 
-	private class CreatorBuilder 
+	private static class CreatorBuilder 
 		extends AbstractRelator.Builder<Creator, Creator.Builder>
 		implements Creator.Builder {
 	
 		@Override
-		public Creator result() {
-			return add(new DefaultCreator(this));
+		protected Creator build() {
+			return new DefaultCreator(this);
 		}
 	}
 
@@ -94,13 +94,13 @@ public class DublinCoreElements {
 		}
 	}
 	
-	private class DateBuilder 
+	private static class DateBuilder 
 		extends AbstractPropertyBuilder<OffsetDateTime, Date, Date.Builder>
 		implements Date.Builder {
 
 		@Override
-		public Date result() {
-			return add(new DefaultDate(this));
+		protected Date build() {
+			return new DefaultDate(this);
 		}
 	}
 
@@ -111,13 +111,30 @@ public class DublinCoreElements {
 		}
 	}
 
-	public class LanguageBuilder 
+	public static class LanguageBuilder 
 		extends AbstractPropertyBuilder<Locale, Language, Language.Builder>
 		implements Language.Builder {
 	
 		@Override
-		public Language result() {
-			return add(new DefaultLanguage(this));
+		protected Language build() {
+			return new DefaultLanguage(this);
+		}
+	}
+
+	private static class DefaultPublisher extends AbstractRelator implements Publisher {
+		
+		private DefaultPublisher(PublisherBuilder b) {
+			super(b);
+		}
+	}
+
+	private static class PublisherBuilder 
+		extends AbstractRelator.Builder<Publisher, Publisher.Builder>
+		implements Publisher.Builder {
+	
+		@Override
+		protected Publisher build() {
+			return new DefaultPublisher(this);
 		}
 	}
 }

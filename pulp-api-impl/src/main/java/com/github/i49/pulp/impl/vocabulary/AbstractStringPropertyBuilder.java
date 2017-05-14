@@ -18,13 +18,13 @@ package com.github.i49.pulp.impl.vocabulary;
 
 import static com.github.i49.pulp.impl.base.Preconditions.*;
 
-import com.github.i49.pulp.api.vocabulary.Property;
 import com.github.i49.pulp.api.vocabulary.PropertyBuilder;
+import com.github.i49.pulp.api.vocabulary.TypedProperty;
 
 /**
  *
  */
-public abstract class AbstractStringPropertyBuilder<T extends Property, R extends PropertyBuilder<String, T, R>>
+public abstract class AbstractStringPropertyBuilder<T extends TypedProperty<String>, R extends PropertyBuilder<String, T, R>>
 	extends AbstractPropertyBuilder<String, T, R> {
 
 	@Override

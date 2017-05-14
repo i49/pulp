@@ -24,12 +24,15 @@ import java.util.Locale;
 import com.github.i49.pulp.api.metadata.PropertyBuilderSelector;
 import com.github.i49.pulp.api.vocabulary.Generic;
 import com.github.i49.pulp.api.vocabulary.GenericText;
+import com.github.i49.pulp.api.vocabulary.PropertyBuilder;
 import com.github.i49.pulp.api.vocabulary.Term;
+import com.github.i49.pulp.api.vocabulary.TypedProperty;
 import com.github.i49.pulp.api.vocabulary.dc.Contributor;
 import com.github.i49.pulp.api.vocabulary.dc.Coverage;
 import com.github.i49.pulp.api.vocabulary.dc.Creator;
 import com.github.i49.pulp.api.vocabulary.dc.Date;
 import com.github.i49.pulp.api.vocabulary.dc.Description;
+import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
 import com.github.i49.pulp.api.vocabulary.dc.Format;
 import com.github.i49.pulp.api.vocabulary.dc.Identifier;
 import com.github.i49.pulp.api.vocabulary.dc.Language;
@@ -41,6 +44,9 @@ import com.github.i49.pulp.api.vocabulary.dc.Subject;
 import com.github.i49.pulp.api.vocabulary.dc.Title;
 import com.github.i49.pulp.api.vocabulary.dc.Type;
 import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
+import com.github.i49.pulp.impl.vocabulary.DefaultGeneric;
+import com.github.i49.pulp.impl.vocabulary.DefaultGenericText;
+import com.github.i49.pulp.impl.vocabulary.dc.DublinCoreElements;
 
 /**
  * The default implementation of {@link PropertyBuilderSelector}.
@@ -56,8 +62,8 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	@Override
 	public Contributor.Builder contributor(String value) {
 		checkNotBlank(value, "value");
-		// TODO Auto-generated method stub
-		return null;
+		Contributor.Builder b = DublinCoreElements.contributor().value(value);
+		return add(DublinCore.CONTRIBUTOR, b);
 	}
 
 	@Override
@@ -70,15 +76,15 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	@Override
 	public Creator.Builder creator(String value) {
 		checkNotBlank(value, "value");
-		// TODO Auto-generated method stub
-		return null;
+		Creator.Builder b = DublinCoreElements.creator().value(value);
+		return add(DublinCore.CREATOR, b);
 	}
 
 	@Override
 	public Date.Builder date(OffsetDateTime value) {
 		checkNotNull(value, "value");
-		// TODO Auto-generated method stub
-		return null;
+		Date.Builder b = DublinCoreElements.date().value(value);
+		return add(DublinCore.DATE, b);
 	}
 
 	@Override
@@ -111,15 +117,15 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	@Override
 	public Language.Builder language(Locale value) {
 		checkNotNull(value, "value");
-		// TODO Auto-generated method stub
-		return null;
+		Language.Builder b = DublinCoreElements.language().value(value);
+		return add(DublinCore.LANGUAGE, b);
 	}
 
 	@Override
 	public Language.Builder language(String value) {
 		checkNotBlank(value, "value");
-		// TODO Auto-generated method stub
-		return null;
+		Locale locale = Locale.forLanguageTag(value);
+		return language(locale);
 	}
 	
 	@Override
@@ -132,8 +138,8 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	@Override
 	public Publisher.Builder publisher(String value) {
 		checkNotBlank(value, "value");
-		// TODO Auto-generated method stub
-		return null;
+		Publisher.Builder b = DublinCoreElements.publisher().value(value);
+		return add(DublinCore.PUBLISHER, b);
 	}
 
 	@Override
@@ -182,15 +188,22 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	public <V> Generic.Builder<V> generic(Term term, V value) {
 		checkNotNull(term, "term");
 		checkNotNull(value, "value");
-		// TODO Auto-generated method stub
-		return null;
+		Generic.Builder<V> b = new DefaultGeneric.Builder<V>(term).value(value);
+		return add(term, b);
 	}
 
 	@Override
 	public GenericText.Builder generic(Term term, String value) {
 		checkNotNull(term, "term");
 		checkNotBlank(value, "value");
-		// TODO Auto-generated method stub
-		return null;
+		GenericText.Builder b = new DefaultGenericText.Builder(term).value(value);
+		return add(term, b);
+	}
+	
+	private <V, T extends TypedProperty<V>, R extends PropertyBuilder<V, T, R>> 
+	R add(Term term, R builder) {
+		DeferredProperty<V> deferred = DeferredProperty.of(term, builder);
+		this.propertyMap.add(deferred);
+		return builder;
 	}
 }
