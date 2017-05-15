@@ -47,6 +47,10 @@ class PropertyMap {
 		return true;
 	}
 	
+	public void clear() {
+		map.clear();
+	}
+	
 	public boolean contains(Term term) {
 		if (term == null) {
 			return false;

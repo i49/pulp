@@ -32,6 +32,12 @@ public interface Metadata {
 	
 	PropertyBuilderSelector add();
 	
+	/**
+	 * Clears all properties in this metadata.
+	 * All mandatory properties are cleared at the same time.
+	 */
+	void clear();
+
 	PropertyTesterSelector contains();
 	
 	PropertyListerSelector find();
@@ -69,12 +75,6 @@ public interface Metadata {
 	 * @throws IllegalStateException if the maximum number of properties were already added.
 	 */
 //	boolean add(Property property);
-
-	/**
-	 * Clears all properties in this metadata.
-	 * All mandatory properties are cleared also.
-	 */
-//	void clear();
 
 	/**
 	 * Checks if this metadata contains any properties of the specific term.

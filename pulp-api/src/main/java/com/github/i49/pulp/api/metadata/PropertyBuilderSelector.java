@@ -64,7 +64,7 @@ public interface PropertyBuilderSelector {
 	
 	Language.Builder language(String value);
 
-	Modified.Builder modifiled(OffsetDateTime value);
+	Modified.Builder modified(OffsetDateTime value);
 	
 	Publisher.Builder publisher(String value);
 

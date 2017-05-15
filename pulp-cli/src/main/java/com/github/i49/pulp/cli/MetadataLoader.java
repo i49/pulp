@@ -24,19 +24,11 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.yaml.snakeyaml.Yaml;
 
-import com.github.i49.pulp.api.core.Epub;
-import com.github.i49.pulp.api.metadata.DateProperty;
-import com.github.i49.pulp.api.metadata.IdentifierProperty;
-import com.github.i49.pulp.api.metadata.LanguageProperty;
 import com.github.i49.pulp.api.metadata.Metadata;
-import com.github.i49.pulp.api.metadata.PropertyFactory;
-import com.github.i49.pulp.api.metadata.RelatorProperty;
-import com.github.i49.pulp.api.metadata.TitleProperty;
 
 /**
  * A loader class to load publication metadata from YAML files.
@@ -44,11 +36,9 @@ import com.github.i49.pulp.api.metadata.TitleProperty;
 class MetadataLoader {
 	
 	private final InputStream stream;
-	private final PropertyFactory factory;
 	
 	private MetadataLoader(InputStream stream) {
 		this.stream = stream;
-		this.factory = Epub.createPropertyFactory();
 	}
 	
 	/**
@@ -90,50 +80,43 @@ class MetadataLoader {
 	
 	private void parseIdentifiers(Metadata m, List<Entry> entries) {
 		for (Entry entry: entries) {
-			IdentifierProperty p = factory.newIdentifier(entry.getValue());
-			m.add(p);
+			m.add().identifier(entry.getValue());
 		}
 	}
 
 	private void parseTitles(Metadata m, List<Entry> entries) {
 		for (Entry entry: entries) {
-			TitleProperty p = factory.newTitle(entry.getValue());
-			m.add(p);
+			m.add().title(entry.getValue());
 		}
 	}
 
 	private void parseLanguages(Metadata m, List<Entry> entries) {
 		for (Entry entry: entries) {
-			LanguageProperty p = factory.newLanguage(Locale.forLanguageTag(entry.getValue()));
-			m.add(p);
+			m.add().language(entry.getValue());
 		}
 	}
 
 	private void parseCreators(Metadata m, List<Entry> entries) {
 		for (Entry entry: entries) {
-			RelatorProperty p = factory.newCreator(entry.getValue());
-			m.add(p);
+			m.add().creator(entry.getValue());
 		}
 	}
 
 	private void parsePublishers(Metadata m, List<Entry> entries) {
 		for (Entry entry: entries) {
-			RelatorProperty p = factory.newPublisher(entry.getValue());
-			m.add(p);
+			m.add().publisher(entry.getValue());
 		}
 	}
 
 	private void parseDate(Metadata m, OffsetDateTime value) {
 		if (value != null) {
-			DateProperty p = factory.newDate(value);
-			m.add(p);
+			m.add().date(value);
 		}
 	}
 
 	private void parseModified(Metadata m, OffsetDateTime value) {
 		if (value != null) {
-			DateProperty p = factory.newModified(value);
-			m.add(p);
+			m.add().modified(value);
 		}
 	}
 	

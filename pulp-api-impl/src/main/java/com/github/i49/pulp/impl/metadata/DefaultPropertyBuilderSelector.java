@@ -129,7 +129,7 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	}
 	
 	@Override
-	public Modified.Builder modifiled(OffsetDateTime value) {
+	public Modified.Builder modified(OffsetDateTime value) {
 		checkNotNull(value, "value");
 		// TODO Auto-generated method stub
 		return null;

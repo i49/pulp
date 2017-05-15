@@ -287,7 +287,7 @@ class MetadataParser3 implements MetadataParser {
 	
 	protected Property parseModified(MetadataEntry entry) {
 		OffsetDateTime dateTime = convertDateTime(entry.getValue());
-		return metadata.add().modifiled(dateTime).result();
+		return metadata.add().modified(dateTime).result();
 	}
 	
 	protected Property parseGenericProperty(MetadataEntry entry, Term term) {

@@ -16,6 +16,7 @@
 
 package com.github.i49.pulp.api.metadata;
 
+import com.github.i49.pulp.api.vocabulary.Property;
 import com.github.i49.pulp.api.vocabulary.dc.Contributor;
 import com.github.i49.pulp.api.vocabulary.dc.Coverage;
 import com.github.i49.pulp.api.vocabulary.dc.Creator;
@@ -37,6 +38,8 @@ import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
  *
  */
 public interface PropertyListerSelector {
+
+	PropertyIterable<Property> all();
 
 	PropertyIterable<Contributor> contributor();
 

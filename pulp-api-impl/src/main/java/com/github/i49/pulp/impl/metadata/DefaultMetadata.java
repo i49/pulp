@@ -78,6 +78,11 @@ public class DefaultMetadata implements Metadata {
 	}
 	
 	@Override
+	public void clear() {
+		this.propertyMap.clear();
+	}
+
+	@Override
 	public PropertyTesterSelector contains() {
 		return tester;
 	}

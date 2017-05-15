@@ -63,6 +63,11 @@ abstract class DefaultPropertyListerSelector implements PropertyListerSelector {
 			}
 		};
 	}
+	
+	@Override
+	public PropertyIterable<Property> all() {
+		return null;
+	}
 
 	@Override
 	public PropertyIterable<Contributor> contributor() {

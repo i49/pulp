@@ -5,18 +5,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.github.i49.pulp.api.core.Epub;
 import com.github.i49.pulp.api.core.Rendition;
-import com.github.i49.pulp.api.metadata.DateProperty;
 import com.github.i49.pulp.api.metadata.Metadata;
-import com.github.i49.pulp.api.metadata.Property;
-import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
-import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
+import com.github.i49.pulp.api.vocabulary.dc.Creator;
+import com.github.i49.pulp.api.vocabulary.dc.Date;
+import com.github.i49.pulp.api.vocabulary.dc.Identifier;
+import com.github.i49.pulp.api.vocabulary.dc.Language;
+import com.github.i49.pulp.api.vocabulary.dc.Publisher;
+import com.github.i49.pulp.api.vocabulary.dc.Title;
+import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
 import com.github.i49.pulp.cli.MetadataLoader;
 
 public class MetadataLoaderTest {
@@ -35,27 +37,27 @@ public class MetadataLoaderTest {
 			MetadataLoader loader = MetadataLoader.from(s);
 			loader.load(m);
 		}
-		List<Property> list = m.getList(DublinCore.IDENTIFIER);
-		assertThat(list).hasSize(1);
-		assertThat(list.get(0).getValueAsString()).isEqualTo("idpf.epub31.samples.moby-dick.xhtml");
-		list = m.getList(DublinCore.TITLE);
-		assertThat(list).hasSize(1);
-		assertThat(list.get(0).getValueAsString()).isEqualTo("Moby-Dick");
-		list = m.getList(DublinCore.LANGUAGE);
-		assertThat(list).hasSize(1);
-		assertThat(list.get(0).getValueAsString()).isEqualTo("en-US");
-		list = m.getList(DublinCore.CREATOR);
-		assertThat(list).hasSize(1);
-		assertThat(list.get(0).getValueAsString()).isEqualTo("Herman Melville");
-		list = m.getList(DublinCore.PUBLISHER);
-		assertThat(list).hasSize(1);
-		assertThat(list.get(0).getValueAsString()).isEqualTo("Harper & Brothers, Publishers");
-		list = m.getList(DublinCore.DATE);
-		assertThat(list).hasSize(1);
-		assertThat(((DateProperty)list.get(0)).getValue()).isEqualTo(OffsetDateTime.of(1851, 11, 14, 0, 0, 0, 0, ZoneOffset.UTC));
-		list = m.getList(DublinCoreTerm.MODIFIED);
-		assertThat(list).hasSize(1);
-		assertThat(((DateProperty)list.get(0)).getValue()).isEqualTo(OffsetDateTime.of(2016, 2, 5, 14, 40, 0, 0, ZoneOffset.UTC));
+		Identifier[] identifiers = m.find().identifier().asArray();
+		assertThat(identifiers).hasSize(1);
+		assertThat(identifiers[0].getValueAsString()).isEqualTo("idpf.epub31.samples.moby-dick.xhtml");
+		Title[] title = m.find().title().asArray();
+		assertThat(title).hasSize(1);
+		assertThat(title[0].getValueAsString()).isEqualTo("Moby-Dick");
+		Language[] languages = m.find().language().asArray();
+		assertThat(languages).hasSize(1);
+		assertThat(languages[0].getValueAsString()).isEqualTo("en-US");
+		Creator[] creators = m.find().creator().asArray();
+		assertThat(creators).hasSize(1);
+		assertThat(creators[0].getValueAsString()).isEqualTo("Herman Melville");
+		Publisher[] publishers = m.find().publisher().asArray();
+		assertThat(publishers).hasSize(1);
+		assertThat(publishers[0].getValueAsString()).isEqualTo("Harper & Brothers, Publishers");
+		Date[] dates = m.find().date().asArray();
+		assertThat(dates).hasSize(1);
+		assertThat(dates[0].getValue()).isEqualTo(OffsetDateTime.of(1851, 11, 14, 0, 0, 0, 0, ZoneOffset.UTC));
+		Modified[] modified = m.find().modified().asArray();
+		assertThat(modified).hasSize(1);
+		assertThat(modified[0].getValue()).isEqualTo(OffsetDateTime.of(2016, 2, 5, 14, 40, 0, 0, ZoneOffset.UTC));
 	}
 	
 	private InputStream openResource(String name) {
