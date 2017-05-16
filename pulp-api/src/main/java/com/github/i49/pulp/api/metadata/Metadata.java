@@ -60,7 +60,6 @@ public interface Metadata {
 	
 	PropertyListerSelector remove();
 	
-	
 	/**
 	 * Adds the specified property to this metadata if it is not already present.
 	 * 

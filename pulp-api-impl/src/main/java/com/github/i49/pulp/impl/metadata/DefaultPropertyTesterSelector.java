@@ -24,15 +24,12 @@ import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
 /**
  *
  */
-abstract class DefaultPropertyTesterSelector implements PropertyTesterSelector {
+class DefaultPropertyTesterSelector implements PropertyTesterSelector {
 
-	public static PropertyTesterSelector getExistenceTester(PropertyMap map) {
-		return new DefaultPropertyTesterSelector() {
-			@Override
-			protected boolean test(Term term) {
-				return map.contains(term);
-			}
-		};
+	private final PropertySet properties;
+	
+	DefaultPropertyTesterSelector(PropertySet properties) {
+		this.properties = properties;
 	}
 
 	@Override
@@ -115,5 +112,7 @@ abstract class DefaultPropertyTesterSelector implements PropertyTesterSelector {
 		return test(DublinCore.TYPE);
 	}
 
-	protected abstract boolean test(Term term);
+	private boolean test(Term term) {
+		return properties.containsTerm(term);
+	}
 }

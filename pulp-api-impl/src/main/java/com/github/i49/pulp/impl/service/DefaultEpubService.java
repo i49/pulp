@@ -31,7 +31,6 @@ import com.github.i49.pulp.api.spi.EpubService;
 import com.github.i49.pulp.impl.io.readers.DefaultPublicationReaderFactory;
 import com.github.i49.pulp.impl.io.writers.DefaultPublicationWriterFactory;
 import com.github.i49.pulp.impl.metadata.DefaultMetadata;
-import com.github.i49.pulp.impl.metadata.DefaultPropertyFactory;
 import com.github.i49.pulp.impl.metadata.DefaultTermRegistry;
 import com.github.i49.pulp.impl.publication.MediaTypeRegistry;
 import com.github.i49.pulp.impl.publication.DefaultPublication;
@@ -44,14 +43,13 @@ class DefaultEpubService implements EpubService {
 	
 	private final MediaTypeRegistry typeRegistry = new MediaTypeRegistry();
 	private final TermRegistry termRegistry = new DefaultTermRegistry();
-	private final PropertyFactory propertyFactory = new DefaultPropertyFactory();
 	
 	DefaultEpubService() {
 	}
 	
 	@Override
 	public PropertyFactory createPropertyFactory() {
-		return this.propertyFactory;
+		return null;
 	}
 	
 	@Override
@@ -81,6 +79,6 @@ class DefaultEpubService implements EpubService {
 	}
 	
 	private Metadata createMetadata() {
-		return new DefaultMetadata(this.termRegistry, this.propertyFactory);
+		return new DefaultMetadata(this.termRegistry);
 	}
 }

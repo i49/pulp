@@ -53,10 +53,10 @@ import com.github.i49.pulp.impl.vocabulary.dc.DublinCoreElements;
  */
 class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	
-	private final PropertyMap propertyMap;
+	private final PropertySet properties;
 	
-	DefaultPropertyBuilderSelector(PropertyMap propertyMap) {
-		this.propertyMap = propertyMap;
+	DefaultPropertyBuilderSelector(PropertySet properties) {
+		this.properties = properties;
 	}
 	
 	@Override
@@ -203,7 +203,7 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	private <V, T extends TypedProperty<V>, R extends PropertyBuilder<V, T, R>> 
 	R add(Term term, R builder) {
 		DeferredProperty<V> deferred = DeferredProperty.of(term, builder);
-		this.propertyMap.add(deferred);
+		this.properties.add(deferred);
 		return builder;
 	}
 }

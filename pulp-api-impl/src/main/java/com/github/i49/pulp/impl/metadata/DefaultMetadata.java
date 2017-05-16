@@ -43,10 +43,9 @@ import com.github.i49.pulp.impl.base.Messages;
 public class DefaultMetadata implements Metadata {
 	
 	private final TermRegistry termRegistry;
-	private final PropertyFactory propertyFactory;
 
 	// all properties categorized by terms.
-	private final PropertyMap propertyMap;
+	private final PropertySet properties;
 	
 	private final PropertyBuilderSelector builder;
 	private final PropertyListerSelector finder;
@@ -58,16 +57,15 @@ public class DefaultMetadata implements Metadata {
 	/**
 	 * Constructs the new metadata.
 	 */
-	public DefaultMetadata(TermRegistry termRegistry, PropertyFactory propertyFactory) {
+	public DefaultMetadata(TermRegistry termRegistry) {
 		this.termRegistry = termRegistry;
-		this.propertyFactory = propertyFactory;
 		
-		this.propertyMap = new PropertyMap();
+		this.properties = new PropertySet();
 	
-		this.builder = new DefaultPropertyBuilderSelector(this.propertyMap);
-		this.finder = DefaultPropertyListerSelector.getFindingLister(this.propertyMap);
-		this.remover = DefaultPropertyListerSelector.getRemovingLister(this.propertyMap);
-		this.tester = DefaultPropertyTesterSelector.getExistenceTester(this.propertyMap);
+		this.builder = new DefaultPropertyBuilderSelector(this.properties);
+		this.finder = new PropertyFinderSelector(this.properties);
+		this.remover = new PropertyRemoverSelector(this.properties);
+		this.tester = new DefaultPropertyTesterSelector(this.properties);
 		
 		this.releaseIdentifier = new DefaultReleaseIdentifier(this);
 	}
@@ -79,7 +77,7 @@ public class DefaultMetadata implements Metadata {
 	
 	@Override
 	public void clear() {
-		this.propertyMap.clear();
+		this.properties.clear();
 	}
 
 	@Override

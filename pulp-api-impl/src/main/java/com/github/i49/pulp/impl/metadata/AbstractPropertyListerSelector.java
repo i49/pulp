@@ -44,25 +44,7 @@ import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
 /**
  *
  */
-abstract class DefaultPropertyListerSelector implements PropertyListerSelector {
-	
-	public static PropertyListerSelector getFindingLister(PropertyMap map) {
-		return new DefaultPropertyListerSelector() {
-			@Override
-			protected Collection<Property> findProperties(Term term) {
-				return map.find(term);
-			}
-		};
-	}
-
-	public static PropertyListerSelector getRemovingLister(PropertyMap map) {
-		return new DefaultPropertyListerSelector() {
-			@Override
-			protected Collection<Property> findProperties(Term term) {
-				return map.remove(term);
-			}
-		};
-	}
+abstract class AbstractPropertyListerSelector implements PropertyListerSelector {
 	
 	@Override
 	public PropertyIterable<Property> all() {
@@ -151,11 +133,11 @@ abstract class DefaultPropertyListerSelector implements PropertyListerSelector {
 	
 	private <T extends Property> PropertyIterable<T> list(Term term) {
 		@SuppressWarnings("unchecked")
-		Collection<T> list = (Collection<T>)findProperties(term);
+		Collection<T> list = (Collection<T>)listByTerm(term);
 		@SuppressWarnings("unchecked")
 		Class<T> type = (Class<T>)term.getType();
 		return new SimplePropertyIterable<T>(list, type);
 	}
 	
-	protected abstract Collection<Property> findProperties(Term term);
+	protected abstract Collection<Property> listByTerm(Term term);
 }
