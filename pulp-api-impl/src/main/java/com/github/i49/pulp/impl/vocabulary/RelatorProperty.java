@@ -26,11 +26,11 @@ import com.github.i49.pulp.api.vocabulary.RelatorRole;
 /**
  *
  */
-public abstract class AbstractRelator extends AbstractMultiValueText implements Relator {
+public class RelatorProperty extends MultiValueTextProperty implements Relator {
 
 	private final RelatorRole role;
 	
-	public AbstractRelator(Builder<?, ?> b) {
+	public RelatorProperty(Builder<?, ?> b) {
 		super(b);
 		this.role = b.role;
 	}
@@ -41,7 +41,7 @@ public abstract class AbstractRelator extends AbstractMultiValueText implements 
 	}
 
 	public static abstract class Builder<T extends Relator, R extends Relator.Builder<T, R>> 
-		extends AbstractMultiValueText.Builder<T, R> implements Relator.Builder<T, R> {
+		extends MultiValueTextProperty.Builder<T, R> implements Relator.Builder<T, R> {
 
 		private RelatorRole role;
 		

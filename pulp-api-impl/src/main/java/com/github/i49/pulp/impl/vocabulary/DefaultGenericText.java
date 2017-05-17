@@ -25,14 +25,12 @@ import com.github.i49.pulp.api.vocabulary.Term;
 
 /**
  */
-public class DefaultGenericText extends AbstractMultiValueText implements GenericText {
+public class DefaultGenericText extends MultiValueTextProperty implements GenericText {
 
-	private final Term term;
 	private final String scheme;
 	
 	DefaultGenericText(Builder b) {
 		super(b);
-		this.term = b.term;
 		this.scheme = b.scheme;
 	}
 
@@ -41,13 +39,8 @@ public class DefaultGenericText extends AbstractMultiValueText implements Generi
 		return Optional.ofNullable(scheme);
 	}
 
-	@Override
-	public Term getTerm() {
-		return term;
-	}
-	
 	public static class Builder 
-		extends AbstractMultiValueText.Builder<GenericText, GenericText.Builder>
+		extends MultiValueTextProperty.Builder<GenericText, GenericText.Builder>
 		implements GenericText.Builder {
 
 		private final Term term;
@@ -55,6 +48,11 @@ public class DefaultGenericText extends AbstractMultiValueText implements Generi
 
 		public Builder(Term term) {
 			this.term = term;
+		}
+		
+		@Override
+		public Term getTerm() {
+			return term;
 		}
 		
 		@Override

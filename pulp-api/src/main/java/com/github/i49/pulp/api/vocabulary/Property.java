@@ -21,12 +21,34 @@ package com.github.i49.pulp.api.vocabulary;
  */
 public interface Property {
 	
+	/**
+	 * Returns the term of this property.
+	 * 
+	 * @return the term of this property.
+	 */
 	Term getTerm();
 
+	/**
+	 * Returns the value of this property.
+	 * 
+	 * @return the value of this property.
+	 */
 	Object getValue();
 	
-	String getValueAsString();
+	/**
+	 * Returns the string representation of this property value.
+	 * 
+	 * @return the string representation of this property value.
+	 */
+	default String getValueAsString() {
+		return getValue().toString();
+	}
 	
+	/**
+	 * Returns the string representation of this property.
+	 * 
+	 * @return the string representation of this property.
+	 */
 	@Override
 	String toString();
 }

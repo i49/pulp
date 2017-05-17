@@ -16,22 +16,27 @@
 
 package com.github.i49.pulp.impl.vocabulary;
 
+import static com.github.i49.pulp.impl.base.Preconditions.checkNotBlank;
+
+import com.github.i49.pulp.api.vocabulary.PropertyBuilder;
 import com.github.i49.pulp.api.vocabulary.TypedProperty;
 
 /**
  *
  */
-public abstract class AbstractProperty<V> implements TypedProperty<V> {
+public class StringProperty extends BaseProperty<String> {
 
-	private final V value;
-	
-	protected AbstractProperty(V value) {
-		assert(value != null);
-		this.value = value;
+	public StringProperty(Builder<?, ?> b) {
+		super(b);
 	}
+	
+	public static abstract class Builder<T extends TypedProperty<String>, R extends PropertyBuilder<String, T, R>>
+		extends BaseProperty.Builder<String, T, R> {
 
-	@Override
-	public V getValue() {
-		return value;
+		@Override
+		public R value(String value) {
+			checkNotBlank(value, "value");
+			return super.value(value);
+		}
 	}
 }

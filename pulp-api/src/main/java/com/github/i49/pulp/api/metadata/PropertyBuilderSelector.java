@@ -40,7 +40,7 @@ import com.github.i49.pulp.api.vocabulary.dc.Type;
 import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
 
 /**
- *
+ * Provides various kinds of the property builders.
  */
 public interface PropertyBuilderSelector {
 	
@@ -56,8 +56,20 @@ public interface PropertyBuilderSelector {
 
 	Format.Builder format(String value);
 
+	/**
+	 * Creates a builder for building an identifier property.
+	 * The builder generates a random UUID as the value of the property. 
+	 * 
+	 * @return newly created builder.
+	 */
 	Identifier.Builder identifier();
 
+	/**
+	 * Creates a builder for building an identifier property.
+	 * 
+	 * @param value the value of the identifier.
+	 * @return newly created builder.
+	 */
 	Identifier.Builder identifier(String value);
 
 	Language.Builder language(Locale value);

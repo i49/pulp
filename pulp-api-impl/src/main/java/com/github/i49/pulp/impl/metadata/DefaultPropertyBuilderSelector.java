@@ -20,6 +20,7 @@ import static com.github.i49.pulp.impl.base.Preconditions.*;
 
 import java.time.OffsetDateTime;
 import java.util.Locale;
+import java.util.UUID;
 
 import com.github.i49.pulp.api.metadata.PropertyBuilderSelector;
 import com.github.i49.pulp.api.vocabulary.Generic;
@@ -103,15 +104,16 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 
 	@Override
 	public Identifier.Builder identifier() {
-		// TODO Auto-generated method stub
-		return null;
+		UUID uuid = UUID.randomUUID();
+		String value = "urn:uuid:" + uuid.toString();
+		return identifier(value);
 	}
 
 	@Override
 	public Identifier.Builder identifier(String value) {
 		checkNotBlank(value, "value");
-		// TODO Auto-generated method stub
-		return null;
+		Identifier.Builder b = DublinCoreElements.identifier().value(value);
+		return add(DublinCore.IDENTIFIER, b);
 	}
 
 	@Override

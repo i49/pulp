@@ -27,13 +27,13 @@ import com.github.i49.pulp.api.vocabulary.Text;
 /**
  *
  */
-public abstract class AbstractText extends AbstractProperty<String> implements Text {
+public class TextProperty extends StringProperty implements Text {
 
 	private final Direction direction;
 	private final Locale language;
 	
-	protected AbstractText(Builder<?, ?> b) {
-		super(b.getValue());
+	public TextProperty(Builder<?, ?> b) {
+		super(b);
 		this.direction = b.direction;
 		this.language = b.language;
 	}
@@ -49,7 +49,7 @@ public abstract class AbstractText extends AbstractProperty<String> implements T
 	}
 	
 	public static abstract class Builder<T extends Text, R extends Text.Builder<T, R>> 
-		extends AbstractStringPropertyBuilder<T, R> implements Text.Builder<T, R> {
+		extends StringProperty.Builder<T, R> implements Text.Builder<T, R> {
 
 		private Direction direction;
 		private Locale language;

@@ -26,20 +26,13 @@ import com.github.i49.pulp.api.vocabulary.Term;
 /**
  *
  */
-public class DefaultGeneric<V> extends AbstractProperty<V> implements Generic<V> {
+public class DefaultGeneric<V> extends BaseProperty<V> implements Generic<V> {
 
-	private final Term term;
 	private final String scheme;
 
-	DefaultGeneric(Builder<V> b) {
-		super(b.getValue());
-		this.term = b.term;
+	public DefaultGeneric(Builder<V> b) {
+		super(b);
 		this.scheme = b.scheme;
-	}
-
-	@Override
-	public Term getTerm() {
-		return term;
 	}
 
 	@Override
@@ -48,7 +41,7 @@ public class DefaultGeneric<V> extends AbstractProperty<V> implements Generic<V>
 	}
 	
 	public static class Builder<V> 
-		extends AbstractPropertyBuilder<V, Generic<V>, Generic.Builder<V>>
+		extends BaseProperty.Builder<V, Generic<V>, Generic.Builder<V>>
 		implements Generic.Builder<V> {
 		
 		private final Term term;
@@ -56,6 +49,11 @@ public class DefaultGeneric<V> extends AbstractProperty<V> implements Generic<V>
 		
 		public Builder(Term term) {
 			this.term = term;
+		}
+		
+		@Override
+		public Term getTerm() {
+			return term;
 		}
 
 		@Override

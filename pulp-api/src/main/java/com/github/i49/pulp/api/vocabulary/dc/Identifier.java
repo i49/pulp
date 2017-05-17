@@ -32,6 +32,10 @@ public interface Identifier extends TypedProperty<String> {
 		
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * @return {@link DublinCore#IDENTIFIER}.
+	 */
 	@Override
 	default Term getTerm() {
 		return DublinCore.IDENTIFIER;
@@ -43,8 +47,20 @@ public interface Identifier extends TypedProperty<String> {
 
 	public interface Builder extends PropertyBuilder<String, Identifier, Builder> {
 		
+		/**
+		 * Assigns the scheme of the identifier.
+		 * 
+		 * @param scheme the scheme of the identifier.
+		 * @return this builder.
+		 */
 		Builder scheme(Scheme scheme);
 		
-		Builder scheme(URI scheme);
+		/**
+		 * Assigns the scheme of the identifier by URI.
+		 * 
+		 * @param schemeURI the URI of the scheme.
+		 * @return this builder.
+		 */
+		Builder scheme(URI schemeURI);
 	}
 }

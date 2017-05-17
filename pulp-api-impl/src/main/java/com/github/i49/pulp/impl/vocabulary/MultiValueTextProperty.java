@@ -28,13 +28,13 @@ import com.github.i49.pulp.api.vocabulary.Text;
 /**
  *
  */
-abstract class AbstractMultiValueText extends AbstractText implements Multilingual, Normalizable {
+public class MultiValueTextProperty extends TextProperty implements Multilingual, Normalizable {
 
 	private final Locale alternativeLanguage;
 	private final String alternativeValue;
 	private final String normalizedValue;
 	
-	protected AbstractMultiValueText(Builder<?, ?> b) {
+	public MultiValueTextProperty(Builder<?, ?> b) {
 		super(b);
 		this.alternativeLanguage = b.alternativeLanguage;
 		this.alternativeValue = b.alternativeValue;
@@ -57,13 +57,13 @@ abstract class AbstractMultiValueText extends AbstractText implements Multilingu
 	}
 	
 	public static abstract class Builder<T extends Text, R extends Text.Builder<T, R> & Multilingual.Builder<R> & Normalizable.Builder<R>> 
-		extends AbstractText.Builder<T, R> 
+		extends TextProperty.Builder<T, R> 
 		implements Multilingual.Builder<R>, Normalizable.Builder<R> {
 
 		private Locale alternativeLanguage;
 		private String alternativeValue;
 		private String normalizedValue;
-
+		
 		@Override
 		public R alternativeValue(String value, Locale language) {
 			checkNotBlank(value, "value");

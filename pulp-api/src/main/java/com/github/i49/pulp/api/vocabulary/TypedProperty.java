@@ -22,12 +22,4 @@ package com.github.i49.pulp.api.vocabulary;
 public interface TypedProperty<V> extends Property {
 
 	V getValue();
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	default String getValueAsString() {
-		return getValue().toString();
-	}
 }

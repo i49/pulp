@@ -16,20 +16,29 @@
 
 package com.github.i49.pulp.impl.vocabulary.dc;
 
+import static com.github.i49.pulp.impl.base.Preconditions.*;
+
+import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.Locale;
+import java.util.Optional;
 
+import com.github.i49.pulp.api.vocabulary.Term;
 import com.github.i49.pulp.api.vocabulary.dc.Contributor;
 import com.github.i49.pulp.api.vocabulary.dc.Creator;
 import com.github.i49.pulp.api.vocabulary.dc.Date;
+import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
+import com.github.i49.pulp.api.vocabulary.dc.Identifier;
+import com.github.i49.pulp.api.vocabulary.dc.Identifier.Builder;
+import com.github.i49.pulp.api.vocabulary.dc.Identifier.Scheme;
 import com.github.i49.pulp.api.vocabulary.dc.Language;
 import com.github.i49.pulp.api.vocabulary.dc.Publisher;
-import com.github.i49.pulp.impl.vocabulary.AbstractProperty;
-import com.github.i49.pulp.impl.vocabulary.AbstractPropertyBuilder;
-import com.github.i49.pulp.impl.vocabulary.AbstractRelator;
+import com.github.i49.pulp.impl.vocabulary.BaseProperty;
+import com.github.i49.pulp.impl.vocabulary.RelatorProperty;
+import com.github.i49.pulp.impl.vocabulary.StringProperty;
 
 /**
- *
+ * Elements defined by Dublin Core Metadata Element Set.
  */
 public class DublinCoreElements {
 	
@@ -45,6 +54,10 @@ public class DublinCoreElements {
 		return new DateBuilder();
 	}
 
+	public static Identifier.Builder identifier() {
+		return new IdentifierBuilder();
+	}
+
 	public static Language.Builder language() {
 		return new LanguageBuilder();
 	}
@@ -53,7 +66,7 @@ public class DublinCoreElements {
 		return new PublisherBuilder();
 	}
 	
-	private static class DefaultContributor extends AbstractRelator implements Contributor {
+	private static class DefaultContributor extends RelatorProperty implements Contributor {
 		
 		private DefaultContributor(ContributorBuilder b) {
 			super(b);
@@ -61,16 +74,21 @@ public class DublinCoreElements {
 	}
 
 	private static class ContributorBuilder 
-		extends AbstractRelator.Builder<Contributor, Contributor.Builder>
+		extends RelatorProperty.Builder<Contributor, Contributor.Builder>
 		implements Contributor.Builder {
 	
+		@Override
+		public Term getTerm() {
+			return DublinCore.CONTRIBUTOR;
+		}
+
 		@Override
 		protected Contributor build() {
 			return new DefaultContributor(this);
 		}
 	}
 
-	private static class DefaultCreator extends AbstractRelator implements Creator {
+	private static class DefaultCreator extends RelatorProperty implements Creator {
 		
 		private DefaultCreator(CreatorBuilder b) {
 			super(b);
@@ -78,8 +96,13 @@ public class DublinCoreElements {
 	}
 
 	private static class CreatorBuilder 
-		extends AbstractRelator.Builder<Creator, Creator.Builder>
+		extends RelatorProperty.Builder<Creator, Creator.Builder>
 		implements Creator.Builder {
+
+		@Override
+		public Term getTerm() {
+			return DublinCore.CREATOR;
+		}
 	
 		@Override
 		protected Creator build() {
@@ -87,16 +110,21 @@ public class DublinCoreElements {
 		}
 	}
 
-	private static class DefaultDate extends AbstractProperty<OffsetDateTime> implements Date {
+	private static class DefaultDate extends BaseProperty<OffsetDateTime> implements Date {
 		
 		private DefaultDate(DateBuilder b) {
-			super(b.getValue());
+			super(b);
 		}
 	}
 	
 	private static class DateBuilder 
-		extends AbstractPropertyBuilder<OffsetDateTime, Date, Date.Builder>
+		extends BaseProperty.Builder<OffsetDateTime, Date, Date.Builder>
 		implements Date.Builder {
+		
+		@Override
+		public Term getTerm() {
+			return DublinCore.DATE;
+		}
 
 		@Override
 		protected Date build() {
@@ -104,24 +132,83 @@ public class DublinCoreElements {
 		}
 	}
 
-	private static class DefaultLanguage extends AbstractProperty<Locale> implements Language {
+	private static class DefaultIdentifier extends StringProperty implements Identifier {
+		
+		private final Scheme scheme;
+		private final URI schemeURI;
+		
+		private DefaultIdentifier(IdentifierBuilder b) {
+			super(b);
+			this.scheme = b.scheme;
+			this.schemeURI = b.schemeURI;
+		}
+
+		@Override
+		public Optional<Scheme> getScheme() {
+			return Optional.ofNullable(scheme);
+		}
+
+		@Override
+		public Optional<URI> getSchemeURI() {
+			return Optional.ofNullable(schemeURI);
+		}
+	}
+	
+	private static class IdentifierBuilder 
+		extends StringProperty.Builder<Identifier, Identifier.Builder>
+		implements Identifier.Builder {
+		
+		private Scheme scheme;
+		private URI schemeURI;
+		
+		@Override
+		public Term getTerm() {
+			return DublinCore.IDENTIFIER;
+		}
+
+		@Override
+		protected Identifier build() {
+			return new DefaultIdentifier(this);
+		}
+
+		@Override
+		public Builder scheme(Scheme scheme) {
+			checkNotNull(scheme, "scheme");
+			this.scheme = scheme;
+			return self();
+		}
+
+		@Override
+		public Builder scheme(URI schemeURI) {
+			checkNotNull(schemeURI, "schemeURI");
+			this.schemeURI = schemeURI;
+			return self();
+		}
+	}
+	
+	private static class DefaultLanguage extends BaseProperty<Locale> implements Language {
 
 		private DefaultLanguage(LanguageBuilder b) {
-			super(b.getValue());
+			super(b);
 		}
 	}
 
 	public static class LanguageBuilder 
-		extends AbstractPropertyBuilder<Locale, Language, Language.Builder>
+		extends BaseProperty.Builder<Locale, Language, Language.Builder>
 		implements Language.Builder {
 	
+		@Override
+		public Term getTerm() {
+			return DublinCore.LANGUAGE;
+		}
+		
 		@Override
 		protected Language build() {
 			return new DefaultLanguage(this);
 		}
 	}
 
-	private static class DefaultPublisher extends AbstractRelator implements Publisher {
+	private static class DefaultPublisher extends RelatorProperty implements Publisher {
 		
 		private DefaultPublisher(PublisherBuilder b) {
 			super(b);
@@ -129,8 +216,13 @@ public class DublinCoreElements {
 	}
 
 	private static class PublisherBuilder 
-		extends AbstractRelator.Builder<Publisher, Publisher.Builder>
+		extends RelatorProperty.Builder<Publisher, Publisher.Builder>
 		implements Publisher.Builder {
+		
+		@Override
+		public Term getTerm() {
+			return DublinCore.PUBLISHER;
+		}
 	
 		@Override
 		protected Publisher build() {
