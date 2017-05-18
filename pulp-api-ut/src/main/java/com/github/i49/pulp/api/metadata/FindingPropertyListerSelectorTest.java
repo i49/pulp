@@ -24,8 +24,12 @@ import org.junit.Test;
 import com.github.i49.pulp.api.core.Epub;
 import com.github.i49.pulp.api.core.Publication;
 import com.github.i49.pulp.api.core.Rendition;
+import com.github.i49.pulp.api.vocabulary.Property;
+import com.github.i49.pulp.api.vocabulary.dc.Creator;
+import com.github.i49.pulp.api.vocabulary.dc.Identifier;
+import com.github.i49.pulp.api.vocabulary.dc.Language;
 
-public class PropertyFinderTest {
+public class FindingPropertyListerSelectorTest {
 
 	private Metadata m;
 	
@@ -36,8 +40,20 @@ public class PropertyFinderTest {
 		m = r.getMetadata();
 	}
 
+	/* all() */
+
 	@Test
-	public void contributor_shouldReturnEmptyByDefault() {
-		assertThat(m.find().contributor()).isEmpty();
+	public void all_shouldReturnEmptyByDefault() {
+		assertThat(m.find().all()).isEmpty();
+	}
+	
+	@Test
+	public void all_shouldReturnAddedProperties() {
+		m.add().identifier();
+		m.add().creator("John Smith");
+		m.add().language("en-US");
+		Iterable<Property> all = m.find().all();
+		assertThat(all).hasSize(3);
+		assertThat(all).hasOnlyElementsOfTypes(Identifier.class, Creator.class, Language.class);
 	}
 }

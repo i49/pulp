@@ -16,6 +16,9 @@
 
 package com.github.i49.pulp.api.metadata;
 
+import java.util.Collection;
+import java.util.List;
+
 import com.github.i49.pulp.api.vocabulary.Property;
 import com.github.i49.pulp.api.vocabulary.dc.Contributor;
 import com.github.i49.pulp.api.vocabulary.dc.Coverage;
@@ -39,37 +42,37 @@ import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
  */
 public interface PropertyListerSelector {
 
-	PropertyIterable<Property> all();
+	Collection<Property> all();
 
-	PropertyIterable<Contributor> contributor();
+	List<Contributor> contributor();
 
-	PropertyIterable<Coverage> coverage();
+	List<Coverage> coverage();
 
-	PropertyIterable<Creator> creator();
+	List<Creator> creator();
 
-	PropertyIterable<Date> date();
+	List<Date> date();
 
-	PropertyIterable<Description> description();
+	List<Description> description();
 
-	PropertyIterable<Format> format();
+	List<Format> format();
 
-	PropertyIterable<Identifier> identifier();
+	List<Identifier> identifier();
 	
-	PropertyIterable<Language> language();
+	List<Language> language();
 
-	PropertyIterable<Modified> modified();
+	List<Modified> modified();
 
-	PropertyIterable<Publisher> publisher();
+	List<Publisher> publisher();
 
-	PropertyIterable<Relation> relation();
+	List<Relation> relation();
 
-	PropertyIterable<Rights> rights();
+	List<Rights> rights();
 	
-	PropertyIterable<Source> source();
+	List<Source> source();
 
-	PropertyIterable<Subject> subject();
+	List<Subject> subject();
 
-	PropertyIterable<Title> title();
+	List<Title> title();
 
-	PropertyIterable<Type> type();
+	List<Type> type();
 }

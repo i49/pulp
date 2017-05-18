@@ -17,6 +17,7 @@
 package com.github.i49.pulp.impl.metadata;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.github.i49.pulp.api.vocabulary.Property;
 import com.github.i49.pulp.api.vocabulary.Term;
@@ -33,7 +34,12 @@ public class PropertyFinderSelector extends AbstractPropertyListerSelector {
 	}
 
 	@Override
-	protected Collection<Property> listByTerm(Term term) {
+	protected Collection<Property> listAll() {
+		return properties.findAll();
+	}
+
+	@Override
+	protected List<Property> listByTerm(Term term) {
 		return properties.findByTerm(term);
 	}
 }

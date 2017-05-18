@@ -168,14 +168,14 @@ class PackageDocumentGenerator implements PackageDocumentProcessor {
 	}
 	
 	private void addDate(Element parent, Metadata metadata) {
-		metadata.find().date().first().ifPresent(p->{
+		metadata.find().date().stream().findFirst().ifPresent(p->{
 			Element e = createMetadataEntry("dc:date", p.getValueAsString());
 			parent.appendChild(e);
 		});
 	}
 
 	private void addLastModified(Element parent, Metadata metadata) {
-		metadata.find().modified().first().ifPresent(p->{
+		metadata.find().modified().stream().findFirst().ifPresent(p->{
 			Element e = createMetadataEntry("meta", p.getValueAsString());
 			e.setAttribute("property", "dcterms:modified");
 			parent.appendChild(e);

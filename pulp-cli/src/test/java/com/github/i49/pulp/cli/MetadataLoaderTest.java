@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,27 +38,27 @@ public class MetadataLoaderTest {
 			MetadataLoader loader = MetadataLoader.from(s);
 			loader.load(m);
 		}
-		Identifier[] identifiers = m.find().identifier().asArray();
+		List<Identifier> identifiers = m.find().identifier();
 		assertThat(identifiers).hasSize(1);
-		assertThat(identifiers[0].getValueAsString()).isEqualTo("idpf.epub31.samples.moby-dick.xhtml");
-		Title[] title = m.find().title().asArray();
-		assertThat(title).hasSize(1);
-		assertThat(title[0].getValueAsString()).isEqualTo("Moby-Dick");
-		Language[] languages = m.find().language().asArray();
+		assertThat(identifiers.get(0).getValueAsString()).isEqualTo("idpf.epub31.samples.moby-dick.xhtml");
+		List<Title> titles = m.find().title();
+		assertThat(titles).hasSize(1);
+		assertThat(titles.get(0).getValueAsString()).isEqualTo("Moby-Dick");
+		List<Language> languages = m.find().language();
 		assertThat(languages).hasSize(1);
-		assertThat(languages[0].getValueAsString()).isEqualTo("en-US");
-		Creator[] creators = m.find().creator().asArray();
+		assertThat(languages.get(0).getValueAsString()).isEqualTo("en-US");
+		List<Creator> creators = m.find().creator();
 		assertThat(creators).hasSize(1);
-		assertThat(creators[0].getValueAsString()).isEqualTo("Herman Melville");
-		Publisher[] publishers = m.find().publisher().asArray();
+		assertThat(creators.get(0).getValueAsString()).isEqualTo("Herman Melville");
+		List<Publisher> publishers = m.find().publisher();
 		assertThat(publishers).hasSize(1);
-		assertThat(publishers[0].getValueAsString()).isEqualTo("Harper & Brothers, Publishers");
-		Date[] dates = m.find().date().asArray();
+		assertThat(publishers.get(0).getValueAsString()).isEqualTo("Harper & Brothers, Publishers");
+		List<Date> dates = m.find().date();
 		assertThat(dates).hasSize(1);
-		assertThat(dates[0].getValue()).isEqualTo(OffsetDateTime.of(1851, 11, 14, 0, 0, 0, 0, ZoneOffset.UTC));
-		Modified[] modified = m.find().modified().asArray();
+		assertThat(dates.get(0).getValue()).isEqualTo(OffsetDateTime.of(1851, 11, 14, 0, 0, 0, 0, ZoneOffset.UTC));
+		List<Modified> modified = m.find().modified();
 		assertThat(modified).hasSize(1);
-		assertThat(modified[0].getValue()).isEqualTo(OffsetDateTime.of(2016, 2, 5, 14, 40, 0, 0, ZoneOffset.UTC));
+		assertThat(modified.get(0).getValue()).isEqualTo(OffsetDateTime.of(2016, 2, 5, 14, 40, 0, 0, ZoneOffset.UTC));
 	}
 	
 	private InputStream openResource(String name) {

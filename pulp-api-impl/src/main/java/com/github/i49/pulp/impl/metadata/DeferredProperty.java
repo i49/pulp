@@ -46,12 +46,20 @@ public class DeferredProperty<V> implements Property {
 
 	@Override
 	public Object getValue() {
-		return get().getValue();
+		throw new AssertionError("Unexpected method call");
 	}
 
 	@Override
 	public String getValueAsString() {
-		return get().getValueAsString();
+		throw new AssertionError("Unexpected method call");
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder b = new StringBuilder();
+		String termName = getTerm().localName();
+		b.append("{").append(termName).append(":\"(deferred)\"}");
+		return b.toString();
 	}
 	
 	public Property get() {

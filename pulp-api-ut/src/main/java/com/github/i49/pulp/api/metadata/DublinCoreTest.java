@@ -21,9 +21,9 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.junit.Test;
 
-import com.github.i49.pulp.api.vocabulary.PropertyType;
 import com.github.i49.pulp.api.vocabulary.StandardVocabulary;
 import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
+import com.github.i49.pulp.api.vocabulary.dc.Title;
 
 /**
  * Unit tests for {@link DublinCore}.
@@ -34,7 +34,7 @@ public class DublinCoreTest {
 	
 	@Test
 	public void getType_shouldReturnTypeOfTerm() {
-		assertThat(TITLE.getType()).isSameAs(PropertyType.TITLE);
+		assertThat(TITLE.getType()).isSameAs(Title.class);
 	}
 	
 	/* getVocabulary() */

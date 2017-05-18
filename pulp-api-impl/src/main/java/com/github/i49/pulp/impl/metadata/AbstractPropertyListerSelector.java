@@ -17,8 +17,8 @@
 package com.github.i49.pulp.impl.metadata;
 
 import java.util.Collection;
+import java.util.List;
 
-import com.github.i49.pulp.api.metadata.PropertyIterable;
 import com.github.i49.pulp.api.metadata.PropertyListerSelector;
 import com.github.i49.pulp.api.vocabulary.Property;
 import com.github.i49.pulp.api.vocabulary.Term;
@@ -47,97 +47,96 @@ import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
 abstract class AbstractPropertyListerSelector implements PropertyListerSelector {
 	
 	@Override
-	public PropertyIterable<Property> all() {
-		return null;
+	public Collection<Property> all() {
+		return listAll();
 	}
 
 	@Override
-	public PropertyIterable<Contributor> contributor() {
+	public List<Contributor> contributor() {
 		return list(DublinCore.CONTRIBUTOR);
 	}
 
 	@Override
-	public PropertyIterable<Coverage> coverage() {
+	public List<Coverage> coverage() {
 		return list(DublinCore.COVERAGE);
 	}
 
 	@Override
-	public PropertyIterable<Creator> creator() {
+	public List<Creator> creator() {
 		return list(DublinCore.CREATOR);
 	}
 
 	@Override
-	public PropertyIterable<Date> date() {
+	public List<Date> date() {
 		return list(DublinCore.DATE);
 	}
 
 	@Override
-	public PropertyIterable<Description> description() {
+	public List<Description> description() {
 		return list(DublinCore.DESCRIPTION);
 	}
 
 	@Override
-	public PropertyIterable<Format> format() {
+	public List<Format> format() {
 		return list(DublinCore.FORMAT);
 	}
 
 	@Override
-	public PropertyIterable<Identifier> identifier() {
+	public List<Identifier> identifier() {
 		return list(DublinCore.IDENTIFIER);
 	}
 
 	@Override
-	public PropertyIterable<Language> language() {
+	public List<Language> language() {
 		return list(DublinCore.LANGUAGE);
 	}
 
 	@Override
-	public PropertyIterable<Modified> modified() {
+	public List<Modified> modified() {
 		return list(DublinCoreTerm.MODIFIED);
 	}
 
 	@Override
-	public PropertyIterable<Publisher> publisher() {
+	public List<Publisher> publisher() {
 		return list(DublinCore.PUBLISHER);
 	}
 
 	@Override
-	public PropertyIterable<Relation> relation() {
+	public List<Relation> relation() {
 		return list(DublinCore.RELATION);
 	}
 
 	@Override
-	public PropertyIterable<Rights> rights() {
+	public List<Rights> rights() {
 		return list(DublinCore.RIGHTS);
 	}
 
 	@Override
-	public PropertyIterable<Source> source() {
+	public List<Source> source() {
 		return list(DublinCore.SOURCE);
 	}
 
 	@Override
-	public PropertyIterable<Subject> subject() {
+	public List<Subject> subject() {
 		return list(DublinCore.SUBJECT);
 	}
 
 	@Override
-	public PropertyIterable<Title> title() {
+	public List<Title> title() {
 		return list(DublinCore.TITLE);
 	}
 
 	@Override
-	public PropertyIterable<Type> type() {
+	public List<Type> type() {
 		return list(DublinCore.TYPE);
 	}
 	
-	private <T extends Property> PropertyIterable<T> list(Term term) {
-		@SuppressWarnings("unchecked")
-		Collection<T> list = (Collection<T>)listByTerm(term);
-		@SuppressWarnings("unchecked")
-		Class<T> type = (Class<T>)term.getType();
-		return new SimplePropertyIterable<T>(list, type);
+	@SuppressWarnings("unchecked")
+	private <T extends Property> List<T> list(Term term) {
+		return (List<T>)listByTerm(term);
 	}
 	
-	protected abstract Collection<Property> listByTerm(Term term);
+	protected abstract Collection<Property> listAll();
+	
+	protected abstract List<Property> listByTerm(Term term);
 }

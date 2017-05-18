@@ -33,6 +33,7 @@ public class PropertyBuilderSelectorTest {
 
 	private Metadata m;
 	
+	private static final String UUID = "urn:uuid:6e8bc430-9c3a-11d9-9669-0800200c9a66";
 	
 	@Before
 	public void setUp() {
@@ -43,7 +44,25 @@ public class PropertyBuilderSelectorTest {
 
 	@Test
 	public void identifier_shouldGenerateIdentifier() {
-		Identifier p = m.add().identifier().result();
-		assertThat(p).isNotNull();
+		m.add().identifier();
+		assertThat(m.find().identifier()).hasSize(1);
+		Identifier p = m.find().identifier().get(0);
+		assertThat(p.getValue()).startsWith("urn:uuid:");
+	}
+	
+	@Test
+	public void identifier_shouldBuildIdentifierWithSpecifiedValue() {
+		m.add().identifier(UUID);
+		Identifier p = m.find().identifier().get(0);
+		assertThat(p.getValue()).isEqualTo(UUID);
+	}
+
+	@Test
+	public void identifier_shouldBuildIdentifierWithSpecifiedScheme() {
+		m.add().identifier(UUID).scheme(Identifier.Scheme.UUID);
+		Identifier p = m.find().identifier().get(0);
+		assertThat(p.getValue()).isEqualTo(UUID);
+		assertThat(p.getScheme()).hasValue(Identifier.Scheme.UUID);
+		assertThat(p.getSchemeURI()).isEmpty();
 	}
 }

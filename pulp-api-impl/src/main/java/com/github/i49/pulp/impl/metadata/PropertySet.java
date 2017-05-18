@@ -30,7 +30,7 @@ import com.github.i49.pulp.api.vocabulary.Property;
 import com.github.i49.pulp.api.vocabulary.Term;
 
 /**
- *
+ * A set of metadata properties.
  */
 public class PropertySet extends AbstractSet<Property> {
 
@@ -102,30 +102,46 @@ public class PropertySet extends AbstractSet<Property> {
 		assert(term != null);
 		return this.map.containsKey(term);
 	}
+	
+	/**
+	 * Finds all properties in this set.
+	 * 
+	 * @return a collection containing all properties.
+	 *         Returned collection can not be modified.
+	 */
+	public Collection<Property> findAll() {
+		return Collections.unmodifiableCollection(this);
+	}
 
-	public Collection<Property> findByTerm(Term term) {
+	public List<Property> findByTerm(Term term) {
 		assert(term != null);
 		List<Property> list = this.map.get(term);
 		if (list == null) {
 			return Collections.emptyList();
 		} else {
-			return list;
+			return Collections.unmodifiableList(list);
 		}
 	}
 	
-	public Collection<Property> removeByTerm(Term term) {
+	public Collection<Property> removeAll() {
+		List<Property> list = new ArrayList<>(this);
+		this.map.clear();
+		return Collections.unmodifiableCollection(list);
+	}
+	
+	public List<Property> removeByTerm(Term term) {
 		assert(term != null);
 		List<Property> list = this.map.get(term);
 		if (list == null) {
 			return Collections.emptyList();
 		} else {
 			this.map.remove(term);
-			return list;
+			return Collections.unmodifiableList(list);
 		}
 	}
 	
 	private List<Property> addPropertyList(Term term) {
-		List<Property> list = new ArrayList<>();
+		List<Property> list = new TermPropertyList(term);
 		this.map.put(term, list);
 		return list;
 	}

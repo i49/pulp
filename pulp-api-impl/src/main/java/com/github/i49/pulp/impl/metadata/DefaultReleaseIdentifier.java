@@ -36,12 +36,12 @@ public class DefaultReleaseIdentifier implements ReleaseIdentifier {
 
 	@Override
 	public Optional<Identifier> getUniqueIdentifier() {
-		return metadata.find().identifier().first();
+		return metadata.find().identifier().stream().findFirst();
 	}
 
 	@Override
 	public Optional<Modified> getLastModificationDate() {
-		return metadata.find().modified().first();
+		return metadata.find().modified().stream().findFirst();
 	}
 	
 	@Override

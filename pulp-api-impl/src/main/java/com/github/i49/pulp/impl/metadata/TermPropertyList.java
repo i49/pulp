@@ -23,28 +23,35 @@ import com.github.i49.pulp.api.vocabulary.Property;
 import com.github.i49.pulp.api.vocabulary.Term;
 
 /**
- * The list containing homogeneous properties. 
+ * The list containing properties of the same term.
  */
-class PropertyList extends AbstractList<Property> {
+class TermPropertyList extends AbstractList<Property> {
 	
 	private final ArrayList<Property> delegate = new ArrayList<>();
 	private final Term term;
-	private final boolean multiple;
 	
 	/**
 	 * Constructs new property list.
 	 * 
 	 * @param term the term of the property this list can contain.
-	 * @param multiple {@code true} if this list is allowed to have more than one properties.
 	 */
-	public PropertyList(Term term, boolean multiple) {
+	public TermPropertyList(Term term) {
 		this.term = term;
-		this.multiple = multiple;
 	}
 
+	/**
+	 * {@inheritDoc]
+	 * Calling this method may replace the deferred property with the real property built by its builder.
+	 */
 	@Override
 	public Property get(int index) {
-		return delegate.get(index);
+		Property p = delegate.get(index);
+		if (p instanceof DeferredProperty) {
+			DeferredProperty<?> deferred = (DeferredProperty<?>)p;
+			p = deferred.get();
+			delegate.set(index, p);
+		}
+		return p;
 	}
 
 	@Override
@@ -61,7 +68,7 @@ class PropertyList extends AbstractList<Property> {
 	@Override
 	public void add(int index, Property element) {
 		validate(element);
-		if (!this.multiple && size() >= 1) {
+		if (!this.term.isRepeatable() && size() >= 1) {
 			throw new IllegalStateException("Cannot add more than one property for this term.");
 		}
 		delegate.add(index, element);
@@ -71,7 +78,7 @@ class PropertyList extends AbstractList<Property> {
 	public Property remove(int index) {
 		return delegate.remove(index);
 	}
-
+	
 	private void validate(Property element) {
 		if (element == null) {
 			throw new NullPointerException("Property must not be null.");

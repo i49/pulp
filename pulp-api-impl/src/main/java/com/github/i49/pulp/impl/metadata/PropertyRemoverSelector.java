@@ -17,13 +17,13 @@
 package com.github.i49.pulp.impl.metadata;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.github.i49.pulp.api.vocabulary.Property;
 import com.github.i49.pulp.api.vocabulary.Term;
 
 /**
- * @author i49
- *
+ * Selects an object that removes properties from property set. 
  */
 public class PropertyRemoverSelector extends AbstractPropertyListerSelector {
 
@@ -34,7 +34,12 @@ public class PropertyRemoverSelector extends AbstractPropertyListerSelector {
 	}
 
 	@Override
-	protected Collection<Property> listByTerm(Term term) {
+	protected Collection<Property> listAll() {
+		return null;
+	}
+	
+	@Override
+	protected List<Property> listByTerm(Term term) {
 		return properties.removeByTerm(term);
 	}
 }
