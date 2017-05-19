@@ -18,6 +18,8 @@ package com.github.i49.pulp.api.metadata;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -55,5 +57,17 @@ public class FindingPropertyListerSelectorTest {
 		Iterable<Property> all = m.find().all();
 		assertThat(all).hasSize(3);
 		assertThat(all).hasOnlyElementsOfTypes(Identifier.class, Creator.class, Language.class);
+	}
+	
+	/* creator() */
+	
+	@Test
+	public void creator_shouldReturnAllCreators() {
+		m.add().creator("Lewis Carroll");
+		m.add().creator("John Tenniel");
+		List<Creator> found = m.find().creator();
+		assertThat(found).hasSize(2);
+		assertThat(found.get(0).getValue()).isEqualTo("Lewis Carroll");
+		assertThat(found.get(1).getValue()).isEqualTo("John Tenniel");
 	}
 }

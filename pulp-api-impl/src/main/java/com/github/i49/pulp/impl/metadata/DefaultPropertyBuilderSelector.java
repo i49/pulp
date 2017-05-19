@@ -44,10 +44,12 @@ import com.github.i49.pulp.api.vocabulary.dc.Source;
 import com.github.i49.pulp.api.vocabulary.dc.Subject;
 import com.github.i49.pulp.api.vocabulary.dc.Title;
 import com.github.i49.pulp.api.vocabulary.dc.Type;
+import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
 import com.github.i49.pulp.impl.vocabulary.DefaultGeneric;
 import com.github.i49.pulp.impl.vocabulary.DefaultGenericText;
 import com.github.i49.pulp.impl.vocabulary.dc.DublinCoreElements;
+import com.github.i49.pulp.impl.vocabulary.dcterms.DublinCoreTerms;
 
 /**
  * The default implementation of {@link PropertyBuilderSelector}.
@@ -133,8 +135,8 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	@Override
 	public Modified.Builder modified(OffsetDateTime value) {
 		checkNotNull(value, "value");
-		// TODO Auto-generated method stub
-		return null;
+		Modified.Builder b = DublinCoreTerms.modified().value(value);
+		return add(DublinCoreTerm.MODIFIED, b);
 	}
 
 	@Override

@@ -37,8 +37,8 @@ public class BaseProperty<V> implements TypedProperty<V> {
 		this.value = value;
 	}
 	
-	public BaseProperty(Builder<V, ?, ?> b) {
-		this(b.getTerm(), b.getValue());
+	public BaseProperty(Term term, Builder<V, ?, ?> b) {
+		this(term, b.getValue());
 	}
 	
 	@Override
@@ -93,14 +93,6 @@ public class BaseProperty<V> implements TypedProperty<V> {
 			return value;
 		}
 
-		/**
-		 * Returns the term of the property to build.
-		 * Should be implemented by concrete builder.
-		 * 
-		 * @return the term of the property.
-		 */
-		public abstract Term getTerm();
-		
 		/**
 		 * Builds the property. 
 		 * Should be implemented by concrete builder.

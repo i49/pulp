@@ -18,6 +18,8 @@ package com.github.i49.pulp.api.metadata;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.IllformedLocaleException;
 import java.util.Locale;
 
@@ -27,9 +29,14 @@ import org.junit.Test;
 import com.github.i49.pulp.api.core.Epub;
 import com.github.i49.pulp.api.core.Publication;
 import com.github.i49.pulp.api.core.Rendition;
+import com.github.i49.pulp.api.vocabulary.dc.Contributor;
+import com.github.i49.pulp.api.vocabulary.dc.Creator;
+import com.github.i49.pulp.api.vocabulary.dc.Date;
 import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
 import com.github.i49.pulp.api.vocabulary.dc.Identifier;
 import com.github.i49.pulp.api.vocabulary.dc.Language;
+import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
+import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
 
 /**
  *
@@ -43,6 +50,62 @@ public class PropertyBuilderSelectorTest {
 		Publication p = Epub.createPublication();
 		Rendition r = p.addRendition();
 		m = r.getMetadata();
+	}
+	
+	/* contributor(String) */
+
+	@Test
+	public void contributor_shouldBuildCreatorWithSpecifiedValue() {
+		String value = "John Smith";
+		m.add().contributor(value);
+		Contributor p = m.find().contributor().get(0);
+		assertThat(p.getTerm()).isSameAs(DublinCore.CONTRIBUTOR);
+		assertThat(p.getValue()).isEqualTo(value);
+		assertThat(p.getRole()).isEmpty();
+	}
+	
+	@Test
+	public void contributor_shouldThrowExceptionIfValueIsNull() {
+		Throwable thrown = catchThrowable(()->{
+			m.add().contributor(null);
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
+	public void contributor_shouldThrowExceptionIfValueIsBlank() {
+		Throwable thrown = catchThrowable(()->{
+			m.add().contributor(" ");
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+
+	/* creator(String) */
+
+	@Test
+	public void creator_shouldBuildCreatorWithSpecifiedValue() {
+		String value = "Lewis Carroll";
+		m.add().creator(value);
+		Creator p = m.find().creator().get(0);
+		assertThat(p.getTerm()).isSameAs(DublinCore.CREATOR);
+		assertThat(p.getValue()).isEqualTo(value);
+		assertThat(p.getRole()).isEmpty();
+	}
+	
+	@Test
+	public void creator_shouldThrowExceptionIfValueIsNull() {
+		Throwable thrown = catchThrowable(()->{
+			m.add().creator(null);
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
+	public void creator_shouldThrowExceptionIfValueIsBlank() {
+		Throwable thrown = catchThrowable(()->{
+			m.add().creator(" ");
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
 	}
 	
 	/* identifier() */
@@ -91,6 +154,26 @@ public class PropertyBuilderSelectorTest {
 	public void identifier_shouldThrowExceptionIfValueIsBlank() {
 		Throwable thrown = catchThrowable(()->{
 			m.add().identifier(" ");
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+	
+	/* date(OffsetDateTime) */
+	
+	@Test
+	public void date_shouldBuildDateWithSpecifiedDateTime() {
+		OffsetDateTime dateTime = OffsetDateTime.of(2017, 4, 23, 1, 2, 3, 0, ZoneOffset.ofHours(9));
+		m.add().date(dateTime);
+		Date p = m.find().date().get(0);
+		assertThat(p.getTerm()).isSameAs(DublinCore.DATE);
+		assertThat(p.getValue()).isEqualTo(dateTime);
+		assertThat(p.getValueAsString()).isEqualTo("2017-04-22T16:02:03Z");
+	}
+
+	@Test
+	public void date_shouldThrowExceptionIfDateTimeIsNull() {
+		Throwable thrown = catchThrowable(()->{
+			m.add().date(null);
 		});
 		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
 	}
@@ -152,6 +235,26 @@ public class PropertyBuilderSelectorTest {
 			m.add().language("123");
 		});
 		assertThat(thrown).isInstanceOf(IllformedLocaleException.class);
+	}
+
+	/* modified(OffsetDateTime) */
+	
+	@Test
+	public void modified_shouldBuildDateWithSpecifiedDateTime() {
+		OffsetDateTime dateTime = OffsetDateTime.of(2017, 4, 23, 1, 2, 3, 0, ZoneOffset.ofHours(9));
+		m.add().modified(dateTime);
+		Modified p = m.find().modified().get(0);
+		assertThat(p.getTerm()).isSameAs(DublinCoreTerm.MODIFIED);
+		assertThat(p.getValue()).isEqualTo(dateTime);
+		assertThat(p.getValueAsString()).isEqualTo("2017-04-22T16:02:03Z");
+	}
+
+	@Test
+	public void modified_shouldThrowExceptionIfDateTimeIsNull() {
+		Throwable thrown = catchThrowable(()->{
+			m.add().modified(null);
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
 	}
 
 	/* title(String) */

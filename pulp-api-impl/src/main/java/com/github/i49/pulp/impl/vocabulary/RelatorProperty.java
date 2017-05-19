@@ -22,6 +22,7 @@ import java.util.Optional;
 
 import com.github.i49.pulp.api.vocabulary.Relator;
 import com.github.i49.pulp.api.vocabulary.RelatorRole;
+import com.github.i49.pulp.api.vocabulary.Term;
 
 /**
  *
@@ -30,8 +31,8 @@ public class RelatorProperty extends MultiValueTextProperty implements Relator {
 
 	private final RelatorRole role;
 	
-	public RelatorProperty(Builder<?, ?> b) {
-		super(b);
+	public RelatorProperty(Term term, Builder<?, ?> b) {
+		super(term, b);
 		this.role = b.role;
 	}
 

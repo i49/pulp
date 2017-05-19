@@ -19,10 +19,8 @@ package com.github.i49.pulp.impl.vocabulary.dc;
 import static com.github.i49.pulp.impl.base.Preconditions.*;
 
 import java.net.URI;
-import java.time.OffsetDateTime;
 import java.util.Optional;
 
-import com.github.i49.pulp.api.vocabulary.Term;
 import com.github.i49.pulp.api.vocabulary.dc.Contributor;
 import com.github.i49.pulp.api.vocabulary.dc.Creator;
 import com.github.i49.pulp.api.vocabulary.dc.Date;
@@ -34,16 +32,19 @@ import com.github.i49.pulp.api.vocabulary.dc.Language;
 import com.github.i49.pulp.api.vocabulary.dc.Publisher;
 import com.github.i49.pulp.api.vocabulary.dc.Title;
 import com.github.i49.pulp.api.vocabulary.dc.TitleType;
-import com.github.i49.pulp.impl.vocabulary.BaseProperty;
+import com.github.i49.pulp.impl.vocabulary.DateProperty;
 import com.github.i49.pulp.impl.vocabulary.LanguageProperty;
 import com.github.i49.pulp.impl.vocabulary.MultiValueTextProperty;
 import com.github.i49.pulp.impl.vocabulary.RelatorProperty;
 import com.github.i49.pulp.impl.vocabulary.StringProperty;
 
 /**
- * Elements defined by Dublin Core Metadata Element Set.
+ * All elements provided by Dublin Core Metadata Element Set.
  */
-public class DublinCoreElements {
+public final class DublinCoreElements {
+	
+	private DublinCoreElements() {
+	}
 	
 	public static Creator.Builder creator() {
 		return new CreatorBuilder();
@@ -76,7 +77,7 @@ public class DublinCoreElements {
 	private static class DefaultContributor extends RelatorProperty implements Contributor {
 		
 		private DefaultContributor(ContributorBuilder b) {
-			super(b);
+			super(DublinCore.CONTRIBUTOR, b);
 		}
 	}
 
@@ -84,11 +85,6 @@ public class DublinCoreElements {
 		extends RelatorProperty.Builder<Contributor, Contributor.Builder>
 		implements Contributor.Builder {
 	
-		@Override
-		public Term getTerm() {
-			return DublinCore.CONTRIBUTOR;
-		}
-
 		@Override
 		protected Contributor build() {
 			return new DefaultContributor(this);
@@ -98,7 +94,7 @@ public class DublinCoreElements {
 	private static class DefaultCreator extends RelatorProperty implements Creator {
 		
 		private DefaultCreator(CreatorBuilder b) {
-			super(b);
+			super(DublinCore.CREATOR, b);
 		}
 	}
 
@@ -107,32 +103,21 @@ public class DublinCoreElements {
 		implements Creator.Builder {
 
 		@Override
-		public Term getTerm() {
-			return DublinCore.CREATOR;
-		}
-	
-		@Override
 		protected Creator build() {
 			return new DefaultCreator(this);
 		}
 	}
 
-	private static class DefaultDate extends BaseProperty<OffsetDateTime> implements Date {
+	private static class DefaultDate extends DateProperty implements Date {
 		
 		private DefaultDate(DateBuilder b) {
-			super(b);
+			super(DublinCore.DATE, b);
 		}
 	}
 	
-	private static class DateBuilder 
-		extends BaseProperty.Builder<OffsetDateTime, Date, Date.Builder>
+	private static class DateBuilder extends DateProperty.Builder<Date, Date.Builder>
 		implements Date.Builder {
 		
-		@Override
-		public Term getTerm() {
-			return DublinCore.DATE;
-		}
-
 		@Override
 		protected Date build() {
 			return new DefaultDate(this);
@@ -145,7 +130,7 @@ public class DublinCoreElements {
 		private final URI schemeURI;
 		
 		private DefaultIdentifier(IdentifierBuilder b) {
-			super(b);
+			super(DublinCore.IDENTIFIER, b);
 			this.scheme = b.scheme;
 			this.schemeURI = b.schemeURI;
 		}
@@ -169,11 +154,6 @@ public class DublinCoreElements {
 		private URI schemeURI;
 		
 		@Override
-		public Term getTerm() {
-			return DublinCore.IDENTIFIER;
-		}
-
-		@Override
 		protected Identifier build() {
 			return new DefaultIdentifier(this);
 		}
@@ -196,7 +176,7 @@ public class DublinCoreElements {
 	private static class DefaultLanguage extends LanguageProperty implements Language {
 
 		private DefaultLanguage(LanguageBuilder b) {
-			super(b);
+			super(DublinCore.LANGUAGE, b);
 		}
 	}
 
@@ -204,11 +184,6 @@ public class DublinCoreElements {
 		extends LanguageProperty.Builder<Language, Language.Builder>
 		implements Language.Builder {
 	
-		@Override
-		public Term getTerm() {
-			return DublinCore.LANGUAGE;
-		}
-		
 		@Override
 		protected Language build() {
 			return new DefaultLanguage(this);
@@ -218,7 +193,7 @@ public class DublinCoreElements {
 	private static class DefaultPublisher extends RelatorProperty implements Publisher {
 		
 		private DefaultPublisher(PublisherBuilder b) {
-			super(b);
+			super(DublinCore.PUBLISHER, b);
 		}
 	}
 
@@ -226,11 +201,6 @@ public class DublinCoreElements {
 		extends RelatorProperty.Builder<Publisher, Publisher.Builder>
 		implements Publisher.Builder {
 		
-		@Override
-		public Term getTerm() {
-			return DublinCore.PUBLISHER;
-		}
-	
 		@Override
 		protected Publisher build() {
 			return new DefaultPublisher(this);
@@ -242,7 +212,7 @@ public class DublinCoreElements {
 		private final TitleType type;
 		
 		private DefaultTitle(TitleBuilder b) {
-			super(b);
+			super(DublinCore.TITLE, b);
 			this.type = b.type;
 		}
 		
@@ -258,11 +228,6 @@ public class DublinCoreElements {
 		
 		private TitleType type;
 		
-		@Override
-		public Term getTerm() {
-			return DublinCore.TITLE;
-		}
-
 		@Override
 		public Title.Builder ofType(TitleType type) {
 			checkNotNull(type, "type");

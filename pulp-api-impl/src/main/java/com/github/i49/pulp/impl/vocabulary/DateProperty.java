@@ -16,27 +16,32 @@
 
 package com.github.i49.pulp.impl.vocabulary;
 
-import java.util.Locale;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 import com.github.i49.pulp.api.vocabulary.PropertyBuilder;
 import com.github.i49.pulp.api.vocabulary.Term;
 import com.github.i49.pulp.api.vocabulary.TypedProperty;
 
 /**
- *
+ * 
  */
-public class LanguageProperty extends BaseProperty<Locale> {
+public class DateProperty extends BaseProperty<OffsetDateTime> {
 
-	public LanguageProperty(Term term, Builder<?, ?> b) {
+	private static final DateTimeFormatter ISO8601_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+	
+	public DateProperty(Term term, Builder<?, ?> b) {
 		super(term, b);
 	}
 	
 	@Override
 	public String getValueAsString() {
-		return getValue().toLanguageTag();
+		OffsetDateTime utc = OffsetDateTime.ofInstant(getValue().toInstant(), ZoneOffset.UTC);
+		return utc.format(ISO8601_FORMATTER);		
 	}
 
-	public static abstract class Builder<T extends TypedProperty<Locale>, R extends PropertyBuilder<Locale, T, R>>
-		extends BaseProperty.Builder<Locale, T, R> {
+	public static abstract class Builder<T extends TypedProperty<OffsetDateTime>, R extends PropertyBuilder<OffsetDateTime, T, R>>
+		extends BaseProperty.Builder<OffsetDateTime, T, R> {
 	}
 }

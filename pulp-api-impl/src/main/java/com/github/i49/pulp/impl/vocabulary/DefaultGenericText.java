@@ -30,7 +30,7 @@ public class DefaultGenericText extends MultiValueTextProperty implements Generi
 	private final String scheme;
 	
 	DefaultGenericText(Builder b) {
-		super(b);
+		super(b.term, b);
 		this.scheme = b.scheme;
 	}
 
@@ -48,11 +48,6 @@ public class DefaultGenericText extends MultiValueTextProperty implements Generi
 
 		public Builder(Term term) {
 			this.term = term;
-		}
-		
-		@Override
-		public Term getTerm() {
-			return term;
 		}
 		
 		@Override

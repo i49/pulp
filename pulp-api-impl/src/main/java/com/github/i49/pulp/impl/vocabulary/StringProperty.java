@@ -19,6 +19,7 @@ package com.github.i49.pulp.impl.vocabulary;
 import static com.github.i49.pulp.impl.base.Preconditions.checkNotBlank;
 
 import com.github.i49.pulp.api.vocabulary.PropertyBuilder;
+import com.github.i49.pulp.api.vocabulary.Term;
 import com.github.i49.pulp.api.vocabulary.TypedProperty;
 
 /**
@@ -26,8 +27,8 @@ import com.github.i49.pulp.api.vocabulary.TypedProperty;
  */
 public class StringProperty extends BaseProperty<String> {
 
-	public StringProperty(Builder<?, ?> b) {
-		super(b);
+	public StringProperty(Term term, Builder<?, ?> b) {
+		super(term, b);
 	}
 	
 	public static abstract class Builder<T extends TypedProperty<String>, R extends PropertyBuilder<String, T, R>>

@@ -23,6 +23,7 @@ import java.util.Optional;
 
 import com.github.i49.pulp.api.vocabulary.Multilingual;
 import com.github.i49.pulp.api.vocabulary.Normalizable;
+import com.github.i49.pulp.api.vocabulary.Term;
 import com.github.i49.pulp.api.vocabulary.Text;
 
 /**
@@ -34,8 +35,8 @@ public class MultiValueTextProperty extends TextProperty implements Multilingual
 	private final String alternativeValue;
 	private final String normalizedValue;
 	
-	public MultiValueTextProperty(Builder<?, ?> b) {
-		super(b);
+	public MultiValueTextProperty(Term term, Builder<?, ?> b) {
+		super(term, b);
 		this.alternativeLanguage = b.alternativeLanguage;
 		this.alternativeValue = b.alternativeValue;
 		this.normalizedValue = b.normalizedValue;

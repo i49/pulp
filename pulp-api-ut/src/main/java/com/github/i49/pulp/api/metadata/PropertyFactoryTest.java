@@ -43,37 +43,6 @@ public class PropertyFactoryTest {
 		factory = Epub.createPropertyFactory();
 	}
 	
-	/* newContributor(String) */
-	
-	@Test
-	public void newContributor_shouldCreateContributor() {
-		String name = "John Smith";
-		RelatorProperty p = factory.newContributor(name);
-		assertThat(p.getTerm()).isSameAs(DublinCore.CONTRIBUTOR);
-		assertThat(p.getValue()).isEqualTo(name);
-		assertThat(p.getNormalizedValue()).isEmpty();
-		assertThat(p.getLanguage()).isEmpty();
-		assertThat(p.getDirection()).isEmpty();
-		assertThat(p.getAlternativeValue()).isEmpty();
-		assertThat(p.getRole()).isEmpty();
-	}
-
-	@Test 
-	public void newContributor_shouldThrowExceptionIfNameIsNull() {
-		Throwable thrown = catchThrowable(()->{
-			factory.newContributor(null);
-		});
-		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
-	}
-
-	@Test 
-	public void newContributor_shouldThrowExceptionIfNameIsBlank() {
-		Throwable thrown = catchThrowable(()->{
-			factory.newContributor(" ");
-		});
-		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
-	}
-	
 	/* newCoverage(String) */
 	
 	@Test
@@ -86,56 +55,6 @@ public class PropertyFactoryTest {
 		assertThat(p.getDirection()).isEmpty();
 	}
 
-	/* newCreator(String) */
-	
-	@Test
-	public void newCreator_shouldCreateCreator() {
-		String name = "John Smith";
-		RelatorProperty p = factory.newCreator(name);
-		assertThat(p.getTerm()).isSameAs(DublinCore.CREATOR);
-		assertThat(p.getValue()).isEqualTo(name);
-		assertThat(p.getNormalizedValue()).isEmpty();
-		assertThat(p.getLanguage()).isEmpty();
-		assertThat(p.getDirection()).isEmpty();
-		assertThat(p.getAlternativeValue()).isEmpty();
-		assertThat(p.getRole()).isEmpty();
-	}
-
-	@Test 
-	public void newCreator_shouldThrowExceptionIfNameIsNull() {
-		Throwable thrown = catchThrowable(()->{
-			factory.newCreator(null);
-		});
-		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
-	}
-
-	@Test 
-	public void newCreator_shouldThrowExceptionIfNameIsBlank() {
-		Throwable thrown = catchThrowable(()->{
-			factory.newCreator(" ");
-		});
-		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
-	}
-	
-	/* newDate(OffsetDateTime) */
-	
-	@Test
-	public void newDate_shouldCreateDateOfSpecifiedDateTime() {
-		OffsetDateTime dateTime = OffsetDateTime.of(2017, 4, 23, 1, 2, 3, 0, ZoneOffset.ofHours(9));
-		DateProperty p = factory.newDate(dateTime);
-		assertThat(p.getTerm()).isSameAs(DublinCore.DATE);
-		assertThat(p.getValue()).isEqualTo(dateTime);
-		assertThat(p.getValueAsString()).isEqualTo("2017-04-22T16:02:03Z");
-	}
-
-	@Test 
-	public void newDate_shouldThrowExceptionIfDateTimeIsNull() {
-		Throwable thrown = catchThrowable(()->{
-			factory.newDate(null);
-		});
-		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
-	}
-	
 	/* newDescription(String) */
 	
 	@Test
@@ -172,25 +91,6 @@ public class PropertyFactoryTest {
 		SimpleProperty p = factory.newFormat(value);
 		assertThat(p.getTerm()).isSameAs(DublinCore.FORMAT);
 		assertThat(p.getValue()).isEqualTo(value);
-	}
-	
-	/* newModified(OffsetDateTime) */
-	
-	@Test
-	public void newModified_shouldCreateModifiedOfSpecifiedDateTime() {
-		OffsetDateTime dateTime = OffsetDateTime.of(2017, 4, 23, 1, 2, 3, 0, ZoneOffset.ofHours(9));
-		DateProperty p = factory.newModified(dateTime);
-		assertThat(p.getTerm()).isSameAs(DublinCoreTerm.MODIFIED);
-		assertThat(p.getValue()).isEqualTo(dateTime);
-		assertThat(p.getValueAsString()).isEqualTo("2017-04-22T16:02:03Z");
-	}
-
-	@Test 
-	public void newModified_shouldThrowExceptionIfDateTimeIsNull() {
-		Throwable thrown = catchThrowable(()->{
-			factory.newModified(null);
-		});
-		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
 	}
 	
 	/* newPublisher(String) */

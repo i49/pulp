@@ -31,7 +31,7 @@ public class DefaultGeneric<V> extends BaseProperty<V> implements Generic<V> {
 	private final String scheme;
 
 	public DefaultGeneric(Builder<V> b) {
-		super(b);
+		super(b.term, b);
 		this.scheme = b.scheme;
 	}
 
@@ -51,11 +51,6 @@ public class DefaultGeneric<V> extends BaseProperty<V> implements Generic<V> {
 			this.term = term;
 		}
 		
-		@Override
-		public Term getTerm() {
-			return term;
-		}
-
 		@Override
 		protected Generic<V> build() {
 			return new DefaultGeneric<V>(this);

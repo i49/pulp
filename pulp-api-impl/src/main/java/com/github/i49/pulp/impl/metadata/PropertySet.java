@@ -66,7 +66,11 @@ public class PropertySet extends AbstractSet<Property> {
 			throw new ClassCastException();
 		}
 		Property p = (Property)o;
-		return this.map.containsKey(p.getTerm());
+		List<Property> list = map.get(p.getTerm());
+		if (list == null) {
+			return false;
+		}
+		return list.contains(p);
 	}
 	
 	@Override
