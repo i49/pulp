@@ -35,6 +35,7 @@ import com.github.i49.pulp.api.vocabulary.dc.Date;
 import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
 import com.github.i49.pulp.api.vocabulary.dc.Identifier;
 import com.github.i49.pulp.api.vocabulary.dc.Language;
+import com.github.i49.pulp.api.vocabulary.dc.Title;
 import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
 
@@ -55,7 +56,7 @@ public class PropertyBuilderSelectorTest {
 	/* contributor(String) */
 
 	@Test
-	public void contributor_shouldBuildCreatorWithSpecifiedValue() {
+	public void contributor_shouldBuildContributor() {
 		String value = "John Smith";
 		m.add().contributor(value);
 		Contributor p = m.find().contributor().get(0);
@@ -83,7 +84,7 @@ public class PropertyBuilderSelectorTest {
 	/* creator(String) */
 
 	@Test
-	public void creator_shouldBuildCreatorWithSpecifiedValue() {
+	public void creator_shouldBuildCreator() {
 		String value = "Lewis Carroll";
 		m.add().creator(value);
 		Creator p = m.find().creator().get(0);
@@ -123,7 +124,7 @@ public class PropertyBuilderSelectorTest {
 	/* identifier(String) */
 	
 	@Test
-	public void identifier_shouldBuildIdentifierWithSpecifiedValue() {
+	public void identifier_shouldBuildIdentifierWithExplicitValue() {
 		String value = "urn:isbn:0451450523";
 		m.add().identifier(value);
 		Identifier p = m.find().identifier().get(0);
@@ -133,7 +134,7 @@ public class PropertyBuilderSelectorTest {
 	}
 
 	@Test
-	public void identifier_shouldBuildIdentifierWithSpecifiedScheme() {
+	public void identifier_shouldBuildIdentifierWithScheme() {
 		String value = "urn:isbn:0451450523";
 		m.add().identifier(value).scheme(Identifier.Scheme.ISBN);
 		Identifier p = m.find().identifier().get(0);
@@ -161,7 +162,7 @@ public class PropertyBuilderSelectorTest {
 	/* date(OffsetDateTime) */
 	
 	@Test
-	public void date_shouldBuildDateWithSpecifiedDateTime() {
+	public void date_shouldBuildDate() {
 		OffsetDateTime dateTime = OffsetDateTime.of(2017, 4, 23, 1, 2, 3, 0, ZoneOffset.ofHours(9));
 		m.add().date(dateTime);
 		Date p = m.find().date().get(0);
@@ -240,7 +241,7 @@ public class PropertyBuilderSelectorTest {
 	/* modified(OffsetDateTime) */
 	
 	@Test
-	public void modified_shouldBuildDateWithSpecifiedDateTime() {
+	public void modified_shouldBuildModified() {
 		OffsetDateTime dateTime = OffsetDateTime.of(2017, 4, 23, 1, 2, 3, 0, ZoneOffset.ofHours(9));
 		m.add().modified(dateTime);
 		Modified p = m.find().modified().get(0);
@@ -259,5 +260,39 @@ public class PropertyBuilderSelectorTest {
 
 	/* title(String) */
 	
-	
+	@Test
+	public void title_shouldBuildTitle() {
+		String value = "Norwegian Wood";
+		m.add().title(value);
+		Title p = m.find().title().get(0);
+		assertThat(p.getTerm()).isSameAs(DublinCore.TITLE);
+		assertThat(p.getValue()).isEqualTo(value);
+	}
+
+	@Test
+	public void title_shouldBuildTitleWithNormalizedValue() {
+		String value = "THE LORD OF THE RINGS, Part One: The Fellowship of the Ring";
+		String normalized = "Fellowship of the Ring";
+		m.add().title(value).fileAs(normalized);
+		Title p = m.find().title().get(0);
+		assertThat(p.getTerm()).isSameAs(DublinCore.TITLE);
+		assertThat(p.getValue()).isEqualTo(value);
+		assertThat(p.getNormalizedValue()).hasValue(normalized);
+	}
+
+	@Test
+	public void title_shouldThrowExceptionIfValueIsNull() {
+		Throwable thrown = catchThrowable(()->{
+			m.add().title(null);
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
+	public void title_shouldThrowExceptionIfValueIsBlank() {
+		Throwable thrown = catchThrowable(()->{
+			m.add().title(" ");
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
 }

@@ -26,7 +26,7 @@ import com.github.i49.pulp.api.vocabulary.Text;
 /**
  * The title of the publication.
  */
-public interface Title extends Text {
+public interface Title extends Text, Multilingual, Normalizable {
 
 	@Override
 	default Term getTerm() {

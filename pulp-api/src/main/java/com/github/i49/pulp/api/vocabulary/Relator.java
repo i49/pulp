@@ -21,7 +21,7 @@ import java.util.Optional;
 /**
  *
  */
-public interface Relator extends Text {
+public interface Relator extends Text, Multilingual, Normalizable {
 
 	Optional<RelatorRole> getRole();
 	
