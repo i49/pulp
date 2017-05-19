@@ -16,11 +16,15 @@
 
 package com.github.i49.pulp.api.vocabulary.dc;
 
+import java.util.Optional;
+
+import com.github.i49.pulp.api.vocabulary.Multilingual;
+import com.github.i49.pulp.api.vocabulary.Normalizable;
 import com.github.i49.pulp.api.vocabulary.Term;
 import com.github.i49.pulp.api.vocabulary.Text;
 
 /**
- *
+ * The title of the publication.
  */
 public interface Title extends Text {
 
@@ -29,6 +33,16 @@ public interface Title extends Text {
 		return DublinCore.TITLE;
 	}
 
-	public interface Builder extends Text.Builder<Title, Builder> {
+	/**
+	 * Returns the type of this title.
+	 * 
+	 * @return the type of this title.
+	 */
+	Optional<TitleType> getType();
+
+	public interface Builder extends Text.Builder<Title, Builder>, 
+		Multilingual.Builder<Builder>, Normalizable.Builder<Builder>  {
+		
+		Builder ofType(TitleType type);
 	}
 }

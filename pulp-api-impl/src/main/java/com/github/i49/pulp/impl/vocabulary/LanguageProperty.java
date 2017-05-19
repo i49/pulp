@@ -14,23 +14,28 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.api.vocabulary;
+package com.github.i49.pulp.impl.vocabulary;
+
+import java.util.Locale;
+
+import com.github.i49.pulp.api.vocabulary.PropertyBuilder;
+import com.github.i49.pulp.api.vocabulary.TypedProperty;
 
 /**
- * Types of titles.
- * Six basic types of titles are defined by EPUB 3.0 specification.
+ *
  */
-public enum TitleType {
-	/** The title that reading systems should normally display. */
-	MAIN,
-	/** A secondary title that augments the main title. */
-	SUBTITLE,
-	/** Shortened version of the main title. */
-	SHORT,
-	/** A title given to a set to which the given publication is a member. */
-	COLLECTION,
-	/** A designation that indicates substantive changes from one to the next. */
-	EDITION,
-	/** A fully expressed title. */
-	EXTENDED
+public class LanguageProperty extends BaseProperty<Locale> {
+
+	public LanguageProperty(Builder<?, ?> b) {
+		super(b);
+	}
+	
+	@Override
+	public String getValueAsString() {
+		return getValue().toLanguageTag();
+	}
+
+	public static abstract class Builder<T extends TypedProperty<Locale>, R extends PropertyBuilder<Locale, T, R>>
+		extends BaseProperty.Builder<Locale, T, R> {
+	}
 }

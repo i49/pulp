@@ -126,7 +126,7 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	@Override
 	public Language.Builder language(String value) {
 		checkNotBlank(value, "value");
-		Locale locale = Locale.forLanguageTag(value);
+		Locale locale = new Locale.Builder().setLanguageTag(value).build();
 		return language(locale);
 	}
 	
@@ -175,8 +175,8 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	@Override
 	public Title.Builder title(String value) {
 		checkNotBlank(value, "value");
-		// TODO Auto-generated method stub
-		return null;
+		Title.Builder b = DublinCoreElements.title().value(value);
+		return add(DublinCore.TITLE, b);
 	}
 
 	@Override

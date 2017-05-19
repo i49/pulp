@@ -72,8 +72,23 @@ public interface PropertyBuilderSelector {
 	 */
 	Identifier.Builder identifier(String value);
 
+	/**
+	 * Creates a builder for building an language property.
+	 * 
+	 * @param value the value of the language.
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
+	 */
 	Language.Builder language(Locale value);
 	
+	/**
+	 * Creates a builder for building an language property.
+	 * 
+	 * @param value the language tag defined in IETF BCP 47, such as "en-US".
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
+	 * @throws IllformedLocaleException if {@code value} was ill-formed.
+	 */
 	Language.Builder language(String value);
 
 	Modified.Builder modified(OffsetDateTime value);

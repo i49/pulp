@@ -20,7 +20,6 @@ import static com.github.i49.pulp.impl.base.Preconditions.*;
 
 import java.net.URI;
 import java.time.OffsetDateTime;
-import java.util.Locale;
 import java.util.Optional;
 
 import com.github.i49.pulp.api.vocabulary.Term;
@@ -33,7 +32,11 @@ import com.github.i49.pulp.api.vocabulary.dc.Identifier.Builder;
 import com.github.i49.pulp.api.vocabulary.dc.Identifier.Scheme;
 import com.github.i49.pulp.api.vocabulary.dc.Language;
 import com.github.i49.pulp.api.vocabulary.dc.Publisher;
+import com.github.i49.pulp.api.vocabulary.dc.Title;
+import com.github.i49.pulp.api.vocabulary.dc.TitleType;
 import com.github.i49.pulp.impl.vocabulary.BaseProperty;
+import com.github.i49.pulp.impl.vocabulary.LanguageProperty;
+import com.github.i49.pulp.impl.vocabulary.MultiValueTextProperty;
 import com.github.i49.pulp.impl.vocabulary.RelatorProperty;
 import com.github.i49.pulp.impl.vocabulary.StringProperty;
 
@@ -64,6 +67,10 @@ public class DublinCoreElements {
 
 	public static Publisher.Builder publisher() {
 		return new PublisherBuilder();
+	}
+
+	public static Title.Builder title() {
+		return new TitleBuilder();
 	}
 	
 	private static class DefaultContributor extends RelatorProperty implements Contributor {
@@ -186,7 +193,7 @@ public class DublinCoreElements {
 		}
 	}
 	
-	private static class DefaultLanguage extends BaseProperty<Locale> implements Language {
+	private static class DefaultLanguage extends LanguageProperty implements Language {
 
 		private DefaultLanguage(LanguageBuilder b) {
 			super(b);
@@ -194,7 +201,7 @@ public class DublinCoreElements {
 	}
 
 	public static class LanguageBuilder 
-		extends BaseProperty.Builder<Locale, Language, Language.Builder>
+		extends LanguageProperty.Builder<Language, Language.Builder>
 		implements Language.Builder {
 	
 		@Override
@@ -227,6 +234,45 @@ public class DublinCoreElements {
 		@Override
 		protected Publisher build() {
 			return new DefaultPublisher(this);
+		}
+	}
+
+	private static class DefaultTitle extends MultiValueTextProperty implements Title {
+		
+		private final TitleType type;
+		
+		private DefaultTitle(TitleBuilder b) {
+			super(b);
+			this.type = b.type;
+		}
+		
+		@Override
+		public Optional<TitleType> getType() {
+			return Optional.ofNullable(type);
+		}
+	}
+
+	private static class TitleBuilder 
+		extends MultiValueTextProperty.Builder<Title, Title.Builder>
+		implements Title.Builder {
+		
+		private TitleType type;
+		
+		@Override
+		public Term getTerm() {
+			return DublinCore.TITLE;
+		}
+
+		@Override
+		public Title.Builder ofType(TitleType type) {
+			checkNotNull(type, "type");
+			this.type = type;
+			return this;
+		}
+		
+		@Override
+		protected Title build() {
+			return new DefaultTitle(this);
 		}
 	}
 }
