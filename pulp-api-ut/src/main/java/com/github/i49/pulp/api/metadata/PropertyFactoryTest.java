@@ -43,16 +43,6 @@ public class PropertyFactoryTest {
 		factory = Epub.createPropertyFactory();
 	}
 	
-	/* newFormat() */
-	
-	@Test
-	public void newFormat_shouldCreateFormat() {
-		String value = "application/epub+zip";
-		SimpleProperty p = factory.newFormat(value);
-		assertThat(p.getTerm()).isSameAs(DublinCore.FORMAT);
-		assertThat(p.getValue()).isEqualTo(value);
-	}
-	
 	/* newSource(String) */
 	
 	@Test
@@ -75,15 +65,5 @@ public class PropertyFactoryTest {
 		assertThat(p.getAuthority()).isEmpty();
 		assertThat(p.getScheme()).isEmpty();
 		assertThat(p.getCode()).isEmpty();
-	}
-
-	/* newType(String) */
-	
-	@Test
-	public void newType_shouldCreateType() {
-		String value = "logbook";
-		SimpleProperty p = factory.newType(value);
-		assertThat(p.getTerm()).isSameAs(DublinCore.TYPE);
-		assertThat(p.getValue()).isEqualTo(value);
 	}
 }

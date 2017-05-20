@@ -20,7 +20,6 @@ import java.net.URI;
 import java.util.Optional;
 
 import com.github.i49.pulp.api.vocabulary.PropertyBuilder;
-import com.github.i49.pulp.api.vocabulary.SubjectAuthority;
 import com.github.i49.pulp.api.vocabulary.Term;
 import com.github.i49.pulp.api.vocabulary.TypedProperty;
 

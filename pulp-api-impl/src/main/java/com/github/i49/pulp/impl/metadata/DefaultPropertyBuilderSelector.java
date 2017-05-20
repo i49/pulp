@@ -100,9 +100,9 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	@Override
 	public Format.Builder format(String value) {
 		checkNotBlank(value, "value");
-		// TODO Auto-generated method stub
-		return null;
-	}
+		Format.Builder b = DublinCoreElements.format().value(value);
+		return add(DublinCore.FORMAT, b);
+}
 
 	@Override
 	public Identifier.Builder identifier() {
@@ -184,8 +184,8 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	@Override
 	public Type.Builder type(String value) {
 		checkNotBlank(value, "value");
-		// TODO Auto-generated method stub
-		return null;
+		Type.Builder b = DublinCoreElements.type().value(value);
+		return add(DublinCore.TYPE, b);
 	}
 
 	@Override

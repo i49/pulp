@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.api.vocabulary;
+package com.github.i49.pulp.api.vocabulary.dc;
 
 /**
  * Subject authorities for use in subject metadata.

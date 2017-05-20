@@ -36,12 +36,14 @@ import com.github.i49.pulp.api.vocabulary.dc.Creator;
 import com.github.i49.pulp.api.vocabulary.dc.Date;
 import com.github.i49.pulp.api.vocabulary.dc.Description;
 import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
+import com.github.i49.pulp.api.vocabulary.dc.Format;
 import com.github.i49.pulp.api.vocabulary.dc.Identifier;
 import com.github.i49.pulp.api.vocabulary.dc.Language;
 import com.github.i49.pulp.api.vocabulary.dc.Publisher;
 import com.github.i49.pulp.api.vocabulary.dc.Relation;
 import com.github.i49.pulp.api.vocabulary.dc.Rights;
 import com.github.i49.pulp.api.vocabulary.dc.Title;
+import com.github.i49.pulp.api.vocabulary.dc.Type;
 import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
 
@@ -154,6 +156,17 @@ public class PropertyBuilderSelectorTest {
 		m.add().description(value);
 		Description p = m.find().description().get(0);
 		assertThat(p.getTerm()).isSameAs(DublinCore.DESCRIPTION);
+		assertThat(p.getValue()).isEqualTo(value);
+	}
+	
+	/* format(String) */
+	
+	@Test
+	public void format_shouldBuildFormat() {
+		String value = "application/epub+zip";
+		m.add().format(value);
+		Format p = m.find().format().get(0);
+		assertThat(p.getTerm()).isSameAs(DublinCore.FORMAT);
 		assertThat(p.getValue()).isEqualTo(value);
 	}
 	
@@ -355,6 +368,17 @@ public class PropertyBuilderSelectorTest {
 			m.add().title(" ");
 		});
 		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+	
+	/* type(String) */
+	
+	@Test
+	public void type_shouldBuildType() {
+		String value = "logbook";
+		m.add().type(value);
+		Type p = m.find().type().get(0);
+		assertThat(p.getTerm()).isSameAs(DublinCore.TYPE);
+		assertThat(p.getValue()).isEqualTo(value);
 	}
 	
 	/* generic(Term, String) */

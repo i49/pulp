@@ -27,6 +27,7 @@ import com.github.i49.pulp.api.vocabulary.dc.Creator;
 import com.github.i49.pulp.api.vocabulary.dc.Date;
 import com.github.i49.pulp.api.vocabulary.dc.Description;
 import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
+import com.github.i49.pulp.api.vocabulary.dc.Format;
 import com.github.i49.pulp.api.vocabulary.dc.Identifier;
 import com.github.i49.pulp.api.vocabulary.dc.Identifier.Builder;
 import com.github.i49.pulp.api.vocabulary.dc.Identifier.Scheme;
@@ -36,6 +37,7 @@ import com.github.i49.pulp.api.vocabulary.dc.Relation;
 import com.github.i49.pulp.api.vocabulary.dc.Rights;
 import com.github.i49.pulp.api.vocabulary.dc.Title;
 import com.github.i49.pulp.api.vocabulary.dc.TitleType;
+import com.github.i49.pulp.api.vocabulary.dc.Type;
 import com.github.i49.pulp.impl.vocabulary.DateProperty;
 import com.github.i49.pulp.impl.vocabulary.LanguageProperty;
 import com.github.i49.pulp.impl.vocabulary.MultiValueTextProperty;
@@ -71,6 +73,10 @@ public final class DublinCoreElements {
 		return new DescriptionBuilder();
 	}
 
+	public static Format.Builder format() {
+		return new FormatBuilder();
+	}
+
 	public static Identifier.Builder identifier() {
 		return new IdentifierBuilder();
 	}
@@ -95,6 +101,10 @@ public final class DublinCoreElements {
 		return new TitleBuilder();
 	}
 	
+	public static Type.Builder type() {
+		return new TypeBuilder();
+	}
+
 	private static class DefaultContributor extends RelatorProperty implements Contributor {
 		
 		private DefaultContributor(ContributorBuilder b) {
@@ -176,6 +186,23 @@ public final class DublinCoreElements {
 		@Override
 		protected Description build() {
 			return new DefaultDescription(this);
+		}
+	}
+
+	private static class DefaultFormat extends StringProperty implements Format {
+		
+		private DefaultFormat(FormatBuilder b) {
+			super(DublinCore.FORMAT, b);
+		}
+	}
+
+	private static class FormatBuilder 
+		extends StringProperty.Builder<Format, Format.Builder>
+		implements Format.Builder {
+	
+		@Override
+		protected Format build() {
+			return new DefaultFormat(this);
 		}
 	}
 
@@ -327,6 +354,23 @@ public final class DublinCoreElements {
 		@Override
 		protected Title build() {
 			return new DefaultTitle(this);
+		}
+	}
+
+	private static class DefaultType extends StringProperty implements Type {
+		
+		private DefaultType(TypeBuilder b) {
+			super(DublinCore.TYPE, b);
+		}
+	}
+
+	private static class TypeBuilder 
+		extends StringProperty.Builder<Type, Type.Builder>
+		implements Type.Builder {
+	
+		@Override
+		protected Type build() {
+			return new DefaultType(this);
 		}
 	}
 }
