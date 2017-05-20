@@ -23,23 +23,23 @@ import com.github.i49.pulp.api.vocabulary.Property;
 import com.github.i49.pulp.api.vocabulary.Term;
 
 /**
- * Selects an object that removes properties from property set. 
+ * Selector of the object to remove properties from property set. 
  */
-public class PropertyRemoverSelector extends AbstractPropertyListerSelector {
+class PropertyRemoverSelector extends AbstractPropertyListerSelector {
 
 	private final PropertySet properties;
 
-	public PropertyRemoverSelector(PropertySet properties) {
+	PropertyRemoverSelector(PropertySet properties) {
 		this.properties = properties;
 	}
 
 	@Override
-	protected Collection<Property> listAll() {
+	protected Collection<Property> processAll() {
 		return null;
 	}
 	
 	@Override
-	protected List<Property> listByTerm(Term term) {
+	protected List<Property> processTerm(Term term) {
 		return properties.removeByTerm(term);
 	}
 }

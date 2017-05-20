@@ -19,7 +19,9 @@ package com.github.i49.pulp.api.vocabulary;
 import java.util.Optional;
 
 /**
- *
+ * Generic property.
+ * 
+ * @param <V> the type of the property value.
  */
 public interface Generic<V> extends TypedProperty<V> {
 	

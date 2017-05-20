@@ -15,7 +15,6 @@
  */
 
 /**
- * @author i49
- *
+ * Provides the basic properties composing metadata.
  */
 package com.github.i49.pulp.impl.vocabulary;

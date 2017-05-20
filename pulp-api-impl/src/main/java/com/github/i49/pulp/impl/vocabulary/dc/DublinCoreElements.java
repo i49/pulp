@@ -22,14 +22,18 @@ import java.net.URI;
 import java.util.Optional;
 
 import com.github.i49.pulp.api.vocabulary.dc.Contributor;
+import com.github.i49.pulp.api.vocabulary.dc.Coverage;
 import com.github.i49.pulp.api.vocabulary.dc.Creator;
 import com.github.i49.pulp.api.vocabulary.dc.Date;
+import com.github.i49.pulp.api.vocabulary.dc.Description;
 import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
 import com.github.i49.pulp.api.vocabulary.dc.Identifier;
 import com.github.i49.pulp.api.vocabulary.dc.Identifier.Builder;
 import com.github.i49.pulp.api.vocabulary.dc.Identifier.Scheme;
 import com.github.i49.pulp.api.vocabulary.dc.Language;
 import com.github.i49.pulp.api.vocabulary.dc.Publisher;
+import com.github.i49.pulp.api.vocabulary.dc.Relation;
+import com.github.i49.pulp.api.vocabulary.dc.Rights;
 import com.github.i49.pulp.api.vocabulary.dc.Title;
 import com.github.i49.pulp.api.vocabulary.dc.TitleType;
 import com.github.i49.pulp.impl.vocabulary.DateProperty;
@@ -37,6 +41,7 @@ import com.github.i49.pulp.impl.vocabulary.LanguageProperty;
 import com.github.i49.pulp.impl.vocabulary.MultiValueTextProperty;
 import com.github.i49.pulp.impl.vocabulary.RelatorProperty;
 import com.github.i49.pulp.impl.vocabulary.StringProperty;
+import com.github.i49.pulp.impl.vocabulary.TextProperty;
 
 /**
  * All elements provided by Dublin Core Metadata Element Set.
@@ -46,16 +51,24 @@ public final class DublinCoreElements {
 	private DublinCoreElements() {
 	}
 	
-	public static Creator.Builder creator() {
-		return new CreatorBuilder();
-	}
-
 	public static Contributor.Builder contributor() {
 		return new ContributorBuilder();
 	}
 
+	public static Coverage.Builder coverage() {
+		return new CoverageBuilder();
+	}
+
+	public static Creator.Builder creator() {
+		return new CreatorBuilder();
+	}
+
 	public static Date.Builder date() {
 		return new DateBuilder();
+	}
+
+	public static Description.Builder description() {
+		return new DescriptionBuilder();
 	}
 
 	public static Identifier.Builder identifier() {
@@ -68,6 +81,14 @@ public final class DublinCoreElements {
 
 	public static Publisher.Builder publisher() {
 		return new PublisherBuilder();
+	}
+
+	public static Relation.Builder relation() {
+		return new RelationBuilder();
+	}
+
+	public static Rights.Builder rights() {
+		return new RightsBuilder();
 	}
 
 	public static Title.Builder title() {
@@ -88,6 +109,23 @@ public final class DublinCoreElements {
 		@Override
 		protected Contributor build() {
 			return new DefaultContributor(this);
+		}
+	}
+
+	private static class DefaultCoverage extends TextProperty implements Coverage {
+		
+		private DefaultCoverage(CoverageBuilder b) {
+			super(DublinCore.COVERAGE, b);
+		}
+	}
+
+	private static class CoverageBuilder 
+		extends TextProperty.Builder<Coverage, Coverage.Builder>
+		implements Coverage.Builder {
+	
+		@Override
+		protected Coverage build() {
+			return new DefaultCoverage(this);
 		}
 	}
 
@@ -121,6 +159,23 @@ public final class DublinCoreElements {
 		@Override
 		protected Date build() {
 			return new DefaultDate(this);
+		}
+	}
+
+	private static class DefaultDescription extends TextProperty implements Description {
+		
+		private DefaultDescription(DescriptionBuilder b) {
+			super(DublinCore.DESCRIPTION, b);
+		}
+	}
+
+	private static class DescriptionBuilder 
+		extends TextProperty.Builder<Description, Description.Builder>
+		implements Description.Builder {
+	
+		@Override
+		protected Description build() {
+			return new DefaultDescription(this);
 		}
 	}
 
@@ -207,6 +262,40 @@ public final class DublinCoreElements {
 		}
 	}
 
+	private static class DefaultRelation extends TextProperty implements Relation {
+		
+		private DefaultRelation(RelationBuilder b) {
+			super(DublinCore.RELATION, b);
+		}
+	}
+
+	private static class RelationBuilder 
+		extends TextProperty.Builder<Relation, Relation.Builder>
+		implements Relation.Builder {
+	
+		@Override
+		protected Relation build() {
+			return new DefaultRelation(this);
+		}
+	}
+
+	private static class DefaultRights extends TextProperty implements Rights {
+		
+		private DefaultRights(RightsBuilder b) {
+			super(DublinCore.RIGHTS, b);
+		}
+	}
+
+	private static class RightsBuilder 
+		extends TextProperty.Builder<Rights, Rights.Builder>
+		implements Rights.Builder {
+	
+		@Override
+		protected Rights build() {
+			return new DefaultRights(this);
+		}
+	}
+	
 	private static class DefaultTitle extends MultiValueTextProperty implements Title {
 		
 		private final TitleType type;

@@ -23,23 +23,23 @@ import com.github.i49.pulp.api.vocabulary.Property;
 import com.github.i49.pulp.api.vocabulary.Term;
 
 /**
- *
+ * Selector of the object to find properties from property set. 
  */
-public class PropertyFinderSelector extends AbstractPropertyListerSelector {
+class PropertyFinderSelector extends AbstractPropertyListerSelector {
 
 	private final PropertySet properties;
 	
-	public PropertyFinderSelector(PropertySet properties) {
+	PropertyFinderSelector(PropertySet properties) {
 		this.properties = properties;
 	}
 
 	@Override
-	protected Collection<Property> listAll() {
+	protected Collection<Property> processAll() {
 		return properties.findAll();
 	}
 
 	@Override
-	protected List<Property> listByTerm(Term term) {
+	protected List<Property> processTerm(Term term) {
 		return properties.findByTerm(term);
 	}
 }

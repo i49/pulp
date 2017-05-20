@@ -20,7 +20,7 @@ package com.github.i49.pulp.api.vocabulary;
  *
  */
 public interface GenericText extends Generic<String>, Text, Multilingual, Normalizable {
-
+	
 	public static interface Builder 
 		extends Text.Builder<GenericText, Builder>, Multilingual.Builder<Builder>, Normalizable.Builder<Builder> {
 		

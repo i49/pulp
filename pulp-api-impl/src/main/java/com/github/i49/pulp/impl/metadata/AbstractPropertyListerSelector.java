@@ -16,6 +16,8 @@
 
 package com.github.i49.pulp.impl.metadata;
 
+import static com.github.i49.pulp.impl.base.Preconditions.*;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -42,101 +44,113 @@ import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
 
 /**
- *
+ * A selector of the object which will process properties.
  */
 abstract class AbstractPropertyListerSelector implements PropertyListerSelector {
 	
 	@Override
 	public Collection<Property> all() {
-		return listAll();
+		return processAll();
 	}
 
 	@Override
 	public List<Contributor> contributor() {
-		return list(DublinCore.CONTRIBUTOR);
+		return process(DublinCore.CONTRIBUTOR);
 	}
 
 	@Override
 	public List<Coverage> coverage() {
-		return list(DublinCore.COVERAGE);
+		return process(DublinCore.COVERAGE);
 	}
 
 	@Override
 	public List<Creator> creator() {
-		return list(DublinCore.CREATOR);
+		return process(DublinCore.CREATOR);
 	}
 
 	@Override
 	public List<Date> date() {
-		return list(DublinCore.DATE);
+		return process(DublinCore.DATE);
 	}
 
 	@Override
 	public List<Description> description() {
-		return list(DublinCore.DESCRIPTION);
+		return process(DublinCore.DESCRIPTION);
 	}
 
 	@Override
 	public List<Format> format() {
-		return list(DublinCore.FORMAT);
+		return process(DublinCore.FORMAT);
 	}
 
 	@Override
 	public List<Identifier> identifier() {
-		return list(DublinCore.IDENTIFIER);
+		return process(DublinCore.IDENTIFIER);
 	}
 
 	@Override
 	public List<Language> language() {
-		return list(DublinCore.LANGUAGE);
+		return process(DublinCore.LANGUAGE);
 	}
 
 	@Override
 	public List<Modified> modified() {
-		return list(DublinCoreTerm.MODIFIED);
+		return process(DublinCoreTerm.MODIFIED);
 	}
 
 	@Override
 	public List<Publisher> publisher() {
-		return list(DublinCore.PUBLISHER);
+		return process(DublinCore.PUBLISHER);
 	}
 
 	@Override
 	public List<Relation> relation() {
-		return list(DublinCore.RELATION);
+		return process(DublinCore.RELATION);
 	}
 
 	@Override
 	public List<Rights> rights() {
-		return list(DublinCore.RIGHTS);
+		return process(DublinCore.RIGHTS);
 	}
 
 	@Override
 	public List<Source> source() {
-		return list(DublinCore.SOURCE);
+		return process(DublinCore.SOURCE);
 	}
 
 	@Override
 	public List<Subject> subject() {
-		return list(DublinCore.SUBJECT);
+		return process(DublinCore.SUBJECT);
 	}
 
 	@Override
 	public List<Title> title() {
-		return list(DublinCore.TITLE);
+		return process(DublinCore.TITLE);
 	}
 
 	@Override
 	public List<Type> type() {
-		return list(DublinCore.TYPE);
+		return process(DublinCore.TYPE);
 	}
 	
+	@Override
+	public List<Property> propertyOf(Term term) {
+		checkNotNull(term, "term");
+		return process(term);
+	}
+	
+	/**
+	 * Returns the list of the properties to process.
+	 *  
+	 * @param term the term of the properties to process.
+	 * @return the list of the properties of the specific type.
+	 */
 	@SuppressWarnings("unchecked")
-	private <T extends Property> List<T> list(Term term) {
-		return (List<T>)listByTerm(term);
+	private <T extends Property> List<T> process(Term term) {
+		return (List<T>)processTerm(term);
 	}
 	
-	protected abstract Collection<Property> listAll();
+	protected abstract Collection<Property> processAll();
 	
-	protected abstract List<Property> listByTerm(Term term);
+	protected abstract List<Property> processTerm(Term term);
 }

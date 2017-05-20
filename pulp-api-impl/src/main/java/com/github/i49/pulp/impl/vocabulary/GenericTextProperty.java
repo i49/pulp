@@ -16,21 +16,24 @@
 
 package com.github.i49.pulp.impl.vocabulary;
 
-import static com.github.i49.pulp.impl.base.Preconditions.*;
+import static com.github.i49.pulp.impl.base.Preconditions.checkNotBlank;
 
 import java.util.Optional;
 
-import com.github.i49.pulp.api.vocabulary.Generic;
+import com.github.i49.pulp.api.vocabulary.GenericText;
 import com.github.i49.pulp.api.vocabulary.Term;
 
 /**
- *
  */
-public class DefaultGeneric<V> extends BaseProperty<V> implements Generic<V> {
+public class GenericTextProperty extends MultiValueTextProperty implements GenericText {
 
 	private final String scheme;
-
-	public DefaultGeneric(Builder<V> b) {
+	
+	public static GenericText.Builder builder(Term term) {
+		return new Builder(term);
+	}
+	
+	protected GenericTextProperty(Builder b) {
 		super(b.term, b);
 		this.scheme = b.scheme;
 	}
@@ -39,25 +42,25 @@ public class DefaultGeneric<V> extends BaseProperty<V> implements Generic<V> {
 	public Optional<String> getScheme() {
 		return Optional.ofNullable(scheme);
 	}
-	
-	public static class Builder<V> 
-		extends BaseProperty.Builder<V, Generic<V>, Generic.Builder<V>>
-		implements Generic.Builder<V> {
-		
+
+	public static class Builder 
+		extends MultiValueTextProperty.Builder<GenericText, GenericText.Builder>
+		implements GenericText.Builder {
+
 		private final Term term;
 		private String scheme;
-		
+
 		public Builder(Term term) {
 			this.term = term;
 		}
 		
 		@Override
-		protected Generic<V> build() {
-			return new DefaultGeneric<V>(this);
+		protected GenericText build() {
+			return new GenericTextProperty(this);
 		}
 
 		@Override
-		public Generic.Builder<V> scheme(String scheme) {
+		public GenericText.Builder scheme(String scheme) {
 			checkNotBlank(scheme, "scheme");
 			this.scheme = scheme;
 			return self();

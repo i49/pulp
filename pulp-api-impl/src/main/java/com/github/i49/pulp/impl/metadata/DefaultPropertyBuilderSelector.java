@@ -46,8 +46,8 @@ import com.github.i49.pulp.api.vocabulary.dc.Title;
 import com.github.i49.pulp.api.vocabulary.dc.Type;
 import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
-import com.github.i49.pulp.impl.vocabulary.DefaultGeneric;
-import com.github.i49.pulp.impl.vocabulary.DefaultGenericText;
+import com.github.i49.pulp.impl.vocabulary.GenericProperty;
+import com.github.i49.pulp.impl.vocabulary.GenericTextProperty;
 import com.github.i49.pulp.impl.vocabulary.dc.DublinCoreElements;
 import com.github.i49.pulp.impl.vocabulary.dcterms.DublinCoreTerms;
 
@@ -72,8 +72,8 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	@Override
 	public Coverage.Builder coverage(String value) {
 		checkNotBlank(value, "value");
-		// TODO Auto-generated method stub
-		return null;
+		Coverage.Builder b = DublinCoreElements.coverage().value(value);
+		return add(DublinCore.COVERAGE, b);
 	}
 
 	@Override
@@ -93,8 +93,8 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	@Override
 	public Description.Builder description(String value) {
 		checkNotBlank(value, "value");
-		// TODO Auto-generated method stub
-		return null;
+		Description.Builder b = DublinCoreElements.description().value(value);
+		return add(DublinCore.DESCRIPTION, b);
 	}
 
 	@Override
@@ -149,15 +149,15 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	@Override
 	public Relation.Builder relation(String value) {
 		checkNotBlank(value, "value");
-		// TODO Auto-generated method stub
-		return null;
+		Relation.Builder b = DublinCoreElements.relation().value(value);
+		return add(DublinCore.RELATION, b);
 	}
 
 	@Override
 	public Rights.Builder rights(String value) {
 		checkNotBlank(value, "value");
-		// TODO Auto-generated method stub
-		return null;
+		Rights.Builder b = DublinCoreElements.rights().value(value);
+		return add(DublinCore.RIGHTS, b);
 	}
 
 	@Override
@@ -192,7 +192,8 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	public <V> Generic.Builder<V> generic(Term term, V value) {
 		checkNotNull(term, "term");
 		checkNotNull(value, "value");
-		Generic.Builder<V> b = new DefaultGeneric.Builder<V>(term).value(value);
+		Generic.Builder<V> b = GenericProperty.builder(term);
+		b.value(value);
 		return add(term, b);
 	}
 
@@ -200,7 +201,7 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	public GenericText.Builder generic(Term term, String value) {
 		checkNotNull(term, "term");
 		checkNotBlank(value, "value");
-		GenericText.Builder b = new DefaultGenericText.Builder(term).value(value);
+		GenericText.Builder b = GenericTextProperty.builder(term).value(value);
 		return add(term, b);
 	}
 	

@@ -29,12 +29,18 @@ import org.junit.Test;
 import com.github.i49.pulp.api.core.Epub;
 import com.github.i49.pulp.api.core.Publication;
 import com.github.i49.pulp.api.core.Rendition;
+import com.github.i49.pulp.api.vocabulary.Property;
 import com.github.i49.pulp.api.vocabulary.dc.Contributor;
+import com.github.i49.pulp.api.vocabulary.dc.Coverage;
 import com.github.i49.pulp.api.vocabulary.dc.Creator;
 import com.github.i49.pulp.api.vocabulary.dc.Date;
+import com.github.i49.pulp.api.vocabulary.dc.Description;
 import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
 import com.github.i49.pulp.api.vocabulary.dc.Identifier;
 import com.github.i49.pulp.api.vocabulary.dc.Language;
+import com.github.i49.pulp.api.vocabulary.dc.Publisher;
+import com.github.i49.pulp.api.vocabulary.dc.Relation;
+import com.github.i49.pulp.api.vocabulary.dc.Rights;
 import com.github.i49.pulp.api.vocabulary.dc.Title;
 import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
@@ -81,6 +87,17 @@ public class PropertyBuilderSelectorTest {
 		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
 	}
 
+	/* coverage(String) */
+	
+	@Test
+	public void coverage_shouldBuildCoverage() {
+		String value = "17th century";
+		m.add().coverage(value);
+		Coverage p = m.find().coverage().get(0);
+		assertThat(p.getTerm()).isSameAs(DublinCore.COVERAGE);
+		assertThat(p.getValue()).isEqualTo(value);
+	}
+
 	/* creator(String) */
 
 	@Test
@@ -107,6 +124,37 @@ public class PropertyBuilderSelectorTest {
 			m.add().creator(" ");
 		});
 		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+	
+	/* date(OffsetDateTime) */
+	
+	@Test
+	public void date_shouldBuildDate() {
+		OffsetDateTime dateTime = OffsetDateTime.of(2017, 4, 23, 1, 2, 3, 0, ZoneOffset.ofHours(9));
+		m.add().date(dateTime);
+		Date p = m.find().date().get(0);
+		assertThat(p.getTerm()).isSameAs(DublinCore.DATE);
+		assertThat(p.getValue()).isEqualTo(dateTime);
+		assertThat(p.getValueAsString()).isEqualTo("2017-04-22T16:02:03Z");
+	}
+
+	@Test
+	public void date_shouldThrowExceptionIfDateTimeIsNull() {
+		Throwable thrown = catchThrowable(()->{
+			m.add().date(null);
+		});
+		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+	
+	/* description(String) */
+	
+	@Test
+	public void description_shouldBuildDescription() {
+		String value = "Illustrated guide to airport markings and lighting signals.";
+		m.add().description(value);
+		Description p = m.find().description().get(0);
+		assertThat(p.getTerm()).isSameAs(DublinCore.DESCRIPTION);
+		assertThat(p.getValue()).isEqualTo(value);
 	}
 	
 	/* identifier() */
@@ -155,26 +203,6 @@ public class PropertyBuilderSelectorTest {
 	public void identifier_shouldThrowExceptionIfValueIsBlank() {
 		Throwable thrown = catchThrowable(()->{
 			m.add().identifier(" ");
-		});
-		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
-	}
-	
-	/* date(OffsetDateTime) */
-	
-	@Test
-	public void date_shouldBuildDate() {
-		OffsetDateTime dateTime = OffsetDateTime.of(2017, 4, 23, 1, 2, 3, 0, ZoneOffset.ofHours(9));
-		m.add().date(dateTime);
-		Date p = m.find().date().get(0);
-		assertThat(p.getTerm()).isSameAs(DublinCore.DATE);
-		assertThat(p.getValue()).isEqualTo(dateTime);
-		assertThat(p.getValueAsString()).isEqualTo("2017-04-22T16:02:03Z");
-	}
-
-	@Test
-	public void date_shouldThrowExceptionIfDateTimeIsNull() {
-		Throwable thrown = catchThrowable(()->{
-			m.add().date(null);
 		});
 		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
 	}
@@ -257,6 +285,39 @@ public class PropertyBuilderSelectorTest {
 		});
 		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
 	}
+	
+	/* publisher(String) */
+	
+	@Test
+	public void publisher_shouldBuildPublisher() {
+		String value = "O’Reilly Media, Inc.";
+		m.add().publisher(value);
+		Publisher p = m.find().publisher().get(0);
+		assertThat(p.getTerm()).isSameAs(DublinCore.PUBLISHER);
+		assertThat(p.getValue()).isEqualTo(value);
+	}
+	
+	/* relation(String) */
+	
+	@Test
+	public void relation_shouldBuildRelation() {
+		String value = "\"Two Lives\" [Resource is a collection of two novellas, one of which is \"Reading Turgenev\"]";
+		m.add().relation(value);
+		Relation p = m.find().relation().get(0);
+		assertThat(p.getTerm()).isSameAs(DublinCore.RELATION);
+		assertThat(p.getValue()).isEqualTo(value);
+	}
+
+	/* rights(String) */
+
+	@Test
+	public void rights_shouldBuildRights() {
+		String value = "Access limited to members";
+		m.add().rights(value);
+		Rights p = m.find().rights().get(0);
+		assertThat(p.getTerm()).isSameAs(DublinCore.RIGHTS);
+		assertThat(p.getValue()).isEqualTo(value);
+	}
 
 	/* title(String) */
 	
@@ -294,5 +355,16 @@ public class PropertyBuilderSelectorTest {
 			m.add().title(" ");
 		});
 		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+	}
+	
+	/* generic(Term, String) */
+	
+	@Test
+	public void generic_shouldBuildGenericText() {
+		String value = "elementary school pupils";
+		m.add().generic(DublinCoreTerm.AUDIENCE, value);
+		Property p = m.find().propertyOf(DublinCoreTerm.AUDIENCE).get(0); 
+		assertThat(p.getTerm()).isSameAs(DublinCoreTerm.AUDIENCE);
+		assertThat(p.getValue()).isEqualTo(value);
 	}
 }

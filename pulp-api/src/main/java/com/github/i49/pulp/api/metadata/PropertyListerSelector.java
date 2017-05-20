@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.github.i49.pulp.api.vocabulary.Property;
+import com.github.i49.pulp.api.vocabulary.Term;
 import com.github.i49.pulp.api.vocabulary.dc.Contributor;
 import com.github.i49.pulp.api.vocabulary.dc.Coverage;
 import com.github.i49.pulp.api.vocabulary.dc.Creator;
@@ -38,10 +39,15 @@ import com.github.i49.pulp.api.vocabulary.dc.Type;
 import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
 
 /**
- *
+ * An interface to list properties in the metadata.
  */
 public interface PropertyListerSelector {
 
+	/**
+	 * Returns all properties in the metadata.
+	 * 
+	 * @return a collection containing all properties.
+	 */
 	Collection<Property> all();
 
 	List<Contributor> contributor();
@@ -75,4 +81,12 @@ public interface PropertyListerSelector {
 	List<Title> title();
 
 	List<Type> type();
+	
+	/**
+	 * Returns the properties of the specified term.
+	 * 
+	 * @param term the term of the properties to return.
+	 * @return list of properties.
+	 */
+	List<Property> propertyOf(Term term);
 }

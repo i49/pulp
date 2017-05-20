@@ -73,7 +73,7 @@ public interface PropertyBuilderSelector {
 	Identifier.Builder identifier(String value);
 
 	/**
-	 * Creates a builder for building an language property.
+	 * Creates a builder for building a language property.
 	 * 
 	 * @param value the value of the language.
 	 * @return newly created builder.
@@ -82,7 +82,7 @@ public interface PropertyBuilderSelector {
 	Language.Builder language(Locale value);
 	
 	/**
-	 * Creates a builder for building an language property.
+	 * Creates a builder for building a language property.
 	 * 
 	 * @param value the language tag defined in IETF BCP 47, such as "en-US".
 	 * @return newly created builder.

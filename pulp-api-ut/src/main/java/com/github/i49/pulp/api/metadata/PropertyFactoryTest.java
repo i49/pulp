@@ -43,46 +43,6 @@ public class PropertyFactoryTest {
 		factory = Epub.createPropertyFactory();
 	}
 	
-	/* newCoverage(String) */
-	
-	@Test
-	public void newCoverage_shouldCreateCoverage() {
-		String text = "17th century";
-		TextProperty p = factory.newCoverage(text);
-		assertThat(p.getTerm()).isSameAs(DublinCore.COVERAGE);
-		assertThat(p.getValue()).isEqualTo(text);
-		assertThat(p.getLanguage()).isEmpty();
-		assertThat(p.getDirection()).isEmpty();
-	}
-
-	/* newDescription(String) */
-	
-	@Test
-	public void newDescription_shouldCreateDescription() {
-		String text = "Illustrated guide to airport markings and lighting signals.";
-		TextProperty p = factory.newDescription(text);
-		assertThat(p.getTerm()).isSameAs(DublinCore.DESCRIPTION);
-		assertThat(p.getValue()).isEqualTo(text);
-		assertThat(p.getLanguage()).isEmpty();
-		assertThat(p.getDirection()).isEmpty();
-	}
-	
-	@Test 
-	public void newDescription_shouldThrowExceptionIfTextIsNull() {
-		Throwable thrown = catchThrowable(()->{
-			factory.newDescription(null);
-		});
-		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
-	}
-
-	@Test 
-	public void newDescription_shouldThrowExceptionIfTextIsBlank() {
-		Throwable thrown = catchThrowable(()->{
-			factory.newDescription("   ");
-		});
-		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
-	}
-	
 	/* newFormat() */
 	
 	@Test
@@ -93,60 +53,6 @@ public class PropertyFactoryTest {
 		assertThat(p.getValue()).isEqualTo(value);
 	}
 	
-	/* newPublisher(String) */
-	
-	@Test
-	public void newPublisher_shouldCreatePublisher() {
-		String name = "O’Reilly Media, Inc.";
-		RelatorProperty p = factory.newPublisher(name);
-		assertThat(p.getTerm()).isSameAs(DublinCore.PUBLISHER);
-		assertThat(p.getValue()).isEqualTo(name);
-		assertThat(p.getNormalizedValue()).isEmpty();
-		assertThat(p.getLanguage()).isEmpty();
-		assertThat(p.getDirection()).isEmpty();
-		assertThat(p.getAlternativeValue()).isEmpty();
-	}
-
-	@Test 
-	public void newPublisher_shouldThrowExceptionIfNameIsNull() {
-		Throwable thrown = catchThrowable(()->{
-			factory.newPublisher(null);
-		});
-		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
-	}
-
-	@Test 
-	public void newPublisher_shouldThrowExceptionIfNameIsBlank() {
-		Throwable thrown = catchThrowable(()->{
-			factory.newPublisher(" ");
-		});
-		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
-	}
-	
-	/* newRelation(String) */
-	
-	@Test
-	public void newRelation_shouldCreateRelation() {
-		String text = "\"Two Lives\" [Resource is a collection of two novellas, one of which is \"Reading Turgenev\"]";
-		TextProperty p = factory.newRelation(text);
-		assertThat(p.getTerm()).isSameAs(DublinCore.RELATION);
-		assertThat(p.getValue()).isEqualTo(text);
-		assertThat(p.getLanguage()).isEmpty();
-		assertThat(p.getDirection()).isEmpty();
-	}
-
-	/* newRighs(String) */
-	
-	@Test
-	public void newRights_shouldCreateRights() {
-		String text = "Access limited to members";
-		TextProperty p = factory.newRights(text);
-		assertThat(p.getTerm()).isSameAs(DublinCore.RIGHTS);
-		assertThat(p.getValue()).isEqualTo(text);
-		assertThat(p.getLanguage()).isEmpty();
-		assertThat(p.getDirection()).isEmpty();
-	}
-
 	/* newSource(String) */
 	
 	@Test

@@ -28,6 +28,7 @@ import com.github.i49.pulp.api.core.Publication;
 import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.vocabulary.Property;
 import com.github.i49.pulp.api.vocabulary.dc.Creator;
+import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
 import com.github.i49.pulp.api.vocabulary.dc.Identifier;
 import com.github.i49.pulp.api.vocabulary.dc.Language;
 
@@ -66,6 +67,18 @@ public class FindingPropertyListerSelectorTest {
 		m.add().creator("Lewis Carroll");
 		m.add().creator("John Tenniel");
 		List<Creator> found = m.find().creator();
+		assertThat(found).hasSize(2);
+		assertThat(found.get(0).getValue()).isEqualTo("Lewis Carroll");
+		assertThat(found.get(1).getValue()).isEqualTo("John Tenniel");
+	}
+	
+	/* propertyOf(Term) */
+	
+	@Test
+	public void propertyOf_shouldReturnSpecifiedProperties() {
+		m.add().creator("Lewis Carroll");
+		m.add().creator("John Tenniel");
+		List<Property> found = m.find().propertyOf(DublinCore.CREATOR);
 		assertThat(found).hasSize(2);
 		assertThat(found.get(0).getValue()).isEqualTo("Lewis Carroll");
 		assertThat(found.get(1).getValue()).isEqualTo("John Tenniel");
