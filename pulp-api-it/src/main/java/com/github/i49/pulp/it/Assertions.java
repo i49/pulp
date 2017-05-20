@@ -26,7 +26,7 @@ import org.assertj.core.api.AbstractListAssert;
 import com.github.i49.pulp.api.core.Spine;
 import com.github.i49.pulp.api.core.Spine.Page;
 import com.github.i49.pulp.api.metadata.Property;
-import com.github.i49.pulp.api.vocabulary.Normalizable;
+import com.github.i49.pulp.api.vocabularies.Normalizable;
 
 public class Assertions {
 

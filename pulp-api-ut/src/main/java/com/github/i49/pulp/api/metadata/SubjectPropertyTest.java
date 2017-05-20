@@ -24,7 +24,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.i49.pulp.api.core.Epub;
-import com.github.i49.pulp.api.vocabulary.dc.SubjectAuthority;
+import com.github.i49.pulp.api.vocabularies.dc.SubjectAuthority;
 
 /**
  * Unit tests for {@link SubjectProperty}.

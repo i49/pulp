@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.w3c.dom.Element;
 
-import com.github.i49.pulp.api.vocabulary.Vocabulary;
+import com.github.i49.pulp.api.vocabularies.Vocabulary;
 
 /**
  * Metadata entry.

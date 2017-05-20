@@ -20,8 +20,8 @@ import java.util.Optional;
 
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.ReleaseIdentifier;
-import com.github.i49.pulp.api.vocabulary.dc.Identifier;
-import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
+import com.github.i49.pulp.api.vocabularies.dc.Identifier;
+import com.github.i49.pulp.api.vocabularies.dcterms.Modified;
 
 /**
  * The default implementation of {@link ReleaseIdentifier}.

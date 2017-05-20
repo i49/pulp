@@ -16,10 +16,10 @@
 
 package com.github.i49.pulp.impl.metadata;
 
-import com.github.i49.pulp.api.vocabulary.Property;
-import com.github.i49.pulp.api.vocabulary.PropertyBuilder;
-import com.github.i49.pulp.api.vocabulary.Term;
-import com.github.i49.pulp.api.vocabulary.TypedProperty;
+import com.github.i49.pulp.api.vocabularies.Property;
+import com.github.i49.pulp.api.vocabularies.PropertyBuilder;
+import com.github.i49.pulp.api.vocabularies.Term;
+import com.github.i49.pulp.api.vocabularies.TypedProperty;
 
 /**
  *

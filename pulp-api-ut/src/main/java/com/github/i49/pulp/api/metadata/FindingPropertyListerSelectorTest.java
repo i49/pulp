@@ -26,11 +26,11 @@ import org.junit.Test;
 import com.github.i49.pulp.api.core.Epub;
 import com.github.i49.pulp.api.core.Publication;
 import com.github.i49.pulp.api.core.Rendition;
-import com.github.i49.pulp.api.vocabulary.Property;
-import com.github.i49.pulp.api.vocabulary.dc.Creator;
-import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
-import com.github.i49.pulp.api.vocabulary.dc.Identifier;
-import com.github.i49.pulp.api.vocabulary.dc.Language;
+import com.github.i49.pulp.api.vocabularies.Property;
+import com.github.i49.pulp.api.vocabularies.dc.Creator;
+import com.github.i49.pulp.api.vocabularies.dc.DublinCore;
+import com.github.i49.pulp.api.vocabularies.dc.Identifier;
+import com.github.i49.pulp.api.vocabularies.dc.Language;
 
 public class FindingPropertyListerSelectorTest {
 

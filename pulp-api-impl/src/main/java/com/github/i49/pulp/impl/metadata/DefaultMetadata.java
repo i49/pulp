@@ -30,10 +30,10 @@ import com.github.i49.pulp.api.metadata.PropertyListerSelector;
 import com.github.i49.pulp.api.metadata.PropertyTesterSelector;
 import com.github.i49.pulp.api.metadata.ReleaseIdentifier;
 import com.github.i49.pulp.api.metadata.TermRegistry;
-import com.github.i49.pulp.api.vocabulary.Property;
-import com.github.i49.pulp.api.vocabulary.Term;
-import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
-import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
+import com.github.i49.pulp.api.vocabularies.Property;
+import com.github.i49.pulp.api.vocabularies.Term;
+import com.github.i49.pulp.api.vocabularies.dc.DublinCore;
+import com.github.i49.pulp.api.vocabularies.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.impl.base.Messages;
 
 /**

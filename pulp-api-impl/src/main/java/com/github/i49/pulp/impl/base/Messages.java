@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.github.i49.pulp.api.vocabulary.Term;
+import com.github.i49.pulp.api.vocabularies.Term;
 
 public final class Messages {
 

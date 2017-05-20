@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import com.github.i49.pulp.api.vocabulary.Property;
-import com.github.i49.pulp.api.vocabulary.Term;
-import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
+import com.github.i49.pulp.api.vocabularies.Property;
+import com.github.i49.pulp.api.vocabularies.Term;
+import com.github.i49.pulp.api.vocabularies.dc.DublinCore;
 
 /**
  * A set of meta information describing a EPUB publication and its renditions.

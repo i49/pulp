@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import com.github.i49.pulp.api.vocabulary.Property;
-import com.github.i49.pulp.api.vocabulary.Term;
+import com.github.i49.pulp.api.vocabularies.Property;
+import com.github.i49.pulp.api.vocabularies.Term;
 
 /**
  * A set of metadata properties.

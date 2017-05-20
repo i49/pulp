@@ -16,14 +16,14 @@
 
 package com.github.i49.pulp.api.metadata;
 
-import static com.github.i49.pulp.api.vocabulary.dc.DublinCore.*;
+import static com.github.i49.pulp.api.vocabularies.dc.DublinCore.*;
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.Test;
 
-import com.github.i49.pulp.api.vocabulary.StandardVocabulary;
-import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
-import com.github.i49.pulp.api.vocabulary.dc.Title;
+import com.github.i49.pulp.api.vocabularies.StandardVocabulary;
+import com.github.i49.pulp.api.vocabularies.dc.DublinCore;
+import com.github.i49.pulp.api.vocabularies.dc.Title;
 
 /**
  * Unit tests for {@link DublinCore}.

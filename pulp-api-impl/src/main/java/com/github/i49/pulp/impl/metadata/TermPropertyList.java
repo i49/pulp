@@ -19,8 +19,8 @@ package com.github.i49.pulp.impl.metadata;
 import java.util.AbstractList;
 import java.util.ArrayList;
 
-import com.github.i49.pulp.api.vocabulary.Property;
-import com.github.i49.pulp.api.vocabulary.Term;
+import com.github.i49.pulp.api.vocabularies.Property;
+import com.github.i49.pulp.api.vocabularies.Term;
 
 /**
  * The list containing properties of the same term.

@@ -19,8 +19,8 @@ package com.github.i49.pulp.impl.metadata;
 import java.util.Collection;
 import java.util.List;
 
-import com.github.i49.pulp.api.vocabulary.Property;
-import com.github.i49.pulp.api.vocabulary.Term;
+import com.github.i49.pulp.api.vocabularies.Property;
+import com.github.i49.pulp.api.vocabularies.Term;
 
 /**
  * Selector of the object to find properties from property set. 

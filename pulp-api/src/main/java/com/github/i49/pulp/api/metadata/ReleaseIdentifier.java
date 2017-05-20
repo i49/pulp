@@ -18,8 +18,8 @@ package com.github.i49.pulp.api.metadata;
 
 import java.util.Optional;
 
-import com.github.i49.pulp.api.vocabulary.dc.Identifier;
-import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
+import com.github.i49.pulp.api.vocabularies.dc.Identifier;
+import com.github.i49.pulp.api.vocabularies.dcterms.Modified;
 
 /**
  * The release identifier to distinguish each version of the EPUB rendition.

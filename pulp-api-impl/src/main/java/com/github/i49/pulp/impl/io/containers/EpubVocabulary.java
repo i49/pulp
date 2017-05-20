@@ -18,7 +18,7 @@ package com.github.i49.pulp.impl.io.containers;
 
 import java.net.URI;
 
-import com.github.i49.pulp.api.vocabulary.Vocabulary;
+import com.github.i49.pulp.api.vocabularies.Vocabulary;
 
 public enum EpubVocabulary implements Vocabulary {
 	

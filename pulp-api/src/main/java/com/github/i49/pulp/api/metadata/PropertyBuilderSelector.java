@@ -19,25 +19,25 @@ package com.github.i49.pulp.api.metadata;
 import java.time.OffsetDateTime;
 import java.util.Locale;
 
-import com.github.i49.pulp.api.vocabulary.Generic;
-import com.github.i49.pulp.api.vocabulary.GenericText;
-import com.github.i49.pulp.api.vocabulary.Term;
-import com.github.i49.pulp.api.vocabulary.dc.Contributor;
-import com.github.i49.pulp.api.vocabulary.dc.Coverage;
-import com.github.i49.pulp.api.vocabulary.dc.Creator;
-import com.github.i49.pulp.api.vocabulary.dc.Date;
-import com.github.i49.pulp.api.vocabulary.dc.Description;
-import com.github.i49.pulp.api.vocabulary.dc.Format;
-import com.github.i49.pulp.api.vocabulary.dc.Identifier;
-import com.github.i49.pulp.api.vocabulary.dc.Language;
-import com.github.i49.pulp.api.vocabulary.dc.Publisher;
-import com.github.i49.pulp.api.vocabulary.dc.Relation;
-import com.github.i49.pulp.api.vocabulary.dc.Rights;
-import com.github.i49.pulp.api.vocabulary.dc.Source;
-import com.github.i49.pulp.api.vocabulary.dc.Subject;
-import com.github.i49.pulp.api.vocabulary.dc.Title;
-import com.github.i49.pulp.api.vocabulary.dc.Type;
-import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
+import com.github.i49.pulp.api.vocabularies.Generic;
+import com.github.i49.pulp.api.vocabularies.GenericText;
+import com.github.i49.pulp.api.vocabularies.Term;
+import com.github.i49.pulp.api.vocabularies.dc.Contributor;
+import com.github.i49.pulp.api.vocabularies.dc.Coverage;
+import com.github.i49.pulp.api.vocabularies.dc.Creator;
+import com.github.i49.pulp.api.vocabularies.dc.Date;
+import com.github.i49.pulp.api.vocabularies.dc.Description;
+import com.github.i49.pulp.api.vocabularies.dc.Format;
+import com.github.i49.pulp.api.vocabularies.dc.Identifier;
+import com.github.i49.pulp.api.vocabularies.dc.Language;
+import com.github.i49.pulp.api.vocabularies.dc.Publisher;
+import com.github.i49.pulp.api.vocabularies.dc.Relation;
+import com.github.i49.pulp.api.vocabularies.dc.Rights;
+import com.github.i49.pulp.api.vocabularies.dc.Source;
+import com.github.i49.pulp.api.vocabularies.dc.Subject;
+import com.github.i49.pulp.api.vocabularies.dc.Title;
+import com.github.i49.pulp.api.vocabularies.dc.Type;
+import com.github.i49.pulp.api.vocabularies.dcterms.Modified;
 
 /**
  * The interface providing various kinds of property builders.

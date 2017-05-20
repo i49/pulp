@@ -13,13 +13,13 @@ import org.junit.Test;
 import com.github.i49.pulp.api.core.Epub;
 import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.metadata.Metadata;
-import com.github.i49.pulp.api.vocabulary.dc.Creator;
-import com.github.i49.pulp.api.vocabulary.dc.Date;
-import com.github.i49.pulp.api.vocabulary.dc.Identifier;
-import com.github.i49.pulp.api.vocabulary.dc.Language;
-import com.github.i49.pulp.api.vocabulary.dc.Publisher;
-import com.github.i49.pulp.api.vocabulary.dc.Title;
-import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
+import com.github.i49.pulp.api.vocabularies.dc.Creator;
+import com.github.i49.pulp.api.vocabularies.dc.Date;
+import com.github.i49.pulp.api.vocabularies.dc.Identifier;
+import com.github.i49.pulp.api.vocabularies.dc.Language;
+import com.github.i49.pulp.api.vocabularies.dc.Publisher;
+import com.github.i49.pulp.api.vocabularies.dc.Title;
+import com.github.i49.pulp.api.vocabularies.dcterms.Modified;
 import com.github.i49.pulp.cli.MetadataLoader;
 
 public class MetadataLoaderTest {

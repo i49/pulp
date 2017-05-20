@@ -17,9 +17,9 @@
 package com.github.i49.pulp.impl.metadata;
 
 import com.github.i49.pulp.api.metadata.PropertyTesterSelector;
-import com.github.i49.pulp.api.vocabulary.Term;
-import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
-import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
+import com.github.i49.pulp.api.vocabularies.Term;
+import com.github.i49.pulp.api.vocabularies.dc.DublinCore;
+import com.github.i49.pulp.api.vocabularies.dcterms.DublinCoreTerm;
 
 /**
  *

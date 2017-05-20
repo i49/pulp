@@ -19,8 +19,8 @@ package com.github.i49.pulp.api.metadata;
 import java.net.URI;
 import java.util.Optional;
 
-import com.github.i49.pulp.api.vocabulary.Term;
-import com.github.i49.pulp.api.vocabulary.Vocabulary;
+import com.github.i49.pulp.api.vocabularies.Term;
+import com.github.i49.pulp.api.vocabularies.Vocabulary;
 
 /**
  * The registry which maintains vocabularies and terms of metadata properties.

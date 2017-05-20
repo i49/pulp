@@ -34,7 +34,7 @@ import com.github.i49.pulp.api.core.Spine.Page;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.TermRegistry;
 import com.github.i49.pulp.api.spi.EpubService;
-import com.github.i49.pulp.api.vocabulary.Vocabulary;
+import com.github.i49.pulp.api.vocabularies.Vocabulary;
 import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.io.containers.PrefixRegistry;
 import com.github.i49.pulp.impl.xml.Nodes;
