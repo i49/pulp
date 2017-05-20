@@ -19,16 +19,15 @@ package com.github.i49.pulp.impl.vocabulary;
 import java.util.Locale;
 
 import com.github.i49.pulp.api.vocabulary.PropertyBuilder;
-import com.github.i49.pulp.api.vocabulary.Term;
 import com.github.i49.pulp.api.vocabulary.TypedProperty;
 
 /**
- *
+ * Property which has a value of {@link Locale} type.
  */
 public class LanguageProperty extends BaseProperty<Locale> {
 
-	public LanguageProperty(Term term, Builder<?, ?> b) {
-		super(term, b);
+	public LanguageProperty(Builder<?, ?> b) {
+		super(b);
 	}
 	
 	@Override

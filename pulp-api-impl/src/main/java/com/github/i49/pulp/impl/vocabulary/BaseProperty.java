@@ -39,8 +39,8 @@ public class BaseProperty<V> implements TypedProperty<V> {
 		this.value = value;
 	}
 	
-	public BaseProperty(Term term, Builder<V, ?, ?> b) {
-		this(term, b.getValue());
+	public BaseProperty(Builder<V, ?, ?> b) {
+		this(b.getTerm(), b.getValue());
 	}
 	
 	@Override

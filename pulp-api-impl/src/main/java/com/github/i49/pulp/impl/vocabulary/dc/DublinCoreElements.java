@@ -21,6 +21,7 @@ import static com.github.i49.pulp.impl.base.Preconditions.*;
 import java.net.URI;
 import java.util.Optional;
 
+import com.github.i49.pulp.api.vocabulary.Term;
 import com.github.i49.pulp.api.vocabulary.dc.Contributor;
 import com.github.i49.pulp.api.vocabulary.dc.Coverage;
 import com.github.i49.pulp.api.vocabulary.dc.Creator;
@@ -56,72 +57,148 @@ public final class DublinCoreElements {
 	private DublinCoreElements() {
 	}
 	
+	/**
+	 * Creates a builder for {@link Contributor}.
+	 * 
+	 * @return newly created builder.
+	 */
 	public static Contributor.Builder contributor() {
 		return new ContributorBuilder();
 	}
 
+	/**
+	 * Creates a builder for {@link Coverage}.
+	 * 
+	 * @return newly created builder.
+	 */
 	public static Coverage.Builder coverage() {
 		return new CoverageBuilder();
 	}
 
+	/**
+	 * Creates a builder for {@link Creator}.
+	 * 
+	 * @return newly created builder.
+	 */
 	public static Creator.Builder creator() {
 		return new CreatorBuilder();
 	}
 
+	/**
+	 * Creates a builder for {@link Date}.
+	 * 
+	 * @return newly created builder.
+	 */
 	public static Date.Builder date() {
 		return new DateBuilder();
 	}
 
+	/**
+	 * Creates a builder for {@link Description}.
+	 * 
+	 * @return newly created builder.
+	 */
 	public static Description.Builder description() {
 		return new DescriptionBuilder();
 	}
 
+	/**
+	 * Creates a builder for {@link Format}.
+	 * 
+	 * @return newly created builder.
+	 */
 	public static Format.Builder format() {
 		return new FormatBuilder();
 	}
 
+	/**
+	 * Creates a builder for {@link Identifier}.
+	 * 
+	 * @return newly created builder.
+	 */
 	public static Identifier.Builder identifier() {
 		return new IdentifierBuilder();
 	}
 
+	/**
+	 * Creates a builder for {@link Language}.
+	 * 
+	 * @return newly created builder.
+	 */
 	public static Language.Builder language() {
 		return new LanguageBuilder();
 	}
 
+	/**
+	 * Creates a builder for {@link Publisher}.
+	 * 
+	 * @return newly created builder.
+	 */
 	public static Publisher.Builder publisher() {
 		return new PublisherBuilder();
 	}
 
+	/**
+	 * Creates a builder for {@link Relation}.
+	 * 
+	 * @return newly created builder.
+	 */
 	public static Relation.Builder relation() {
 		return new RelationBuilder();
 	}
 
+	/**
+	 * Creates a builder for {@link Rights}.
+	 * 
+	 * @return newly created builder.
+	 */
 	public static Rights.Builder rights() {
 		return new RightsBuilder();
 	}
 
+	/**
+	 * Creates a builder for {@link Source}.
+	 * 
+	 * @return newly created builder.
+	 */
 	public static Source.Builder source() {
 		return new SourceBuilder();
 	}
 
+	/**
+	 * Creates a builder for {@link Subject}.
+	 * 
+	 * @return newly created builder.
+	 */
 	public static Subject.Builder subject() {
 		return new SubjectBuilder();
 	}
 
+	/**
+	 * Creates a builder for {@link Title}.
+	 * 
+	 * @return newly created builder.
+	 */
 	public static Title.Builder title() {
 		return new TitleBuilder();
 	}
 	
+	/**
+	 * Creates a builder for {@link Type}.
+	 * 
+	 * @return newly created builder.
+	 */
 	public static Type.Builder type() {
 		return new TypeBuilder();
 	}
 	
-	/* contributor */
-
+	/**
+	 * An implementation of {@link Contributor} property.
+	 */
 	private static class DefaultContributor extends RelatorProperty implements Contributor {
 		
 		private DefaultContributor(ContributorBuilder b) {
-			super(DublinCore.CONTRIBUTOR, b);
+			super(b);
 		}
 	}
 
@@ -130,17 +207,23 @@ public final class DublinCoreElements {
 		implements Contributor.Builder {
 	
 		@Override
+		public Term getTerm() {
+			return DublinCore.CONTRIBUTOR;
+		}
+		
+		@Override
 		protected Contributor build() {
 			return new DefaultContributor(this);
 		}
 	}
 	
-	/* coverage */
-
+	/**
+	 * An implementation of {@link Coverage} property.
+	 */
 	private static class DefaultCoverage extends TextProperty implements Coverage {
 		
 		private DefaultCoverage(CoverageBuilder b) {
-			super(DublinCore.COVERAGE, b);
+			super(b);
 		}
 	}
 
@@ -149,17 +232,23 @@ public final class DublinCoreElements {
 		implements Coverage.Builder {
 	
 		@Override
+		public Term getTerm() {
+			return DublinCore.COVERAGE;
+		}
+
+		@Override
 		protected Coverage build() {
 			return new DefaultCoverage(this);
 		}
 	}
 	
-	/* creator */
-
+	/**
+	 * An implementation of {@link Creator} property.
+	 */
 	private static class DefaultCreator extends RelatorProperty implements Creator {
 		
 		private DefaultCreator(CreatorBuilder b) {
-			super(DublinCore.CREATOR, b);
+			super(b);
 		}
 	}
 
@@ -168,17 +257,23 @@ public final class DublinCoreElements {
 		implements Creator.Builder {
 
 		@Override
+		public Term getTerm() {
+			return DublinCore.CREATOR;
+		}
+
+		@Override
 		protected Creator build() {
 			return new DefaultCreator(this);
 		}
 	}
 	
-	/* date */
-
+	/**
+	 * An implementation of {@link Date} property.
+	 */
 	private static class DefaultDate extends DateProperty implements Date {
 		
 		private DefaultDate(DateBuilder b) {
-			super(DublinCore.DATE, b);
+			super(b);
 		}
 	}
 	
@@ -186,17 +281,23 @@ public final class DublinCoreElements {
 		implements Date.Builder {
 		
 		@Override
+		public Term getTerm() {
+			return DublinCore.DATE;
+		}
+		
+		@Override
 		protected Date build() {
 			return new DefaultDate(this);
 		}
 	}
 	
-	/* description */
-
+	/**
+	 * An implementation of {@link Description} property.
+	 */
 	private static class DefaultDescription extends TextProperty implements Description {
 		
 		private DefaultDescription(DescriptionBuilder b) {
-			super(DublinCore.DESCRIPTION, b);
+			super(b);
 		}
 	}
 
@@ -205,17 +306,23 @@ public final class DublinCoreElements {
 		implements Description.Builder {
 	
 		@Override
+		public Term getTerm() {
+			return DublinCore.DESCRIPTION;
+		}
+		
+		@Override
 		protected Description build() {
 			return new DefaultDescription(this);
 		}
 	}
 	
-	/* format */
-
+	/**
+	 * An implementation of {@link Format} property.
+	 */
 	private static class DefaultFormat extends StringProperty implements Format {
 		
 		private DefaultFormat(FormatBuilder b) {
-			super(DublinCore.FORMAT, b);
+			super(b);
 		}
 	}
 
@@ -224,20 +331,26 @@ public final class DublinCoreElements {
 		implements Format.Builder {
 	
 		@Override
+		public Term getTerm() {
+			return DublinCore.FORMAT;
+		}
+
+		@Override
 		protected Format build() {
 			return new DefaultFormat(this);
 		}
 	}
 	
-	/* identifier */
-
+	/**
+	 * An implementation of {@link Identifier} property.
+	 */
 	private static class DefaultIdentifier extends StringProperty implements Identifier {
 		
 		private final Scheme scheme;
 		private final URI schemeURI;
 		
 		private DefaultIdentifier(IdentifierBuilder b) {
-			super(DublinCore.IDENTIFIER, b);
+			super(b);
 			this.scheme = b.scheme;
 			this.schemeURI = b.schemeURI;
 		}
@@ -261,6 +374,11 @@ public final class DublinCoreElements {
 		private URI schemeURI;
 		
 		@Override
+		public Term getTerm() {
+			return DublinCore.IDENTIFIER;
+		}
+
+		@Override
 		protected Identifier build() {
 			return new DefaultIdentifier(this);
 		}
@@ -280,12 +398,13 @@ public final class DublinCoreElements {
 		}
 	}
 	
-	/* language */
-	
+	/**
+	 * An implementation of {@link Language} property.
+	 */
 	private static class DefaultLanguage extends LanguageProperty implements Language {
 
 		private DefaultLanguage(LanguageBuilder b) {
-			super(DublinCore.LANGUAGE, b);
+			super(b);
 		}
 	}
 
@@ -294,17 +413,23 @@ public final class DublinCoreElements {
 		implements Language.Builder {
 	
 		@Override
+		public Term getTerm() {
+			return DublinCore.LANGUAGE;
+		}
+
+		@Override
 		protected Language build() {
 			return new DefaultLanguage(this);
 		}
 	}
 
-	/* publisher */
-	
+	/**
+	 * An implementation of {@link Publisher} property.
+	 */
 	private static class DefaultPublisher extends RelatorProperty implements Publisher {
 		
 		private DefaultPublisher(PublisherBuilder b) {
-			super(DublinCore.PUBLISHER, b);
+			super(b);
 		}
 	}
 
@@ -313,17 +438,23 @@ public final class DublinCoreElements {
 		implements Publisher.Builder {
 		
 		@Override
+		public Term getTerm() {
+			return DublinCore.PUBLISHER;
+		}
+
+		@Override
 		protected Publisher build() {
 			return new DefaultPublisher(this);
 		}
 	}
 	
-	/* relation */
-
+	/**
+	 * An implementation of {@link Relation} property.
+	 */
 	private static class DefaultRelation extends TextProperty implements Relation {
 		
 		private DefaultRelation(RelationBuilder b) {
-			super(DublinCore.RELATION, b);
+			super(b);
 		}
 	}
 
@@ -332,17 +463,23 @@ public final class DublinCoreElements {
 		implements Relation.Builder {
 	
 		@Override
+		public Term getTerm() {
+			return DublinCore.RELATION;
+		}
+
+		@Override
 		protected Relation build() {
 			return new DefaultRelation(this);
 		}
 	}
 
-	/* rights */
-	
+	/**
+	 * An implementation of {@link Rights} property.
+	 */
 	private static class DefaultRights extends TextProperty implements Rights {
 		
 		private DefaultRights(RightsBuilder b) {
-			super(DublinCore.RIGHTS, b);
+			super(b);
 		}
 	}
 
@@ -351,19 +488,25 @@ public final class DublinCoreElements {
 		implements Rights.Builder {
 	
 		@Override
+		public Term getTerm() {
+			return DublinCore.RIGHTS;
+		}
+
+		@Override
 		protected Rights build() {
 			return new DefaultRights(this);
 		}
 	}
 	
-	/* source */
-
+	/**
+	 * An implementation of {@link Source} property.
+	 */
 	private static class DefaultSource extends StringProperty implements Source {
 		
 		private final String scheme;
 		
 		private DefaultSource(SourceBuilder b) {
-			super(DublinCore.SOURCE, b);
+			super(b);
 			this.scheme = b.scheme;
 		}
 
@@ -380,6 +523,11 @@ public final class DublinCoreElements {
 		private String scheme;
 		
 		@Override
+		public Term getTerm() {
+			return DublinCore.SOURCE;
+		}
+
+		@Override
 		protected Source build() {
 			return new DefaultSource(this);
 		}
@@ -392,8 +540,9 @@ public final class DublinCoreElements {
 		}
 	}
 	
-	/* subject */
-
+	/**
+	 * An implementation of {@link Subject} property.
+	 */
 	private static class DefaultSubject extends StringProperty implements Subject {
 		
 		private final SubjectAuthority authority;
@@ -401,7 +550,7 @@ public final class DublinCoreElements {
 		private final String code;
 		
 		private DefaultSubject(SubjectBuilder b) {
-			super(DublinCore.SUBJECT, b);
+			super(b);
 			this.authority = b.authority;
 			this.scheme = b.scheme;
 			this.code = b.code;
@@ -432,6 +581,11 @@ public final class DublinCoreElements {
 		private String code;
 	
 		@Override
+		public Term getTerm() {
+			return DublinCore.SUBJECT;
+		}
+
+		@Override
 		protected Subject build() {
 			return new DefaultSubject(this);
 		}
@@ -457,14 +611,15 @@ public final class DublinCoreElements {
 		}
 	}
 	
-	/* title */
-
+	/**
+	 * An implementation of {@link Title} property.
+	 */
 	private static class DefaultTitle extends MultiValueTextProperty implements Title {
 		
 		private final TitleType type;
 		
 		private DefaultTitle(TitleBuilder b) {
-			super(DublinCore.TITLE, b);
+			super(b);
 			this.type = b.type;
 		}
 		
@@ -481,6 +636,11 @@ public final class DublinCoreElements {
 		private TitleType type;
 		
 		@Override
+		public Term getTerm() {
+			return DublinCore.TITLE;
+		}
+
+		@Override
 		public Title.Builder ofType(TitleType type) {
 			checkNotNull(type, "type");
 			this.type = type;
@@ -493,12 +653,13 @@ public final class DublinCoreElements {
 		}
 	}
 	
-	/* type */
-
+	/**
+	 * An implementation of {@link Type} property.
+	 */
 	private static class DefaultType extends StringProperty implements Type {
 		
 		private DefaultType(TypeBuilder b) {
-			super(DublinCore.TYPE, b);
+			super(b);
 		}
 	}
 
@@ -506,6 +667,11 @@ public final class DublinCoreElements {
 		extends StringProperty.Builder<Type, Type.Builder>
 		implements Type.Builder {
 	
+		@Override
+		public Term getTerm() {
+			return DublinCore.TYPE;
+		}
+
 		@Override
 		protected Type build() {
 			return new DefaultType(this);

@@ -21,18 +21,17 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 import com.github.i49.pulp.api.vocabulary.PropertyBuilder;
-import com.github.i49.pulp.api.vocabulary.Term;
 import com.github.i49.pulp.api.vocabulary.TypedProperty;
 
 /**
- * 
+ * Property which has a value of {@link OffsetDateTime} type.
  */
 public class DateProperty extends BaseProperty<OffsetDateTime> {
 
 	private static final DateTimeFormatter ISO8601_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	
-	public DateProperty(Term term, Builder<?, ?> b) {
-		super(term, b);
+	public DateProperty(Builder<?, ?> b) {
+		super(b);
 	}
 	
 	@Override

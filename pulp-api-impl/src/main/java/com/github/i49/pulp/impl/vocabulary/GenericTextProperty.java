@@ -34,7 +34,7 @@ public class GenericTextProperty extends MultiValueTextProperty implements Gener
 	}
 	
 	protected GenericTextProperty(Builder b) {
-		super(b.term, b);
+		super(b);
 		this.scheme = b.scheme;
 	}
 
@@ -59,6 +59,11 @@ public class GenericTextProperty extends MultiValueTextProperty implements Gener
 			return new GenericTextProperty(this);
 		}
 
+		@Override
+		public Term getTerm() {
+			return term;
+		}
+		
 		@Override
 		public GenericText.Builder scheme(String scheme) {
 			checkNotBlank(scheme, "scheme");

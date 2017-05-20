@@ -35,7 +35,7 @@ public class GenericProperty<V> extends BaseProperty<V> implements Generic<V> {
 	}
 
 	protected GenericProperty(Builder<V> b) {
-		super(b.term, b);
+		super(b);
 		this.scheme = b.scheme;
 	}
 
@@ -58,6 +58,11 @@ public class GenericProperty<V> extends BaseProperty<V> implements Generic<V> {
 		@Override
 		protected Generic<V> build() {
 			return new GenericProperty<V>(this);
+		}
+		
+		@Override
+		public Term getTerm() {
+			return term;
 		}
 
 		@Override

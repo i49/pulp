@@ -26,11 +26,18 @@ package com.github.i49.pulp.api.vocabulary;
 public interface PropertyBuilder<V, T extends TypedProperty<V>, R extends PropertyBuilder<V, T, R>> {
 
 	/**
+	 * Returns the term of the property to build.
+	 * 
+	 * @return the term of the property.
+	 */
+	Term getTerm();
+	
+	/**
 	 * Assigns a value to the property.
 	 *   
 	 * @param value the value of the property.
 	 * @return this builder.
-	 * @throws IllegalArgumentException if specified {@code value} was invalid one or {@code null}.
+	 * @throws IllegalArgumentException if given {@code value} was invalid one or {@code null}.
 	 */
 	R value(V value);
 	

@@ -33,7 +33,6 @@ import com.github.i49.pulp.api.vocabulary.dc.Coverage;
 import com.github.i49.pulp.api.vocabulary.dc.Creator;
 import com.github.i49.pulp.api.vocabulary.dc.Date;
 import com.github.i49.pulp.api.vocabulary.dc.Description;
-import com.github.i49.pulp.api.vocabulary.dc.DublinCore;
 import com.github.i49.pulp.api.vocabulary.dc.Format;
 import com.github.i49.pulp.api.vocabulary.dc.Identifier;
 import com.github.i49.pulp.api.vocabulary.dc.Language;
@@ -44,7 +43,6 @@ import com.github.i49.pulp.api.vocabulary.dc.Source;
 import com.github.i49.pulp.api.vocabulary.dc.Subject;
 import com.github.i49.pulp.api.vocabulary.dc.Title;
 import com.github.i49.pulp.api.vocabulary.dc.Type;
-import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
 import com.github.i49.pulp.impl.vocabulary.GenericProperty;
 import com.github.i49.pulp.impl.vocabulary.GenericTextProperty;
@@ -65,43 +63,37 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	@Override
 	public Contributor.Builder contributor(String value) {
 		checkNotBlank(value, "value");
-		Contributor.Builder b = DublinCoreElements.contributor().value(value);
-		return add(DublinCore.CONTRIBUTOR, b);
+		return add(DublinCoreElements.contributor().value(value));
 	}
 
 	@Override
 	public Coverage.Builder coverage(String value) {
 		checkNotBlank(value, "value");
-		Coverage.Builder b = DublinCoreElements.coverage().value(value);
-		return add(DublinCore.COVERAGE, b);
+		return add(DublinCoreElements.coverage().value(value));
 	}
 
 	@Override
 	public Creator.Builder creator(String value) {
 		checkNotBlank(value, "value");
-		Creator.Builder b = DublinCoreElements.creator().value(value);
-		return add(DublinCore.CREATOR, b);
+		return add(DublinCoreElements.creator().value(value));
 	}
 
 	@Override
 	public Date.Builder date(OffsetDateTime value) {
 		checkNotNull(value, "value");
-		Date.Builder b = DublinCoreElements.date().value(value);
-		return add(DublinCore.DATE, b);
+		return add(DublinCoreElements.date().value(value));
 	}
 
 	@Override
 	public Description.Builder description(String value) {
 		checkNotBlank(value, "value");
-		Description.Builder b = DublinCoreElements.description().value(value);
-		return add(DublinCore.DESCRIPTION, b);
+		return add(DublinCoreElements.description().value(value));
 	}
 
 	@Override
 	public Format.Builder format(String value) {
 		checkNotBlank(value, "value");
-		Format.Builder b = DublinCoreElements.format().value(value);
-		return add(DublinCore.FORMAT, b);
+		return add(DublinCoreElements.format().value(value));
 }
 
 	@Override
@@ -114,15 +106,13 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	@Override
 	public Identifier.Builder identifier(String value) {
 		checkNotBlank(value, "value");
-		Identifier.Builder b = DublinCoreElements.identifier().value(value);
-		return add(DublinCore.IDENTIFIER, b);
+		return add(DublinCoreElements.identifier().value(value));
 	}
 
 	@Override
 	public Language.Builder language(Locale value) {
 		checkNotNull(value, "value");
-		Language.Builder b = DublinCoreElements.language().value(value);
-		return add(DublinCore.LANGUAGE, b);
+		return add(DublinCoreElements.language().value(value));
 	}
 
 	@Override
@@ -135,57 +125,49 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	@Override
 	public Modified.Builder modified(OffsetDateTime value) {
 		checkNotNull(value, "value");
-		Modified.Builder b = DublinCoreTerms.modified().value(value);
-		return add(DublinCoreTerm.MODIFIED, b);
+		return add(DublinCoreTerms.modified().value(value));
 	}
 
 	@Override
 	public Publisher.Builder publisher(String value) {
 		checkNotBlank(value, "value");
-		Publisher.Builder b = DublinCoreElements.publisher().value(value);
-		return add(DublinCore.PUBLISHER, b);
+		return add(DublinCoreElements.publisher().value(value));
 	}
 
 	@Override
 	public Relation.Builder relation(String value) {
 		checkNotBlank(value, "value");
-		Relation.Builder b = DublinCoreElements.relation().value(value);
-		return add(DublinCore.RELATION, b);
+		return add(DublinCoreElements.relation().value(value));
 	}
 
 	@Override
 	public Rights.Builder rights(String value) {
 		checkNotBlank(value, "value");
-		Rights.Builder b = DublinCoreElements.rights().value(value);
-		return add(DublinCore.RIGHTS, b);
+		return add(DublinCoreElements.rights().value(value));
 	}
 
 	@Override
 	public Source.Builder source(String value) {
 		checkNotBlank(value, "value");
-		Source.Builder b = DublinCoreElements.source().value(value);
-		return add(DublinCore.SOURCE, b);
+		return add(DublinCoreElements.source().value(value));
 	}
 
 	@Override
 	public Subject.Builder subject(String value) {
 		checkNotBlank(value, "value");
-		Subject.Builder b = DublinCoreElements.subject().value(value);
-		return add(DublinCore.SUBJECT, b);
+		return add(DublinCoreElements.subject().value(value));
 	}
 
 	@Override
 	public Title.Builder title(String value) {
 		checkNotBlank(value, "value");
-		Title.Builder b = DublinCoreElements.title().value(value);
-		return add(DublinCore.TITLE, b);
+		return add(DublinCoreElements.title().value(value));
 	}
 
 	@Override
 	public Type.Builder type(String value) {
 		checkNotBlank(value, "value");
-		Type.Builder b = DublinCoreElements.type().value(value);
-		return add(DublinCore.TYPE, b);
+		return add(DublinCoreElements.type().value(value));
 	}
 
 	@Override
@@ -194,19 +176,25 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 		checkNotNull(value, "value");
 		Generic.Builder<V> b = GenericProperty.builder(term);
 		b.value(value);
-		return add(term, b);
+		return add(b);
 	}
 
 	@Override
 	public GenericText.Builder generic(Term term, String value) {
 		checkNotNull(term, "term");
 		checkNotBlank(value, "value");
-		GenericText.Builder b = GenericTextProperty.builder(term).value(value);
-		return add(term, b);
+		return add(GenericTextProperty.builder(term).value(value));
 	}
 	
+	/**
+	 * Adds deferred property to the property set.
+	 * 
+	 * @param builder the builder to build the final property.
+	 * @return the builder.
+	 */
 	private <V, T extends TypedProperty<V>, R extends PropertyBuilder<V, T, R>> 
-	R add(Term term, R builder) {
+	R add(R builder) {
+		Term term = builder.getTerm();
 		DeferredProperty<V> deferred = DeferredProperty.of(term, builder);
 		this.properties.add(deferred);
 		return builder;

@@ -16,30 +16,45 @@
 
 package com.github.i49.pulp.impl.vocabulary.dcterms;
 
+import com.github.i49.pulp.api.vocabulary.Term;
 import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
 import com.github.i49.pulp.impl.vocabulary.DateProperty;
 
 /**
+ * Elements provided by DCMI Metadata Terms.
  */
 public final class DublinCoreTerms {
 
 	private DublinCoreTerms() {
 	}
 	
+	/**
+	 * Creates a builder for {@link Modified}.
+	 * 
+	 * @return newly created builder.
+	 */
 	public static Modified.Builder modified() {
 		return new ModifiedBuilder();
 	}
 
+	/**
+	 * An implementation of {@link Modified} property.
+	 */
 	private static class DefaultModified extends DateProperty implements Modified {
 		
 		private DefaultModified(ModifiedBuilder b) {
-			super(DublinCoreTerm.MODIFIED, b);
+			super(b);
 		}
 	}
 	
 	private static class ModifiedBuilder extends DateProperty.Builder<Modified, Modified.Builder>
 		implements Modified.Builder {
+		
+		@Override
+		public Term getTerm() {
+			return DublinCoreTerm.MODIFIED;
+		}
 		
 		@Override
 		protected Modified build() {

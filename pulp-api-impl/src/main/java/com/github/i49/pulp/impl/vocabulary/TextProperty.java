@@ -22,7 +22,6 @@ import java.util.Locale;
 import java.util.Optional;
 
 import com.github.i49.pulp.api.vocabulary.Direction;
-import com.github.i49.pulp.api.vocabulary.Term;
 import com.github.i49.pulp.api.vocabulary.Text;
 
 /**
@@ -33,8 +32,8 @@ public class TextProperty extends StringProperty implements Text {
 	private final Direction direction;
 	private final Locale language;
 	
-	public TextProperty(Term term, Builder<?, ?> b) {
-		super(term, b);
+	public TextProperty(Builder<?, ?> b) {
+		super(b);
 		this.direction = b.direction;
 		this.language = b.language;
 	}
