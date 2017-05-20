@@ -42,13 +42,15 @@ import com.github.i49.pulp.api.vocabulary.dc.Language;
 import com.github.i49.pulp.api.vocabulary.dc.Publisher;
 import com.github.i49.pulp.api.vocabulary.dc.Relation;
 import com.github.i49.pulp.api.vocabulary.dc.Rights;
+import com.github.i49.pulp.api.vocabulary.dc.Source;
+import com.github.i49.pulp.api.vocabulary.dc.Subject;
 import com.github.i49.pulp.api.vocabulary.dc.Title;
 import com.github.i49.pulp.api.vocabulary.dc.Type;
 import com.github.i49.pulp.api.vocabulary.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
 
 /**
- *
+ * Unit tests for {@link PropertyBuilderSelector}.
  */
 public class PropertyBuilderSelectorTest {
 
@@ -331,7 +333,33 @@ public class PropertyBuilderSelectorTest {
 		assertThat(p.getTerm()).isSameAs(DublinCore.RIGHTS);
 		assertThat(p.getValue()).isEqualTo(value);
 	}
+	
+	/* source(String) */
 
+	@Test
+	public void source_shouldBuildSource() {
+		String value = "http://www.gutenberg.org/files/25545/25545-h/25545-h.htm";
+		m.add().source(value);
+		Source p = m.find().source().get(0);
+		assertThat(p.getTerm()).isSameAs(DublinCore.SOURCE);
+		assertThat(p.getValue()).isEqualTo(value);
+		assertThat(p.getScheme()).isEmpty();
+	}
+
+	/* subject(String) */
+
+	@Test
+	public void subject_shouldBuildSubject() {
+		String value = "Olympic skiing";
+		m.add().subject(value);
+		Subject p = m.find().subject().get(0);
+		assertThat(p.getTerm()).isSameAs(DublinCore.SUBJECT);
+		assertThat(p.getValue()).isEqualTo(value);
+		assertThat(p.getAuthority()).isEmpty();
+		assertThat(p.getScheme()).isEmpty();
+		assertThat(p.getCode()).isEmpty();
+	}
+	
 	/* title(String) */
 	
 	@Test

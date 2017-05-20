@@ -26,7 +26,6 @@ import java.util.Set;
 
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.PropertyBuilderSelector;
-import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.PropertyListerSelector;
 import com.github.i49.pulp.api.metadata.PropertyTesterSelector;
 import com.github.i49.pulp.api.metadata.ReleaseIdentifier;

@@ -25,7 +25,6 @@ import com.github.i49.pulp.api.core.PublicationReaderFactory;
 import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.core.PublicationWriterFactory;
 import com.github.i49.pulp.api.metadata.Metadata;
-import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.TermRegistry;
 import com.github.i49.pulp.api.spi.EpubService;
 import com.github.i49.pulp.impl.io.readers.DefaultPublicationReaderFactory;
@@ -45,11 +44,6 @@ class DefaultEpubService implements EpubService {
 	private final TermRegistry termRegistry = new DefaultTermRegistry();
 	
 	DefaultEpubService() {
-	}
-	
-	@Override
-	public PropertyFactory createPropertyFactory() {
-		return null;
 	}
 	
 	@Override

@@ -163,15 +163,15 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	@Override
 	public Source.Builder source(String value) {
 		checkNotBlank(value, "value");
-		// TODO Auto-generated method stub
-		return null;
+		Source.Builder b = DublinCoreElements.source().value(value);
+		return add(DublinCore.SOURCE, b);
 	}
 
 	@Override
 	public Subject.Builder subject(String value) {
 		checkNotBlank(value, "value");
-		// TODO Auto-generated method stub
-		return null;
+		Subject.Builder b = DublinCoreElements.subject().value(value);
+		return add(DublinCore.SUBJECT, b);
 	}
 
 	@Override

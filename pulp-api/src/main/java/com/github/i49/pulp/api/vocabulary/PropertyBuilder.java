@@ -17,7 +17,11 @@
 package com.github.i49.pulp.api.vocabulary;
 
 /**
- *
+ * The base interface of all property builders.
+ * 
+ * @param <V> the type of the property value.
+ * @param <T> the type of the property.
+ * @param <R> the type of the derived property builder producing the final property.
  */
 public interface PropertyBuilder<V, T extends TypedProperty<V>, R extends PropertyBuilder<V, T, R>> {
 

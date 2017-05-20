@@ -35,6 +35,9 @@ import com.github.i49.pulp.api.vocabulary.dc.Language;
 import com.github.i49.pulp.api.vocabulary.dc.Publisher;
 import com.github.i49.pulp.api.vocabulary.dc.Relation;
 import com.github.i49.pulp.api.vocabulary.dc.Rights;
+import com.github.i49.pulp.api.vocabulary.dc.Source;
+import com.github.i49.pulp.api.vocabulary.dc.Subject;
+import com.github.i49.pulp.api.vocabulary.dc.SubjectAuthority;
 import com.github.i49.pulp.api.vocabulary.dc.Title;
 import com.github.i49.pulp.api.vocabulary.dc.TitleType;
 import com.github.i49.pulp.api.vocabulary.dc.Type;
@@ -97,6 +100,14 @@ public final class DublinCoreElements {
 		return new RightsBuilder();
 	}
 
+	public static Source.Builder source() {
+		return new SourceBuilder();
+	}
+
+	public static Subject.Builder subject() {
+		return new SubjectBuilder();
+	}
+
 	public static Title.Builder title() {
 		return new TitleBuilder();
 	}
@@ -104,6 +115,8 @@ public final class DublinCoreElements {
 	public static Type.Builder type() {
 		return new TypeBuilder();
 	}
+	
+	/* contributor */
 
 	private static class DefaultContributor extends RelatorProperty implements Contributor {
 		
@@ -121,6 +134,8 @@ public final class DublinCoreElements {
 			return new DefaultContributor(this);
 		}
 	}
+	
+	/* coverage */
 
 	private static class DefaultCoverage extends TextProperty implements Coverage {
 		
@@ -138,6 +153,8 @@ public final class DublinCoreElements {
 			return new DefaultCoverage(this);
 		}
 	}
+	
+	/* creator */
 
 	private static class DefaultCreator extends RelatorProperty implements Creator {
 		
@@ -155,6 +172,8 @@ public final class DublinCoreElements {
 			return new DefaultCreator(this);
 		}
 	}
+	
+	/* date */
 
 	private static class DefaultDate extends DateProperty implements Date {
 		
@@ -171,6 +190,8 @@ public final class DublinCoreElements {
 			return new DefaultDate(this);
 		}
 	}
+	
+	/* description */
 
 	private static class DefaultDescription extends TextProperty implements Description {
 		
@@ -188,6 +209,8 @@ public final class DublinCoreElements {
 			return new DefaultDescription(this);
 		}
 	}
+	
+	/* format */
 
 	private static class DefaultFormat extends StringProperty implements Format {
 		
@@ -205,6 +228,8 @@ public final class DublinCoreElements {
 			return new DefaultFormat(this);
 		}
 	}
+	
+	/* identifier */
 
 	private static class DefaultIdentifier extends StringProperty implements Identifier {
 		
@@ -255,6 +280,8 @@ public final class DublinCoreElements {
 		}
 	}
 	
+	/* language */
+	
 	private static class DefaultLanguage extends LanguageProperty implements Language {
 
 		private DefaultLanguage(LanguageBuilder b) {
@@ -272,6 +299,8 @@ public final class DublinCoreElements {
 		}
 	}
 
+	/* publisher */
+	
 	private static class DefaultPublisher extends RelatorProperty implements Publisher {
 		
 		private DefaultPublisher(PublisherBuilder b) {
@@ -288,6 +317,8 @@ public final class DublinCoreElements {
 			return new DefaultPublisher(this);
 		}
 	}
+	
+	/* relation */
 
 	private static class DefaultRelation extends TextProperty implements Relation {
 		
@@ -306,6 +337,8 @@ public final class DublinCoreElements {
 		}
 	}
 
+	/* rights */
+	
 	private static class DefaultRights extends TextProperty implements Rights {
 		
 		private DefaultRights(RightsBuilder b) {
@@ -323,6 +356,109 @@ public final class DublinCoreElements {
 		}
 	}
 	
+	/* source */
+
+	private static class DefaultSource extends StringProperty implements Source {
+		
+		private final String scheme;
+		
+		private DefaultSource(SourceBuilder b) {
+			super(DublinCore.SOURCE, b);
+			this.scheme = b.scheme;
+		}
+
+		@Override
+		public Optional<String> getScheme() {
+			return Optional.ofNullable(scheme);
+		}
+	}
+
+	private static class SourceBuilder 
+		extends StringProperty.Builder<Source, Source.Builder>
+		implements Source.Builder {
+	
+		private String scheme;
+		
+		@Override
+		protected Source build() {
+			return new DefaultSource(this);
+		}
+
+		@Override
+		public Source.Builder scheme(String scheme) {
+			checkNotBlank(scheme, "scheme");
+			this.scheme = scheme;
+			return self();
+		}
+	}
+	
+	/* subject */
+
+	private static class DefaultSubject extends StringProperty implements Subject {
+		
+		private final SubjectAuthority authority;
+		private final URI scheme;
+		private final String code;
+		
+		private DefaultSubject(SubjectBuilder b) {
+			super(DublinCore.SUBJECT, b);
+			this.authority = b.authority;
+			this.scheme = b.scheme;
+			this.code = b.code;
+		}
+
+		@Override
+		public Optional<SubjectAuthority> getAuthority() {
+			return Optional.ofNullable(this.authority);
+		}
+
+		@Override
+		public Optional<String> getCode() {
+			return Optional.ofNullable(this.code);
+		}
+
+		@Override
+		public Optional<URI> getScheme() {
+			return Optional.ofNullable(this.scheme);
+		}
+	}
+
+	private static class SubjectBuilder 
+		extends StringProperty.Builder<Subject, Subject.Builder>
+		implements Subject.Builder {
+		
+		private SubjectAuthority authority;
+		private URI scheme;
+		private String code;
+	
+		@Override
+		protected Subject build() {
+			return new DefaultSubject(this);
+		}
+
+		@Override
+		public Subject.Builder ofCode(SubjectAuthority authority, String code) {
+			checkNotNull(authority, "authority");
+			checkNotBlank(code, "code");
+			this.authority = authority;
+			this.scheme = null;
+			this.code = code;
+			return self();
+		}
+
+		@Override
+		public Subject.Builder ofCode(URI scheme, String code) {
+			checkNotNull(scheme, "scheme");
+			checkNotBlank(code, "code");
+			this.authority = null;
+			this.scheme = scheme;
+			this.code = code;
+			return self();
+		}
+	}
+	
+	/* title */
+
 	private static class DefaultTitle extends MultiValueTextProperty implements Title {
 		
 		private final TitleType type;
@@ -356,6 +492,8 @@ public final class DublinCoreElements {
 			return new DefaultTitle(this);
 		}
 	}
+	
+	/* type */
 
 	private static class DefaultType extends StringProperty implements Type {
 		

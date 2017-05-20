@@ -23,7 +23,9 @@ import com.github.i49.pulp.api.vocabulary.Term;
 import com.github.i49.pulp.api.vocabulary.TypedProperty;
 
 /**
- *
+ * The base class of all property classes.
+ * 
+ * @param <V> the type of the property value.
  */
 public class BaseProperty<V> implements TypedProperty<V> {
 
@@ -102,7 +104,7 @@ public class BaseProperty<V> implements TypedProperty<V> {
 		protected abstract T build();
 		
 		@SuppressWarnings("unchecked")
-		protected R self() {
+		protected final R self() {
 			return (R)this;
 		}
 	}

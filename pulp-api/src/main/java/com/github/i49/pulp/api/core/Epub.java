@@ -21,7 +21,6 @@ import static com.github.i49.pulp.api.core.EpubServiceLoader.getService;
 import java.net.URI;
 import java.nio.file.Path;
 
-import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.TermRegistry;
 
 /**
@@ -38,16 +37,6 @@ import com.github.i49.pulp.api.metadata.TermRegistry;
  */
 public final class Epub {
 
-	/**
-	 * Creates an instance of {@link PropertyFactory} that can produce metadata properties.
-	 * 
-	 * @return newly created {@link PropertyFactory}.
-	 * @throws EpubException if API implementation was not found.
-	 */
-	public static PropertyFactory createPropertyFactory() {
-		return getService().createPropertyFactory();
-	}
-	
 	/**
 	 * Creates an empty publication.
 	 * 

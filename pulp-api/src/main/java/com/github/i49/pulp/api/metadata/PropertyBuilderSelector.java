@@ -40,74 +40,223 @@ import com.github.i49.pulp.api.vocabulary.dc.Type;
 import com.github.i49.pulp.api.vocabulary.dcterms.Modified;
 
 /**
- * Provides various kinds of the property builders.
+ * The interface providing various kinds of property builders.
+ * 
+ * <p>The following properties can be built with builders this interface provides.</p>
+ * <h3>Dublin Core Metadata Element Set</h3>
+ * <ul>
+ * <li>{@link Contributor}</li>
+ * <li>{@link Coverage}</li>
+ * <li>{@link Creator}</li>
+ * <li>{@link Date}</li>
+ * <li>{@link Description}</li>
+ * <li>{@link Format}</li>
+ * <li>{@link Identifier}</li>
+ * <li>{@link Language}</li>
+ * <li>{@link Publisher}</li>
+ * <li>{@link Relation}</li>
+ * <li>{@link Rights}</li>
+ * <li>{@link Source}</li>
+ * <li>{@link Subject}</li>
+ * <li>{@link Title}</li>
+ * <li>{@link Type}</li>
+ * </ul>
+ * <h3>DCMI Metadata Terms</h3>
+ * <ul>
+ * <li>{@link Modified}</li>
+ * </ul>
+ * <h3>Others</h3>
+ * <ul>
+ * <li>{@link Generic}</li>
+ * <li>{@link GenericText}</li>
+ * </ul>
  */
 public interface PropertyBuilderSelector {
 	
+	/**
+	 * Creates a builder for building a {@link Contributor} property.
+	 * 
+	 * @param value the text describing the coverage.
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
+	 */
 	Contributor.Builder contributor(String value);
 
+	/**
+	 * Creates a builder for building a {@link Coverage} property.
+	 * 
+	 * @param value the value of the property.
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
+	 */
 	Coverage.Builder coverage(String value);
 	
+	/**
+	 * Creates a builder for building a {@link Creator} property.
+	 * 
+	 * @param value the name of the person or organization.
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
+	 */
 	Creator.Builder creator(String value);
 
+	/**
+	 * Creates a builder for building a {@link Date} property.
+	 * 
+	 * @param value the publication date.
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
+	 */
 	Date.Builder date(OffsetDateTime value);
 	
+	/**
+	 * Creates a builder for building a {@link Description} property.
+	 * 
+	 * @param value the description of the rendition.
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
+	 */
 	Description.Builder description(String value);
 
+	/**
+	 * Creates a builder for building a {@link Format} property.
+	 * 
+	 * @param value the value representing the format, such as "application/epub+zip".
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
+	 */
 	Format.Builder format(String value);
 
 	/**
-	 * Creates a builder for building an identifier property.
-	 * The builder generates a random UUID as the value of the property. 
+	 * Creates a builder for building an {@link Identifier} property.
+	 * The value of the property will be a UUID generated randomly.
 	 * 
 	 * @return newly created builder.
 	 */
 	Identifier.Builder identifier();
 
 	/**
-	 * Creates a builder for building an identifier property.
+	 * Creates a builder for building an {@link Identifier} property.
 	 * 
 	 * @param value the value of the identifier.
 	 * @return newly created builder.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
 	Identifier.Builder identifier(String value);
 
 	/**
-	 * Creates a builder for building a language property.
+	 * Creates a builder for building a {@link Language} property.
+	 * The value of the property is specified by a {@link Locale} value.
 	 * 
-	 * @param value the value of the language.
+	 * @param value the value of the language, such as {@link Locale#ENGLISH}.
 	 * @return newly created builder.
 	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 */
 	Language.Builder language(Locale value);
 	
 	/**
-	 * Creates a builder for building a language property.
+	 * Creates a builder for building a {@link Language} property.
+	 * The value of the property is specified by a language tag.
 	 * 
 	 * @param value the language tag defined in IETF BCP 47, such as "en-US".
 	 * @return newly created builder.
 	 * @throws IllegalArgumentException if {@code value} was invalid.
 	 * @throws IllformedLocaleException if {@code value} was ill-formed.
+	 * @see <a href="http://www.ietf.org/rfc/bcp/bcp47.txt">Tags for Identifying Languages; Matching of Language Tags.</a>
 	 */
 	Language.Builder language(String value);
 
+	/**
+	 * Creates a builder for building a {@link Modified} property.
+	 * 
+	 * @param value the last modification date of the publication.
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
+	 */
 	Modified.Builder modified(OffsetDateTime value);
 	
+	/**
+	 * Creates a builder for building a {@link Publisher} property.
+	 * 
+	 * @param value the name of the person or organization.
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
+	 */
 	Publisher.Builder publisher(String value);
 
+	/**
+	 * Creates a builder for building a {@link Relation} property.
+	 * 
+	 * @param value the text describing the related resource.
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
+	 */
 	Relation.Builder relation(String value);
 
+	/**
+	 * Creates a builder for building a {@link Rights} property.
+	 * 
+	 * @param value the text describing the rights.
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
+	 */
 	Rights.Builder rights(String value);
 
+	/**
+	 * Creates a builder for building a {@link Source} property.
+	 * 
+	 * @param value the text describing the source of the publication.
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
+	 */
 	Source.Builder source(String value);
 
+	/**
+	 * Creates a builder for building a {@link Subject} property.
+	 * 
+	 * @param value the value representing the subject of the publication.
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
+	 */
 	Subject.Builder subject(String value);
 	
+	/**
+	 * Creates a builder for building a {@link Title} property.
+	 * 
+	 * @param value the value of the title.
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
+	 */
 	Title.Builder title(String value);
 
+	/**
+	 * Creates a builder for building a {@link Type} property.
+	 * 
+	 * @param value the value representing the type of the publication.
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if {@code value} was invalid.
+	 */
 	Type.Builder type(String value);
 	
+	/**
+	 * Creates a builder for building a {@link Generic} property.
+	 * 
+	 * @param <V> the type of the property value.
+	 * @param term the term of the property.
+	 * @param value the value of the property.
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if one or more given parameters were invalid.
+	 */
 	<V> Generic.Builder<V> generic(Term term, V value);
 
+	/**
+	 * Creates a builder for building a {@link GenericText} property
+	 * which has a property value of string type.
+	 * 
+	 * @param term the term of the property.
+	 * @param value the value of the property.
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if one or more given parameters were invalid.
+	 */
 	GenericText.Builder generic(Term term, String value);
 }

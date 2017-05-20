@@ -16,22 +16,25 @@
 
 package com.github.i49.pulp.api.vocabulary.dc;
 
+import java.util.Optional;
+
+import com.github.i49.pulp.api.vocabulary.PropertyBuilder;
 import com.github.i49.pulp.api.vocabulary.Term;
-import com.github.i49.pulp.api.vocabulary.Text;
+import com.github.i49.pulp.api.vocabulary.TypedProperty;
 
 /**
  *
  */
-public interface Source extends Text {
+public interface Source extends TypedProperty<String> {
 
-	String getScheme();
+	Optional<String> getScheme();
 
 	@Override
 	default Term getTerm() {
 		return DublinCore.SOURCE;
 	}
 	
-	public interface Builder extends Text.Builder<Relation, Builder> {
+	public interface Builder extends PropertyBuilder<String, Source, Builder> {
 		
 		Builder scheme(String scheme);
 	}

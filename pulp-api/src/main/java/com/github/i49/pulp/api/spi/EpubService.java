@@ -25,7 +25,6 @@ import com.github.i49.pulp.api.core.PublicationResourceBuilder;
 import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.core.PublicationWriter;
 import com.github.i49.pulp.api.core.PublicationWriterFactory;
-import com.github.i49.pulp.api.metadata.PropertyFactory;
 import com.github.i49.pulp.api.metadata.TermRegistry;
 
 /**
@@ -33,13 +32,6 @@ import com.github.i49.pulp.api.metadata.TermRegistry;
  * This type is for internal use and the users of the API need not to care this interface.
  */
 public interface EpubService {
-	
-	/**
-	 * Creates an instance of factory that can be used to produce metadata properties.
-	 * 
-	 * @return an instance of metadata property factory.
-	 */
-	PropertyFactory createPropertyFactory();
 	
 	/**
 	 * Creates an empty publication.
