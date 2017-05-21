@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.api.metadata;
+package com.github.i49.pulp.api.vocabularies.dc;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -24,55 +24,51 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.i49.pulp.api.core.Epub;
-import com.github.i49.pulp.api.vocabularies.dc.SubjectAuthority;
+import com.github.i49.pulp.api.metadata.Metadata;
 
-/**
- * Unit tests for {@link SubjectProperty}.
- */
-public class SubjectPropertyTest {
+public class SubjectTest {
 
-	private PropertyFactory f;
-
+	private Metadata m;
+	
 	@Before
 	public void setUp() {
-		f = Epub.createPropertyFactory();
+		m = Epub.createPublication().addRendition().getMetadata();
 	}
-
+	
+	/* getAuthority() */
+	
 	@Test
-	public void getValue_shouldReturnInitialValue() {
-		String value = "Olympic skiing";
-		SubjectProperty p = f.newSubject(value);
-		assertThat(p.getValue()).isEqualTo(value);
-	}
-
-	@Test
-	public void setCode_shouldAssignAuthorityAndCode() {
+	public void getAuthority_shouldReturnAuthority() {
 		String value = "FICTION / Occult & Supernatural";
-		SubjectProperty p = f.newSubject(value).setCode(SubjectAuthority.BISAC, "FIC024000");
+		m.add().subject(value).ofCode(SubjectAuthority.BISAC, "FIC024000");
+		Subject p = m.find().subject().get(0);
 		assertThat(p.getValue()).isEqualTo(value);
 		assertThat(p.getAuthority()).hasValue(SubjectAuthority.BISAC);
 		assertThat(p.getScheme()).isEmpty();
 		assertThat(p.getCode()).hasValue("FIC024000");
 	}
 
+	/* getScheme() */
+
 	@Test
-	public void setCode_shouldAssignSchemeAndCode() {
+	public void getScheme_shouldReturnScheme() {
 		String value = "Number Theory";
 		URI scheme = URI.create("http://www.ams.org/msc/msc2010.html");
-		SubjectProperty p = f.newSubject(value).setCode(scheme, "11");
+		m.add().subject(value).ofCode(scheme, "11");
+		Subject p = m.find().subject().get(0);
 		assertThat(p.getValue()).isEqualTo(value);
 		assertThat(p.getAuthority()).isEmpty();
 		assertThat(p.getScheme()).hasValue(scheme);
 		assertThat(p.getCode()).hasValue("11");
 	}
-	
+
+	/* getValue() */
+
 	@Test
-	public void setValue_shouldModifyValue() {
-		String oldValue = "Olympic skiing";
-		SubjectProperty p = f.newSubject(oldValue);
-		assertThat(p.getValue()).isEqualTo(oldValue);
-		String newValue = "FICTION / Occult & Supernatural";
-		p.setValue(newValue);
-		assertThat(p.getValue()).isEqualTo(newValue);
+	public void getValue_shouldReturnValueOfProoerty() {
+		String value = "Olympic skiing";
+		m.add().subject(value);
+		Subject p = m.find().subject().get(0);
+		assertThat(p.getValue()).isEqualTo(value);
 	}
 }
