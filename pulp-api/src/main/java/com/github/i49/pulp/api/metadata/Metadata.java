@@ -16,7 +16,6 @@
 
 package com.github.i49.pulp.api.metadata;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -42,6 +41,21 @@ public interface Metadata {
 	
 	PropertyListerSelector find();
 	
+	/**
+	 * Adds the required properties to this metadata if one or more of them are missing.
+	 * 
+	 * <p>The following properties may be added.</p>
+	 * <dl>
+	 * <dt>identifier</dt>
+	 * <dd>A UUID is randomly generated.</dd>
+	 * <dt>title</dt>
+	 * <dd>A default title is added.</dd>
+	 * <dt>language</dt>
+	 * <dd>The language of the current locale is added.</dd>
+	 * <dt>modified</dt>
+	 * <dd>Current time is added.</dd>
+	 * </dl>
+	 */
 	void fillMissingProperties();
 
 	/**
@@ -58,7 +72,28 @@ public interface Metadata {
 	 */
 	ReleaseIdentifier getReleaseIdentifier();
 	
+	/**
+	 * Checks if this metadata contains all required properties.
+	 * 
+	 * @return {@code true} if all required properties exist in this metadata, {@code false} otherwise.
+	 */
+	boolean isFilled();
+	
 	PropertyListerSelector remove();
+	
+	/**
+	 * Returns the total number of the properties contained in this metadata.
+	 * 
+	 * @return the total number of the properties in this metadata.
+	 */
+	int size();
+	
+	/**
+	 * Returns all terms that have at least one property in this metadata.
+	 * 
+	 * @return the set of terms, never be {@code null}.
+	 */
+	Set<Term> termSet();
 	
 	/**
 	 * Adds the specified property to this metadata if it is not already present.
@@ -85,50 +120,6 @@ public interface Metadata {
 //	boolean contains(Term term);
 	
 	/**
-	 * Adds the required properties to this metadata if they do not exist.
-	 * 
-	 * <p>The properties of the following terms are added by default.</p>
-	 * <dl>
-	 * <dt>identifier</dt>
-	 * <dd>A UUID is randomly generated.</dd>
-	 * <dt>title</dt>
-	 * <dd>A default title is added.</dd>
-	 * <dt>language</dt>
-	 * <dd>The language of the current locale is added.</dd>
-	 * <dt>modified</dt>
-	 * <dd>Current time is added.</dd>
-	 * </dl>
-	 */
-//	void fillMissingProperties();
-
-	/**
-	 * Returns the first property of the specific term.
-	 * If this metadata contains more than one properties of the term,
-	 * only the first one will be returned.
-	 * This method can be called safely only if calling {@link #contains(Term)} returns {@code true}. 
-	 * 
-	 * @param term the term of the property to retrieve.
-	 * @return the property contained in this metadata, never be {@code null}.
-	 * @throws IllegalArgumentException if {@code term} is {@code null}.
-	 * @throws NoSuchElementException if this metadata does not contain any properties of the specific term.
-	 */
-//	Property get(Term term);
-	
-	/**
-	 * Returns all properties in this metadata.
-	 * 
-	 * @return an iterator over all properties in this metadata.
-	 */
-//	Iterator<Property> getAllProperties();
-	
-	/**
-	 * Returns the total number of the properties contained in this metadata.
-	 * 
-	 * @return the total number of the properties in this metadata.
-	 */
-//	int getNumberOfProperties();
-	
-	/**
 	 * Returns the number of the properties of the specific term contained in this metadata.
 	 * 
 	 * @param term the term of the properties to count, such as {@link DublinCore#TITLE}.
@@ -137,55 +128,6 @@ public interface Metadata {
 	 */
 //	int getNumberOfProperties(Term term);
 
-	/**
-	 * Returns the <i>release identifier</i> of the publication
-	 * that uniquely identifies a specific version of it.
-	 * 
-	 * <p>Release identifier of the publication consists of  the following two properties:</p>
-	 * <ul>
-	 * <li>identifier of the publication</li>
-	 * <li>last modification date-time of the publication</li>
-	 * </ul>
-	 * 
-	 * @return the release identifier of the publication, never be {@code null}.
-	 */
-//	ReleaseIdentifier getReleaseIdentifier();
-	
-	/**
-	 * Returns all terms that have at least one property in this metadata.
-	 * 
-	 * @return the set of terms, never be {@code null}.
-	 */
-//	Set<Term> getTerms();
-	
-	/**
-	 * Returns the list containing all properties of the specific term.
-	 * The list returned is mutable and can be modified as needed.
-	 * 
-	 * @param term the term of the property to retrieve.
-	 * @return the list of the properties contained in this metadata, never be {@code null}.
-	 * @throws IllegalArgumentException if {@code term} is {@code null}.
-	 */
-//	List<Property> getList(Term term);
-	
-	/**
-	 * Checks if this metadata contains all required properties.
-	 * 
-	 * @return {@code true} if all required properties exist in this metadata, {@code false} otherwise.
-	 */
-//	boolean isFilled();
-	
-	/**
-	 * Returns an iterator over the properties in this metadata.
-	 * Calling this method is equivalent to calling {@link #getAllProperties()}.
-	 * 
-	 * @return an iterator over the properties.
-	 */
-//	@Override
-//	default Iterator<Property> iterator() {
-//		return getAllProperties();
-//	}
-	
 	/**
 	 * Removes the specified property from this metadata.
 	 * 

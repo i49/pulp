@@ -25,9 +25,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.Term;
+import com.github.i49.pulp.impl.base.Iterators;
 
 /**
  * A set of metadata properties.
@@ -104,7 +106,8 @@ public class PropertySet extends AbstractSet<Property> {
 	
 	public boolean containsTerm(Term term) {
 		assert(term != null);
-		return this.map.containsKey(term);
+		List<Property> list = this.map.get(term);
+		return list != null && !list.isEmpty();
 	}
 	
 	/**
@@ -142,6 +145,10 @@ public class PropertySet extends AbstractSet<Property> {
 			this.map.remove(term);
 			return Collections.unmodifiableList(list);
 		}
+	}
+	
+	public Set<Term> termSet() {
+		return new TermSet();
 	}
 	
 	private List<Property> addPropertyList(Term term) {
@@ -195,4 +202,24 @@ public class PropertySet extends AbstractSet<Property> {
 			return (list != null) ? list.iterator() : null;
 		}
 	}
-}
+	
+	/**
+	 * A set of terms in this property set.
+	 */
+	private class TermSet extends AbstractSet<Term> {
+		
+		@Override
+		public Iterator<Term> iterator() {
+			return Iterators.filter(map.keySet().iterator(), this::filter);
+		}
+
+		@Override
+		public int size() {
+			return (int)map.keySet().stream().filter(this::filter).count();
+		}
+		
+		private boolean filter(Term term) {
+			return containsTerm(term);
+		}
+	}
+ }

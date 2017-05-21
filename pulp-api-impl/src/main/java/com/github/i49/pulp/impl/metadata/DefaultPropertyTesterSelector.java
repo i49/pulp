@@ -16,13 +16,15 @@
 
 package com.github.i49.pulp.impl.metadata;
 
+import static com.github.i49.pulp.impl.base.Preconditions.*;
+
 import com.github.i49.pulp.api.metadata.PropertyTesterSelector;
 import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.dc.DublinCore;
 import com.github.i49.pulp.api.vocabularies.dcterms.DublinCoreTerm;
 
 /**
- *
+ * The default implementation of {@link PropertyTesterSelector}.
  */
 class DefaultPropertyTesterSelector implements PropertyTesterSelector {
 
@@ -112,6 +114,12 @@ class DefaultPropertyTesterSelector implements PropertyTesterSelector {
 		return test(DublinCore.TYPE);
 	}
 
+	@Override
+	public boolean propertyOf(Term term) {
+		checkNotNull(term, "term");
+		return test(term);
+	}
+	
 	private boolean test(Term term) {
 		return properties.containsTerm(term);
 	}

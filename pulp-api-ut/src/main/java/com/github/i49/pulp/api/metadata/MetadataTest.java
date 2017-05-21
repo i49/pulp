@@ -40,15 +40,11 @@ import com.github.i49.pulp.api.vocabularies.dcterms.DublinCoreTerm;
  */
 public class MetadataTest {
 
-	private PropertyFactory f;
 	private Metadata m;
 	
 	@Before
 	public void setUp() {
-		f = Epub.createPropertyFactory();
-		Publication p = Epub.createPublication(); 
-		Rendition r = p.addRendition();
-		m = r.getMetadata();
+		m = Epub.createPublication().addRendition().getMetadata();
 	}
 	
 	/* add(Property) */
@@ -85,26 +81,26 @@ public class MetadataTest {
 	
 	@Test
 	public void clear_shouldClearAllProperties() {
-		m.add(f.newIdentifier());
-		m.add(f.newTitle("Untitled"));
-		m.add(f.newLanguage(Locale.getDefault()));
-		m.add(f.newModified(OffsetDateTime.now()));
-		assertThat(m.getNumberOfProperties()).isEqualTo(4);
+		m.add().identifier();
+		m.add().title("Untitled");
+		m.add().language(Locale.getDefault());
+		m.add().modified(OffsetDateTime.now());
+		assertThat(m.size()).isEqualTo(4);
 		m.clear();
-		assertThat(m.getNumberOfProperties()).isEqualTo(0);
+		assertThat(m.size()).isEqualTo(0);
 	}
 	
 	/* contains(Term) */
 	
 	@Test
 	public void contains_shouldReturnTrueIfPropertyExists() {
-		m.add(f.newTitle("Untitled"));
-		assertThat(m.contains(DublinCore.TITLE)).isTrue();
+		m.add().title("Untitled");
+		assertThat(m.contains().title()).isTrue();
 	}
 
 	@Test
 	public void contains_shouldReturnFalseIfPropertyDoesNotExist() {
-		assertThat(m.contains(DublinCore.CREATOR)).isFalse();
+		assertThat(m.contains().creator()).isFalse();
 	}
 
 	/* fillMissingProperties() */
@@ -112,7 +108,7 @@ public class MetadataTest {
 	@Test
 	public void fillMissingProperties_shouldAddRequiredProperties() {
 		m.fillMissingProperties();
-		assertThat(m.getNumberOfProperties()).isEqualTo(4);
+		assertThat(m.size()).isEqualTo(4);
 		
 		IdentifierProperty identifier = (IdentifierProperty)m.get(DublinCore.IDENTIFIER);
 		assertThat(identifier).isNotNull();
@@ -182,39 +178,6 @@ public class MetadataTest {
 		assertThat(it).hasSize(4).contains(p1, p2, p3, p4);
 	}
 	
-	/* getList(Term) */
-	
-	@Test
-	public void getList_shouldReturnNonEmptyListIfPropertyExists() {
-		m.add(f.newTitle("Untitled"));
-		List<Property> list = m.getList(DublinCore.TITLE);
-		assertThat(list).isNotNull();
-		assertThat(list).hasSize(1);
-		Property p = list.get(0);
-		assertThat(p.getTerm()).isSameAs(DublinCore.TITLE);
-		assertThat(p.getValueAsString()).isNotBlank();
-	}
-	
-	@Test
-	public void getList_shouldReturnEmptyListIfPropertyDoesNotExit() {
-		List<Property> list = m.getList(DublinCore.CREATOR);
-		assertThat(list).isNotNull();
-		assertThat(list).hasSize(0);
-	}
-	
-	/* getNumberOfProperties() */
-	
-	@Test
-	public void getNumberOfProperties_shouldReturn0ByDefault() {
-		assertThat(m.getNumberOfProperties()).isEqualTo(0);
-	}
-	
-	@Test
-	public void getNumberOfProperties_shouldReturn4IfMandatoryPropertiesAdded() {
-		m.fillMissingProperties();
-		assertThat(m.getNumberOfProperties()).isEqualTo(4);
-	}
-	
 	/* getNumberOfProperties(Term) */
 	
 	@Test
@@ -248,16 +211,15 @@ public class MetadataTest {
 	
 	@Test
 	public void getTerms_shouldReturnNoTermsByDefault() {
-		Set<Term> terms = m.getTerms();
+		Set<Term> terms = m.termSet();
 		assertThat(terms).isEmpty();
 	}
 
 	@Test
 	public void getTerms_shouldReturnAllTermsAdded() {
-		RelatorProperty p = f.newCreator("John Smith");
-		m.add(p);
+		m.add().creator("John Smith");
 		m.fillMissingProperties();
-		Set<Term> terms = m.getTerms();
+		Set<Term> terms = m.termSet();
 		assertThat(terms).contains(
 				DublinCore.IDENTIFIER, DublinCore.TITLE, DublinCore.LANGUAGE, DublinCoreTerm.MODIFIED, 
 				DublinCore.CREATOR);
@@ -272,10 +234,10 @@ public class MetadataTest {
 	
 	@Test
 	public void isFilled_shouldReturnTrueIfAllRequiredPropertiesExist() {
-		m.add(f.newIdentifier());
-		m.add(f.newTitle("Untitled"));
-		m.add(f.newLanguage(Locale.getDefault()));
-		m.add(f.newModified(OffsetDateTime.now()));
+		m.add().identifier();
+		m.add().title("Untitled");
+		m.add().language(Locale.getDefault());
+		m.add().modified(OffsetDateTime.now());
 		assertThat(m.isFilled()).isTrue();
 	}
 	
@@ -297,5 +259,18 @@ public class MetadataTest {
 	public void remove_shouldReturnFalseIfPropertyDoesNotExist() {
 		RelatorProperty p = f.newCreator("John Smith");
 		assertThat(m.remove(p)).isFalse();
+	}
+
+	/* size() */
+	
+	@Test
+	public void size_shouldReturn0ByDefault() {
+		assertThat(m.size()).isEqualTo(0);
+	}
+	
+	@Test
+	public void size_shouldReturn4IfMandatoryPropertiesAdded() {
+		m.fillMissingProperties();
+		assertThat(m.size()).isEqualTo(4);
 	}
 }

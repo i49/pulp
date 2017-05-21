@@ -99,8 +99,24 @@ public class DefaultMetadata implements Metadata {
 	}
 	
 	@Override
+	public Set<Term> termSet() {
+		return properties.termSet();
+	}
+	
+	@Override
+	public boolean isFilled() {
+		PropertyTesterSelector t = contains();
+		return t.identifier() && t.title() && t.language() && t.modified();
+	}
+	
+	@Override
 	public PropertyListerSelector remove() {
 		return remover;
+	}
+
+	@Override
+	public int size() {
+		return properties.size();
 	}
 	
 	/*
@@ -163,16 +179,6 @@ public class DefaultMetadata implements Metadata {
 	public List<Property> getList(Term term) {
 		validate(term, "term");
 		return propertyMap.getValues(term);
-	}
-	
-	@Override
-	public boolean isFilled() {
-		return (
-			contains(DublinCore.IDENTIFIER) &&
-			contains(DublinCore.TITLE) &&
-			contains(DublinCore.LANGUAGE) &&
-			contains(DublinCoreTerm.MODIFIED)
-		);
 	}
 	
 	@Override

@@ -16,6 +16,8 @@
 
 package com.github.i49.pulp.api.metadata;
 
+import com.github.i49.pulp.api.vocabularies.Term;
+
 /**
  * Type to test selected property interface and return boolean value.
  */
@@ -52,4 +54,6 @@ public interface PropertyTesterSelector {
 	boolean title();
 	
 	boolean type();
+	
+	boolean propertyOf(Term term);
 }
