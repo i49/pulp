@@ -32,6 +32,16 @@ public interface Metadata {
 	 * @return the selector of the properties.
 	 */
 	PropertyBuilderSelector add();
+
+	/**
+	 * Adds the specified property to this metadata if it is not already present.
+	 * 
+	 * @param property the property to add.
+	 * @return {@code true} if this metadata did not already contain the specified property. 
+	 * @throws IllegalArgumentException if {@code property} is {@code null}.
+	 * @throws IllegalStateException if the maximum number of properties allowed were already added.
+	 */
+	boolean add(Property property);
 	
 	/**
 	 * Clears all properties in this metadata.
@@ -127,19 +137,4 @@ public interface Metadata {
 	 * @return the set of terms, never be {@code null}.
 	 */
 	Set<Term> termSet();
-	
-	/**
-	 * Adds the specified property to this metadata if it is not already present.
-	 * 
-	 * <p>Calling this method is equivalent to the following code.</p>
-	 * <pre>{@code
-	 * getList(property.getTerm()).add(property);
-	 * }</pre>
-	 * 
-	 * @param property the property to add.
-	 * @return {@code true} if this metadata did not already contain the specified property. 
-	 * @throws IllegalArgumentException if {@code property} is {@code null}.
-	 * @throws IllegalStateException if the maximum number of properties were already added.
-	 */
-//	boolean add(Property property);
 }

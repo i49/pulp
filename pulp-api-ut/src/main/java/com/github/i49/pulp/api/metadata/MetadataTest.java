@@ -32,6 +32,7 @@ import com.github.i49.pulp.api.vocabularies.dc.Creator;
 import com.github.i49.pulp.api.vocabularies.dc.DublinCore;
 import com.github.i49.pulp.api.vocabularies.dc.Identifier;
 import com.github.i49.pulp.api.vocabularies.dc.Language;
+import com.github.i49.pulp.api.vocabularies.dc.PublicationType;
 import com.github.i49.pulp.api.vocabularies.dc.Title;
 import com.github.i49.pulp.api.vocabularies.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.api.vocabularies.dcterms.Modified;
@@ -51,17 +52,28 @@ public class MetadataTest {
 	/* add() */
 	
 	@Test
-	public void add_shouldAddCreator() {
+	public void add_shouldAddSingleProperty() {
 		m.add().creator("John Smith");
 		List<Creator> list = m.find().creator();
 		assertThat(list).hasSize(1);
 	}
 	
 	@Test
-	public void add_shouldAddTitle() {
-		m.add().title("The Catcher in the Rye");
+	public void add_shouldAddMultiplePropertiesOfSameType() {
+		m.add().title("The Red and the Black");
+		m.add().title("A Chronicle of the Nineteenth Century");
+		m.add().title("A Chronicle of 1830");
 		List<Title> list = m.find().title();
-		assertThat(list).hasSize(1);
+		assertThat(list).hasSize(3);
+	}
+	
+	/* add(Property) */
+	
+	@Test
+	public void add_shouldAddExistingProperty() {
+		assertThat(m.count().type()).isEqualTo(0);
+		assertThat(m.add(PublicationType.DICTIONARY)).isTrue();
+		assertThat(m.count().type()).isEqualTo(1);
 	}
 	
 	/* clear() */

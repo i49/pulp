@@ -24,24 +24,10 @@ import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.TypedProperty;
 
 /**
- * Dublin Core identifier property.
+ * Identifier property in Dublin Core Metadata Element Set,
+ * which provides the identifier of the publication.
  */
 public interface Identifier extends TypedProperty<String> {
-
-	/**
-	 * Identifier schemes.
-	 */
-	public enum Scheme {
-		/** A Digital Object Identifier. */
-		DOI,
-		/** An International Standard Book Number. */
-		ISBN,
-		/** A Japan Digital Comic Number. */
-		JDCN,
-		/** A Universally-Unique Identifier. */
-		UUID
-		;
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -52,7 +38,7 @@ public interface Identifier extends TypedProperty<String> {
 		return DublinCore.IDENTIFIER;
 	}
 	
-	Optional<Scheme> getScheme();
+	Optional<IdentifierScheme> getScheme();
 
 	Optional<URI> getSchemeURI();
 
@@ -64,7 +50,7 @@ public interface Identifier extends TypedProperty<String> {
 		 * @param scheme the scheme of the identifier.
 		 * @return this builder.
 		 */
-		Builder scheme(Scheme scheme);
+		Builder scheme(IdentifierScheme scheme);
 		
 		/**
 		 * Assigns the scheme of the identifier specified by URI.

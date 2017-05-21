@@ -54,6 +54,8 @@ public class DefaultMetadata implements Metadata {
 
 	/**
 	 * Constructs the new metadata.
+	 * 
+	 * @param termRegistry the registry of all terms.
 	 */
 	public DefaultMetadata(TermRegistry termRegistry) {
 		this.termRegistry = termRegistry;
@@ -75,8 +77,14 @@ public class DefaultMetadata implements Metadata {
 	}
 	
 	@Override
+	public boolean add(Property property) {
+		validate(property, "property");
+		return properties.add(property);
+	}
+	
+	@Override
 	public void clear() {
-		this.properties.clear();
+		properties.clear();
 	}
 
 	@Override

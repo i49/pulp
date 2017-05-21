@@ -17,7 +17,7 @@
 package com.github.i49.pulp.api.vocabularies.dc;
 
 /**
- * The publication types predefined for {@link DublinCore#TYPE}.
+ * The publication types predefined for {@link Type}.
  */
 public enum PublicationType implements Type {
 	

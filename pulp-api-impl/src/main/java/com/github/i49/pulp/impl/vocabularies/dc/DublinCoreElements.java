@@ -41,7 +41,7 @@ import com.github.i49.pulp.api.vocabularies.dc.Title;
 import com.github.i49.pulp.api.vocabularies.dc.TitleType;
 import com.github.i49.pulp.api.vocabularies.dc.Type;
 import com.github.i49.pulp.api.vocabularies.dc.Identifier.Builder;
-import com.github.i49.pulp.api.vocabularies.dc.Identifier.Scheme;
+import com.github.i49.pulp.api.vocabularies.dc.IdentifierScheme;
 import com.github.i49.pulp.impl.vocabularies.DateProperty;
 import com.github.i49.pulp.impl.vocabularies.LanguageProperty;
 import com.github.i49.pulp.impl.vocabularies.MultiValueTextProperty;
@@ -346,7 +346,7 @@ public final class DublinCoreElements {
 	 */
 	private static class DefaultIdentifier extends StringProperty implements Identifier {
 		
-		private final Scheme scheme;
+		private final IdentifierScheme scheme;
 		private final URI schemeURI;
 		
 		private DefaultIdentifier(IdentifierBuilder b) {
@@ -356,7 +356,7 @@ public final class DublinCoreElements {
 		}
 
 		@Override
-		public Optional<Scheme> getScheme() {
+		public Optional<IdentifierScheme> getScheme() {
 			return Optional.ofNullable(scheme);
 		}
 
@@ -370,7 +370,7 @@ public final class DublinCoreElements {
 		extends StringProperty.Builder<Identifier, Identifier.Builder>
 		implements Identifier.Builder {
 		
-		private Scheme scheme;
+		private IdentifierScheme scheme;
 		private URI schemeURI;
 		
 		@Override
@@ -384,7 +384,7 @@ public final class DublinCoreElements {
 		}
 
 		@Override
-		public Builder scheme(Scheme scheme) {
+		public Builder scheme(IdentifierScheme scheme) {
 			checkNotNull(scheme, "scheme");
 			this.scheme = scheme;
 			return self();

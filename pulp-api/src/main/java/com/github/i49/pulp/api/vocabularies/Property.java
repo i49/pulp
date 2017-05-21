@@ -17,7 +17,7 @@
 package com.github.i49.pulp.api.vocabularies;
 
 /**
- *
+ * The base type of all properties.
  */
 public interface Property {
 	

@@ -38,6 +38,7 @@ import com.github.i49.pulp.api.vocabularies.dc.Description;
 import com.github.i49.pulp.api.vocabularies.dc.DublinCore;
 import com.github.i49.pulp.api.vocabularies.dc.Format;
 import com.github.i49.pulp.api.vocabularies.dc.Identifier;
+import com.github.i49.pulp.api.vocabularies.dc.IdentifierScheme;
 import com.github.i49.pulp.api.vocabularies.dc.Language;
 import com.github.i49.pulp.api.vocabularies.dc.Publisher;
 import com.github.i49.pulp.api.vocabularies.dc.Relation;
@@ -199,10 +200,10 @@ public class PropertyBuilderSelectorTest {
 	@Test
 	public void identifier_shouldBuildIdentifierWithScheme() {
 		String value = "urn:isbn:0451450523";
-		m.add().identifier(value).scheme(Identifier.Scheme.ISBN);
+		m.add().identifier(value).scheme(IdentifierScheme.ISBN);
 		Identifier p = m.find().identifier().get(0);
 		assertThat(p.getValue()).isEqualTo(value);
-		assertThat(p.getScheme()).hasValue(Identifier.Scheme.ISBN);
+		assertThat(p.getScheme()).hasValue(IdentifierScheme.ISBN);
 		assertThat(p.getSchemeURI()).isEmpty();
 	}
 	
