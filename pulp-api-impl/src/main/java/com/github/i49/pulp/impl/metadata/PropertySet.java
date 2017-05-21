@@ -111,6 +111,18 @@ public class PropertySet extends AbstractSet<Property> {
 	}
 	
 	/**
+	 * Counts properties of the specified term.
+	 * 
+	 * @param term the term of the property.
+	 * @return the number of the properties.
+	 */
+	public int countByTerm(Term term) {
+		assert(term != null);
+		List<Property> list = this.map.get(term);
+		return (list != null) ? list.size() : 0; 
+	}
+	
+	/**
 	 * Finds all properties in this set.
 	 * 
 	 * @return a collection containing all properties.

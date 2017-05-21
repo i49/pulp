@@ -19,21 +19,22 @@ package com.github.i49.pulp.api.metadata;
 import static org.assertj.core.api.Assertions.*;
 
 import java.time.OffsetDateTime;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.github.i49.pulp.api.core.Epub;
-import com.github.i49.pulp.api.core.Publication;
-import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.vocabularies.Term;
+import com.github.i49.pulp.api.vocabularies.dc.Creator;
 import com.github.i49.pulp.api.vocabularies.dc.DublinCore;
+import com.github.i49.pulp.api.vocabularies.dc.Identifier;
+import com.github.i49.pulp.api.vocabularies.dc.Language;
+import com.github.i49.pulp.api.vocabularies.dc.Title;
 import com.github.i49.pulp.api.vocabularies.dcterms.DublinCoreTerm;
+import com.github.i49.pulp.api.vocabularies.dcterms.Modified;
 
 /**
  * Unit tests for {@link Metadata}.
@@ -47,34 +48,20 @@ public class MetadataTest {
 		m = Epub.createPublication().addRendition().getMetadata();
 	}
 	
-	/* add(Property) */
+	/* add() */
 	
 	@Test
-	public void add_shouldAddFirstProperty() {
-		RelatorProperty p = f.newCreator("John Smith");
-		assertThat(m.add(p)).isTrue();
-		List<Property> list = m.getList(DublinCore.CREATOR);
+	public void add_shouldAddCreator() {
+		m.add().creator("John Smith");
+		List<Creator> list = m.find().creator();
 		assertThat(list).hasSize(1);
-		assertThat(list).contains(p);
 	}
 	
 	@Test
-	public void add_shouldAddSecondProprety() {
-		TitleProperty p = f.newTitle("The Catcher in the Rye");
-		assertThat(m.add(p)).isTrue();
-		List<Property> list = m.getList(DublinCore.TITLE);
+	public void add_shouldAddTitle() {
+		m.add().title("The Catcher in the Rye");
+		List<Title> list = m.find().title();
 		assertThat(list).hasSize(1);
-		assertThat(list).contains(p);
-	}
-	
-	@Test
-	public void add_shouldReturnFalseIfPropertyAlreadyExists() {
-		RelatorProperty p = f.newCreator("John Smith");
-		assertThat(m.add(p)).isTrue();
-		assertThat(m.add(p)).isFalse();
-		List<Property> list = m.getList(DublinCore.CREATOR);
-		assertThat(list).hasSize(1);
-		assertThat(list).contains(p);
 	}
 	
 	/* clear() */
@@ -90,7 +77,7 @@ public class MetadataTest {
 		assertThat(m.size()).isEqualTo(0);
 	}
 	
-	/* contains(Term) */
+	/* contains() */
 	
 	@Test
 	public void contains_shouldReturnTrueIfPropertyExists() {
@@ -103,6 +90,27 @@ public class MetadataTest {
 		assertThat(m.contains().creator()).isFalse();
 	}
 
+	/* count() */
+	
+	@Test
+	public void counter_shouldReturnCorrectNumber() {
+		m.fillMissingProperties();
+		assertThat(m.count().identifier()).isEqualTo(1);
+		assertThat(m.count().title()).isEqualTo(1);
+		assertThat(m.count().language()).isEqualTo(1);
+		assertThat(m.count().modified()).isEqualTo(1);
+	}
+
+	@Test
+	public void getNumberOfProperties_shouldReturnZeroIfPropertyDoesNotExist() {
+		assertThat(m.count().contributor()).isEqualTo(0);
+		assertThat(m.count().coverage()).isEqualTo(0);
+		assertThat(m.count().creator()).isEqualTo(0);
+		assertThat(m.count().date()).isEqualTo(0);
+		assertThat(m.count().source()).isEqualTo(0);
+		assertThat(m.count().subject()).isEqualTo(0);
+	}
+	
 	/* fillMissingProperties() */
 	
 	@Test
@@ -110,93 +118,56 @@ public class MetadataTest {
 		m.fillMissingProperties();
 		assertThat(m.size()).isEqualTo(4);
 		
-		IdentifierProperty identifier = (IdentifierProperty)m.get(DublinCore.IDENTIFIER);
+		Identifier identifier = m.find().identifier().get(0);
 		assertThat(identifier).isNotNull();
 		assertThat(identifier.getValueAsString()).isNotBlank();
 	
-		TitleProperty title = (TitleProperty)m.get(DublinCore.TITLE);
+		Title title = m.find().title().get(0);
 		assertThat(title).isNotNull();
 		assertThat(title.getValueAsString()).isNotBlank();
 
-		LanguageProperty language = (LanguageProperty)m.get(DublinCore.LANGUAGE);
+		Language language = m.find().language().get(0);
 		assertThat(language).isNotNull();
 		assertThat(language.getValue()).isEqualTo(Locale.getDefault());
 
-		DateProperty modified = (DateProperty)m.get(DublinCoreTerm.MODIFIED);
+		Modified modified = m.find().modified().get(0);
 		assertThat(modified).isNotNull();
 	}
 	
 	@Test
-	public void fillMissingProperties_shouldNotAddPropertyAlreadPresent() {
-		TitleProperty p = f.newTitle("The Catcher in the Rye");
-		m.add(p);
-		assertThat(m.getNumberOfProperties()).isEqualTo(1);
+	public void fillMissingProperties_shouldNotAddPropertyAlreadyPresent() {
+		Title p = m.add().title("The Catcher in the Rye").result();
+		
+		assertThat(m.size()).isEqualTo(1);
 		m.fillMissingProperties();
-		assertThat(m.getNumberOfProperties()).isEqualTo(4);
-		assertThat(m.getNumberOfProperties(DublinCore.TITLE)).isEqualTo(1);
-		assertThat(m.get(DublinCore.TITLE)).isSameAs(p);
+		assertThat(m.size()).isEqualTo(4);
+		assertThat(m.count().title()).isEqualTo(1);
+		assertThat(m.find().title().get(0)).isSameAs(p);
 	}
 	
-	/* get(Term) */
+	/* find() */
 	
 	@Test
-	public void get_shouldReturnPropertyIfExists() {
-		m.add(f.newTitle("Untitled"));
-		Property p = m.get(DublinCore.TITLE);
+	public void find_shouldReturnSpecificProperty() {
+		m.add().title("Untitled");
+		Title p = m.find().title().get(0);
 		assertThat(p).isNotNull();
 		assertThat(p.getTerm()).isSameAs(DublinCore.TITLE);
 		assertThat(p.getValueAsString()).isNotBlank();
 	}
 	
 	@Test
-	public void get_shouldThrowExceptionIfPropertyDoesNotExist() {
-		Throwable thrown = catchThrowable(()->{
-			m.get(DublinCore.CREATOR);
-		});
-		assertThat(thrown).isInstanceOf(NoSuchElementException.class);
-	}
-	
-	/* getAllProperties() */
-	
-	@Test
-	public void getAllProperties_shouldReturnEmptyIteratorByDefault() {
-		Iterator<Property> it = m.getAllProperties();
-		assertThat(it).isEmpty();
+	public void find_shouldReturnEmptyByDefault() {
+		assertThat(m.find().all()).isEmpty();
 	}
 	
 	@Test
-	public void getAllPropreties_shouldReturnIteratorOverProperties() {
-		Property p1 = f.newIdentifier();
-		Property p2 = f.newTitle("title");
-		Property p3 = f.newTitle("subtitle");
-		Property p4 = f.newModified(OffsetDateTime.now());
-		m.add(p1);
-		m.add(p2);
-		m.add(p3);
-		m.add(p4);
-		Iterator<Property> it = m.getAllProperties();
-		assertThat(it).hasSize(4).contains(p1, p2, p3, p4);
-	}
-	
-	/* getNumberOfProperties(Term) */
-	
-	@Test
-	public void getNumberOfProperties_shouldReturnCorrectNumber() {
-		m.fillMissingProperties();
-		assertThat(m.getNumberOfProperties(DublinCore.IDENTIFIER)).isEqualTo(1);
-		assertThat(m.getNumberOfProperties(DublinCore.TITLE)).isEqualTo(1);
-		assertThat(m.getNumberOfProperties(DublinCore.LANGUAGE)).isEqualTo(1);
-		assertThat(m.getNumberOfProperties(DublinCoreTerm.MODIFIED)).isEqualTo(1);
-	}
-
-	@Test
-	public void getNumberOfProperties_shouldReturnZeroIfPropertyDoesNotExist() {
-		assertThat(m.getNumberOfProperties(DublinCore.CONTRIBUTOR)).isEqualTo(0);
-		assertThat(m.getNumberOfProperties(DublinCore.COVERAGE)).isEqualTo(0);
-		assertThat(m.getNumberOfProperties(DublinCore.CREATOR)).isEqualTo(0);
-		assertThat(m.getNumberOfProperties(DublinCore.DATE)).isEqualTo(0);
-		assertThat(m.getNumberOfProperties(DublinCore.SOURCE)).isEqualTo(0);
-		assertThat(m.getNumberOfProperties(DublinCore.SUBJECT)).isEqualTo(0);
+	public void find_shouldReturnAllProperties() {
+		Identifier p1 = m.add().identifier().result();
+		Title p2 = m.add().title("title").result();
+		Title p3 = m.add().title("subtitle").result();
+		Modified p4 = m.add().modified(OffsetDateTime.now()).result();
+		assertThat(m.find().all()).hasSize(4).contains(p1, p2, p3, p4);
 	}
 	
 	/* getReleaseIdentifier() */
@@ -205,24 +176,6 @@ public class MetadataTest {
 	public void getReleaseIdentifier_shouldReturnValidReleaseIdentifier() {
 		ReleaseIdentifier identifier = m.getReleaseIdentifier();
 		assertThat(identifier).isNotNull();
-	}
-	
-	/* getTerms() */
-	
-	@Test
-	public void getTerms_shouldReturnNoTermsByDefault() {
-		Set<Term> terms = m.termSet();
-		assertThat(terms).isEmpty();
-	}
-
-	@Test
-	public void getTerms_shouldReturnAllTermsAdded() {
-		m.add().creator("John Smith");
-		m.fillMissingProperties();
-		Set<Term> terms = m.termSet();
-		assertThat(terms).contains(
-				DublinCore.IDENTIFIER, DublinCore.TITLE, DublinCore.LANGUAGE, DublinCoreTerm.MODIFIED, 
-				DublinCore.CREATOR);
 	}
 	
 	/* isFilled */
@@ -245,19 +198,22 @@ public class MetadataTest {
 
 	@Test
 	public void remove_shouldRemoveSpecifiedProperty() {
-		TitleProperty p = f.newTitle("Untitled");
-		m.add(p);
-		assertThat(m.getNumberOfProperties()).isEqualTo(1);
-		assertThat(m.contains(DublinCore.TITLE)).isTrue();
+		m.add().title("Untitled");
+		Title p = m.find().title().get(0);
+		
+		assertThat(m.size()).isEqualTo(1);
+		assertThat(m.contains().title()).isTrue();
 		
 		assertThat(m.remove(p)).isTrue();
-		assertThat(m.getNumberOfProperties()).isEqualTo(0);
-		assertThat(m.contains(DublinCore.TITLE)).isFalse();
+		assertThat(m.size()).isEqualTo(0);
+		assertThat(m.contains().title()).isFalse();
 	}
 	
 	@Test
 	public void remove_shouldReturnFalseIfPropertyDoesNotExist() {
-		RelatorProperty p = f.newCreator("John Smith");
+		m.add().creator("John Smith");
+		Creator p = m.find().creator().get(0);
+		assertThat(m.remove(p)).isTrue();
 		assertThat(m.remove(p)).isFalse();
 	}
 
@@ -272,5 +228,23 @@ public class MetadataTest {
 	public void size_shouldReturn4IfMandatoryPropertiesAdded() {
 		m.fillMissingProperties();
 		assertThat(m.size()).isEqualTo(4);
+	}
+
+	/* termSet() */
+	
+	@Test
+	public void getTerms_shouldReturnNoTermsByDefault() {
+		Set<Term> terms = m.termSet();
+		assertThat(terms).isEmpty();
+	}
+
+	@Test
+	public void getTerms_shouldReturnAllTermsAdded() {
+		m.add().creator("John Smith");
+		m.fillMissingProperties();
+		Set<Term> terms = m.termSet();
+		assertThat(terms).contains(
+				DublinCore.IDENTIFIER, DublinCore.TITLE, DublinCore.LANGUAGE, DublinCoreTerm.MODIFIED, 
+				DublinCore.CREATOR);
 	}
 }

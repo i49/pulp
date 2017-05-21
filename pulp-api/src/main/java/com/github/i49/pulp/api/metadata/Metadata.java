@@ -16,19 +16,21 @@
 
 package com.github.i49.pulp.api.metadata;
 
-import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.Term;
-import com.github.i49.pulp.api.vocabularies.dc.DublinCore;
 
 /**
  * A set of meta information describing a EPUB publication and its renditions.
  */
 public interface Metadata {
 	
+	/**
+	 * Adds a property to be selected by term.
+	 *  
+	 * @return the selector of the properties.
+	 */
 	PropertyBuilderSelector add();
 	
 	/**
@@ -37,8 +39,25 @@ public interface Metadata {
 	 */
 	void clear();
 
+	/**
+	 * Tests the existence of the property to be selected by term.
+	 * 
+	 * @return the selector of the properties.
+	 */
 	PropertyTesterSelector contains();
 	
+	/**
+	 * Counts properties to be selected by term.
+	 *  
+	 * @return the selector of the properties.
+	 */
+	PropertyCounterSelector count();
+	
+	/**
+	 * Finds properties to be selected by term.
+	 *  
+	 * @return the selector of the properties.
+	 */
 	PropertyListerSelector find();
 	
 	/**
@@ -79,7 +98,21 @@ public interface Metadata {
 	 */
 	boolean isFilled();
 	
+	/**
+	 * Removes properties to be selected by term.
+	 *  
+	 * @return the selector of the properties.
+	 */
 	PropertyListerSelector remove();
+	
+	/**
+	 * Removes the specified property from this metadata.
+	 * 
+	 * @param property the property to remove.
+	 * @return {@code true} if this metadata contained the specified property.
+	 * @throws IllegalArgumentException if {@code property} is {@code null}.
+	 */
+	boolean remove(Property property);
 	
 	/**
 	 * Returns the total number of the properties contained in this metadata.
@@ -109,36 +142,4 @@ public interface Metadata {
 	 * @throws IllegalStateException if the maximum number of properties were already added.
 	 */
 //	boolean add(Property property);
-
-	/**
-	 * Checks if this metadata contains any properties of the specific term.
-	 * 
-	 * @param term the term of the property.
-	 * @return {@code true} if this metadata contains any properties of the term, {@code false} otherwise.
-	 * @throws IllegalArgumentException if {@code term} is {@code null}.
-	 */
-//	boolean contains(Term term);
-	
-	/**
-	 * Returns the number of the properties of the specific term contained in this metadata.
-	 * 
-	 * @param term the term of the properties to count, such as {@link DublinCore#TITLE}.
-	 * @return the number of the properties of the specific term in this metadata.
-	 * @throws IllegalArgumentException if {@code term} is {@code null}.
-	 */
-//	int getNumberOfProperties(Term term);
-
-	/**
-	 * Removes the specified property from this metadata.
-	 * 
-	 * <p>Calling this method is equivalent to the following code.</p>
-	 * <pre>{@code
-	 * getList(property.getTerm()).remove(property);
-	 * }</pre>
-	 * 
-	 * @param property the property to remove.
-	 * @return {@code true} if this metadata contained the specified property.
-	 * @throws IllegalArgumentException if {@code property} is {@code null}.
-	 */
-//	boolean remove(Property property);
 }

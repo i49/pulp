@@ -40,7 +40,7 @@ import com.github.i49.pulp.api.vocabularies.dc.Type;
 import com.github.i49.pulp.api.vocabularies.dcterms.Modified;
 
 /**
- * The interface providing various kinds of property builders.
+ * The interface to select a property builder.
  * 
  * <p>The following properties can be built with builders this interface provides.</p>
  * <h3>Dublin Core Metadata Element Set</h3>

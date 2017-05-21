@@ -15,6 +15,6 @@
  */
 
 /**
- * Provides various kinds of metadata describing EPUB publications.
+ * Provides metadata describing EPUB publications.
  */
 package com.github.i49.pulp.api.metadata;

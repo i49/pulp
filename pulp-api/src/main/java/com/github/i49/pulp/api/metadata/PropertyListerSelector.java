@@ -39,54 +39,135 @@ import com.github.i49.pulp.api.vocabularies.dc.Type;
 import com.github.i49.pulp.api.vocabularies.dcterms.Modified;
 
 /**
- * An interface to list properties in the metadata.
+ * The interface to select a property lister.
  */
 public interface PropertyListerSelector {
 
 	/**
 	 * Returns all properties in the metadata.
 	 * 
-	 * @return a collection containing all properties.
+	 * @return the collection containing all properties.
 	 */
 	Collection<Property> all();
 
+	/**
+	 * Returns {@link Contributor} properties.
+	 * 
+	 * @return the list of the properties of the same term.
+	 */
 	List<Contributor> contributor();
 
+	/**
+	 * Returns {@link Coverage} properties.
+	 * 
+	 * @return the list of the properties of the same term.
+	 */
 	List<Coverage> coverage();
 
+	/**
+	 * Returns {@link Creator} properties.
+	 * 
+	 * @return the list of the properties of the same term.
+	 */
 	List<Creator> creator();
 
+	/**
+	 * Returns {@link Date} properties.
+	 * 
+	 * @return the list of the properties of the same term.
+	 */
 	List<Date> date();
 
+	/**
+	 * Returns {@link Description} properties.
+	 * 
+	 * @return the list of the properties of the same term.
+	 */
 	List<Description> description();
 
+	/**
+	 * Returns {@link Format} properties.
+	 * 
+	 * @return the list of the properties of the same term.
+	 */
 	List<Format> format();
 
+	/**
+	 * Returns {@link Identifier} properties.
+	 * 
+	 * @return the list of the properties of the same term.
+	 */
 	List<Identifier> identifier();
 	
+	/**
+	 * Returns {@link Language} properties.
+	 * 
+	 * @return the list of the properties of the same term.
+	 */
 	List<Language> language();
 
+	/**
+	 * Returns {@link Modified} properties.
+	 * 
+	 * @return the list of the properties of the same term.
+	 */
 	List<Modified> modified();
 
+	/**
+	 * Returns {@link Publisher} properties.
+	 * 
+	 * @return the list of the properties of the same term.
+	 */
 	List<Publisher> publisher();
 
+	/**
+	 * Returns {@link Relation} properties.
+	 * 
+	 * @return the list of the properties of the same term.
+	 */
 	List<Relation> relation();
 
+	/**
+	 * Returns {@link Rights} properties.
+	 * 
+	 * @return the list of the properties of the same term.
+	 */
 	List<Rights> rights();
 	
+	/**
+	 * Returns {@link Source} properties.
+	 * 
+	 * @return the list of the properties of the same term.
+	 */
 	List<Source> source();
 
+	/**
+	 * Returns {@link Subject} properties.
+	 * 
+	 * @return the list of the properties of the same term.
+	 */
 	List<Subject> subject();
 
+	/**
+	 * Returns {@link Title} properties.
+	 * 
+	 * @return the list of the properties of the same term.
+	 */
 	List<Title> title();
 
+	/**
+	 * Returns {@link Type} properties.
+	 * 
+	 * @return the list of the properties of the same term.
+	 */
 	List<Type> type();
 	
 	/**
 	 * Returns the properties of the specified term.
 	 * 
 	 * @param term the term of the properties to return.
-	 * @return list of properties.
+	 * @return the list of the properties of the same term.
+	 * @throws IllegalArgumentException if given {@code term} is {@code null}.
 	 */
 	List<Property> propertyOf(Term term);
 }

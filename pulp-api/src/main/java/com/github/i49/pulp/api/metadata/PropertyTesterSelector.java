@@ -19,41 +19,130 @@ package com.github.i49.pulp.api.metadata;
 import com.github.i49.pulp.api.vocabularies.Term;
 
 /**
- * Type to test selected property interface and return boolean value.
+ * The interface to select a property tester.
+ * Each method in this interface will return a boolean value 
+ * as the result of testing selected properties.
  */
 public interface PropertyTesterSelector {
-	
+
+	/**
+	 * Tests contributor properties.
+	 * 
+	 * @return the result of the testing.
+	 */
 	boolean contributor();
 	
+	/**
+	 * Tests coverage properties.
+	 * 
+	 * @return the result of the testing.
+	 */
 	boolean coverage();
 	
+	/**
+	 * Tests creator properties.
+	 * 
+	 * @return the result of the testing.
+	 */
 	boolean creator();
 	
+	/**
+	 * Tests date properties.
+	 * 
+	 * @return the result of the testing.
+	 */
 	boolean date();
 	
+	/**
+	 * Tests description properties.
+	 * 
+	 * @return the result of the testing.
+	 */
 	boolean description();
 	
+	/**
+	 * Tests format properties.
+	 * 
+	 * @return the result of the testing.
+	 */
 	boolean format();
 	
+	/**
+	 * Tests identifier properties.
+	 * 
+	 * @return the result of the testing.
+	 */
 	boolean identifier();
 
+	/**
+	 * Tests language properties.
+	 * 
+	 * @return the result of the testing.
+	 */
 	boolean language();
 	
+	/**
+	 * Tests modified properties.
+	 * 
+	 * @return the result of the testing.
+	 */
 	boolean modified();
 
+	/**
+	 * Tests publisher properties.
+	 * 
+	 * @return the result of the testing.
+	 */
 	boolean publisher();
 
+	/**
+	 * Tests relation properties.
+	 * 
+	 * @return the result of the testing.
+	 */
 	boolean relation();
 	
+	/**
+	 * Tests rights properties.
+	 * 
+	 * @return the result of the testing.
+	 */
 	boolean rights();
 	
+	/**
+	 * Tests source properties.
+	 * 
+	 * @return the result of the testing.
+	 */
 	boolean source();
 	
+	/**
+	 * Tests subject properties.
+	 * 
+	 * @return the result of the testing.
+	 */
 	boolean subject();
 	
+	/**
+	 * Tests title properties.
+	 * 
+	 * @return the result of the testing.
+	 */
 	boolean title();
 	
+	/**
+	 * Tests type properties.
+	 * 
+	 * @return the result of the testing.
+	 */
 	boolean type();
 	
+	/**
+	 * Tests the properties specified by the term.
+	 * 
+	 * @param term the term of the property.
+	 * @return the result of the testing.
+	 * @throws IllegalArgumentException if given {@code term} is {@code null}.
+	 */
 	boolean propertyOf(Term term);
 }
