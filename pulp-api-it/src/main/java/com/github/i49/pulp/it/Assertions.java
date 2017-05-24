@@ -16,28 +16,21 @@
 
 package com.github.i49.pulp.it;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.assertj.core.api.AbstractAssert;
-import org.assertj.core.api.AbstractListAssert;
 
 import com.github.i49.pulp.api.core.Spine;
 import com.github.i49.pulp.api.core.Spine.Page;
-import com.github.i49.pulp.api.metadata.Property;
 import com.github.i49.pulp.api.vocabularies.Normalizable;
+import com.github.i49.pulp.api.vocabularies.Property;
 
 public class Assertions {
 
-	public static PropertyAssert assertThat(Property actual) {
-		return new PropertyAssert(actual);
+	public static <T extends Property> PropertyAssert<T> assertThat(T actual) {
+		return new PropertyAssert<T>(actual);
 	}
 
-	public static PropertyListAssert assertThat(List<Property> actual) {
-		return new PropertyListAssert(actual);
-	}
-	
 	/**
 	 * Provides assertion on an instance of {@link Spine}. 
 	 * 
@@ -51,13 +44,13 @@ public class Assertions {
 	private Assertions() {
 	}
 	
-	public static class PropertyAssert extends AbstractAssert<PropertyAssert, Property> {
+	public static class PropertyAssert<T extends Property> extends AbstractAssert<PropertyAssert<T>, T> {
 		
-		private PropertyAssert(Property actual) {
+		private PropertyAssert(T actual) {
 			super(actual, PropertyAssert.class);
 		}
 
-		public PropertyAssert hasValue(String value) {
+		public PropertyAssert<T> hasValue(String value) {
 			isNotNull();
 			String actualValue = actual.getValueAsString();
 			if (!actualValue.equals(value)) {
@@ -66,15 +59,15 @@ public class Assertions {
 			return this;
 		}
 
-		public PropertyAssert hasNormalizedValue(String value) {
+		public PropertyAssert<T> hasNormalizedValue(String value) {
 			isNotNull();
 			if (actual instanceof Normalizable) {
-				Normalizable<?> actual = (Normalizable<?>)this.actual;
-				Optional<String> container = actual.getNormalizedValue();
-				if (!container.isPresent()) {
+				Normalizable actual = (Normalizable)this.actual;
+				Optional<String> normalized = actual.getNormalizedValue();
+				if (!normalized.isPresent()) {
 					failWithMessage("Expected normalized value to be <%s> but was <empty>", value);
 				}
-				String actualValue = container.get();
+				String actualValue = normalized.get();
 				if (!actualValue.equals(value)) {
 					failWithMessage("Expected normalized value to be <%s> but was <%s>", value, actualValue);
 				}
@@ -85,26 +78,6 @@ public class Assertions {
 		}
 	}
 	
-	public static class PropertyListAssert extends AbstractListAssert<PropertyListAssert, List<Property>, Property, PropertyAssert> {
-
-		private PropertyListAssert(List<Property> actual) {
-			super(actual, PropertyListAssert.class);
-		}
-		
-		public PropertyListAssert containsExactly(String... values) {
-			isNotNull();
-			List<String> actualValues = actual.stream().map(Property::getValueAsString).collect(Collectors.toList());
-			org.assertj.core.api.Assertions.assertThat(actualValues).containsExactly(values);
-			return this;
-		}
-		
-		@Override
-		protected PropertyAssert toAssert(Property value, String description) {
-			PropertyAssert assertion = new PropertyAssert(value);
-			return assertion;
-		}
-	}
-
 	public static class SpineAssert extends AbstractAssert<SpineAssert, Spine> {
 
 		private SpineAssert(Spine actual) {
