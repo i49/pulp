@@ -23,17 +23,20 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.w3c.dom.Element;
 
-import com.github.i49.pulp.api.core.EpubException;
 import com.github.i49.pulp.api.metadata.Metadata;
+import com.github.i49.pulp.api.metadata.PropertyBuilderSelector;
 import com.github.i49.pulp.api.metadata.TermRegistry;
 import com.github.i49.pulp.api.spi.EpubService;
 import com.github.i49.pulp.api.vocabularies.GenericText;
@@ -42,10 +45,14 @@ import com.github.i49.pulp.api.vocabularies.Relator;
 import com.github.i49.pulp.api.vocabularies.StandardVocabulary;
 import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.Vocabulary;
+import com.github.i49.pulp.api.vocabularies.dc.DublinCore;
 import com.github.i49.pulp.api.vocabularies.dc.Identifier;
+import com.github.i49.pulp.api.vocabularies.dc.Title;
+import com.github.i49.pulp.api.vocabularies.dc.TitleType;
 import com.github.i49.pulp.api.vocabularies.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.io.containers.PrefixRegistry;
+import com.github.i49.pulp.impl.vocabularies.epub.MetaPropertyTerm;
 import com.github.i49.pulp.impl.xml.Nodes;
 
 /**
@@ -61,6 +68,28 @@ class MetadataParser3 implements MetadataParser {
 	private static final Logger log = Logger.getLogger(MetadataParser3.class.getName());
 	private static final Vocabulary DEFAULT_VOCABULARY = StandardVocabulary.EPUB_META;
 	
+	private static final Map<Term, BiConsumer<MetadataParser3, MetadataEntry>> parsers;
+	
+	static {
+		parsers = new HashMap<>();
+		parsers.put(DublinCore.CONTRIBUTOR, MetadataParser3::parseContributor);
+		parsers.put(DublinCore.COVERAGE, MetadataParser3::parseCoverage);
+		parsers.put(DublinCore.CREATOR, MetadataParser3::parseCreator);
+		parsers.put(DublinCore.DATE, MetadataParser3::parseDate);
+		parsers.put(DublinCore.DESCRIPTION, MetadataParser3::parseDescription);
+		parsers.put(DublinCore.FORMAT, MetadataParser3::parseFormat);
+		parsers.put(DublinCore.IDENTIFIER, MetadataParser3::parseIdentifier);
+		parsers.put(DublinCore.LANGUAGE, MetadataParser3::parseLanguage);
+		parsers.put(DublinCore.PUBLISHER, MetadataParser3::parsePublisher);
+		parsers.put(DublinCore.RELATION, MetadataParser3::parseRelation);
+		parsers.put(DublinCore.RIGHTS, MetadataParser3::parseRights);
+		parsers.put(DublinCore.SOURCE, MetadataParser3::parseSource);
+		parsers.put(DublinCore.SUBJECT, MetadataParser3::parseSubject);
+		parsers.put(DublinCore.TITLE, MetadataParser3::parseTitle);
+		parsers.put(DublinCore.TYPE, MetadataParser3::parseType);
+		parsers.put(DublinCoreTerm.MODIFIED, MetadataParser3::parseModified);
+	}
+	
 	MetadataParser3(Metadata metadata, EpubService service, PrefixRegistry prefixRegistry, String uniqueIdentifier) {
 		this.metadata = metadata;
 		this.termRegistry = service.getPropertyTermRegistry();
@@ -70,117 +99,77 @@ class MetadataParser3 implements MetadataParser {
 	
 	@Override
 	public void parse(Element element) {
-		List<MetadataEntry> entries = fetchMetadataEntries(element);
-		for (MetadataEntry entry: entries) {
-			if (entry.getVocabulary() == StandardVocabulary.DCMES) {
-				parseDublinCoreElement(entry);
-			} else {
-				parseMetaElement(entry);
+		for (MetadataEntry entry: fetchMetadataEntries(element)) {
+			if (!entry.isRefining()) {
+				parseMetadataEntry(entry);
 			}
 		}
 	}
 	
-	protected List<MetadataEntry> fetchMetadataEntries(Element metadata) {
+	private List<MetadataEntry> fetchMetadataEntries(Element metadata) {
 		List<MetadataEntry> entries = new ArrayList<>();
-		List<Element> refinements = new ArrayList<>();
-
 		Iterator<Element> it = Nodes.children(metadata);
 		while (it.hasNext()) {
-			Element child = it.next();
-			MetadataEntry entry = null;
-			String namespace = child.getNamespaceURI();
-			if (NAMESPACE_URI.equals(namespace)) {
-				String localName = child.getLocalName();
-				if ("meta".equals(localName)) {
-					if (child.hasAttribute("refines")) {
-						refinements.add(child);
-					} else {
-						entry = new MetadataEntry(child);
-					}
-				}
-			} else if (DC_NAMESPACE_URI.equals(namespace)) {
-				entry = new MetadataEntry(child, StandardVocabulary.DCMES);
-			}
+			MetadataEntry entry = createEntry(it.next());
 			if (entry != null) {
 				entries.add(entry);
 			}
 		}
-		
-		return refineEntries(entries, refinements);
+		return refineEntries(entries);
 	}
 	
-	protected List<MetadataEntry> refineEntries(List<MetadataEntry> entries, List<Element> refinements) {
+	private MetadataEntry createEntry(Element element) {
+		String namespace = element.getNamespaceURI();
+		if (NAMESPACE_URI.equals(namespace)) {
+			if ("meta".equals(element.getLocalName())) {
+				String name = element.getAttribute("property").trim();
+				Term term = findTerm(name);
+				if (term != null) {
+					return new MetadataEntry(term, element);
+				}
+			}
+		} else if (DC_NAMESPACE_URI.equals(namespace)) {
+			Optional<Term> term = termRegistry.findTerm(StandardVocabulary.DCMES, element.getLocalName());
+			if (term.isPresent()) {
+				return new MetadataEntry(term.get(), element);
+			}
+		}
+		return null;
+	}
+	
+	private List<MetadataEntry> refineEntries(List<MetadataEntry> entries) {
 		Map<String, MetadataEntry> map = createEntryMap(entries);
-		for (Element r: refinements) {
-			String target = r.getAttribute("refines").trim();
-			if (target.startsWith("#")) {
-				String id = target.substring(1);
-				MetadataEntry entry = map.get(id);
-				if (entry != null) {
-					entry.addRefinement(r);
+		for (MetadataEntry entry: entries) {
+			if (entry.isRefining()) {
+				String url = entry.getRefiningTarget();
+				if (url.startsWith("#")) {
+					MetadataEntry target = map.get(url.substring(1));
+					if (target != null) {
+						entry.refine(target);
+					}
 				}
 			}
 		}
 		return entries;
 	}
 	
-	protected Map<String, MetadataEntry> createEntryMap(List<MetadataEntry> entries) {
+	private Map<String, MetadataEntry> createEntryMap(List<MetadataEntry> entries) {
 		return entries.stream()
 				.filter(MetadataEntry::hasId)
 				.collect(Collectors.toMap(MetadataEntry::getId, Function.identity()));
 	}
-	
-	/**
-	 * Parses one of Dublin Core Metadata Element and add the parsed property.
-	 * 
-	 * @param entry a child of the metadata element.
-	 * @return added property.
-	 */
-	protected Property parseDublinCoreElement(MetadataEntry entry) {
-		String localName = entry.getElement().getLocalName();
-		
-		switch (localName) {
-		case "contributor":
-			return parseContributor(entry);
-		case "coverage":
-			return parseCoverage(entry);
-		case "creator":
-			return parseCreator(entry);
-		case "date":
-			return parseDate(entry);
-		case "description":
-			return parseDescription(entry);
-		case "format":
-			return parseFormat(entry);
-		case "identifier":
-			return parseIdentifier(entry);
-		case "language":
-			return parseLanguage(entry);
-		case "publisher":
-			return parsePublisher(entry);
-		case "relation":
-			return parseRelation(entry);
-		case "rights":
-			return parseRights(entry);
-		case "source":
-			return parseSource(entry);
-		case "subject":
-			return parseSubject(entry);
-		case "title":
-			return parseTitle(entry);
-		case "type":
-			return parseType(entry);
+
+	private void parseMetadataEntry(MetadataEntry entry) {
+		Term term = entry.getTerm();
+		BiConsumer<MetadataParser3, MetadataEntry> consumer = parsers.get(term);
+		if (consumer != null) {
+			consumer.accept(this, entry);
+		} else {
+			parseGenericProperty(entry);
 		}
-		throw new EpubException(Messages.METADATA_DC_ELEMENT_UNKNOWN(localName));
 	}
 	
-	protected Property parseMetaElement(MetadataEntry entry) {
-		String name = entry.getElement().getAttribute("property");
-		Property p = parseMetaElement(entry, name);
-		return p;
-	}
-	
-	protected Property parseMetaElement(MetadataEntry entry, String name) {
+	private Term findTerm(String name) {
 		String[] parts = name.split(":", 2);
 		String prefix = null;
 		String localName = null;
@@ -190,16 +179,10 @@ class MetadataParser3 implements MetadataParser {
 		} else {
 			localName = name;
 		}
-		Term term = findTerm(prefix, localName);
-		if (term == DublinCoreTerm.MODIFIED) {
-			return parseModified(entry);
-		} else if (term != null) {
-			return parseGenericProperty(entry, term);
-		}
-		return null;
+		return findTerm(prefix, localName);
 	}
 	
-	protected Term findTerm(String prefix, String localName) {
+	private Term findTerm(String prefix, String localName) {
 		Vocabulary vocabulary = findVocabulary(prefix);
 		if (vocabulary == null) {
 			return null;
@@ -207,7 +190,7 @@ class MetadataParser3 implements MetadataParser {
 		return this.termRegistry.getTerm(vocabulary, localName);
 	}
 	
-	protected Vocabulary findVocabulary(String prefix) {
+	private Vocabulary findVocabulary(String prefix) {
 		Vocabulary vocabulary = DEFAULT_VOCABULARY;
 		if (prefix != null) {
 			vocabulary = this.prefixRegistry.get(prefix);
@@ -217,90 +200,107 @@ class MetadataParser3 implements MetadataParser {
 		}
 		return vocabulary;
 	}
+
+	private PropertyBuilderSelector add() {
+		return metadata.add();
+	}
 	
-	protected Property parseContributor(MetadataEntry entry) {
-		return buildRelator(metadata.add().contributor(entry.getValue()), entry);
+	private void parseContributor(MetadataEntry entry) {
+		buildRelator(add().contributor(entry.getValue()), entry);
 	}
 
-	protected Property parseCoverage(MetadataEntry entry) {
-		return metadata.add().coverage(entry.getValue()).result();
+	private void parseCoverage(MetadataEntry entry) {
+		add().coverage(entry.getValue()).result();
 	}
 
-	protected Property parseCreator(MetadataEntry entry) {
-		return buildRelator(metadata.add().creator(entry.getValue()), entry);
+	private void parseCreator(MetadataEntry entry) {
+		buildRelator(add().creator(entry.getValue()), entry);
 	}
 
-	protected Property parseDate(MetadataEntry entry) {
+	private void parseDate(MetadataEntry entry) {
 		OffsetDateTime dateTime = convertDateTime(entry.getValue());
-		return metadata.add().date(dateTime).result();
+		add().date(dateTime).result();
 	}
 
-	protected Property parseDescription(MetadataEntry entry) {
-		return metadata.add().description(entry.getValue()).result();
+	private void parseDescription(MetadataEntry entry) {
+		add().description(entry.getValue()).result();
 	}
 
-	protected Property parseFormat(MetadataEntry entry) {
-		return metadata.add().format(entry.getValue()).result();
+	private void parseFormat(MetadataEntry entry) {
+		add().format(entry.getValue()).result();
 	}
 	
-	protected Property parseIdentifier(MetadataEntry entry) {
-		Identifier.Builder b = metadata.add().identifier(entry.getValue());
-		if (entry.hasId(this.uniqueIdentifier)) {
+	private void parseIdentifier(MetadataEntry entry) {
+		Identifier.Builder b = add().identifier(entry.getValue());
+		if (entry.hasId() && entry.getId().equals(this.uniqueIdentifier)) {
 			//prepend(p);
 		} else {
 			//append(p);
 		}
-		return b.result();
+		b.result();
 	}
 
-	protected Property parseLanguage(MetadataEntry entry) {
-		return metadata.add().language(entry.getValue()).result();
+	private void parseLanguage(MetadataEntry entry) {
+		add().language(entry.getValue()).result();
 	}
 
-	protected Property parsePublisher(MetadataEntry entry) {
-		return buildRelator(metadata.add().publisher(entry.getValue()), entry);
+	private void parsePublisher(MetadataEntry entry) {
+		buildRelator(add().publisher(entry.getValue()), entry);
 	}
 
-	protected Property parseRelation(MetadataEntry entry) {
-		return metadata.add().relation(entry.getValue()).result();
+	private void parseRelation(MetadataEntry entry) {
+		add().relation(entry.getValue()).result();
 	}
 
-	protected Property parseRights(MetadataEntry entry) {
-		return metadata.add().rights(entry.getValue()).result();
+	private void parseRights(MetadataEntry entry) {
+		add().rights(entry.getValue()).result();
 	}
 
-	protected Property parseSource(MetadataEntry entry) {
-		return metadata.add().source(entry.getValue()).result();
+	private void parseSource(MetadataEntry entry) {
+		add().source(entry.getValue()).result();
 	}
 
-	protected Property parseSubject(MetadataEntry entry) {
-		return metadata.add().subject(entry.getValue()).result();
+	private void parseSubject(MetadataEntry entry) {
+		add().subject(entry.getValue()).result();
 	}
 	
-	protected Property parseTitle(MetadataEntry entry) {
-		return metadata.add().title(entry.getValue()).result();
+	private void parseTitle(MetadataEntry entry) {
+		Title.Builder builder = add().title(entry.getValue());
+		for (MetadataEntry refiner: entry.getRefiners()) {
+			Term term = refiner.getTerm();
+			if (term == MetaPropertyTerm.DISPLAY_SEQ) {
+				builder.displayOrder(Integer.parseInt(refiner.getValue()));
+			} else if (term == MetaPropertyTerm.FILE_AS) {
+				builder.fileAs(refiner.getValue());
+			} else if (term == MetaPropertyTerm.TITLE_TYPE) {
+				TitleType type = TitleType.valueOf(refiner.getValue().toUpperCase());
+				builder.ofType(type);
+			}
+		}
+		builder.result();
 	}
 
-	protected Property parseType(MetadataEntry entry) {
-		return metadata.add().type(entry.getValue()).result();
+	private void parseType(MetadataEntry entry) {
+		add().type(entry.getValue()).result();
 	}
 	
-	protected Property parseModified(MetadataEntry entry) {
+	private Property parseModified(MetadataEntry entry) {
 		OffsetDateTime dateTime = convertDateTime(entry.getValue());
-		return metadata.add().modified(dateTime).result();
+		return add().modified(dateTime).result();
 	}
 	
-	protected Property parseGenericProperty(MetadataEntry entry, Term term) {
-		GenericText.Builder b = metadata.add().generic(term, entry.getValue());
+	private Property parseGenericProperty(MetadataEntry entry) {
+		Term term = entry.getTerm();
+		GenericText.Builder b = add().generic(term, entry.getValue());
 		return b.result();
 	}
 	
-	protected <T extends Relator, R extends Relator.Builder<T, R>> 
+	private <T extends Relator, R extends Relator.Builder<T, R>> 
 	T buildRelator(Relator.Builder<T, R> builder, MetadataEntry entry) {
-		for (Element r: entry.getRefinements()) {
-			String term = r.getAttribute("property");
-			if ("file-as".equals(term)) {
-				builder.fileAs(r.getTextContent());
+		for (MetadataEntry refiner: entry.getRefiners()) {
+			Term term = refiner.getTerm();
+			if (term == MetaPropertyTerm.FILE_AS) {
+				builder.fileAs(refiner.getValue());
 			}
 		}
 		return builder.result();

@@ -17,6 +17,8 @@
 package com.github.i49.pulp.api.vocabularies;
 
 import java.net.URI;
+import com.github.i49.pulp.api.vocabularies.dc.DublinCore;
+import com.github.i49.pulp.api.vocabularies.dcterms.DublinCoreTerm;
 
 /**
  * Default and reserved vocabularies for metadata terms.
@@ -42,6 +44,9 @@ public enum StandardVocabulary implements Vocabulary {
 	 */
 	EPUB_MEDIA("http://www.idpf.org/epub/vocab/overlays/#"),
 	
+	/**
+	 * EPUB Meta Properties Vocabulary.
+	 */
 	EPUB_META("http://idpf.org/epub/vocab/package/meta/#"),
 	
 	EPUB_RENDITION("http://www.idpf.org/vocab/rendition/#"),

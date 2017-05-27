@@ -31,6 +31,7 @@ import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.Vocabulary;
 import com.github.i49.pulp.api.vocabularies.dc.DublinCore;
 import com.github.i49.pulp.api.vocabularies.dcterms.DublinCoreTerm;
+import com.github.i49.pulp.impl.vocabularies.epub.MetaPropertyTerm;
 
 /**
  * The default implementation of {@link TermRegistry}.
@@ -49,6 +50,7 @@ public class DefaultTermRegistry implements TermRegistry {
 		registerAllVocabularies(StandardVocabulary.class);
 		registerAllTerms(DublinCore.class);
 		registerAllTerms(DublinCoreTerm.class);
+		registerAllTerms(MetaPropertyTerm.class);
 	}
 	
 	@Override

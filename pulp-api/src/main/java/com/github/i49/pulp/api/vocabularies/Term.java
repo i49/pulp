@@ -29,7 +29,9 @@ public interface Term {
 	 * 
 	 * @return the type of the property, never be {@code null}.
 	 */
-	Class<? extends Property> getType();
+	default Class<? extends Property> getType() {
+		return Property.class;
+	}
 
 	/**
 	 * Returns the vocabulary to which this term belongs.

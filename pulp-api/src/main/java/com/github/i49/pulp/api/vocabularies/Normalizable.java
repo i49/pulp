@@ -24,27 +24,11 @@ import java.util.Optional;
 public interface Normalizable {
 
 	/**
-	 * Assigns the normalized form of the property value.
-	 * 
-	 * @param value the normalized property value.
-	 * @return this property.
-	 * @throws IllegalArgumentException if {@code value} is invalid.
-	 */
-//	S fileAs(String value);
-	
-	/**
 	 * Returns the normalized form of the value of this property.
 	 * 
 	 * @return the normalized form of the property value.
 	 */
 	Optional<String> getNormalizedValue();
-	
-	/**
-	 * Clears the normalized value assigned.
-	 * 
-	 * @return this property.
-	 */
-//	S resetNormalizedValue();
 	
 	public interface Builder<R extends Builder<R>> {
 		

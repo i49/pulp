@@ -22,25 +22,26 @@ import java.util.List;
 
 import org.w3c.dom.Element;
 
-import com.github.i49.pulp.api.vocabularies.Vocabulary;
+import com.github.i49.pulp.api.vocabularies.Term;
 
 /**
- * Metadata entry.
+ * A metadata entry in publication document.
  */
 class MetadataEntry {
 
+	private final Term term;
 	private final Element element;
-	private final Vocabulary vocabulary;
-	private List<Element> refinements;
+	private List<MetadataEntry> refiners;
 	
-	MetadataEntry(Element element) {
+	MetadataEntry(Term term, Element element) {
+		assert(term != null);
+		assert(element != null);
+		this.term = term;
 		this.element = element;
-		this.vocabulary = null;
 	}
-
-	MetadataEntry(Element element, Vocabulary vocabulary) {
-		this.element = element;
-		this.vocabulary = vocabulary;
+	
+	Term getTerm() {
+		return term;
 	}
 	
 	Element getElement() {
@@ -51,12 +52,21 @@ class MetadataEntry {
 		return getElement().hasAttribute("id");
 	}
 	
-	boolean hasId(String identifier) {
-		return identifier.equals(getId());
-	}
-
 	String getId() {
 		return getElement().getAttribute("id");
+	}
+	
+	boolean isRefining() {
+		return getElement().hasAttribute("refines");
+	}
+	
+	String getRefiningTarget() {
+		return getElement().getAttribute("refines").trim();
+	}
+	
+	void refine(MetadataEntry entry) {
+		assert(entry != null);
+		entry.addRefiner(this);
 	}
 	
 	/**
@@ -65,26 +75,27 @@ class MetadataEntry {
 	 * @return the value of this entry.
 	 */
 	String getValue() {
-		return getElement().getTextContent();
+		return getElement().getTextContent().trim();
 	}
 	
-	Vocabulary getVocabulary() {
-		return vocabulary;
-	}
-	
-	List<Element> getRefinements() {
-		if (this.refinements == null) {
+	/**
+	 * Returns the refiners of this entry.
+	 * 
+	 * @return the refiners of this entry.
+	 */
+	Iterable<MetadataEntry> getRefiners() {
+		if (this.refiners == null) {
 			return Collections.emptyList();
 		}
-		return this.refinements;
+		return this.refiners;
 	}
 	
-	void addRefinement(Element element) {
-		assert(element != null);
-		if (this.refinements == null) {
-			this.refinements = new ArrayList<>();
+	private void addRefiner(MetadataEntry refiner) {
+		assert(refiner != null);
+		if (this.refiners == null) {
+			this.refiners = new ArrayList<>();
 		}
-		this.refinements.add(element);
+		this.refiners.add(refiner);
 	}
 	
 	@Override

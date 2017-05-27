@@ -63,6 +63,12 @@ public final class Preconditions {
 			throw new IllegalArgumentException("\"" + name + "\" must not be blank");
 		}
 	}
+	
+	public static void checkNotNegative(int value, String name) {
+		if (value < 0) {
+			throw new IllegalArgumentException("\"" + name + "\" must not be negative");
+		}
+	}
 
 	private Preconditions() {
 	}

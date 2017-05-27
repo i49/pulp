@@ -17,6 +17,7 @@
 package com.github.i49.pulp.api.vocabularies.dc;
 
 import java.util.Optional;
+import java.util.OptionalInt;
 
 import com.github.i49.pulp.api.vocabularies.Multilingual;
 import com.github.i49.pulp.api.vocabularies.Normalizable;
@@ -39,10 +40,33 @@ public interface Title extends Text, Multilingual, Normalizable {
 	 * @return the type of this title.
 	 */
 	Optional<TitleType> getType();
+	
+	/**
+	 * Returns the position in which to display this title relative to other titles.
+	 * 
+	 * @return the position of this title.
+	 */
+	OptionalInt getDisplayOrder();
 
 	public interface Builder extends Text.Builder<Title, Builder>, 
 		Multilingual.Builder<Builder>, Normalizable.Builder<Builder>  {
 		
+		/**
+		 * Specifies the type of the title.
+		 * 
+		 * @param type the type of the title, one of enumerators defined by {@link TitleType}.
+		 * @return this builder.
+		 * @throws IllegalArgumentException if given {@code type} was {@code null}.
+		 */
 		Builder ofType(TitleType type);
+		
+		/**
+		 * Specifies the display order of the title.
+		 * 
+		 * @param displayOrder the position of the title when displayed.
+		 * @return this builder.
+		 * @throws IllegalArgumentException if given {@code displayOrder} was negative.
+		 */
+		Builder displayOrder(int displayOrder);
 	}
 }

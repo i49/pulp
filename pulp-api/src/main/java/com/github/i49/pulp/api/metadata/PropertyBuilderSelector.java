@@ -17,6 +17,7 @@
 package com.github.i49.pulp.api.metadata;
 
 import java.time.OffsetDateTime;
+import java.util.IllformedLocaleException;
 import java.util.Locale;
 
 import com.github.i49.pulp.api.vocabularies.Generic;

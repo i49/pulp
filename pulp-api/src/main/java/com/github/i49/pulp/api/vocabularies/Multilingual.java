@@ -39,23 +39,6 @@ public interface Multilingual {
 	 */
 	Optional<String> getAlternativeValue();
 
-	/**
-	 * Clears the alternative representation assigned.
-	 * 
-	 * @return this property.
-	 */
-//	S resetAlternativeValue();
-	
-	/**
-	 * Assigns the alternative representation of this property.
-	 * 
-	 * @param value the alternative representation of the main value. 
-	 * @param language the language of the alternative representation.
-	 * @return this property.
-	 * @throws IllegalArgumentException if any parameters are invalid.
-	 */
-//	S setAlternativeValue(String value, Locale language);
-	
 	public interface Builder<R extends Builder<R>> {
 		
 		/**

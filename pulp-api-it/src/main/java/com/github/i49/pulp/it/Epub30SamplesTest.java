@@ -46,6 +46,7 @@ import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.dc.Creator;
 import com.github.i49.pulp.api.vocabularies.dc.Subject;
 import com.github.i49.pulp.api.vocabularies.dc.Title;
+import com.github.i49.pulp.api.vocabularies.dc.TitleType;
 
 /**
  * Tests of reading EPUB 3.0 samples.
@@ -175,7 +176,11 @@ public class Epub30SamplesTest {
 			List<Title> titles = m.find().title();
 			assertThat(titles).hasSize(2);
 			assertThat(titles.get(0)).hasValue("Children's Literature");
+			assertThat(titles.get(0).getType()).hasValue(TitleType.MAIN);
+			assertThat(titles.get(0).getDisplayOrder()).hasValue(1);
 			assertThat(titles.get(1)).hasValue("A Textbook of Sources for Teachers and Teacher-Training Classes");
+			assertThat(titles.get(1).getType()).hasValue(TitleType.SUBTITLE);
+			assertThat(titles.get(1).getDisplayOrder()).hasValue(2);
 		
 			assertThat(m.find().language().get(0)).hasValue("en");
 			

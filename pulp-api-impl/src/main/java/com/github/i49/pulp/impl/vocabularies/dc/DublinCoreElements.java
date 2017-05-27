@@ -20,6 +20,7 @@ import static com.github.i49.pulp.impl.base.Preconditions.*;
 
 import java.net.URI;
 import java.util.Optional;
+import java.util.OptionalInt;
 
 import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.dc.Contributor;
@@ -617,15 +618,25 @@ public final class DublinCoreElements {
 	private static class DefaultTitle extends MultiValueTextProperty implements Title {
 		
 		private final TitleType type;
+		private final int displayOrder;
 		
 		private DefaultTitle(TitleBuilder b) {
 			super(b);
 			this.type = b.type;
+			this.displayOrder = b.displayOrder;
 		}
 		
 		@Override
 		public Optional<TitleType> getType() {
 			return Optional.ofNullable(type);
+		}
+		
+		@Override
+		public OptionalInt getDisplayOrder() {
+			if (displayOrder < 0) {
+				return OptionalInt.empty();
+			}
+			return OptionalInt.of(displayOrder);
 		}
 	}
 
@@ -634,6 +645,7 @@ public final class DublinCoreElements {
 		implements Title.Builder {
 		
 		private TitleType type;
+		private int displayOrder = -1;
 		
 		@Override
 		public Term getTerm() {
@@ -644,6 +656,13 @@ public final class DublinCoreElements {
 		public Title.Builder ofType(TitleType type) {
 			checkNotNull(type, "type");
 			this.type = type;
+			return this;
+		}
+		
+		@Override
+		public Title.Builder displayOrder(int displayOrder) {
+			checkNotNegative(displayOrder, "displayOrder");
+			this.displayOrder = displayOrder;
 			return this;
 		}
 		
