@@ -25,9 +25,9 @@ import com.github.i49.pulp.api.vocabularies.Term;
 /**
  * The list containing properties of the same term.
  */
-class TermPropertyList extends AbstractList<Property> {
+class TermPropertyList extends AbstractList<Property<?>> {
 	
-	private final ArrayList<Property> delegate = new ArrayList<>();
+	private final ArrayList<Property<?>> delegate = new ArrayList<>();
 	private final Term term;
 	
 	/**
@@ -44,8 +44,8 @@ class TermPropertyList extends AbstractList<Property> {
 	 * Calling this method may replace the deferred property with the real property built by its builder.
 	 */
 	@Override
-	public Property get(int index) {
-		Property p = delegate.get(index);
+	public Property<?> get(int index) {
+		Property<?> p = delegate.get(index);
 		if (p instanceof DeferredProperty) {
 			DeferredProperty<?> deferred = (DeferredProperty<?>)p;
 			p = deferred.get();
@@ -60,13 +60,13 @@ class TermPropertyList extends AbstractList<Property> {
 	}
 	
 	@Override
-	public Property set(int index, Property element) {
+	public Property<?> set(int index, Property<?> element) {
 		validate(element);
 		return delegate.set(index, element);
 	}
 
 	@Override
-	public void add(int index, Property element) {
+	public void add(int index, Property<?> element) {
 		validate(element);
 		if (!this.term.isRepeatable() && size() >= 1) {
 			throw new IllegalStateException("Cannot add more than one property for this term.");
@@ -75,11 +75,11 @@ class TermPropertyList extends AbstractList<Property> {
 	}
 
 	@Override
-	public Property remove(int index) {
+	public Property<?> remove(int index) {
 		return delegate.remove(index);
 	}
 	
-	private void validate(Property element) {
+	private void validate(Property<?> element) {
 		if (element == null) {
 			throw new NullPointerException("Property must not be null.");
 		} else if (element.getTerm() != this.term) {

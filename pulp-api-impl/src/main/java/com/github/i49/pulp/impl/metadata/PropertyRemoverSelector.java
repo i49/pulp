@@ -34,12 +34,12 @@ class PropertyRemoverSelector extends AbstractPropertyListerSelector {
 	}
 
 	@Override
-	protected Collection<Property> processAll() {
+	protected Collection<Property<?>> processAll() {
 		return null;
 	}
 	
 	@Override
-	protected List<Property> processTerm(Term term) {
+	protected List<Property<?>> processTerm(Term term) {
 		return properties.removeByTerm(term);
 	}
 }

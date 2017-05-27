@@ -19,15 +19,15 @@ package com.github.i49.pulp.api.vocabularies.dc;
 import java.net.URI;
 import java.util.Optional;
 
+import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.PropertyBuilder;
 import com.github.i49.pulp.api.vocabularies.Term;
-import com.github.i49.pulp.api.vocabularies.TypedProperty;
 
 /**
  * Identifier property in Dublin Core Metadata Element Set,
  * which provides the identifier of the publication.
  */
-public interface Identifier extends TypedProperty<String> {
+public interface Identifier extends Property<String> {
 
 	/**
 	 * {@inheritDoc}

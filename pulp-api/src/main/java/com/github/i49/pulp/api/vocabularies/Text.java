@@ -22,7 +22,7 @@ import java.util.Optional;
 /**
  * Text type property which can have language and direction.
  */
-public interface Text extends TypedProperty<String> {
+public interface Text extends Property<String> {
 
 	Optional<Direction> getDirection();
 

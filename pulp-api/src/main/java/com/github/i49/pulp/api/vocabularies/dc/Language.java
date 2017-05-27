@@ -18,14 +18,14 @@ package com.github.i49.pulp.api.vocabularies.dc;
 
 import java.util.Locale;
 
+import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.PropertyBuilder;
 import com.github.i49.pulp.api.vocabularies.Term;
-import com.github.i49.pulp.api.vocabularies.TypedProperty;
 
 /**
  *
  */
-public interface Language extends TypedProperty<Locale> {
+public interface Language extends Property<Locale> {
 	
 	@Override
 	default Term getTerm() {

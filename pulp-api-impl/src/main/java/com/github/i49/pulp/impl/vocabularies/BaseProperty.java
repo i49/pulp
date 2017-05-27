@@ -18,16 +18,16 @@ package com.github.i49.pulp.impl.vocabularies;
 
 import static com.github.i49.pulp.impl.base.Preconditions.checkNotNull;
 
+import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.PropertyBuilder;
 import com.github.i49.pulp.api.vocabularies.Term;
-import com.github.i49.pulp.api.vocabularies.TypedProperty;
 
 /**
  * The base class of all property classes.
  * 
  * @param <V> the type of the property value.
  */
-public class BaseProperty<V> implements TypedProperty<V> {
+public class BaseProperty<V> implements Property<V> {
 
 	private final Term term;
 	private final V value;
@@ -64,7 +64,7 @@ public class BaseProperty<V> implements TypedProperty<V> {
 	/**
 	 * A skeletal implementation of {@link PropertyBuilder}.
 	 */
-	public static abstract class Builder<V, T extends TypedProperty<V>, R extends PropertyBuilder<V, T, R>> 
+	public static abstract class Builder<V, T extends Property<V>, R extends PropertyBuilder<V, T, R>> 
 		implements PropertyBuilder<V, T, R> {
 
 		private V value;

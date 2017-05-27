@@ -18,8 +18,8 @@ package com.github.i49.pulp.impl.vocabularies;
 
 import static com.github.i49.pulp.impl.base.Preconditions.checkNotBlank;
 
+import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.PropertyBuilder;
-import com.github.i49.pulp.api.vocabularies.TypedProperty;
 
 /**
  * Property which has a value of {@link String} type.
@@ -30,7 +30,7 @@ public class StringProperty extends BaseProperty<String> {
 		super(b);
 	}
 	
-	public static abstract class Builder<T extends TypedProperty<String>, R extends PropertyBuilder<String, T, R>>
+	public static abstract class Builder<T extends Property<String>, R extends PropertyBuilder<String, T, R>>
 		extends BaseProperty.Builder<String, T, R> {
 
 		@Override

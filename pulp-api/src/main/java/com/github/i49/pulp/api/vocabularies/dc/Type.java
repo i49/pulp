@@ -16,15 +16,15 @@
 
 package com.github.i49.pulp.api.vocabularies.dc;
 
+import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.PropertyBuilder;
 import com.github.i49.pulp.api.vocabularies.Term;
-import com.github.i49.pulp.api.vocabularies.TypedProperty;
 
 /**
  * @author i49
  *
  */
-public interface Type extends TypedProperty<String> {
+public interface Type extends Property<String> {
 
 	@Override
 	default Term getTerm() {

@@ -20,8 +20,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
+import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.PropertyBuilder;
-import com.github.i49.pulp.api.vocabularies.TypedProperty;
 
 /**
  * Property which has a value of {@link OffsetDateTime} type.
@@ -40,7 +40,7 @@ public class DateProperty extends BaseProperty<OffsetDateTime> {
 		return utc.format(ISO8601_FORMATTER);		
 	}
 
-	public static abstract class Builder<T extends TypedProperty<OffsetDateTime>, R extends PropertyBuilder<OffsetDateTime, T, R>>
+	public static abstract class Builder<T extends Property<OffsetDateTime>, R extends PropertyBuilder<OffsetDateTime, T, R>>
 		extends BaseProperty.Builder<OffsetDateTime, T, R> {
 	}
 }

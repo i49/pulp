@@ -19,14 +19,14 @@ package com.github.i49.pulp.api.vocabularies.dc;
 import java.net.URI;
 import java.util.Optional;
 
+import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.PropertyBuilder;
 import com.github.i49.pulp.api.vocabularies.Term;
-import com.github.i49.pulp.api.vocabularies.TypedProperty;
 
 /**
  *
  */
-public interface Subject extends TypedProperty<String> {
+public interface Subject extends Property<String> {
 	
 	Optional<SubjectAuthority> getAuthority();
 	

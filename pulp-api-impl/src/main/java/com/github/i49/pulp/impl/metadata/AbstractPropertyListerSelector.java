@@ -49,7 +49,7 @@ import com.github.i49.pulp.api.vocabularies.dcterms.Modified;
 abstract class AbstractPropertyListerSelector implements PropertyListerSelector {
 	
 	@Override
-	public Collection<Property> all() {
+	public Collection<Property<?>> all() {
 		return processAll();
 	}
 
@@ -134,7 +134,7 @@ abstract class AbstractPropertyListerSelector implements PropertyListerSelector 
 	}
 	
 	@Override
-	public List<Property> propertyOf(Term term) {
+	public List<Property<?>> propertyOf(Term term) {
 		checkNotNull(term, "term");
 		return process(term);
 	}
@@ -146,11 +146,11 @@ abstract class AbstractPropertyListerSelector implements PropertyListerSelector 
 	 * @return the list of the properties of the specific type.
 	 */
 	@SuppressWarnings("unchecked")
-	private <T extends Property> List<T> process(Term term) {
+	private <T extends Property<?>> List<T> process(Term term) {
 		return (List<T>)processTerm(term);
 	}
 	
-	protected abstract Collection<Property> processAll();
+	protected abstract Collection<Property<?>> processAll();
 	
-	protected abstract List<Property> processTerm(Term term);
+	protected abstract List<Property<?>> processTerm(Term term);
 }

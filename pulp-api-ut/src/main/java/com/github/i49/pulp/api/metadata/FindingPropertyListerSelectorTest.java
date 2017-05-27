@@ -55,7 +55,7 @@ public class FindingPropertyListerSelectorTest {
 		m.add().identifier();
 		m.add().creator("John Smith");
 		m.add().language("en-US");
-		Iterable<Property> all = m.find().all();
+		Iterable<Property<?>> all = m.find().all();
 		assertThat(all).hasSize(3);
 		assertThat(all).hasOnlyElementsOfTypes(Identifier.class, Creator.class, Language.class);
 	}
@@ -78,7 +78,7 @@ public class FindingPropertyListerSelectorTest {
 	public void propertyOf_shouldReturnSpecifiedProperties() {
 		m.add().creator("Lewis Carroll");
 		m.add().creator("John Tenniel");
-		List<Property> found = m.find().propertyOf(DublinCore.CREATOR);
+		List<Property<?>> found = m.find().propertyOf(DublinCore.CREATOR);
 		assertThat(found).hasSize(2);
 		assertThat(found.get(0).getValue()).isEqualTo("Lewis Carroll");
 		assertThat(found.get(1).getValue()).isEqualTo("John Tenniel");

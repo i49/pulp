@@ -23,19 +23,11 @@ import org.junit.Test;
 
 import com.github.i49.pulp.api.vocabularies.StandardVocabulary;
 import com.github.i49.pulp.api.vocabularies.dc.DublinCore;
-import com.github.i49.pulp.api.vocabularies.dc.Title;
 
 /**
  * Unit tests for {@link DublinCore}.
  */
 public class DublinCoreTest {
-	
-	/* getType() */
-	
-	@Test
-	public void getType_shouldReturnTypeOfTerm() {
-		assertThat(TITLE.getType()).isSameAs(Title.class);
-	}
 	
 	/* getVocabulary() */
 

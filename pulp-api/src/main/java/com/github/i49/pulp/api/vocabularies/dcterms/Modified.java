@@ -18,13 +18,13 @@ package com.github.i49.pulp.api.vocabularies.dcterms;
 
 import java.time.OffsetDateTime;
 
+import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.PropertyBuilder;
-import com.github.i49.pulp.api.vocabularies.TypedProperty;
 
 /**
  *
  */
-public interface Modified extends TypedProperty<OffsetDateTime> {
+public interface Modified extends Property<OffsetDateTime> {
 
 	public interface Builder extends PropertyBuilder<OffsetDateTime, Modified, Builder> {
 	}

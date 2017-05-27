@@ -77,7 +77,7 @@ public class DefaultMetadata implements Metadata {
 	}
 	
 	@Override
-	public boolean add(Property property) {
+	public boolean add(Property<?> property) {
 		validate(property, "property");
 		return properties.add(property);
 	}
@@ -136,7 +136,7 @@ public class DefaultMetadata implements Metadata {
 	}
 	
 	@Override
-	public boolean remove(Property property) {
+	public boolean remove(Property<?> property) {
 		validate(property, "property");
 		return properties.remove(property);
 	}
@@ -151,7 +151,7 @@ public class DefaultMetadata implements Metadata {
 		return properties.termSet();
 	}
 
-	private void validate(Property property, String name) {
+	private void validate(Property<?> property, String name) {
 		checkNotNull(property, name);
 		Term term = property.getTerm();
 		if (!termRegistry.containsTerm(term)) {

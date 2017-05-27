@@ -23,7 +23,7 @@ package com.github.i49.pulp.api.vocabularies;
  * @param <T> the type of the property.
  * @param <R> the type of the derived property builder producing the final property.
  */
-public interface PropertyBuilder<V, T extends TypedProperty<V>, R extends PropertyBuilder<V, T, R>> {
+public interface PropertyBuilder<V, T extends Property<V>, R extends PropertyBuilder<V, T, R>> {
 
 	/**
 	 * Returns the term of the property to build.

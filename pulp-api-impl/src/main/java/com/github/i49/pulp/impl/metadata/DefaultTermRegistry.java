@@ -24,8 +24,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.github.i49.pulp.api.metadata.TermRegistry;
-import com.github.i49.pulp.api.vocabularies.Generic;
-import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.StandardVocabulary;
 import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.Vocabulary;
@@ -222,6 +220,11 @@ public class DefaultTermRegistry implements TermRegistry {
 		}
 
 		@Override
+		public Vocabulary getVocabulary() {
+			return vocabulary;
+		}
+
+		@Override
 		public String localName() {
 			return name;
 		}
@@ -229,16 +232,6 @@ public class DefaultTermRegistry implements TermRegistry {
 		@Override
 		public String toString() {
 			return qualifiedName();
-		}
-		
-		@Override
-		public Class<? extends Property> getType() {
-			return Generic.class;
-		}
-
-		@Override
-		public Vocabulary getVocabulary() {
-			return vocabulary;
 		}
 	}
 	

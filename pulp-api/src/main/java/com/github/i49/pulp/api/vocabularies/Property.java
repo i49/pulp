@@ -17,9 +17,11 @@
 package com.github.i49.pulp.api.vocabularies;
 
 /**
- * The base type of all properties.
+ * The base type of all types of properties.
+ * 
+ * @param <V> the type of the property value.
  */
-public interface Property {
+public interface Property<V> {
 	
 	/**
 	 * Returns the term of this property.
@@ -33,7 +35,7 @@ public interface Property {
 	 * 
 	 * @return the value of this property.
 	 */
-	Object getValue();
+	V getValue();
 	
 	/**
 	 * Returns the string representation of this property value.

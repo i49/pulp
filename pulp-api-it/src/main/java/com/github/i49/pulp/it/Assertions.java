@@ -27,7 +27,7 @@ import com.github.i49.pulp.api.vocabularies.Property;
 
 public class Assertions {
 
-	public static <T extends Property> PropertyAssert<T> assertThat(T actual) {
+	public static <T extends Property<?>> PropertyAssert<T> assertThat(T actual) {
 		return new PropertyAssert<T>(actual);
 	}
 
@@ -44,7 +44,7 @@ public class Assertions {
 	private Assertions() {
 	}
 	
-	public static class PropertyAssert<T extends Property> extends AbstractAssert<PropertyAssert<T>, T> {
+	public static class PropertyAssert<T extends Property<?>> extends AbstractAssert<PropertyAssert<T>, T> {
 		
 		private PropertyAssert(T actual) {
 			super(actual, PropertyAssert.class);

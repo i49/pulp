@@ -40,7 +40,6 @@ import com.github.i49.pulp.api.metadata.PropertyBuilderSelector;
 import com.github.i49.pulp.api.metadata.TermRegistry;
 import com.github.i49.pulp.api.spi.EpubService;
 import com.github.i49.pulp.api.vocabularies.GenericText;
-import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.Relator;
 import com.github.i49.pulp.api.vocabularies.StandardVocabulary;
 import com.github.i49.pulp.api.vocabularies.Term;
@@ -284,15 +283,15 @@ class MetadataParser3 implements MetadataParser {
 		add().type(entry.getValue()).result();
 	}
 	
-	private Property parseModified(MetadataEntry entry) {
+	private void parseModified(MetadataEntry entry) {
 		OffsetDateTime dateTime = convertDateTime(entry.getValue());
-		return add().modified(dateTime).result();
+		add().modified(dateTime).result();
 	}
 	
-	private Property parseGenericProperty(MetadataEntry entry) {
+	private void parseGenericProperty(MetadataEntry entry) {
 		Term term = entry.getTerm();
 		GenericText.Builder b = add().generic(term, entry.getValue());
-		return b.result();
+		b.result();
 	}
 	
 	private <T extends Relator, R extends Relator.Builder<T, R>> 

@@ -16,7 +16,6 @@
 
 package com.github.i49.pulp.api.vocabularies.dc;
 
-import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.StandardVocabulary;
 import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.Vocabulary;
@@ -31,95 +30,81 @@ public enum DublinCore implements Term {
 	/**
 	 *  An entity responsible for making contributions to the resource.
 	 */
-	CONTRIBUTOR(Contributor.class),
+	CONTRIBUTOR,
 
 	/** 
 	 * The spatial or temporal topic of the resource, 
 	 * the spatial applicability of the resource, 
 	 * or the jurisdiction under which the resource is relevant.
 	 */
-	COVERAGE(Coverage.class),
+	COVERAGE,
 
 	/**
 	 * An entity primarily responsible for making the resource.
 	 */
-	CREATOR(Creator.class),
+	CREATOR,
 	
 	/**
 	 * A point or period of time associated with an event in the lifecycle of the resource.
 	 */
-	DATE(Date.class),
+	DATE,
 	
 	/**
 	 * An account of the resource.
 	 */
-	DESCRIPTION(Description.class),
+	DESCRIPTION,
 
 	/** 
 	 * The file format, physical medium, or dimensions of the resource. 
 	 */
-	FORMAT(Format.class),
+	FORMAT,
 
 	/** 
 	 * An unambiguous reference to the resource within a given context.
 	 */
-	IDENTIFIER(Identifier.class),
+	IDENTIFIER,
 
 	/**
 	 * A language of the resource.
 	 */ 
-	LANGUAGE(Language.class),
+	LANGUAGE,
 	
 	/**
 	 * An entity responsible for making the resource available.
 	 */
-	PUBLISHER(Publisher.class),
+	PUBLISHER,
 	
 	/**
 	 * A related resource.
 	 */
-	RELATION(Relation.class),
+	RELATION,
 	
 	/**
 	 * Information about rights held in and over the resource.
 	 */
-	RIGHTS(Rights.class),
+	RIGHTS,
 	
 	/**
 	 * A related resource from which the described resource is derived.
 	 */
-	SOURCE(Source.class),
+	SOURCE,
 	
 	/**
 	 * The topic of the resource.
 	 */
-	SUBJECT(Subject.class),
+	SUBJECT,
 	
 	/**
 	 * A name given to the resource.
 	 */
-	TITLE(Title.class),
+	TITLE,
 	
 	/**
 	 * The nature or genre of the resource.
 	 */
-	TYPE(Type.class),
+	TYPE
 	;
 
-	private final Class<? extends Property> type;
-	
-	private DublinCore(Class<? extends Property> type) {
-		this.type = type;
-	}
-			
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Class<? extends Property> getType() {
-		return type;
-	}
-	
 	/**
 	 * {@inheritDoc}
 	 */

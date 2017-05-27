@@ -34,12 +34,12 @@ import com.github.i49.pulp.impl.base.Iterators;
 /**
  * A set of metadata properties.
  */
-public class PropertySet extends AbstractSet<Property> {
+public class PropertySet extends AbstractSet<Property<?>> {
 
-	private final Map<Term, List<Property>> map = new HashMap<>();
+	private final Map<Term, List<Property<?>>> map = new HashMap<>();
 	
 	@Override
-	public boolean add(Property e) {
+	public boolean add(Property<?> e) {
 		if (e == null) {
 			throw new NullPointerException();
 		}
@@ -47,7 +47,7 @@ public class PropertySet extends AbstractSet<Property> {
 			return false;
 		} 
 		Term term = e.getTerm();
-		List<Property> list = this.map.get(term);
+		List<Property<?>> list = this.map.get(term);
 		if (list == null) {
 			list = addPropertyList(term);
 		}
@@ -67,8 +67,8 @@ public class PropertySet extends AbstractSet<Property> {
 		} else if (!(o instanceof Property)) {
 			throw new ClassCastException();
 		}
-		Property p = (Property)o;
-		List<Property> list = map.get(p.getTerm());
+		Property<?> p = (Property<?>)o;
+		List<Property<?>> list = map.get(p.getTerm());
 		if (list == null) {
 			return false;
 		}
@@ -76,8 +76,8 @@ public class PropertySet extends AbstractSet<Property> {
 	}
 	
 	@Override
-	public Iterator<Property> iterator() {
-		return new ValueIterator<Term, Property>(this.map);
+	public Iterator<Property<?>> iterator() {
+		return new ValueIterator<Term, Property<?>>(this.map);
 	}
 	
 	@Override
@@ -87,8 +87,8 @@ public class PropertySet extends AbstractSet<Property> {
 		} else if (!(o instanceof Property)) {
 			throw new ClassCastException();
 		}
-		Property p = (Property)o;
-		List<Property> list = this.map.get(p.getTerm());
+		Property<?> p = (Property<?>)o;
+		List<Property<?>> list = this.map.get(p.getTerm());
 		if (list == null) {
 			return false;
 		}
@@ -106,7 +106,7 @@ public class PropertySet extends AbstractSet<Property> {
 	
 	public boolean containsTerm(Term term) {
 		assert(term != null);
-		List<Property> list = this.map.get(term);
+		List<Property<?>> list = this.map.get(term);
 		return list != null && !list.isEmpty();
 	}
 	
@@ -118,7 +118,7 @@ public class PropertySet extends AbstractSet<Property> {
 	 */
 	public int countByTerm(Term term) {
 		assert(term != null);
-		List<Property> list = this.map.get(term);
+		List<Property<?>> list = this.map.get(term);
 		return (list != null) ? list.size() : 0; 
 	}
 	
@@ -128,13 +128,13 @@ public class PropertySet extends AbstractSet<Property> {
 	 * @return a collection containing all properties.
 	 *         Returned collection can not be modified.
 	 */
-	public Collection<Property> findAll() {
+	public Collection<Property<?>> findAll() {
 		return Collections.unmodifiableCollection(this);
 	}
 
-	public List<Property> findByTerm(Term term) {
+	public List<Property<?>> findByTerm(Term term) {
 		assert(term != null);
-		List<Property> list = this.map.get(term);
+		List<Property<?>> list = this.map.get(term);
 		if (list == null) {
 			return Collections.emptyList();
 		} else {
@@ -142,15 +142,15 @@ public class PropertySet extends AbstractSet<Property> {
 		}
 	}
 	
-	public Collection<Property> removeAll() {
-		List<Property> list = new ArrayList<>(this);
+	public Collection<Property<?>> removeAll() {
+		List<Property<?>> list = new ArrayList<>(this);
 		this.map.clear();
 		return Collections.unmodifiableCollection(list);
 	}
 	
-	public List<Property> removeByTerm(Term term) {
+	public List<Property<?>> removeByTerm(Term term) {
 		assert(term != null);
-		List<Property> list = this.map.get(term);
+		List<Property<?>> list = this.map.get(term);
 		if (list == null) {
 			return Collections.emptyList();
 		} else {
@@ -163,8 +163,8 @@ public class PropertySet extends AbstractSet<Property> {
 		return new TermSet();
 	}
 	
-	private List<Property> addPropertyList(Term term) {
-		List<Property> list = new TermPropertyList(term);
+	private List<Property<?>> addPropertyList(Term term) {
+		List<Property<?>> list = new TermPropertyList(term);
 		this.map.put(term, list);
 		return list;
 	}

@@ -416,7 +416,7 @@ public class PropertyBuilderSelectorTest {
 	public void generic_shouldBuildGenericText() {
 		String value = "elementary school pupils";
 		m.add().generic(DublinCoreTerm.AUDIENCE, value);
-		Property p = m.find().propertyOf(DublinCoreTerm.AUDIENCE).get(0); 
+		Property<?> p = m.find().propertyOf(DublinCoreTerm.AUDIENCE).get(0); 
 		assertThat(p.getTerm()).isSameAs(DublinCoreTerm.AUDIENCE);
 		assertThat(p.getValue()).isEqualTo(value);
 	}

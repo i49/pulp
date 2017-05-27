@@ -41,7 +41,7 @@ public interface Metadata {
 	 * @throws IllegalArgumentException if {@code property} is {@code null}.
 	 * @throws IllegalStateException if the maximum number of properties allowed were already added.
 	 */
-	boolean add(Property property);
+	boolean add(Property<?> property);
 	
 	/**
 	 * Clears all properties in this metadata.
@@ -122,7 +122,7 @@ public interface Metadata {
 	 * @return {@code true} if this metadata contained the specified property.
 	 * @throws IllegalArgumentException if {@code property} is {@code null}.
 	 */
-	boolean remove(Property property);
+	boolean remove(Property<?> property);
 	
 	/**
 	 * Returns the total number of the properties contained in this metadata.

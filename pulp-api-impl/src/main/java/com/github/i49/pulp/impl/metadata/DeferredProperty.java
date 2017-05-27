@@ -19,16 +19,15 @@ package com.github.i49.pulp.impl.metadata;
 import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.PropertyBuilder;
 import com.github.i49.pulp.api.vocabularies.Term;
-import com.github.i49.pulp.api.vocabularies.TypedProperty;
 
 /**
  *
  */
-public class DeferredProperty<V> implements Property {
+public class DeferredProperty<V> implements Property<V> {
 	
 	private final Term term;
 	private final PropertyBuilder<V, ?, ?> builder;
-	private TypedProperty<V> property;
+	private Property<V> property;
 
 	public static <V> DeferredProperty<V> of(Term term, PropertyBuilder<V, ?, ?> builder) {
 		return new DeferredProperty<V>(term, builder);
@@ -45,7 +44,7 @@ public class DeferredProperty<V> implements Property {
 	}
 
 	@Override
-	public Object getValue() {
+	public V getValue() {
 		throw new AssertionError("Unexpected method call");
 	}
 
@@ -62,7 +61,7 @@ public class DeferredProperty<V> implements Property {
 		return b.toString();
 	}
 	
-	public Property get() {
+	public Property<V> get() {
 		if (property == null) {
 			property = builder.result();
 		}

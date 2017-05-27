@@ -25,15 +25,6 @@ import com.github.i49.pulp.api.vocabularies.dc.DublinCore;
 public interface Term {
 
 	/**
-	 * Returns the property type of this term.
-	 * 
-	 * @return the type of the property, never be {@code null}.
-	 */
-	default Class<? extends Property> getType() {
-		return Property.class;
-	}
-
-	/**
 	 * Returns the vocabulary to which this term belongs.
 	 * 
 	 * @return the vocabulary to which this term belongs, never be {@code null}.

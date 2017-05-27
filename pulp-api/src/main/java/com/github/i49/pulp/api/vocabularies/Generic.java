@@ -23,7 +23,7 @@ import java.util.Optional;
  * 
  * @param <V> the type of the property value.
  */
-public interface Generic<V> extends TypedProperty<V> {
+public interface Generic<V> extends Property<V> {
 	
 	Optional<String> getScheme();
 	

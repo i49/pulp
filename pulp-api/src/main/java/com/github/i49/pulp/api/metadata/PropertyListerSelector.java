@@ -48,7 +48,7 @@ public interface PropertyListerSelector {
 	 * 
 	 * @return the collection containing all properties.
 	 */
-	Collection<Property> all();
+	Collection<Property<?>> all();
 
 	/**
 	 * Returns {@link Contributor} properties.
@@ -169,5 +169,5 @@ public interface PropertyListerSelector {
 	 * @return the list of the properties of the same term.
 	 * @throws IllegalArgumentException if given {@code term} is {@code null}.
 	 */
-	List<Property> propertyOf(Term term);
+	List<Property<?>> propertyOf(Term term);
 }

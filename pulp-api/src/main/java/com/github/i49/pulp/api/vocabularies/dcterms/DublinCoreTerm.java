@@ -16,8 +16,6 @@
 
 package com.github.i49.pulp.api.vocabularies.dcterms;
 
-import com.github.i49.pulp.api.vocabularies.Generic;
-import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.StandardVocabulary;
 import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.Vocabulary;
@@ -92,15 +90,6 @@ public enum DublinCoreTerm implements Term {
 	
 	private DublinCoreTerm(String name) {
 		this.name = name;
-	}
-	
-	@Override
-	public Class<? extends Property> getType() {
-		if (this == MODIFIED) {
-			return Modified.class;
-		} else {
-			return Generic.class;
-		}
 	}
 	
 	/**

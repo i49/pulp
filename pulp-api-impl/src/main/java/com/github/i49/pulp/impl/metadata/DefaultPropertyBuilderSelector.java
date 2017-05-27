@@ -25,9 +25,9 @@ import java.util.UUID;
 import com.github.i49.pulp.api.metadata.PropertyBuilderSelector;
 import com.github.i49.pulp.api.vocabularies.Generic;
 import com.github.i49.pulp.api.vocabularies.GenericText;
+import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.PropertyBuilder;
 import com.github.i49.pulp.api.vocabularies.Term;
-import com.github.i49.pulp.api.vocabularies.TypedProperty;
 import com.github.i49.pulp.api.vocabularies.dc.Contributor;
 import com.github.i49.pulp.api.vocabularies.dc.Coverage;
 import com.github.i49.pulp.api.vocabularies.dc.Creator;
@@ -192,7 +192,7 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 	 * @param builder the builder to build the final property.
 	 * @return the builder.
 	 */
-	private <V, T extends TypedProperty<V>, R extends PropertyBuilder<V, T, R>> 
+	private <V, T extends Property<V>, R extends PropertyBuilder<V, T, R>> 
 	R add(R builder) {
 		Term term = builder.getTerm();
 		DeferredProperty<V> deferred = DeferredProperty.of(term, builder);
