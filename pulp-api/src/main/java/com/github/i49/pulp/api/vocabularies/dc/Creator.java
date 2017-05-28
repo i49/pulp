@@ -17,19 +17,16 @@
 package com.github.i49.pulp.api.vocabularies.dc;
 
 import com.github.i49.pulp.api.vocabularies.Relator;
-import com.github.i49.pulp.api.vocabularies.Term;
 
 /**
- * @author i49
- *
+ * A person or organization who is primarily responsible for making the resource.
+ * This property represents the term of {@link DublinCore#CREATOR}.
  */
 public interface Creator extends Relator {
 
-	@Override
-	default Term getTerm() {
-		return DublinCore.CREATOR;
-	}
-	
+	/**
+	 * Builder for building instances of {@link Creator}.
+	 */
 	public interface Builder extends Relator.Builder<Creator, Builder> {
 	}
 }

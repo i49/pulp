@@ -24,14 +24,44 @@ import java.util.Optional;
  */
 public interface Text extends Property<String> {
 
+	/**
+	 * Returns the direction of the text, such as left-to-right and right-to-left.
+	 * 
+	 * @return the direction of the text, may be empty.
+	 */
 	Optional<Direction> getDirection();
 
+	/**
+	 * Returns the language of the text.
+	 * 
+	 * @return the language of the text, may be empty.
+	 */	
 	Optional<Locale> getLanguage();
 	
+	/**
+	 * Builder for building instances of types derived from {@link Text}.
+	 *
+	 * @param <T> the type of the property to be built by this builder.
+	 * @param <R> the actual builder type.
+	 */
 	public interface Builder<T extends Text, R extends Builder<T, R>> extends PropertyBuilder<String, T, R> {
 	
+		/**
+		 * Specifies the direction of the text, such as left-to-right and right-to-left.
+		 * 
+		 * @param direction the direction of the text, cannot be {@code null}.
+		 * @return this builder.
+		 * @throws IllegalArgumentException if given {@code direction} is {@code null}.
+		 */
 		R direction(Direction direction);
 		
+		/**
+		 * Specifies the language of the text.
+		 * 
+		 * @param language the language of the text, cannot be {@code null}.
+		 * @return this builder.
+		 * @throws IllegalArgumentException if given {@code language} is {@code null}.
+		 */
 		R language(Locale language);
 	}
 }

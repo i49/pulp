@@ -15,6 +15,6 @@
  */
 
 /**
- * Provides various kinds of property terms.
+ * Provides various kinds of vocabularies which define terms for properties.
  */
 package com.github.i49.pulp.api.vocabularies;

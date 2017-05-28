@@ -21,7 +21,8 @@ import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.Vocabulary;
 
 /**
- * Dublin Core Metadata Terms
+ * Terms defined in Dublin Core Metadata Terms,
+ * each implementing {@link Term}.
  *
  * @see <a href="http://dublincore.org/documents/dcmi-terms/">DCMI Metadata Terms</a> 
  */

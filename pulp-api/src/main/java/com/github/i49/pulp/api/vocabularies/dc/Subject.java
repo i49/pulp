@@ -21,28 +21,59 @@ import java.util.Optional;
 
 import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.PropertyBuilder;
-import com.github.i49.pulp.api.vocabularies.Term;
 
 /**
- *
+ * A topic of the resource.
+ * This property represents the term of {@link DublinCore#SUBJECT}.
  */
 public interface Subject extends Property<String> {
 	
+	/**
+	 * Returns the authority responsible for the subject code.
+	 * 
+	 * @return one of authorities defined in {@link SubjectAuthority}, may be empty.
+	 */
 	Optional<SubjectAuthority> getAuthority();
 	
+	/**
+	 * Returns the code of this subject.
+	 * 
+	 * @return the code of this subject, may be empty.
+	 */
 	Optional<String> getCode();
 
+	/**
+	 * Returns the URI representing the scheme of the subject code.
+	 * 
+	 * @return the scheme URI of the subject code, may be empty.
+	 */
 	Optional<URI> getScheme();
 	
-	@Override
-	default Term getTerm() {
-		return DublinCore.SUBJECT;
-	}
-	
+	/**
+	 * Builder for building instances of {@link Subject}.
+	 */
 	public interface Builder extends PropertyBuilder<String, Subject, Builder> {
 		
+		/**
+		 * Specifies the code of the subject and its authority.
+		 * Calling this method clears the scheme already specified.
+		 * 
+		 * @param authority one of authorities defined in {@link SubjectAuthority}, which is responsible for the code.
+		 * @param code the code of the subject.
+		 * @return this builder.
+		 * @throws IllegalArgumentException if one or more parameters are invalid.
+		 */
 		Builder ofCode(SubjectAuthority authority, String code);
 
+		/**
+		 * Specifies the code of the subject and its scheme.
+		 * Calling this method clears the authority already specified.
+		 * 
+		 * @param scheme the URI representing the scheme of the subject code.
+		 * @param code the code of the subject.
+		 * @return this builder.
+		 * @throws IllegalArgumentException if one or more parameters are invalid.
+		 */
 		Builder ofCode(URI scheme, String code);
 	}
 }

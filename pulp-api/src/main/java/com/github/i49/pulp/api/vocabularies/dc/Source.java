@@ -20,22 +20,32 @@ import java.util.Optional;
 
 import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.PropertyBuilder;
-import com.github.i49.pulp.api.vocabularies.Term;
 
 /**
- *
+ * A related resource from which the described resource is derived.
+ * This property represents the term of {@link DublinCore#SOURCE}.
  */
 public interface Source extends Property<String> {
 
+	/**
+	 * Returns the scheme of this source.
+	 * 
+	 * @return the scheme of this source, may be empty.
+	 */
 	Optional<String> getScheme();
 
-	@Override
-	default Term getTerm() {
-		return DublinCore.SOURCE;
-	}
-	
+	/**
+	 * Builder for building instances of {@link Source}.
+	 */
 	public interface Builder extends PropertyBuilder<String, Source, Builder> {
 		
+		/**
+		 * Specifies the scheme of the source.
+		 * 
+		 * @param scheme the scheme of the source.
+		 * @return this builder.
+		 * @throws IllegalArgumentException if given {@code scheme} is blank.
+		 */
 		Builder scheme(String scheme);
 	}
 }

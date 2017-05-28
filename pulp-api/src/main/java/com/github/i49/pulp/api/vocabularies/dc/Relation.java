@@ -16,19 +16,17 @@
 
 package com.github.i49.pulp.api.vocabularies.dc;
 
-import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.Text;
 
 /**
- *
+ * A related resource.
+ * This property represents the term of {@link DublinCore#RELATION}.
  */
 public interface Relation extends Text {
 
-	@Override
-	default Term getTerm() {
-		return DublinCore.RELATION;
-	}
-
+	/**
+	 * Builder for building instances of {@link Relation}.
+	 */
 	public interface Builder extends Text.Builder<Relation, Builder> {
 	}
 }

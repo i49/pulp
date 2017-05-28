@@ -21,7 +21,8 @@ import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.Vocabulary;
 
 /**
- * Basic terms generally used as metadata properties. 
+ * Terms defined in Dublin Core Metadata Element Set,
+ * each implementing {@link Term}.
  * 
  * @see <a href="http://dublincore.org/documents/dces/">Dublin Core Metadata Element Set, Version 1.1</a>
  */

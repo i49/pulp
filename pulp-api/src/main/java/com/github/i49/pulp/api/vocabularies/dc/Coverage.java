@@ -16,20 +16,17 @@
 
 package com.github.i49.pulp.api.vocabularies.dc;
 
-import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.Text;
 
 /**
- * @author i49
- *
+ * A spatial or temporal topic of the resource.
+ * This property represents the term of {@link DublinCore#COVERAGE}.
  */
 public interface Coverage extends Text {
 
-	@Override
-	default Term getTerm() {
-		return DublinCore.COVERAGE;
-	}
-	
+	/**
+	 * Builder for building instances of {@link Coverage}.
+	 */
 	public interface Builder extends Text.Builder<Coverage, Builder> {
 	}
 }

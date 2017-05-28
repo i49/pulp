@@ -21,36 +21,43 @@ import java.util.OptionalInt;
 
 import com.github.i49.pulp.api.vocabularies.Multilingual;
 import com.github.i49.pulp.api.vocabularies.Normalizable;
-import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.Text;
 
 /**
- * The title of the publication.
+ * A title given to the resource.
+ * This property represents the term of {@link DublinCore#TITLE}.
  */
 public interface Title extends Text, Multilingual, Normalizable {
 
-	@Override
-	default Term getTerm() {
-		return DublinCore.TITLE;
-	}
+	/**
+	 * Returns the position in which to display this title relative to other titles.
+	 * 
+	 * @return the position of this title, may be empty. The position is zero or positive integer.
+	 */
+	OptionalInt getDisplayOrder();
 
 	/**
 	 * Returns the type of this title.
 	 * 
-	 * @return the type of this title.
+	 * @return the type of this title, may be empty.
 	 */
 	Optional<TitleType> getType();
 	
 	/**
-	 * Returns the position in which to display this title relative to other titles.
-	 * 
-	 * @return the position of this title.
+	 * Builder for building instances of {@link Title}.
 	 */
-	OptionalInt getDisplayOrder();
-
 	public interface Builder extends Text.Builder<Title, Builder>, 
 		Multilingual.Builder<Builder>, Normalizable.Builder<Builder>  {
 		
+		/**
+		 * Specifies the display order of the title.
+		 * 
+		 * @param displayOrder the position of the title when displayed, must not be negative.
+		 * @return this builder.
+		 * @throws IllegalArgumentException if given {@code displayOrder} was negative.
+		 */
+		Builder displayOrder(int displayOrder);
+
 		/**
 		 * Specifies the type of the title.
 		 * 
@@ -59,14 +66,5 @@ public interface Title extends Text, Multilingual, Normalizable {
 		 * @throws IllegalArgumentException if given {@code type} was {@code null}.
 		 */
 		Builder ofType(TitleType type);
-		
-		/**
-		 * Specifies the display order of the title.
-		 * 
-		 * @param displayOrder the position of the title when displayed.
-		 * @return this builder.
-		 * @throws IllegalArgumentException if given {@code displayOrder} was negative.
-		 */
-		Builder displayOrder(int displayOrder);
 	}
 }

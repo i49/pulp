@@ -20,19 +20,16 @@ import java.time.OffsetDateTime;
 
 import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.PropertyBuilder;
-import com.github.i49.pulp.api.vocabularies.Term;
 
 /**
- * @author i49
- *
+ * The publication date of the resource. 
+ * This property represents the term of {@link DublinCore#DATE}.
  */
 public interface Date  extends Property<OffsetDateTime> {
 
-	@Override
-	default Term getTerm() {
-		return DublinCore.DATE;
-	}
-
+	/**
+	 * Builder for building instances of {@link Date}.
+	 */
 	public interface Builder extends PropertyBuilder<OffsetDateTime, Date, Builder> {
 	}
 }

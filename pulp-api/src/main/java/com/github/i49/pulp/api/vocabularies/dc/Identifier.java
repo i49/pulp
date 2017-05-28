@@ -21,42 +21,47 @@ import java.util.Optional;
 
 import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.PropertyBuilder;
-import com.github.i49.pulp.api.vocabularies.Term;
 
 /**
- * Identifier property in Dublin Core Metadata Element Set,
- * which provides the identifier of the publication.
+ * An identifier of the resource.
+ * This property represents the term of {@link DublinCore#IDENTIFIER}.
  */
 public interface Identifier extends Property<String> {
 
 	/**
-	 * {@inheritDoc}
-	 * @return {@link DublinCore#IDENTIFIER}.
+	 * Returns the scheme of this identifier.
+	 * 
+	 * @return one of schemes defined in {@link IdentifierScheme}, may be empty.
 	 */
-	@Override
-	default Term getTerm() {
-		return DublinCore.IDENTIFIER;
-	}
-	
 	Optional<IdentifierScheme> getScheme();
 
+	/**
+	 * Returns the URI representing the scheme of this identifier.
+	 * 
+	 * @return the scheme URI of this identifier, may be empty.
+	 */
 	Optional<URI> getSchemeURI();
 
+	/**
+	 * Builder for building instances of {@link Identifier}.
+	 */
 	public interface Builder extends PropertyBuilder<String, Identifier, Builder> {
 		
 		/**
-		 * Assigns the scheme of the identifier.
+		 * Specifies the scheme of the identifier.
 		 * 
-		 * @param scheme the scheme of the identifier.
+		 * @param scheme one of schemes defined in {@link IdentifierScheme}.
 		 * @return this builder.
+		 * @throws IllegalArgumentException if given {@code scheme} is {@code null}.
 		 */
 		Builder scheme(IdentifierScheme scheme);
 		
 		/**
-		 * Assigns the scheme of the identifier specified by URI.
+		 * Specifies the scheme of the identifier specified by URI.
 		 * 
 		 * @param schemeURI the URI representing the scheme.
 		 * @return this builder.
+		 * @throws IllegalArgumentException if given {@code schemeURI} is {@code null}.
 		 */
 		Builder scheme(URI schemeURI);
 	}

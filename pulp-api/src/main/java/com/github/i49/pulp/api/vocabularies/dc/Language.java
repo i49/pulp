@@ -20,18 +20,16 @@ import java.util.Locale;
 
 import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.PropertyBuilder;
-import com.github.i49.pulp.api.vocabularies.Term;
 
 /**
- *
+ * A language of the resource.
+ * This property represents the term of {@link DublinCore#LANGUAGE}.
  */
 public interface Language extends Property<Locale> {
 	
-	@Override
-	default Term getTerm() {
-		return DublinCore.LANGUAGE;
-	}
-	
+	/**
+	 * Builder for building instances of {@link Language}.
+	 */
 	public interface Builder extends PropertyBuilder<Locale, Language, Builder> {
 	}
 }

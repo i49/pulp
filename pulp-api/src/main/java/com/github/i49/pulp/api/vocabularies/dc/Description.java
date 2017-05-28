@@ -16,20 +16,17 @@
 
 package com.github.i49.pulp.api.vocabularies.dc;
 
-import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.Text;
 
 /**
- * @author i49
- *
+ * An account of the resource.
+ * This property represents the term of {@link DublinCore#DESCRIPTION}.
  */
 public interface Description extends Text {
 
-	@Override
-	default Term getTerm() {
-		return DublinCore.DESCRIPTION;
-	}
-
+	/**
+	 * Builder for building instances of {@link Description}.
+	 */
 	public interface Builder extends Text.Builder<Description, Builder> {
 	}
 }

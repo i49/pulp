@@ -16,8 +16,10 @@
 
 package com.github.i49.pulp.api.vocabularies.dc;
 
+import com.github.i49.pulp.api.vocabularies.Term;
+
 /**
- * The publication types predefined for {@link Type}.
+ * The publication types implementing {@link Type}.
  */
 public enum PublicationType implements Type {
 	
@@ -50,6 +52,15 @@ public enum PublicationType implements Type {
 		this.value = value;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 * @return {@link DublinCore#TYPE}. 
+	 */
+	@Override
+	public Term getTerm() {
+		return DublinCore.TYPE;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */

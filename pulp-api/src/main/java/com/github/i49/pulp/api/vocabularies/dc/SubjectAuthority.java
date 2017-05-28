@@ -17,7 +17,7 @@
 package com.github.i49.pulp.api.vocabularies.dc;
 
 /**
- * Subject authorities for use in subject metadata.
+ * Predefined authorities used with {@link Subject}.
  */
 public enum SubjectAuthority {
 	/** The Getty Art and Architecture Taxonomy. */

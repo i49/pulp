@@ -17,7 +17,7 @@
 package com.github.i49.pulp.api.vocabularies;
 
 /**
- * The base interface of all property builders.
+ * The base type of all types of property builders.
  * 
  * @param <V> the type of the property value.
  * @param <T> the type of the property.
@@ -33,11 +33,11 @@ public interface PropertyBuilder<V, T extends Property<V>, R extends PropertyBui
 	Term getTerm();
 	
 	/**
-	 * Assigns a value to the property.
+	 * Specifies a value of the property.
 	 *   
 	 * @param value the value of the property.
 	 * @return this builder.
-	 * @throws IllegalArgumentException if given {@code value} was invalid one or {@code null}.
+	 * @throws IllegalArgumentException if given {@code value} is invalid.
 	 */
 	R value(V value);
 	

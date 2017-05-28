@@ -17,13 +17,23 @@
 package com.github.i49.pulp.api.vocabularies;
 
 /**
- *
+ * Generic property which can hold text value.
  */
 public interface GenericText extends Generic<String>, Text, Multilingual, Normalizable {
 	
+	/**
+	 * Builder for building instances of {@link GenericText}.
+	 */
 	public static interface Builder 
 		extends Text.Builder<GenericText, Builder>, Multilingual.Builder<Builder>, Normalizable.Builder<Builder> {
 		
+		/**
+		 * Specifies the scheme of the property value.
+		 * 
+		 * @param scheme the scheme of the property value.
+		 * @return this builder.
+		 * @throws IllegalArgumentException if given {@code scheme} is {@code null}.
+		 */
 		Builder scheme(String scheme);
 	}
 }

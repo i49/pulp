@@ -22,10 +22,14 @@ import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.PropertyBuilder;
 
 /**
- *
+ * The last modification date of the resource.
+ * This property represents the term of {@link DublinCoreTerm#MODIFIED}.
  */
 public interface Modified extends Property<OffsetDateTime> {
 
+	/**
+	 * Builder for building instances of {@link Modified}.
+	 */
 	public interface Builder extends PropertyBuilder<OffsetDateTime, Modified, Builder> {
 	}
 }

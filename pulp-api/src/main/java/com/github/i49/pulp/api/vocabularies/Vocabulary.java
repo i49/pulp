@@ -24,7 +24,7 @@ import java.net.URI;
 public interface Vocabulary {
 	
 	/**
-	 * Return the URI of this vocabulary.
+	 * Return the URI which identifies this vocabulary.
 	 * 
 	 * @return the URI of this vocabulary. 
 	 */

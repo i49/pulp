@@ -18,19 +18,19 @@ package com.github.i49.pulp.api.vocabularies.dc;
 
 import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.PropertyBuilder;
-import com.github.i49.pulp.api.vocabularies.Term;
 
 /**
- * @author i49
- *
+ * The type of the resource.
+ * This property represents the term of {@link DublinCore#TYPE}.
+ * Some predefined types are provided by {@link PublicationType}.
+ * 
+ * @see PublicationType
  */
 public interface Type extends Property<String> {
 
-	@Override
-	default Term getTerm() {
-		return DublinCore.TYPE;
-	}
-
+	/**
+	 * Builder for building instances of {@link Type}.
+	 */
 	public interface Builder extends PropertyBuilder<String, Type, Builder> {
 	}
 }

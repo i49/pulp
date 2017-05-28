@@ -20,34 +20,39 @@ import java.util.Locale;
 import java.util.Optional;
 
 /**
- * Multilingual property.
- * Please note only single value can be assigned as an alternative representation.
+ * Property that can have an alternative value in different language.
+ * Please note that only single value can be assigned as an alternative representation.
  */
 public interface Multilingual {
 
 	/**
 	 * Returns the language of the alternative representation.
 	 * 
-	 * @return the language of the alternative representation.
+	 * @return the language of the alternative representation, may be empty.
 	 */
 	Optional<Locale> getAlternativeLanguage();
 
 	/**
 	 * Returns the alternative representation of the property value.
 	 * 
-	 * @return the alternative representation of the property value.
+	 * @return the alternative representation of the property value, may be empty.
 	 */
 	Optional<String> getAlternativeValue();
 
+	/**
+	 * Builder for building instances of type which implements {@link Multilingual}.
+	 *
+	 * @param <R> the actual builder type.
+	 */
 	public interface Builder<R extends Builder<R>> {
 		
 		/**
-		 * Assigns the alternative representation of this property.
+		 * Specifies the alternative representation of this property.
 		 * 
 		 * @param value the alternative representation of the main value. 
 		 * @param language the language of the alternative representation.
-		 * @return this property.
-		 * @throws IllegalArgumentException if any parameters are invalid.
+		 * @return this builder.
+		 * @throws IllegalArgumentException if one or more parameters are invalid.
 		 */
 		R alternativeValue(String value, Locale language);
 	}

@@ -15,6 +15,8 @@
  */
 
 /**
- * Provides the properties defined in Dublin Core Metadata Element Set.
+ * Provides the terms and the corresponding properties defined in Dublin Core Metadata Element Set.
+ * 
+ * @see <a href="http://dublincore.org/documents/dces/">Dublin Core Metadata Element Set, Version 1.1</a>
  */
 package com.github.i49.pulp.api.vocabularies.dc;

@@ -17,18 +17,16 @@
 package com.github.i49.pulp.api.vocabularies.dc;
 
 import com.github.i49.pulp.api.vocabularies.Relator;
-import com.github.i49.pulp.api.vocabularies.Term;
 
 /**
- *
+ * A person or organization who is responsible for making contributions to the resource.
+ * This property represents the term of {@link DublinCore#CONTRIBUTOR}.
  */
 public interface Contributor extends Relator {
 	
-	@Override
-	default Term getTerm() {
-		return DublinCore.CONTRIBUTOR;
-	}
-
+	/**
+	 * Builder for building instances of {@link Contributor}.
+	 */
 	public interface Builder extends Relator.Builder<Contributor, Builder> {
 	}
 }

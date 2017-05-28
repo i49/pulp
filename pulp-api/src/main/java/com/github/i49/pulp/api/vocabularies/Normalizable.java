@@ -19,25 +19,30 @@ package com.github.i49.pulp.api.vocabularies;
 import java.util.Optional;
 
 /**
- * Property that can have normalized form of the property value.
+ * Property that can have a normalized form of the property value.
  */
 public interface Normalizable {
 
 	/**
 	 * Returns the normalized form of the value of this property.
 	 * 
-	 * @return the normalized form of the property value.
+	 * @return the normalized form of the property value, may be empty.
 	 */
 	Optional<String> getNormalizedValue();
 	
+	/**
+	 * Builder for building instances of type which implements {@link Normalizable}.
+	 *
+	 * @param <R> the actual builder type.
+	 */
 	public interface Builder<R extends Builder<R>> {
 		
 		/**
-		 * Assigns the normalized form of the property value.
+		 * Specifies the normalized form of the property value.
 		 * 
 		 * @param value the normalized property value.
-		 * @return this property.
-		 * @throws IllegalArgumentException if {@code value} is invalid.
+		 * @return this builder.
+		 * @throws IllegalArgumentException if given {@code value} is {@code null}.
 		 */
 		R fileAs(String value);
 	}

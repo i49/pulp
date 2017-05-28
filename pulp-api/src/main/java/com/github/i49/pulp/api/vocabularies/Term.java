@@ -19,7 +19,7 @@ package com.github.i49.pulp.api.vocabularies;
 import com.github.i49.pulp.api.vocabularies.dc.DublinCore;
 
 /**
- * A term in a vocabulary. 
+ * A term in a vocabulary used as labels for properties.
  * The instances of this type are defined as the members of {@link DublinCore} enumeration.
  */
 public interface Term {

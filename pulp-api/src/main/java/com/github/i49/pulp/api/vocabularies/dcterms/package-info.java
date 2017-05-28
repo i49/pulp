@@ -15,6 +15,8 @@
  */
 
 /**
- * Provides the properties defined in Dublin Core Metadata Terms.
+ * Provides the terms and the corresponding properties defined in Dublin Core Metadata Terms.
+ * 
+ * @see <a href="http://dublincore.org/documents/dcmi-terms/">DCMI Metadata Terms</a> 
  */
 package com.github.i49.pulp.api.vocabularies.dcterms;

@@ -17,7 +17,7 @@
 package com.github.i49.pulp.api.vocabularies.dc;
 
 /**
- * Scheme for {@link Identifier}.
+ * Predefined schemes used with {@link Identifier}.
  */
 public enum IdentifierScheme {
 	/** A Digital Object Identifier. */

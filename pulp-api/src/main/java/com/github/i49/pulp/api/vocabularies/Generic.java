@@ -25,10 +25,27 @@ import java.util.Optional;
  */
 public interface Generic<V> extends Property<V> {
 	
+	/**
+	 * Returns the scheme of the property value.
+	 * 
+	 * @return the scheme of the property value, may be empty.
+	 */
 	Optional<String> getScheme();
 	
+	/**
+	 * Builder for building instances of {@link Generic}.
+	 *
+	 * @param <V> the type of the property value.
+	 */
 	public static interface Builder<V> extends PropertyBuilder<V, Generic<V>, Builder<V>> {
-		
+
+		/**
+		 * Specifies the scheme of the property value.
+		 * 
+		 * @param scheme the scheme of the property value.
+		 * @return this builder.
+		 * @throws IllegalArgumentException if given {@code scheme} is {@code null}.
+		 */
 		Builder<V> scheme(String scheme);
 	}
 }

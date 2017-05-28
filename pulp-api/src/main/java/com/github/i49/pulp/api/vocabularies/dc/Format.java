@@ -18,18 +18,16 @@ package com.github.i49.pulp.api.vocabularies.dc;
 
 import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.PropertyBuilder;
-import com.github.i49.pulp.api.vocabularies.Term;
 
 /**
- *
+ * The file format, physical medium, or dimensions of the resource.
+ * This property represents the term of {@link DublinCore#FORMAT}.
  */
 public interface Format extends Property<String> {
 
-	@Override
-	default Term getTerm() {
-		return DublinCore.FORMAT;
-	}
-	
+	/**
+	 * Builder for building instances of {@link Format}.
+	 */
 	public interface Builder extends PropertyBuilder<String, Format, Builder> {
 	}
 }
