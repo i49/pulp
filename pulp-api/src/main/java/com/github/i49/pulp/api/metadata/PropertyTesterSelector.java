@@ -17,121 +17,142 @@
 package com.github.i49.pulp.api.metadata;
 
 import com.github.i49.pulp.api.vocabularies.Term;
+import com.github.i49.pulp.api.vocabularies.dc.Contributor;
+import com.github.i49.pulp.api.vocabularies.dc.Coverage;
+import com.github.i49.pulp.api.vocabularies.dc.Creator;
+import com.github.i49.pulp.api.vocabularies.dc.Date;
+import com.github.i49.pulp.api.vocabularies.dc.Description;
+import com.github.i49.pulp.api.vocabularies.dc.Format;
+import com.github.i49.pulp.api.vocabularies.dc.Identifier;
+import com.github.i49.pulp.api.vocabularies.dc.Language;
+import com.github.i49.pulp.api.vocabularies.dc.Publisher;
+import com.github.i49.pulp.api.vocabularies.dc.Relation;
+import com.github.i49.pulp.api.vocabularies.dc.Rights;
+import com.github.i49.pulp.api.vocabularies.dc.Source;
+import com.github.i49.pulp.api.vocabularies.dc.Subject;
+import com.github.i49.pulp.api.vocabularies.dc.Title;
+import com.github.i49.pulp.api.vocabularies.dc.Type;
+import com.github.i49.pulp.api.vocabularies.dcterms.Modified;
 
 /**
- * The interface to select a property tester.
- * Each method in this interface will return a boolean value 
- * as the result of testing selected properties.
+ * The type for selecting a property tester.
+ * <p>
+ * Each method provided by this type will return a boolean value 
+ * as the result of testing the selected property type.
+ * When used for existence testing, each method returns {@code true}
+ * if the properties of the selected term are contained in the metadata,
+ * {@code false} otherwise. 
+ * </p>
  */
 public interface PropertyTesterSelector {
 
 	/**
-	 * Tests contributor properties.
+	 * Tests the properties of {@link Contributor}.
 	 * 
 	 * @return the result of the testing.
 	 */
 	boolean contributor();
 	
 	/**
-	 * Tests coverage properties.
+	 * Tests the properties of {@link Coverage}.
 	 * 
 	 * @return the result of the testing.
 	 */
 	boolean coverage();
 	
 	/**
-	 * Tests creator properties.
+	 * Tests the properties of {@link Creator}.
 	 * 
 	 * @return the result of the testing.
 	 */
 	boolean creator();
 	
 	/**
-	 * Tests date properties.
+	 * Tests the properties of {@link Date}.
 	 * 
 	 * @return the result of the testing.
 	 */
 	boolean date();
 	
 	/**
-	 * Tests description properties.
+	 * Tests the properties of {@link Description}.
 	 * 
 	 * @return the result of the testing.
 	 */
 	boolean description();
 	
 	/**
-	 * Tests format properties.
+	 * Tests the properties of {@link Format}.
 	 * 
 	 * @return the result of the testing.
 	 */
 	boolean format();
 	
 	/**
-	 * Tests identifier properties.
+	 * Tests the properties of {@link Identifier}.
 	 * 
 	 * @return the result of the testing.
 	 */
 	boolean identifier();
 
 	/**
-	 * Tests language properties.
+	 * Tests the properties of {@link Language}.
 	 * 
 	 * @return the result of the testing.
 	 */
 	boolean language();
 	
 	/**
-	 * Tests modified properties.
+	 * Tests the properties of {@link Modified}.
 	 * 
 	 * @return the result of the testing.
 	 */
 	boolean modified();
 
 	/**
-	 * Tests publisher properties.
+	 * Tests the properties of {@link Publisher}.
 	 * 
 	 * @return the result of the testing.
 	 */
 	boolean publisher();
 
 	/**
-	 * Tests relation properties.
+	 * Tests the properties of {@link Relation}.
 	 * 
 	 * @return the result of the testing.
 	 */
 	boolean relation();
 	
 	/**
-	 * Tests rights properties.
+	 * Tests the properties of {@link Rights}.
 	 * 
 	 * @return the result of the testing.
 	 */
 	boolean rights();
 	
 	/**
-	 * Tests source properties.
+	 * Tests the properties of {@link Source}.
 	 * 
 	 * @return the result of the testing.
 	 */
 	boolean source();
 	
 	/**
-	 * Tests subject properties.
+	 * Tests the properties of {@link Subject}.
 	 * 
 	 * @return the result of the testing.
 	 */
 	boolean subject();
 	
 	/**
-	 * Tests title properties.
+	 * Tests the properties of {@link Title}.
 	 * 
 	 * @return the result of the testing.
 	 */
 	boolean title();
 	
 	/**
-	 * Tests type properties.
+	 * Tests the properties of {@link Type}.
 	 * 
 	 * @return the result of the testing.
 	 */

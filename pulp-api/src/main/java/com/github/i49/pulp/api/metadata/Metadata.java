@@ -22,51 +22,51 @@ import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.Term;
 
 /**
- * A set of meta information describing a EPUB publication and its renditions.
+ * A set of meta information describing an EPUB publication and its renditions.
  */
 public interface Metadata {
 	
 	/**
-	 * Adds a property to be selected by term.
+	 * Adds a new property of the specific term, which can be selected by a returned selector.
 	 *  
-	 * @return the selector of the properties.
+	 * @return the selector of the property builders, never be {@code null}.
 	 */
 	PropertyBuilderSelector add();
 
 	/**
 	 * Adds the specified property to this metadata if it is not already present.
 	 * 
-	 * @param property the property to add.
-	 * @return {@code true} if this metadata did not already contain the specified property. 
-	 * @throws IllegalArgumentException if {@code property} is {@code null}.
-	 * @throws IllegalStateException if the maximum number of properties allowed were already added.
+	 * @param property the property to add to this metadata.
+	 * @return {@code true} if this metadata did not already contain the specified property, {@code false} otherwise. 
+	 * @throws IllegalArgumentException if given {@code property} is {@code null}.
+	 * @throws IllegalStateException if the maximum number of properties allowed for the term were already added.
 	 */
 	boolean add(Property<?> property);
 	
 	/**
 	 * Clears all properties in this metadata.
-	 * All mandatory properties are cleared at the same time.
+	 * All required properties will be cleared also.
 	 */
 	void clear();
 
 	/**
-	 * Tests the existence of the property to be selected by term.
+	 * Tests the existence of the property of the specific term, which can be selected by a returned selector.
 	 * 
-	 * @return the selector of the properties.
+	 * @return the selector of the property testers, never be {@code null}.
 	 */
 	PropertyTesterSelector contains();
 	
 	/**
-	 * Counts properties to be selected by term.
+	 * Counts properties of the specific term, which can be selected by a returned selector.
 	 *  
-	 * @return the selector of the properties.
+	 * @return the selector of the property counters, never be {@code null}.
 	 */
 	PropertyCounterSelector count();
 	
 	/**
-	 * Finds properties to be selected by term.
+	 * Finds all properties of the specific term, which can be selected by a returned selector.
 	 *  
-	 * @return the selector of the properties.
+	 * @return the selector of the property listers, never be {@code null}.
 	 */
 	PropertyListerSelector find();
 	
@@ -88,51 +88,59 @@ public interface Metadata {
 	void fillMissingProperties();
 
 	/**
-	 * Returns the <i>release identifier</i> of the publication
+	 * Returns the <i>release identifier</i> of the rendition
 	 * that uniquely identifies a specific version of it.
 	 * 
-	 * <p>Release identifier of the publication consists of the following two properties:</p>
+	 * <p>Release identifier of the rendition consists of the following two properties:</p>
 	 * <ul>
-	 * <li>identifier of the publication</li>
-	 * <li>last modification time of the publication</li>
+	 * <li>identifier of the rendition</li>
+	 * <li>last modification time of the rendition</li>
 	 * </ul>
 	 * 
-	 * @return the release identifier of the publication, never be {@code null}.
+	 * @return the release identifier of the rendition, never be {@code null}.
 	 */
 	ReleaseIdentifier getReleaseIdentifier();
 	
 	/**
 	 * Checks if this metadata contains all required properties.
+	 * <p>This method returns {@code true} if all of the following properties exist
+	 * in this metadata.</p>
+	 * <ul>
+	 * <li>identifier</li>
+	 * <li>title</li>
+	 * <li>language</li>
+	 * <li>modified</li>
+	 * </ul>
 	 * 
 	 * @return {@code true} if all required properties exist in this metadata, {@code false} otherwise.
 	 */
 	boolean isFilled();
 	
 	/**
-	 * Removes properties to be selected by term.
+	 * Removes all properties of the specific term, which can be selected by a returned selector.
 	 *  
-	 * @return the selector of the properties.
+	 * @return the selector of the property listers, never be {@code null}.
 	 */
 	PropertyListerSelector remove();
 	
 	/**
 	 * Removes the specified property from this metadata.
 	 * 
-	 * @param property the property to remove.
-	 * @return {@code true} if this metadata contained the specified property.
-	 * @throws IllegalArgumentException if {@code property} is {@code null}.
+	 * @param property the property to remove from this metadata.
+	 * @return {@code true} if this metadata contained the specified property, {@code false} otherwise.
+	 * @throws IllegalArgumentException if given {@code property} is {@code null}.
 	 */
 	boolean remove(Property<?> property);
 	
 	/**
-	 * Returns the total number of the properties contained in this metadata.
+	 * Returns the total number of the properties currently contained in this metadata.
 	 * 
-	 * @return the total number of the properties in this metadata.
+	 * @return the total number of the properties in this metadata, which will be zero or positive integer.
 	 */
 	int size();
 	
 	/**
-	 * Returns all terms that have at least one property in this metadata.
+	 * Returns all unique terms that have at least one property in this metadata.
 	 * 
 	 * @return the set of terms, never be {@code null}.
 	 */

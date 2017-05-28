@@ -143,17 +143,17 @@ public class DefaultTermRegistry implements TermRegistry {
 	}
 
 	@Override
-	public <T extends Enum<T> & Term> void registerAllTerms(Class<T> clazz) {
-		checkNotNull(clazz, "clazz");
-		for (Term t: clazz.getEnumConstants()) {
+	public <T extends Enum<T> & Term> void registerAllTerms(Class<T> type) {
+		checkNotNull(type, "type");
+		for (Term t: type.getEnumConstants()) {
 			registerTerm(t);
 		}
 	}
 
 	@Override
-	public <T extends Enum<T> & Vocabulary> void registerAllVocabularies(Class<T> clazz) {
-		checkNotNull(clazz, "clazz");
-		for (Vocabulary v: clazz.getEnumConstants()) {
+	public <T extends Enum<T> & Vocabulary> void registerAllVocabularies(Class<T> type) {
+		checkNotNull(type, "type");
+		for (Vocabulary v: type.getEnumConstants()) {
 			registerVocabulary(v);
 		}
 	}

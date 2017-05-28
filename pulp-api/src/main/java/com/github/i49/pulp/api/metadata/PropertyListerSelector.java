@@ -39,134 +39,139 @@ import com.github.i49.pulp.api.vocabularies.dc.Type;
 import com.github.i49.pulp.api.vocabularies.dcterms.Modified;
 
 /**
- * The interface to select a property lister.
+ * The type for selecting a property lister.
+ * <p>
+ * If the methods provided by this type have no properties to return,
+ * they will return an empty collection instead of returning {@code null}.
+ * All of the collections returned by this type are unmodifiable.
+ * </p>
  */
 public interface PropertyListerSelector {
 
 	/**
 	 * Returns all properties in the metadata.
 	 * 
-	 * @return the collection containing all properties.
+	 * @return the collection containing all properties, never be {@code null}.
 	 */
 	Collection<Property<?>> all();
 
 	/**
-	 * Returns {@link Contributor} properties.
+	 * Returns all properties of {@link Contributor}.
 	 * 
-	 * @return the list of the properties of the same term.
+	 * @return the list of the properties of the specified term, never be {@code null}.
 	 */
 	List<Contributor> contributor();
 
 	/**
-	 * Returns {@link Coverage} properties.
+	 * Returns all properties of {@link Coverage}.
 	 * 
-	 * @return the list of the properties of the same term.
+	 * @return the list of the properties of the specified term, never be {@code null}.
 	 */
 	List<Coverage> coverage();
 
 	/**
-	 * Returns {@link Creator} properties.
+	 * Returns all properties of {@link Creator}.
 	 * 
-	 * @return the list of the properties of the same term.
+	 * @return the list of the properties of the specified term, never be {@code null}.
 	 */
 	List<Creator> creator();
 
 	/**
-	 * Returns {@link Date} properties.
+	 * Returns all properties of {@link Date}.
 	 * 
-	 * @return the list of the properties of the same term.
+	 * @return the list of the properties of the specified term, never be {@code null}.
 	 */
 	List<Date> date();
 
 	/**
-	 * Returns {@link Description} properties.
+	 * Returns all properties of {@link Description}.
 	 * 
-	 * @return the list of the properties of the same term.
+	 * @return the list of the properties of the specified term, never be {@code null}.
 	 */
 	List<Description> description();
 
 	/**
-	 * Returns {@link Format} properties.
+	 * Returns all properties of {@link Format}.
 	 * 
-	 * @return the list of the properties of the same term.
+	 * @return the list of the properties of the specified term, never be {@code null}.
 	 */
 	List<Format> format();
 
 	/**
-	 * Returns {@link Identifier} properties.
+	 * Returns all properties of {@link Identifier}.
 	 * 
-	 * @return the list of the properties of the same term.
+	 * @return the list of the properties of the specified term, never be {@code null}.
 	 */
 	List<Identifier> identifier();
 	
 	/**
-	 * Returns {@link Language} properties.
+	 * Returns all properties of {@link Language}.
 	 * 
-	 * @return the list of the properties of the same term.
+	 * @return the list of the properties of the specified term, never be {@code null}.
 	 */
 	List<Language> language();
 
 	/**
-	 * Returns {@link Modified} properties.
+	 * Returns all properties of {@link Modified}.
 	 * 
-	 * @return the list of the properties of the same term.
+	 * @return the list of the properties of the specified term, never be {@code null}.
 	 */
 	List<Modified> modified();
 
 	/**
-	 * Returns {@link Publisher} properties.
+	 * Returns all properties of {@link Publisher}.
 	 * 
-	 * @return the list of the properties of the same term.
+	 * @return the list of the properties of the specified term, never be {@code null}.
 	 */
 	List<Publisher> publisher();
 
 	/**
-	 * Returns {@link Relation} properties.
+	 * Returns all properties of {@link Relation}.
 	 * 
-	 * @return the list of the properties of the same term.
+	 * @return the list of the properties of the specified term, never be {@code null}.
 	 */
 	List<Relation> relation();
 
 	/**
-	 * Returns {@link Rights} properties.
+	 * Returns all properties of {@link Rights}.
 	 * 
-	 * @return the list of the properties of the same term.
+	 * @return the list of the properties of the specified term, never be {@code null}.
 	 */
 	List<Rights> rights();
 	
 	/**
-	 * Returns {@link Source} properties.
+	 * Returns all properties of {@link Source}.
 	 * 
-	 * @return the list of the properties of the same term.
+	 * @return the list of the properties of the specified term, never be {@code null}.
 	 */
 	List<Source> source();
 
 	/**
-	 * Returns {@link Subject} properties.
+	 * Returns all properties of {@link Subject}.
 	 * 
-	 * @return the list of the properties of the same term.
+	 * @return the list of the properties of the specified term, never be {@code null}.
 	 */
 	List<Subject> subject();
 
 	/**
-	 * Returns {@link Title} properties.
+	 * Returns all properties of {@link Title}.
 	 * 
-	 * @return the list of the properties of the same term.
+	 * @return the list of the properties of the specified term, never be {@code null}.
 	 */
 	List<Title> title();
 
 	/**
-	 * Returns {@link Type} properties.
+	 * Returns all properties of {@link Type}.
 	 * 
-	 * @return the list of the properties of the same term.
+	 * @return the list of the properties of the specified term, never be {@code null}.
 	 */
 	List<Type> type();
 	
 	/**
-	 * Returns the properties of the specified term.
+	 * Returns all properties of the specified term.
 	 * 
 	 * @param term the term of the properties to return.
-	 * @return the list of the properties of the same term.
+	 * @return the list of the properties of the specified term.
 	 * @throws IllegalArgumentException if given {@code term} is {@code null}.
 	 */
 	List<Property<?>> propertyOf(Term term);
