@@ -67,26 +67,33 @@ class MetadataParser3 implements MetadataParser {
 	private static final Logger log = Logger.getLogger(MetadataParser3.class.getName());
 	private static final Vocabulary DEFAULT_VOCABULARY = StandardVocabulary.EPUB_META;
 	
-	private static final Map<Term, BiConsumer<MetadataParser3, MetadataEntry>> parsers;
+	private static final Map<Term, BiConsumer<MetadataParser3, MetadataEntry>> handlers;
+	private static final Map<String, TitleType> titleTypes;
 	
 	static {
-		parsers = new HashMap<>();
-		parsers.put(DublinCore.CONTRIBUTOR, MetadataParser3::parseContributor);
-		parsers.put(DublinCore.COVERAGE, MetadataParser3::parseCoverage);
-		parsers.put(DublinCore.CREATOR, MetadataParser3::parseCreator);
-		parsers.put(DublinCore.DATE, MetadataParser3::parseDate);
-		parsers.put(DublinCore.DESCRIPTION, MetadataParser3::parseDescription);
-		parsers.put(DublinCore.FORMAT, MetadataParser3::parseFormat);
-		parsers.put(DublinCore.IDENTIFIER, MetadataParser3::parseIdentifier);
-		parsers.put(DublinCore.LANGUAGE, MetadataParser3::parseLanguage);
-		parsers.put(DublinCore.PUBLISHER, MetadataParser3::parsePublisher);
-		parsers.put(DublinCore.RELATION, MetadataParser3::parseRelation);
-		parsers.put(DublinCore.RIGHTS, MetadataParser3::parseRights);
-		parsers.put(DublinCore.SOURCE, MetadataParser3::parseSource);
-		parsers.put(DublinCore.SUBJECT, MetadataParser3::parseSubject);
-		parsers.put(DublinCore.TITLE, MetadataParser3::parseTitle);
-		parsers.put(DublinCore.TYPE, MetadataParser3::parseType);
-		parsers.put(DublinCoreTerm.MODIFIED, MetadataParser3::parseModified);
+		handlers = new HashMap<Term, BiConsumer<MetadataParser3, MetadataEntry>>(){{
+			put(DublinCore.CONTRIBUTOR, MetadataParser3::handleContributor);
+			put(DublinCore.COVERAGE, MetadataParser3::handleCoverage);
+			put(DublinCore.CREATOR, MetadataParser3::handleCreator);
+			put(DublinCore.DATE, MetadataParser3::handleDate);
+			put(DublinCore.DESCRIPTION, MetadataParser3::handleDescription);
+			put(DublinCore.FORMAT, MetadataParser3::handleFormat);
+			put(DublinCore.IDENTIFIER, MetadataParser3::handleIdentifier);
+			put(DublinCore.LANGUAGE, MetadataParser3::handleLanguage);
+			put(DublinCore.PUBLISHER, MetadataParser3::handlePublisher);
+			put(DublinCore.RELATION, MetadataParser3::handleRelation);
+			put(DublinCore.RIGHTS, MetadataParser3::handleRights);
+			put(DublinCore.SOURCE, MetadataParser3::handleSource);
+			put(DublinCore.SUBJECT, MetadataParser3::handleSubject);
+			put(DublinCore.TITLE, MetadataParser3::handleTitle);
+			put(DublinCore.TYPE, MetadataParser3::handleType);
+			put(DublinCoreTerm.MODIFIED, MetadataParser3::handleModified);
+		}};
+
+		titleTypes = new HashMap<>();
+		for (TitleType t: TitleType.values()) {
+			titleTypes.put(t.name().toLowerCase(), t);
+		}
 	}
 	
 	MetadataParser3(Metadata metadata, EpubService service, PrefixRegistry prefixRegistry, String uniqueIdentifier) {
@@ -100,7 +107,7 @@ class MetadataParser3 implements MetadataParser {
 	public void parse(Element element) {
 		for (MetadataEntry entry: fetchMetadataEntries(element)) {
 			if (!entry.isRefining()) {
-				parseMetadataEntry(entry);
+				handleMetadataEntry(entry);
 			}
 		}
 	}
@@ -158,13 +165,13 @@ class MetadataParser3 implements MetadataParser {
 				.collect(Collectors.toMap(MetadataEntry::getId, Function.identity()));
 	}
 
-	private void parseMetadataEntry(MetadataEntry entry) {
+	private void handleMetadataEntry(MetadataEntry entry) {
 		Term term = entry.getTerm();
-		BiConsumer<MetadataParser3, MetadataEntry> consumer = parsers.get(term);
+		BiConsumer<MetadataParser3, MetadataEntry> consumer = handlers.get(term);
 		if (consumer != null) {
 			consumer.accept(this, entry);
 		} else {
-			parseGenericProperty(entry);
+			handleGenericProperty(entry);
 		}
 	}
 	
@@ -204,34 +211,35 @@ class MetadataParser3 implements MetadataParser {
 		return metadata.add();
 	}
 	
-	private void parseContributor(MetadataEntry entry) {
+	private void handleContributor(MetadataEntry entry) {
 		buildRelator(add().contributor(entry.getValue()), entry);
 	}
 
-	private void parseCoverage(MetadataEntry entry) {
+	private void handleCoverage(MetadataEntry entry) {
 		add().coverage(entry.getValue()).result();
 	}
 
-	private void parseCreator(MetadataEntry entry) {
+	private void handleCreator(MetadataEntry entry) {
 		buildRelator(add().creator(entry.getValue()), entry);
 	}
 
-	private void parseDate(MetadataEntry entry) {
+	private void handleDate(MetadataEntry entry) {
 		OffsetDateTime dateTime = convertDateTime(entry.getValue());
 		add().date(dateTime).result();
 	}
 
-	private void parseDescription(MetadataEntry entry) {
+	private void handleDescription(MetadataEntry entry) {
 		add().description(entry.getValue()).result();
 	}
 
-	private void parseFormat(MetadataEntry entry) {
+	private void handleFormat(MetadataEntry entry) {
 		add().format(entry.getValue()).result();
 	}
 	
-	private void parseIdentifier(MetadataEntry entry) {
+	private void handleIdentifier(MetadataEntry entry) {
 		Identifier.Builder b = add().identifier(entry.getValue());
 		if (entry.hasId() && entry.getId().equals(this.uniqueIdentifier)) {
+			// TODO:
 			//prepend(p);
 		} else {
 			//append(p);
@@ -239,31 +247,31 @@ class MetadataParser3 implements MetadataParser {
 		b.result();
 	}
 
-	private void parseLanguage(MetadataEntry entry) {
+	private void handleLanguage(MetadataEntry entry) {
 		add().language(entry.getValue()).result();
 	}
 
-	private void parsePublisher(MetadataEntry entry) {
+	private void handlePublisher(MetadataEntry entry) {
 		buildRelator(add().publisher(entry.getValue()), entry);
 	}
 
-	private void parseRelation(MetadataEntry entry) {
+	private void handleRelation(MetadataEntry entry) {
 		add().relation(entry.getValue()).result();
 	}
 
-	private void parseRights(MetadataEntry entry) {
+	private void handleRights(MetadataEntry entry) {
 		add().rights(entry.getValue()).result();
 	}
 
-	private void parseSource(MetadataEntry entry) {
+	private void handleSource(MetadataEntry entry) {
 		add().source(entry.getValue()).result();
 	}
 
-	private void parseSubject(MetadataEntry entry) {
+	private void handleSubject(MetadataEntry entry) {
 		add().subject(entry.getValue()).result();
 	}
 	
-	private void parseTitle(MetadataEntry entry) {
+	private void handleTitle(MetadataEntry entry) {
 		Title.Builder builder = add().title(entry.getValue());
 		for (MetadataEntry refiner: entry.getRefiners()) {
 			Term term = refiner.getTerm();
@@ -272,23 +280,27 @@ class MetadataParser3 implements MetadataParser {
 			} else if (term == MetaPropertyTerm.FILE_AS) {
 				builder.fileAs(refiner.getValue());
 			} else if (term == MetaPropertyTerm.TITLE_TYPE) {
-				TitleType type = TitleType.valueOf(refiner.getValue().toUpperCase());
-				builder.ofType(type);
+				TitleType type = findTitleType(refiner.getValue());
+				if (type != null) {
+					builder.ofType(type);
+				} else {
+					log.warning(Messages.METADATA_TITLE_TYPE_UNKNOWN(refiner.getValue()));
+				}
 			}
 		}
 		builder.result();
 	}
 
-	private void parseType(MetadataEntry entry) {
+	private void handleType(MetadataEntry entry) {
 		add().type(entry.getValue()).result();
 	}
 	
-	private void parseModified(MetadataEntry entry) {
+	private void handleModified(MetadataEntry entry) {
 		OffsetDateTime dateTime = convertDateTime(entry.getValue());
 		add().modified(dateTime).result();
 	}
 	
-	private void parseGenericProperty(MetadataEntry entry) {
+	private void handleGenericProperty(MetadataEntry entry) {
 		Term term = entry.getTerm();
 		GenericText.Builder b = add().generic(term, entry.getValue());
 		b.result();
@@ -315,5 +327,9 @@ class MetadataParser3 implements MetadataParser {
 			dateTime = OffsetDateTime.of(date, time, ZoneOffset.UTC);
 		}
 		return dateTime;
+	}
+	
+	private static TitleType findTitleType(String value) {
+		return titleTypes.get(value);
 	}
 }

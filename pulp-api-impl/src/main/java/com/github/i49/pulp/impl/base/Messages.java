@@ -82,12 +82,6 @@ public final class Messages {
 		return format("METADATA_PROPERTY_NOT_FOUND", term);
 	}
 
-	/*
-	public static String METADATA_PROPERTY_TYPE_MISMATCHED(PropertyType type, Term term) {
-		return format("METADATA_PROPERTY_TYPE_MISMATCHED", type, term);
-	}
-	*/
-	
 	/* io package */
 	
 	public static String CONTAINER_NOT_FOUND(Path path) {
@@ -118,12 +112,12 @@ public final class Messages {
 		return format("CONTAINER_MIMETYPE_UNEXPECTED", path, mimetype);
 	}
 	
-	public static String METADATA_DC_ELEMENT_UNKNOWN(String name) {
-		return format("METADATA_DC_ELEMENT_UNKNOWN", name);
-	}
-	
 	public static String METADATA_PROPERTY_PREFIX_IGNORED(String prefix) {
 		return format("METADATA_PROPERTY_PREFIX_IGNORED", prefix);
+	}
+	
+	public static String METADATA_TITLE_TYPE_UNKNOWN(String titleType) {
+		return format("METADATA_TITLE_TYPE_UNKNOWN", titleType);
 	}
 	
 	public static String MANIFEST_ITEM_ID_MISSING(String id) {
