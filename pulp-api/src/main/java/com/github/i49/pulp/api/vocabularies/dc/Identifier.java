@@ -41,11 +41,27 @@ public interface Identifier extends Property<String> {
 	 * @return the scheme URI of this identifier, may be empty.
 	 */
 	Optional<URI> getSchemeURI();
+	
+	/**
+	 * Checks if this identifier is primary one or not.
+	 * Primary identifier can be the identifier part of <i>release identifier</i>.
+	 * 
+	 * @return {@code true} if this identifier is primary, {@code false} otherwise.
+	 */
+	boolean isPrimary();
 
 	/**
 	 * Builder for building instances of {@link Identifier}.
 	 */
 	public interface Builder extends PropertyBuilder<String, Identifier, Builder> {
+		
+		/**
+		 * Specifies that the identifier to build is primary one or not.
+		 * 
+		 * @param primary {@code true} if the identifier is primary, {@code false} otherwise.
+		 * @return this builder.
+		 */
+		Builder primary(boolean primary);
 		
 		/**
 		 * Specifies the scheme of the identifier.

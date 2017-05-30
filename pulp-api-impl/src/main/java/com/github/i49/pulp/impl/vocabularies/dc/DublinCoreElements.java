@@ -347,6 +347,7 @@ public final class DublinCoreElements {
 	 */
 	private static class DefaultIdentifier extends StringProperty implements Identifier {
 		
+		private final boolean primary;
 		private final IdentifierScheme scheme;
 		private final URI schemeURI;
 		
@@ -354,6 +355,7 @@ public final class DublinCoreElements {
 			super(b);
 			this.scheme = b.scheme;
 			this.schemeURI = b.schemeURI;
+			this.primary = b.primary;
 		}
 
 		@Override
@@ -365,12 +367,18 @@ public final class DublinCoreElements {
 		public Optional<URI> getSchemeURI() {
 			return Optional.ofNullable(schemeURI);
 		}
+		
+		@Override
+		public boolean isPrimary() {
+			return primary;
+		}
 	}
 	
 	private static class IdentifierBuilder 
 		extends StringProperty.Builder<Identifier, Identifier.Builder>
 		implements Identifier.Builder {
 		
+		private boolean primary = true;
 		private IdentifierScheme scheme;
 		private URI schemeURI;
 		
@@ -382,6 +390,12 @@ public final class DublinCoreElements {
 		@Override
 		protected Identifier build() {
 			return new DefaultIdentifier(this);
+		}
+		
+		@Override
+		public Builder primary(boolean primary) {
+			this.primary = primary;
+			return self();
 		}
 
 		@Override

@@ -27,9 +27,14 @@ import com.github.i49.pulp.api.vocabularies.dcterms.Modified;
 public interface ReleaseIdentifier {
 	
 	/**
-	 * Returns the unique identifier of the rendition.
+	 * Returns the <i>unique identifier</i> of the rendition.
+	 * The unique identifier is the representative identifier of all 
+	 * and must be marked as primary.
+	 * If there are multiple identifiers marked as primary found in the metadata, 
+	 * the first primary identifier will be returned by this method.
 	 * 
 	 * @return the unique identifier of the rendition, may be empty.
+	 * @see Identifier#isPrimary()
 	 */
 	Optional<Identifier> getUniqueIdentifier();
 	

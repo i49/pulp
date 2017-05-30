@@ -44,6 +44,7 @@ import com.github.i49.pulp.api.metadata.TermRegistry;
 import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.dc.Creator;
+import com.github.i49.pulp.api.vocabularies.dc.Identifier;
 import com.github.i49.pulp.api.vocabularies.dc.Subject;
 import com.github.i49.pulp.api.vocabularies.dc.Title;
 import com.github.i49.pulp.api.vocabularies.dc.TitleType;
@@ -90,7 +91,10 @@ public class Epub30SamplesTest {
 			Metadata m = r.getMetadata();
 			assertThat(m.size()).isEqualTo(14);
 			
-			assertThat(m.find().identifier().get(0)).hasValue("urn:isbn:9781449328030");
+			Identifier identifier = m.find().identifier().get(0);
+			assertThat(identifier.getValue()).isEqualTo("urn:isbn:9781449328030");
+			assertThat(identifier.isPrimary()).isTrue();
+
 			assertThat(m.find().title().get(0)).hasValue("Accessible EPUB 3");
 			assertThat(m.find().language().get(0)).hasValue("en");
 			assertThat(m.find().creator().get(0)).hasValue("Matt Garrish");

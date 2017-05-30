@@ -36,7 +36,7 @@ public class DefaultReleaseIdentifier implements ReleaseIdentifier {
 
 	@Override
 	public Optional<Identifier> getUniqueIdentifier() {
-		return metadata.find().identifier().stream().findFirst();
+		return metadata.find().identifier().stream().filter(Identifier::isPrimary).findFirst();
 	}
 
 	@Override

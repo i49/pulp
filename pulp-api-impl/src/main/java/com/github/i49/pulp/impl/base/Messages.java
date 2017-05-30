@@ -23,8 +23,6 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.github.i49.pulp.api.vocabularies.Term;
-
 public final class Messages {
 
 	private static final String BUNDLE_BASE_NAME = Messages.class.getPackage().getName() + ".messages";
@@ -78,10 +76,10 @@ public final class Messages {
 
 	/* metadata package */
 	
-	public static String METADATA_PROPERTY_NOT_FOUND(Term term) {
-		return format("METADATA_PROPERTY_NOT_FOUND", term);
+	public static String METADATA_TITLE_DEFAULT() {
+		return format("METADATA_TITLE_DEFAULT");
 	}
-
+	
 	/* io package */
 	
 	public static String CONTAINER_NOT_FOUND(Path path) {

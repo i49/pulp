@@ -31,6 +31,7 @@ import com.github.i49.pulp.api.metadata.ReleaseIdentifier;
 import com.github.i49.pulp.api.metadata.TermRegistry;
 import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.Term;
+import com.github.i49.pulp.impl.base.Messages;
 
 /**
  * The default implementation of {@link Metadata}.
@@ -50,8 +51,6 @@ public class DefaultMetadata implements Metadata {
 
 	private final ReleaseIdentifier releaseIdentifier;
 	
-	private static final String DEFAULT_TITLE = "untitled";
-
 	/**
 	 * Constructs the new metadata.
 	 * 
@@ -109,7 +108,7 @@ public class DefaultMetadata implements Metadata {
 			add().identifier();
 		}
 		if (!tester.title()) {
-			add().title(DEFAULT_TITLE);
+			add().title(Messages.METADATA_TITLE_DEFAULT());
 		}
 		if (!tester.language()) {
 			add().language(Locale.getDefault());

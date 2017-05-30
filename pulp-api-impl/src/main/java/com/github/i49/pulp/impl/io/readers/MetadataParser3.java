@@ -238,12 +238,7 @@ class MetadataParser3 implements MetadataParser {
 	
 	private void handleIdentifier(MetadataEntry entry) {
 		Identifier.Builder b = add().identifier(entry.getValue());
-		if (entry.hasId() && entry.getId().equals(this.uniqueIdentifier)) {
-			// TODO:
-			//prepend(p);
-		} else {
-			//append(p);
-		}
+		b.primary(entry.hasId() && entry.getId().equals(this.uniqueIdentifier));
 		b.result();
 	}
 
@@ -313,6 +308,7 @@ class MetadataParser3 implements MetadataParser {
 			if (term == MetaPropertyTerm.FILE_AS) {
 				builder.fileAs(refiner.getValue());
 			}
+			// TODO: role
 		}
 		return builder.result();
 	}

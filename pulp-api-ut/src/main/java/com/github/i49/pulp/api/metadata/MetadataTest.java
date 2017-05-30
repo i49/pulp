@@ -132,11 +132,11 @@ public class MetadataTest {
 		
 		Identifier identifier = m.find().identifier().get(0);
 		assertThat(identifier).isNotNull();
-		assertThat(identifier.getValueAsString()).isNotBlank();
+		assertThat(identifier.getValueAsString()).startsWith("urn:uuid:");
 	
 		Title title = m.find().title().get(0);
 		assertThat(title).isNotNull();
-		assertThat(title.getValueAsString()).isNotBlank();
+		assertThat(title.getValueAsString()).containsSequence("untitled");
 
 		Language language = m.find().language().get(0);
 		assertThat(language).isNotNull();
