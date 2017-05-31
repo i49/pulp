@@ -16,12 +16,6 @@
 
 package com.github.i49.pulp.impl.io.readers;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -224,8 +218,7 @@ class MetadataParser3 implements MetadataParser {
 	}
 
 	private void handleDate(MetadataEntry entry) {
-		OffsetDateTime dateTime = convertDateTime(entry.getValue());
-		add().date(dateTime).result();
+		add().date(entry.getValue()).result();
 	}
 
 	private void handleDescription(MetadataEntry entry) {
@@ -291,8 +284,7 @@ class MetadataParser3 implements MetadataParser {
 	}
 	
 	private void handleModified(MetadataEntry entry) {
-		OffsetDateTime dateTime = convertDateTime(entry.getValue());
-		add().modified(dateTime).result();
+		add().modified(entry.getValue()).result();
 	}
 	
 	private void handleGenericProperty(MetadataEntry entry) {
@@ -313,18 +305,6 @@ class MetadataParser3 implements MetadataParser {
 		return builder.result();
 	}
 
-	private static OffsetDateTime convertDateTime(String value) {
-		OffsetDateTime dateTime = null;
-		try {
-			dateTime = OffsetDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-		} catch (DateTimeParseException e) {
-			LocalDate date = LocalDate.parse(value, DateTimeFormatter.ISO_LOCAL_DATE);
-			LocalTime time = LocalTime.of(0, 0);
-			dateTime = OffsetDateTime.of(date, time, ZoneOffset.UTC);
-		}
-		return dateTime;
-	}
-	
 	private static TitleType findTitleType(String value) {
 		return titleTypes.get(value);
 	}

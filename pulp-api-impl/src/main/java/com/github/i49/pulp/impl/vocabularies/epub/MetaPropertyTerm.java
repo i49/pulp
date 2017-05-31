@@ -24,8 +24,13 @@ import com.github.i49.pulp.api.vocabularies.Vocabulary;
  * Term defined in EPUB Meta Properties Vocabulary.
  */
 public enum MetaPropertyTerm implements Term {
+	ALTERNATE_SCRIPT,
 	DISPLAY_SEQ,
 	FILE_AS,
+	GROUP_POSITION,
+	IDENTIIFER_TYPE,
+	META_AUTH,
+	ROLE,
 	TITLE_TYPE
 	;
 

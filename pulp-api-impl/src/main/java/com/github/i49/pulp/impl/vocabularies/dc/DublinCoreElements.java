@@ -41,7 +41,6 @@ import com.github.i49.pulp.api.vocabularies.dc.SubjectAuthority;
 import com.github.i49.pulp.api.vocabularies.dc.Title;
 import com.github.i49.pulp.api.vocabularies.dc.TitleType;
 import com.github.i49.pulp.api.vocabularies.dc.Type;
-import com.github.i49.pulp.api.vocabularies.dc.Identifier.Builder;
 import com.github.i49.pulp.api.vocabularies.dc.IdentifierScheme;
 import com.github.i49.pulp.impl.vocabularies.DateProperty;
 import com.github.i49.pulp.impl.vocabularies.LanguageProperty;
@@ -393,20 +392,20 @@ public final class DublinCoreElements {
 		}
 		
 		@Override
-		public Builder primary(boolean primary) {
+		public Identifier.Builder primary(boolean primary) {
 			this.primary = primary;
 			return self();
 		}
 
 		@Override
-		public Builder scheme(IdentifierScheme scheme) {
+		public Identifier.Builder scheme(IdentifierScheme scheme) {
 			checkNotNull(scheme, "scheme");
 			this.scheme = scheme;
 			return self();
 		}
 
 		@Override
-		public Builder scheme(URI schemeURI) {
+		public Identifier.Builder scheme(URI schemeURI) {
 			checkNotNull(schemeURI, "schemeURI");
 			this.schemeURI = schemeURI;
 			return self();

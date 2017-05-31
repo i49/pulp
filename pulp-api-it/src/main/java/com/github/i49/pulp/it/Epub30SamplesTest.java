@@ -218,6 +218,20 @@ public class Epub30SamplesTest {
 			assertThat(s).linearExcept();
 		});
 	}
+
+	@Test
+	public void test_childrens_media_query() {
+		read("childrens-media-query.epub", p->{
+			assertCommon(p);
+			
+			assertThat(p.getNumberOfRenditions()).isEqualTo(1);
+	
+			Rendition r = p.getDefaultRendition();
+	
+			Metadata m = r.getMetadata();
+			assertThat(m.size()).isEqualTo(12);
+		});
+	}
 	
 	protected void assertCommon(Publication p) {
 		assertThat(p).isNotNull();

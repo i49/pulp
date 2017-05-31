@@ -44,6 +44,7 @@ import com.github.i49.pulp.api.vocabularies.dc.Subject;
 import com.github.i49.pulp.api.vocabularies.dc.Title;
 import com.github.i49.pulp.api.vocabularies.dc.Type;
 import com.github.i49.pulp.api.vocabularies.dcterms.Modified;
+import com.github.i49.pulp.impl.base.DateTimeParser;
 import com.github.i49.pulp.impl.vocabularies.GenericProperty;
 import com.github.i49.pulp.impl.vocabularies.GenericTextProperty;
 import com.github.i49.pulp.impl.vocabularies.dc.DublinCoreElements;
@@ -84,6 +85,13 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 		return add(DublinCoreElements.date().value(value));
 	}
 
+	@Override
+	public Date.Builder date(String value) {
+		checkNotBlank(value, "value");
+		OffsetDateTime dateTime = DateTimeParser.ISO_8601.parse(value);
+		return date(dateTime);
+	}
+	
 	@Override
 	public Description.Builder description(String value) {
 		checkNotBlank(value, "value");
@@ -128,6 +136,13 @@ class DefaultPropertyBuilderSelector implements PropertyBuilderSelector {
 		return add(DublinCoreTerms.modified().value(value));
 	}
 
+	@Override
+	public Modified.Builder modified(String value) {
+		checkNotBlank(value, "value");
+		OffsetDateTime dateTime = DateTimeParser.ISO_8601.parse(value);
+		return modified(dateTime);
+	}
+	
 	@Override
 	public Publisher.Builder publisher(String value) {
 		checkNotBlank(value, "value");

@@ -109,6 +109,15 @@ public interface PropertyBuilderSelector {
 	 * @throws IllegalArgumentException if given {@code value} is invalid.
 	 */
 	Date.Builder date(OffsetDateTime value);
+
+	/**
+	 * Creates a builder for building an instance of {@link Date}.
+	 * 
+	 * @param value date and time in ISO 8601 format.
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if given {@code value} is invalid.
+	 */
+	Date.Builder date(String value);
 	
 	/**
 	 * Creates a builder for building an instance of {@link Description}.
@@ -175,6 +184,15 @@ public interface PropertyBuilderSelector {
 	 * @throws IllegalArgumentException if given {@code value} is invalid.
 	 */
 	Modified.Builder modified(OffsetDateTime value);
+
+	/**
+	 * Creates a builder for building an instance of {@link Modified}.
+	 * 
+	 * @param value date and time in ISO 8601 format.
+	 * @return newly created builder.
+	 * @throws IllegalArgumentException if given {@code value} is invalid.
+	 */
+	Modified.Builder modified(String value);
 	
 	/**
 	 * Creates a builder for building an instance of {@link Publisher}.

@@ -145,8 +145,9 @@ public class PropertyBuilderSelectorTest {
 
 	@Test
 	public void date_shouldThrowExceptionIfDateTimeIsNull() {
+		OffsetDateTime value = null;
 		Throwable thrown = catchThrowable(()->{
-			m.add().date(null);
+			m.add().date(value);
 		});
 		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
 	}
@@ -296,8 +297,9 @@ public class PropertyBuilderSelectorTest {
 
 	@Test
 	public void modified_shouldThrowExceptionIfDateTimeIsNull() {
+		OffsetDateTime value = null;
 		Throwable thrown = catchThrowable(()->{
-			m.add().modified(null);
+			m.add().modified(value);
 		});
 		assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
 	}
