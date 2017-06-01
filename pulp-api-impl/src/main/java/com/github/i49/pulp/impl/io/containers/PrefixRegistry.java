@@ -29,19 +29,21 @@ public class PrefixRegistry {
 	
 	private final Map<String, Vocabulary> prefixes = new HashMap<>();
 	
-	private static final Map<String, Vocabulary> RESERVED_PREFIXES = new HashMap<>();
+	private static final Map<String, Vocabulary> RESERVED_PREFIXES;
 	
 	static {
-		// Adds all reserved prefixes for package metadata.
-		add("a11y", StandardVocabulary.EPUB_A11Y);
-		add("dcterms", StandardVocabulary.DCTERMS);
-		add("epubsc", StandardVocabulary.EPUB_SC);
-		add("marc", StandardVocabulary.MARC);
-		add("media", StandardVocabulary.EPUB_MEDIA);
-		add("onix", StandardVocabulary.ONIX);
-		add("rendition", StandardVocabulary.EPUB_RENDITION);
-		add("schema", StandardVocabulary.SCHEMA);
-		add("xsd", StandardVocabulary.XSD);
+		RESERVED_PREFIXES = new HashMap<String, Vocabulary>() {{
+			// Adds all reserved prefixes for package metadata.
+			put("a11y", StandardVocabulary.EPUB_A11Y);
+			put("dcterms", StandardVocabulary.DCTERMS);
+			put("epubsc", StandardVocabulary.EPUB_SC);
+			put("marc", StandardVocabulary.MARC);
+			put("media", StandardVocabulary.EPUB_MEDIA);
+			put("onix", StandardVocabulary.ONIX);
+			put("rendition", StandardVocabulary.EPUB_RENDITION);
+			put("schema", StandardVocabulary.SCHEMA);
+			put("xsd", StandardVocabulary.XSD);
+		}};
 	}
 
 	public void put(String prefix, Vocabulary vocabulary) {
@@ -57,9 +59,5 @@ public class PrefixRegistry {
 			v = this.prefixes.get(prefix);
 		}
 		return v;
-	}
-	
-	private static void add(String prefix, Vocabulary v) {
-		RESERVED_PREFIXES.put(prefix, v);
 	}
 }

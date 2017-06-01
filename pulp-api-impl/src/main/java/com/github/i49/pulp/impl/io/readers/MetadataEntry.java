@@ -79,6 +79,15 @@ class MetadataEntry {
 	}
 	
 	/**
+	 * Returns the scheme of the value.
+	 * 
+	 * @return the scheme of the value.
+	 */
+	String getScheme() {
+		return getElement().getAttribute("scheme").trim();
+	}
+	
+	/**
 	 * Returns the refiners of this entry.
 	 * 
 	 * @return the refiners of this entry.

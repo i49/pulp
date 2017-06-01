@@ -42,9 +42,12 @@ import com.github.i49.pulp.api.core.Spine.Page;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.TermRegistry;
 import com.github.i49.pulp.api.vocabularies.Property;
+import com.github.i49.pulp.api.vocabularies.RelatorRole;
 import com.github.i49.pulp.api.vocabularies.Term;
+import com.github.i49.pulp.api.vocabularies.dc.Contributor;
 import com.github.i49.pulp.api.vocabularies.dc.Creator;
 import com.github.i49.pulp.api.vocabularies.dc.Identifier;
+import com.github.i49.pulp.api.vocabularies.dc.Publisher;
 import com.github.i49.pulp.api.vocabularies.dc.Subject;
 import com.github.i49.pulp.api.vocabularies.dc.Title;
 import com.github.i49.pulp.api.vocabularies.dc.TitleType;
@@ -230,6 +233,27 @@ public class Epub30SamplesTest {
 	
 			Metadata m = r.getMetadata();
 			assertThat(m.size()).isEqualTo(12);
+			
+			List<Creator> creators = m.find().creator();
+			assertThat(creators).hasSize(2);
+			assertThat(creators.get(0).getValue()).isEqualTo("Thomas Crane");
+			assertThat(creators.get(0).getNormalizedValue()).hasValue("Crane, Thomas");
+			assertThat(creators.get(0).getRole()).hasValue(RelatorRole.AUTHOR);
+			assertThat(creators.get(1).getValue()).isEqualTo("Ellen Elizabeth Houghton");
+			assertThat(creators.get(1).getNormalizedValue()).hasValue("Houghton, Ellen Elizabeth");
+			assertThat(creators.get(1).getRole()).hasValue(RelatorRole.ILLUSTRATOR);
+			
+			List<Contributor> contributors = m.find().contributor();
+			assertThat(contributors).hasSize(2);
+			assertThat(contributors.get(0).getValue()).isEqualTo("Liza Daly");
+			assertThat(contributors.get(0).getRole()).hasValue(RelatorRole.MARKUP_EDITOR);
+			assertThat(contributors.get(1).getValue()).isEqualTo("University of California Libraries");
+			assertThat(contributors.get(1).getRole()).isEmpty();
+
+			List<Publisher> publishers = m.find().publisher();
+			assertThat(publishers).hasSize(1);
+			assertThat(publishers.get(0).getValue()).isEqualTo("London ; Belfast ; New York : Marcus Ward & Co.");
+			assertThat(publishers.get(0).getRole()).isEmpty();
 		});
 	}
 	

@@ -17,6 +17,7 @@
 package com.github.i49.pulp.impl.io.readers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -35,6 +36,7 @@ import com.github.i49.pulp.api.metadata.TermRegistry;
 import com.github.i49.pulp.api.spi.EpubService;
 import com.github.i49.pulp.api.vocabularies.GenericText;
 import com.github.i49.pulp.api.vocabularies.Relator;
+import com.github.i49.pulp.api.vocabularies.RelatorRole;
 import com.github.i49.pulp.api.vocabularies.StandardVocabulary;
 import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.Vocabulary;
@@ -46,6 +48,7 @@ import com.github.i49.pulp.api.vocabularies.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.io.containers.PrefixRegistry;
 import com.github.i49.pulp.impl.vocabularies.epub.MetaPropertyTerm;
+import com.github.i49.pulp.impl.vocabularies.marc.Marc;
 import com.github.i49.pulp.impl.xml.Nodes;
 
 /**
@@ -63,6 +66,7 @@ class MetadataParser3 implements MetadataParser {
 	
 	private static final Map<Term, BiConsumer<MetadataParser3, MetadataEntry>> handlers;
 	private static final Map<String, TitleType> titleTypes;
+	private static final Map<String, RelatorRole> roles;
 	
 	static {
 		handlers = new HashMap<Term, BiConsumer<MetadataParser3, MetadataEntry>>(){{
@@ -84,10 +88,11 @@ class MetadataParser3 implements MetadataParser {
 			put(DublinCoreTerm.MODIFIED, MetadataParser3::handleModified);
 		}};
 
-		titleTypes = new HashMap<>();
-		for (TitleType t: TitleType.values()) {
-			titleTypes.put(t.name().toLowerCase(), t);
-		}
+		titleTypes = Arrays.stream(TitleType.values())
+				.collect(Collectors.toMap(t->t.name().toLowerCase(), Function.identity()));
+		
+		roles = Arrays.stream(RelatorRole.values())
+				.collect(Collectors.toMap(RelatorRole::getCode, Function.identity()));
 	}
 	
 	MetadataParser3(Metadata metadata, EpubService service, PrefixRegistry prefixRegistry, String uniqueIdentifier) {
@@ -115,7 +120,7 @@ class MetadataParser3 implements MetadataParser {
 				entries.add(entry);
 			}
 		}
-		return refineEntries(entries);
+		return linkEntries(entries);
 	}
 	
 	private MetadataEntry createEntry(Element element) {
@@ -137,7 +142,7 @@ class MetadataParser3 implements MetadataParser {
 		return null;
 	}
 	
-	private List<MetadataEntry> refineEntries(List<MetadataEntry> entries) {
+	private List<MetadataEntry> linkEntries(List<MetadataEntry> entries) {
 		Map<String, MetadataEntry> map = createEntryMap(entries);
 		for (MetadataEntry entry: entries) {
 			if (entry.isRefining()) {
@@ -170,6 +175,9 @@ class MetadataParser3 implements MetadataParser {
 	}
 	
 	private Term findTerm(String name) {
+		if (name == null || name.isEmpty()) {
+			return null;
+		}
 		String[] parts = name.split(":", 2);
 		String prefix = null;
 		String localName = null;
@@ -294,18 +302,36 @@ class MetadataParser3 implements MetadataParser {
 	}
 	
 	private <T extends Relator, R extends Relator.Builder<T, R>> 
-	T buildRelator(Relator.Builder<T, R> builder, MetadataEntry entry) {
+	void buildRelator(Relator.Builder<T, R> builder, MetadataEntry entry) {
+		refineRelator(builder, entry);
+		builder.result();
+	}
+	
+	private <T extends Relator, R extends Relator.Builder<T, R>> 
+	void refineRelator(Relator.Builder<T, R> builder, MetadataEntry entry) {
 		for (MetadataEntry refiner: entry.getRefiners()) {
 			Term term = refiner.getTerm();
 			if (term == MetaPropertyTerm.FILE_AS) {
 				builder.fileAs(refiner.getValue());
+			} else if (term == MetaPropertyTerm.ROLE) {
+				String scheme = refiner.getScheme();
+				if (scheme == null || findTerm(scheme) == Marc.RELATORS) {
+					RelatorRole role = findRole(refiner.getValue());
+					if (role != null) {
+						builder.role(role);
+					} else {
+						log.warning(Messages.METADATA_RELATOR_ROLE_UNKNOWN(refiner.getValue()));
+					}
+				}
 			}
-			// TODO: role
 		}
-		return builder.result();
 	}
 
 	private static TitleType findTitleType(String value) {
 		return titleTypes.get(value);
+	}
+	
+	private static RelatorRole findRole(String value) {
+		return roles.get(value);
 	}
 }

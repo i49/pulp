@@ -117,6 +117,10 @@ public final class Messages {
 	public static String METADATA_TITLE_TYPE_UNKNOWN(String titleType) {
 		return format("METADATA_TITLE_TYPE_UNKNOWN", titleType);
 	}
+
+	public static String METADATA_RELATOR_ROLE_UNKNOWN(String role) {
+		return format("METADATA_RELATOR_ROLE_UNKNOWN", role);
+	}
 	
 	public static String MANIFEST_ITEM_ID_MISSING(String id) {
 		return format("MANIFEST_ITEM_ID_MISSING", id);
