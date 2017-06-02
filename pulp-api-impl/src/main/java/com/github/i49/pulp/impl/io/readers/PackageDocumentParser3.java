@@ -52,7 +52,6 @@ class PackageDocumentParser3 implements PackageDocumentParser {
 	
 	private String uniqueIdentifier;
 	
-	private EpubService service;
 	private TermRegistry termRegistry;
 	private Rendition rendition;
 	private RenditionResourceFinder resourceFinder;
@@ -64,7 +63,6 @@ class PackageDocumentParser3 implements PackageDocumentParser {
 			EpubService service,
 			RenditionResourceFinder resourceFinder) {
 		
-		this.service = service;
 		this.termRegistry = service.getPropertyTermRegistry();
 		this.rendition = rendition;
 		this.resourceFinder = resourceFinder;
@@ -130,7 +128,8 @@ class PackageDocumentParser3 implements PackageDocumentParser {
 	}
 	
 	protected MetadataParser createMetadataParser(Metadata metadata) {
-		return new MetadataParser3(metadata, this.service, this.prefixRegistry, this.uniqueIdentifier);
+		PropertyParser propertyParser= new PropertyParser(this.prefixRegistry, this.termRegistry);
+		return new MetadataParser3(metadata, this.uniqueIdentifier, propertyParser);
 	}
 	
 	protected void parseManifest(Element element) {

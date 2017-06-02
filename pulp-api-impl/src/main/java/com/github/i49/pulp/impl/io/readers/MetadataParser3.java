@@ -32,8 +32,6 @@ import org.w3c.dom.Element;
 
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.PropertyBuilderSelector;
-import com.github.i49.pulp.api.metadata.TermRegistry;
-import com.github.i49.pulp.api.spi.EpubService;
 import com.github.i49.pulp.api.vocabularies.GenericText;
 import com.github.i49.pulp.api.vocabularies.Relator;
 import com.github.i49.pulp.api.vocabularies.RelatorRole;
@@ -46,7 +44,6 @@ import com.github.i49.pulp.api.vocabularies.dc.Title;
 import com.github.i49.pulp.api.vocabularies.dc.TitleType;
 import com.github.i49.pulp.api.vocabularies.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.impl.base.Messages;
-import com.github.i49.pulp.impl.io.containers.PrefixRegistry;
 import com.github.i49.pulp.impl.vocabularies.epub.MetaPropertyTerm;
 import com.github.i49.pulp.impl.vocabularies.marc.Marc;
 import com.github.i49.pulp.impl.xml.Nodes;
@@ -57,9 +54,8 @@ import com.github.i49.pulp.impl.xml.Nodes;
 class MetadataParser3 implements MetadataParser {
 	
 	private final Metadata metadata;
-	private final TermRegistry termRegistry;
-	private final PrefixRegistry prefixRegistry;
 	private final String uniqueIdentifier;
+	private final PropertyParser propertyParser;
 
 	private static final Logger log = Logger.getLogger(MetadataParser3.class.getName());
 	private static final Vocabulary DEFAULT_VOCABULARY = StandardVocabulary.EPUB_META;
@@ -95,11 +91,10 @@ class MetadataParser3 implements MetadataParser {
 				.collect(Collectors.toMap(RelatorRole::getCode, Function.identity()));
 	}
 	
-	MetadataParser3(Metadata metadata, EpubService service, PrefixRegistry prefixRegistry, String uniqueIdentifier) {
+	MetadataParser3(Metadata metadata, String uniqueIdentifier, PropertyParser propertyParser) {
 		this.metadata = metadata;
-		this.termRegistry = service.getPropertyTermRegistry();
-		this.prefixRegistry = prefixRegistry;
 		this.uniqueIdentifier = uniqueIdentifier;
+		this.propertyParser = propertyParser;
 	}
 	
 	@Override
@@ -128,13 +123,13 @@ class MetadataParser3 implements MetadataParser {
 		if (NAMESPACE_URI.equals(namespace)) {
 			if ("meta".equals(element.getLocalName())) {
 				String name = element.getAttribute("property").trim();
-				Term term = findTerm(name);
-				if (term != null) {
-					return new MetadataEntry(term, element);
+				Optional<Term> term = parseProperty(name);
+				if (term.isPresent()) {
+					return new MetadataEntry(term.get(), element);
 				}
 			}
 		} else if (DC_NAMESPACE_URI.equals(namespace)) {
-			Optional<Term> term = termRegistry.findTerm(StandardVocabulary.DCMES, element.getLocalName());
+			Optional<Term> term = propertyParser.findTerm(StandardVocabulary.DCMES, element.getLocalName());
 			if (term.isPresent()) {
 				return new MetadataEntry(term.get(), element);
 			}
@@ -174,41 +169,16 @@ class MetadataParser3 implements MetadataParser {
 		}
 	}
 	
-	private Term findTerm(String name) {
-		if (name == null || name.isEmpty()) {
-			return null;
-		}
-		String[] parts = name.split(":", 2);
-		String prefix = null;
-		String localName = null;
-		if (parts.length >= 2) {
-			prefix = parts[0];
-			localName = parts[1];
-		} else {
-			localName = name;
-		}
-		return findTerm(prefix, localName);
+	/**
+	 * Parses property attribute value into a term.
+	 * 
+	 * @param value the attribute value.
+	 * @return parsed term, may be empty.
+	 */
+	private Optional<Term> parseProperty(String value) {
+		return propertyParser.parse(value, DEFAULT_VOCABULARY);
 	}
 	
-	private Term findTerm(String prefix, String localName) {
-		Vocabulary vocabulary = findVocabulary(prefix);
-		if (vocabulary == null) {
-			return null;
-		}
-		return this.termRegistry.getTerm(vocabulary, localName);
-	}
-	
-	private Vocabulary findVocabulary(String prefix) {
-		Vocabulary vocabulary = DEFAULT_VOCABULARY;
-		if (prefix != null) {
-			vocabulary = this.prefixRegistry.get(prefix);
-			if (vocabulary == null) {
-				log.warning(Messages.METADATA_PROPERTY_PREFIX_IGNORED(prefix));
-			}
-		}
-		return vocabulary;
-	}
-
 	private PropertyBuilderSelector add() {
 		return metadata.add();
 	}
@@ -314,8 +284,7 @@ class MetadataParser3 implements MetadataParser {
 			if (term == MetaPropertyTerm.FILE_AS) {
 				builder.fileAs(refiner.getValue());
 			} else if (term == MetaPropertyTerm.ROLE) {
-				String scheme = refiner.getScheme();
-				if (scheme == null || findTerm(scheme) == Marc.RELATORS) {
+				if (validateRelatorScheme(refiner.getScheme())) {
 					RelatorRole role = findRole(refiner.getValue());
 					if (role != null) {
 						builder.role(role);
@@ -325,6 +294,17 @@ class MetadataParser3 implements MetadataParser {
 				}
 			}
 		}
+	}
+	
+	private boolean validateRelatorScheme(String value) {
+		if (value == null) {
+			return true;
+		}
+		Optional<Term> term = parseProperty(value);
+		if (!term.isPresent()) {
+			return false;
+		}
+		return term.get() == Marc.RELATORS;
 	}
 
 	private static TitleType findTitleType(String value) {
