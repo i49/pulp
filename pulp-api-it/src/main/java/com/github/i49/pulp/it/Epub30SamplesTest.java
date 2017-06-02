@@ -257,6 +257,34 @@ public class Epub30SamplesTest {
 		});
 	}
 	
+	@Test
+	public void test_cole_voyage_of_life() {
+		read("cole-voyage-of-life.epub", p->{
+			assertCommon(p);
+			
+			assertThat(p.getNumberOfRenditions()).isEqualTo(1);
+	
+			Rendition r = p.getDefaultRendition();
+	
+			Metadata m = r.getMetadata();
+			assertThat(m.size()).isEqualTo(6);
+		});	
+	}
+	
+	@Test
+	public void test_cole_voyage_of_life_tol() {
+		read("cole-voyage-of-life-tol.epub", p->{
+			assertCommon(p);
+			
+			assertThat(p.getNumberOfRenditions()).isEqualTo(1);
+	
+			Rendition r = p.getDefaultRendition();
+	
+			Metadata m = r.getMetadata();
+			assertThat(m.size()).isEqualTo(10);
+		});	
+	}
+
 	protected void assertCommon(Publication p) {
 		assertThat(p).isNotNull();
 		
