@@ -18,6 +18,7 @@ package com.github.i49.pulp.impl.base;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -29,19 +30,21 @@ public final class Enums {
 	}
 	
 	/**
-	 * Returns a map for mapping the key to the corresponding enumerator.
-	 *  
+	 * Returns a mapper which maps a key to the corresponding enum constant. 
+	 * 
 	 * @param <K> the type of the key. 
-	 * @param <E> the type of the enum.
-	 * @param type the class representing the enum type.
-	 * @param keyMapper the mapper to map each enumerator to its unique key.
-	 * @return the created map.
+	 * @param <V> the type of the enum.
+	 * @param type the class representing the enum V.
+	 * @param keyMapper the mapper to map each enum constant to its key.
+	 * @return the created mapper.
 	 */
-	public static <K, E extends Enum<E>> Map<K, E> mapTo(Class<E> type, Function<E, K> keyMapper) {
-		Map<K, E> map = new HashMap<>();
-		for (E value: type.getEnumConstants()) {
+	public static <K, V extends Enum<V>> Function<K, Optional<V>> mapper(Class<V> type, Function<V, K> keyMapper) {
+		final Map<K, V> map = new HashMap<>();
+		for (V value: type.getEnumConstants()) {
 			map.put(keyMapper.apply(value), value);
 		}
-		return map;
+		return (K key)->{
+			return Optional.ofNullable(map.get(key));
+		};
 	}
 }

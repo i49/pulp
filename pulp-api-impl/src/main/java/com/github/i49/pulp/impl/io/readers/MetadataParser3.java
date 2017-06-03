@@ -68,13 +68,13 @@ class MetadataParser3 implements MetadataParser {
 	
 	private static final Map<Term, BiConsumer<MetadataParser3, MetadataEntry>> handlers;
 	
-	private static final Map<String, RelatorRole> roles = Enums.mapTo(RelatorRole.class, RelatorRole::getCode);
-	private static final Map<String, TitleType> titleTypes = Enums.mapTo(TitleType.class, MetadataParser3::getTitleTypeValue);
+	private static final Function<String, Optional<RelatorRole>> roles = Enums.mapper(RelatorRole.class, RelatorRole::getCode);
+	private static final Function<String, Optional<TitleType>> titleTypes = Enums.mapper(TitleType.class, MetadataParser3::getTitleTypeValue);
 
-	private static final Map<String, Flow> flows = Enums.mapTo(Flow.class, Flow::getValue);
-	private static final Map<String, Layout> layouts = Enums.mapTo(Layout.class, Layout::getValue);
-	private static final Map<String, Orientation> orientations = Enums.mapTo(Orientation.class, Orientation::getValue);
-	private static final Map<String, Spread> spreads = Enums.mapTo(Spread.class, Spread::getValue);
+	private static final Function<String, Optional<Flow>> flows = Enums.mapper(Flow.class, Flow::getValue);
+	private static final Function<String, Optional<Layout>> layouts = Enums.mapper(Layout.class, Layout::getValue);
+	private static final Function<String, Optional<Orientation>> orientations = Enums.mapper(Orientation.class, Orientation::getValue);
+	private static final Function<String, Optional<Spread>> spreads = Enums.mapper(Spread.class, Spread::getValue);
 	
 	static {
 		handlers = new HashMap<Term, BiConsumer<MetadataParser3, MetadataEntry>>(){{
@@ -190,9 +190,9 @@ class MetadataParser3 implements MetadataParser {
 		return metadata.add();
 	}
 	
-	private void add(Property<?> p) {
-		if (p != null) {
-			this.metadata.add(p);
+	private void add(Optional<? extends Property<?>> p) {
+		if (p.isPresent()) {
+			this.metadata.add(p.get());
 		}
 	}
 	
@@ -259,9 +259,9 @@ class MetadataParser3 implements MetadataParser {
 			} else if (term == MetaPropertyTerm.FILE_AS) {
 				builder.fileAs(refiner.getValue());
 			} else if (term == MetaPropertyTerm.TITLE_TYPE) {
-				TitleType type = findTitleType(refiner.getValue());
-				if (type != null) {
-					builder.ofType(type);
+				Optional<TitleType> type = findTitleType(refiner.getValue());
+				if (type.isPresent()) {
+					builder.ofType(type.get());
 				} else {
 					log.warning(Messages.METADATA_TITLE_TYPE_IGNORED(refiner.getValue()));
 				}
@@ -279,19 +279,19 @@ class MetadataParser3 implements MetadataParser {
 	}
 	
 	private void handleFlow(MetadataEntry entry) {
-		add(flows.get(entry.getValue()));
+		add(flows.apply(entry.getValue()));
 	}
 
 	private void handleLayout(MetadataEntry entry) {
-		add(layouts.get(entry.getValue()));
+		add(layouts.apply(entry.getValue()));
 	}
 
 	private void handleOrientation(MetadataEntry entry) {
-		add(orientations.get(entry.getValue()));
+		add(orientations.apply(entry.getValue()));
 	}
 	
 	private void handleSpread(MetadataEntry entry) {
-		add(spreads.get(entry.getValue()));
+		add(spreads.apply(entry.getValue()));
 	}
 
 	private void handleGenericProperty(MetadataEntry entry) {
@@ -314,9 +314,9 @@ class MetadataParser3 implements MetadataParser {
 				builder.fileAs(refiner.getValue());
 			} else if (term == MetaPropertyTerm.ROLE) {
 				if (validateRelatorScheme(refiner.getScheme())) {
-					RelatorRole role = findRole(refiner.getValue());
-					if (role != null) {
-						builder.role(role);
+					Optional<RelatorRole> role = findRole(refiner.getValue());
+					if (role.isPresent()) {
+						builder.role(role.get());
 					} else {
 						log.warning(Messages.METADATA_RELATOR_ROLE_IGNORED(refiner.getValue()));
 					}
@@ -336,12 +336,12 @@ class MetadataParser3 implements MetadataParser {
 		return term.get() == Marc.RELATORS;
 	}
 
-	private static TitleType findTitleType(String value) {
-		return titleTypes.get(value);
+	private static Optional<TitleType> findTitleType(String value) {
+		return titleTypes.apply(value);
 	}
 	
-	private static RelatorRole findRole(String value) {
-		return roles.get(value);
+	private static Optional<RelatorRole> findRole(String value) {
+		return roles.apply(value);
 	}
 	
 	private static String getTitleTypeValue(TitleType titleType) {
