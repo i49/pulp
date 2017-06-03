@@ -39,14 +39,14 @@ import com.github.i49.pulp.api.vocabularies.dc.Type;
 import com.github.i49.pulp.api.vocabularies.dcterms.Modified;
 
 /**
- * The type for selecting a property lister.
+ * The type for selecting a property finder.
  * <p>
  * If the methods provided by this type have no properties to return,
  * they will return an empty collection instead of returning {@code null}.
  * All of the collections returned by this type are unmodifiable.
  * </p>
  */
-public interface PropertyListerSelector {
+public interface PropertyFinderSelector {
 
 	/**
 	 * Returns all properties in the metadata.

@@ -32,7 +32,7 @@ import com.github.i49.pulp.api.vocabularies.dc.DublinCore;
 import com.github.i49.pulp.api.vocabularies.dc.Identifier;
 import com.github.i49.pulp.api.vocabularies.dc.Language;
 
-public class FindingPropertyListerSelectorTest {
+public class PropertyFinderSelectorTest {
 
 	private Metadata m;
 	

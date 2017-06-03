@@ -66,9 +66,9 @@ public interface Metadata {
 	/**
 	 * Finds all properties of the specific term, which can be selected by a returned selector.
 	 *  
-	 * @return the selector of the property listers, never be {@code null}.
+	 * @return the selector of the property finders, never be {@code null}.
 	 */
-	PropertyListerSelector find();
+	PropertyFinderSelector find();
 	
 	/**
 	 * Adds the required properties to this metadata if one or more of them are missing.
@@ -119,9 +119,9 @@ public interface Metadata {
 	/**
 	 * Removes all properties of the specific term, which can be selected by a returned selector.
 	 *  
-	 * @return the selector of the property listers, never be {@code null}.
+	 * @return the selector of the property finders, never be {@code null}.
 	 */
-	PropertyListerSelector remove();
+	PropertyFinderSelector remove();
 	
 	/**
 	 * Removes the specified property from this metadata.

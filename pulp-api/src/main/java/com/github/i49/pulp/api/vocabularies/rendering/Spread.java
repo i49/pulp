@@ -27,27 +27,27 @@ public enum Spread implements Property<String> {
 	/**
 	 * No explicit Synthetic Spread behavior is defined.
 	 */
-	AUTO("auto"),
+	AUTO,
 	/**
 	 * Reading Systems should render a Synthetic Spread 
 	 * regardless of device orientation.
 	 */
-	BOTH("both"),
+	BOTH,
 	/**
 	 * Reading Systems should render a Synthetic Spread for spine items 
 	 * only when the device is in landscape orientation. 
 	 */
-	LANDSCAPE("landscape"),
+	LANDSCAPE,
 	/**
 	 * Reading Systems must not incorporate spine items in a Synthetic Spread.
 	 */
-	NONE("none"),
+	NONE,
 	;
 
 	private final String value;
 	
-	private Spread(String value) {
-		this.value = value;
+	private Spread() {
+		this.value = Property.valueOf(this);
 	}
 
 	@Override

@@ -21,7 +21,7 @@ import static com.github.i49.pulp.impl.base.Preconditions.*;
 import java.util.Collection;
 import java.util.List;
 
-import com.github.i49.pulp.api.metadata.PropertyListerSelector;
+import com.github.i49.pulp.api.metadata.PropertyFinderSelector;
 import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.dc.Contributor;
@@ -46,7 +46,7 @@ import com.github.i49.pulp.api.vocabularies.dcterms.Modified;
 /**
  * A selector of the object which will process properties.
  */
-abstract class AbstractPropertyListerSelector implements PropertyListerSelector {
+abstract class BasePropertyFinderSelector implements PropertyFinderSelector {
 	
 	@Override
 	public Collection<Property<?>> all() {

@@ -23,16 +23,16 @@ import com.github.i49.pulp.api.vocabularies.Term;
  * The property to specify how Reading Systems should handle content overflow. 
  */
 public enum Flow implements Property<String> {
-	AUTO("auto"),
-	PAGINATED("paginated"),
-	SCROLLED_CONTINUOUS("scrolled-continuous"),
-	SCROLLED_DOC("scrolled-doc"),
+	AUTO,
+	PAGINATED,
+	SCROLLED_CONTINUOUS,
+	SCROLLED_DOC,
 	;
 
 	private final String value;
 	
-	private Flow(String value) {
-		this.value = value;
+	private Flow() {
+		this.value = Property.valueOf(this);
 	}
 	
 	@Override

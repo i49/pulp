@@ -25,7 +25,7 @@ import java.util.Set;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.PropertyBuilderSelector;
 import com.github.i49.pulp.api.metadata.PropertyCounterSelector;
-import com.github.i49.pulp.api.metadata.PropertyListerSelector;
+import com.github.i49.pulp.api.metadata.PropertyFinderSelector;
 import com.github.i49.pulp.api.metadata.PropertyTesterSelector;
 import com.github.i49.pulp.api.metadata.ReleaseIdentifier;
 import com.github.i49.pulp.api.metadata.TermRegistry;
@@ -44,8 +44,8 @@ public class DefaultMetadata implements Metadata {
 	private final PropertySet properties;
 	
 	private final PropertyBuilderSelector builder;
-	private final PropertyListerSelector finder;
-	private final PropertyListerSelector remover;
+	private final PropertyFinderSelector finder;
+	private final PropertyFinderSelector remover;
 	private final PropertyTesterSelector tester;
 	private final PropertyCounterSelector counter;
 
@@ -62,8 +62,8 @@ public class DefaultMetadata implements Metadata {
 		this.properties = new PropertySet();
 	
 		this.builder = new DefaultPropertyBuilderSelector(this.properties);
-		this.finder = new PropertyFinderSelector(this.properties);
-		this.remover = new PropertyRemoverSelector(this.properties);
+		this.finder = new DefaultPropertyFinderSelector(this.properties);
+		this.remover = new DefaultPropertyRemoverSelector(this.properties);
 		this.tester = new DefaultPropertyTesterSelector(this.properties);
 		this.counter = new DefaultPropertyCounterSelector(this.properties);
 		
@@ -97,7 +97,7 @@ public class DefaultMetadata implements Metadata {
 	}
 	
 	@Override
-	public PropertyListerSelector find() {
+	public PropertyFinderSelector find() {
 		return finder;
 	}
 
@@ -130,7 +130,7 @@ public class DefaultMetadata implements Metadata {
 	}
 	
 	@Override
-	public PropertyListerSelector remove() {
+	public PropertyFinderSelector remove() {
 		return remover;
 	}
 	

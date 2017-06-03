@@ -27,21 +27,21 @@ public enum Orientation implements Property<String> {
 	/**
 	 * The given rendition is not orientation constrained. 
 	 */
-	AUTO("auto"),
+	AUTO,
 	/**
 	 * The given rendition is intended for landscape rendering. 
 	 */
-	LANDSCAPE("landscape"),
+	LANDSCAPE,
 	/**
 	 * The given rendition is intended for portrait rendering. 
 	 */
-	PORTRAIT("portrait"),
+	PORTRAIT,
 	;
 
 	private final String value;
 	
-	private Orientation(String value) {
-		this.value = value;
+	private Orientation() {
+		this.value = Property.valueOf(this);
 	}
 	
 	@Override

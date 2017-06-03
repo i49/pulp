@@ -25,11 +25,11 @@ import com.github.i49.pulp.api.vocabularies.Term;
 /**
  * Selector of the object to find properties from property set. 
  */
-class PropertyFinderSelector extends AbstractPropertyListerSelector {
+class DefaultPropertyFinderSelector extends BasePropertyFinderSelector {
 
 	private final PropertySet properties;
 	
-	PropertyFinderSelector(PropertySet properties) {
+	DefaultPropertyFinderSelector(PropertySet properties) {
 		this.properties = properties;
 	}
 

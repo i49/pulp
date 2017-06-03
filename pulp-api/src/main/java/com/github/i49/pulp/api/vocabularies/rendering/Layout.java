@@ -26,17 +26,17 @@ public enum Layout implements Property<String> {
 	/**
 	 * The given Rendition is pre-paginated. 
 	 */
-	PRE_PAGINATED("pre-paginated"),
+	PRE_PAGINATED,
 	/**
 	 * The given Rendition is not pre-paginated.
 	 */
-	REFLOWABLE("reflowable"),
+	REFLOWABLE,
 	;
 	
 	private final String value;
 	
-	private Layout(String value) {
-		this.value = value;
+	private Layout() {
+		this.value = Property.valueOf(this);
 	}
 
 	@Override

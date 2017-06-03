@@ -53,4 +53,15 @@ public interface Property<V> {
 	 */
 	@Override
 	String toString();
+	
+	/**
+	 * Utility method to generate a property value from an enum constant.
+	 * 
+	 * @param <E> the type of the enumeration.
+	 * @param element the member of the enumeration E.
+	 * @return generated property value. 
+	 */
+	static <E extends Enum<E>> String valueOf(E element) {
+		return element.name().replaceAll("_", "-").toLowerCase();
+	}
 }
