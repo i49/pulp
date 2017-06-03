@@ -16,7 +16,7 @@
 
 package com.github.i49.pulp.it;
 
-import static com.github.i49.pulp.it.Assertions.*;
+import static com.github.i49.pulp.it.CustomAssertions.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.net.URI;
@@ -51,6 +51,9 @@ import com.github.i49.pulp.api.vocabularies.dc.Publisher;
 import com.github.i49.pulp.api.vocabularies.dc.Subject;
 import com.github.i49.pulp.api.vocabularies.dc.Title;
 import com.github.i49.pulp.api.vocabularies.dc.TitleType;
+import com.github.i49.pulp.api.vocabularies.rendering.Layout;
+import com.github.i49.pulp.api.vocabularies.rendering.Orientation;
+import com.github.i49.pulp.api.vocabularies.rendering.Spread;
 
 /**
  * Tests of reading EPUB 3.0 samples.
@@ -282,6 +285,41 @@ public class Epub30SamplesTest {
 	
 			Metadata m = r.getMetadata();
 			assertThat(m.size()).isEqualTo(10);
+			
+			Layout layout = m.find().rendering().layout().get(0);
+			CustomAssertions.assertThat(layout).isSameAs(Layout.PRE_PAGINATED);
+			Orientation orient = m.find().rendering().orientation().get(0);
+			CustomAssertions.assertThat(orient).isSameAs(Orientation.LANDSCAPE);
+			Spread spread = m.find().rendering().spread().get(0);
+			CustomAssertions.assertThat(spread).isSameAs(Spread.NONE);
+		});	
+	}
+	
+	@Test
+	public void test_epub30_spec() {
+		read("epub30-spec.epub", p->{
+			assertCommon(p);
+			
+			assertThat(p.getNumberOfRenditions()).isEqualTo(1);
+	
+			Rendition r = p.getDefaultRendition();
+	
+			Metadata m = r.getMetadata();
+			assertThat(m.size()).isEqualTo(5);
+		});	
+	}
+	
+	@Test
+	public void test_figure_gallery_bindings() {
+		read("figure-gallery-bindings.epub", p->{
+			assertCommon(p);
+			
+			assertThat(p.getNumberOfRenditions()).isEqualTo(1);
+	
+			Rendition r = p.getDefaultRendition();
+	
+			Metadata m = r.getMetadata();
+			assertThat(m.size()).isEqualTo(8);
 		});	
 	}
 

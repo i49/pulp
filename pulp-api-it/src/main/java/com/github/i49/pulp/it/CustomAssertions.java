@@ -25,7 +25,7 @@ import com.github.i49.pulp.api.core.Spine.Page;
 import com.github.i49.pulp.api.vocabularies.Normalizable;
 import com.github.i49.pulp.api.vocabularies.Property;
 
-public class Assertions {
+public class CustomAssertions {
 
 	public static <T extends Property<?>> PropertyAssert<T> assertThat(T actual) {
 		return new PropertyAssert<T>(actual);
@@ -41,7 +41,7 @@ public class Assertions {
 		return new SpineAssert(actual);
 	}
 	
-	private Assertions() {
+	private CustomAssertions() {
 	}
 	
 	public static class PropertyAssert<T extends Property<?>> extends AbstractAssert<PropertyAssert<T>, T> {

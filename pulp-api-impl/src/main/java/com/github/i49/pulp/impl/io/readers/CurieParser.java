@@ -59,9 +59,7 @@ class CurieParser {
 	 * @return the term corresponding the given value, may be empty.
 	 */
 	Optional<Term> parse(String value) {
-		if (value == null || value.isEmpty()) {
-			return Optional.empty();
-		}
+		assert(value != null);
 		String[] parts = value.split(":", 2);
 		if (parts.length >= 2) {
 			return parse(parts[0], parts[1]);

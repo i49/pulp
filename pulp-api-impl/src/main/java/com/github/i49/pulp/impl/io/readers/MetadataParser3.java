@@ -96,6 +96,7 @@ class MetadataParser3 implements MetadataParser {
 			put(DublinCore.TYPE, MetadataParser3::handleType);
 			// Dublin Core Term
 			put(DublinCoreTerm.MODIFIED, MetadataParser3::handleModified);
+			// Rendering properties
 			put(Rendering.FLOW, MetadataParser3::handleFlow);
 			put(Rendering.LAYOUT, MetadataParser3::handleLayout);
 			put(Rendering.ORIENTATION, MetadataParser3::handleOrientation);
@@ -135,6 +136,10 @@ class MetadataParser3 implements MetadataParser {
 		if (NAMESPACE_URI.equals(namespace)) {
 			if ("meta".equals(element.getLocalName())) {
 				String name = element.getAttribute("property").trim();
+				if (name.isEmpty()) {
+					log.warning(Messages.METADATA_META_WITHOUT_PROPERTY_INGNORED());
+					return null;
+				}
 				Optional<Term> term = this.curieParser.parse(name);
 				if (term.isPresent()) {
 					return new MetadataEntry(term.get(), element);
@@ -258,7 +263,7 @@ class MetadataParser3 implements MetadataParser {
 				if (type != null) {
 					builder.ofType(type);
 				} else {
-					log.warning(Messages.METADATA_TITLE_TYPE_UNKNOWN(refiner.getValue()));
+					log.warning(Messages.METADATA_TITLE_TYPE_IGNORED(refiner.getValue()));
 				}
 			}
 		}
@@ -313,7 +318,7 @@ class MetadataParser3 implements MetadataParser {
 					if (role != null) {
 						builder.role(role);
 					} else {
-						log.warning(Messages.METADATA_RELATOR_ROLE_UNKNOWN(refiner.getValue()));
+						log.warning(Messages.METADATA_RELATOR_ROLE_IGNORED(refiner.getValue()));
 					}
 				}
 			}

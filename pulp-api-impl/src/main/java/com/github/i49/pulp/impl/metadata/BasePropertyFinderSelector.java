@@ -42,9 +42,14 @@ import com.github.i49.pulp.api.vocabularies.dc.Title;
 import com.github.i49.pulp.api.vocabularies.dc.Type;
 import com.github.i49.pulp.api.vocabularies.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.api.vocabularies.dcterms.Modified;
+import com.github.i49.pulp.api.vocabularies.rendering.Flow;
+import com.github.i49.pulp.api.vocabularies.rendering.Layout;
+import com.github.i49.pulp.api.vocabularies.rendering.Orientation;
+import com.github.i49.pulp.api.vocabularies.rendering.Rendering;
+import com.github.i49.pulp.api.vocabularies.rendering.Spread;
 
 /**
- * A selector of the object which will process properties.
+ * A skeletal implementation of {@link PropertyFinderSelector}.
  */
 abstract class BasePropertyFinderSelector implements PropertyFinderSelector {
 	
@@ -139,6 +144,37 @@ abstract class BasePropertyFinderSelector implements PropertyFinderSelector {
 		return process(term);
 	}
 	
+	@Override
+	public RenderingPropertyFinderSelector rendering() {
+		return renderingSelector;
+	}
+	
+	/**
+	 * The implemenation of {@link RenderingPropertyFinderSelector}.
+	 */
+	private final RenderingPropertyFinderSelector renderingSelector = new RenderingPropertyFinderSelector() {
+	
+		@Override
+		public List<Flow> flow() {
+			return process(Rendering.FLOW);
+		}
+
+		@Override
+		public List<Layout> layout() {
+			return process(Rendering.LAYOUT);
+		}
+
+		@Override
+		public List<Orientation> orientation() {
+			return process(Rendering.ORIENTATION);
+		}
+
+		@Override
+		public List<Spread> spread() {
+			return process(Rendering.SPREAD);
+		}
+	};
+
 	/**
 	 * Returns the list of the properties to process.
 	 *  

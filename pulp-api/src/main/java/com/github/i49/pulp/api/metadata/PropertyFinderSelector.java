@@ -37,6 +37,10 @@ import com.github.i49.pulp.api.vocabularies.dc.Subject;
 import com.github.i49.pulp.api.vocabularies.dc.Title;
 import com.github.i49.pulp.api.vocabularies.dc.Type;
 import com.github.i49.pulp.api.vocabularies.dcterms.Modified;
+import com.github.i49.pulp.api.vocabularies.rendering.Flow;
+import com.github.i49.pulp.api.vocabularies.rendering.Layout;
+import com.github.i49.pulp.api.vocabularies.rendering.Orientation;
+import com.github.i49.pulp.api.vocabularies.rendering.Spread;
 
 /**
  * The type for selecting a property finder.
@@ -175,4 +179,45 @@ public interface PropertyFinderSelector {
 	 * @throws IllegalArgumentException if given {@code term} is {@code null}.
 	 */
 	List<Property<?>> propertyOf(Term term);
+	
+	/**
+	 * Returns the type for selecting one of rendering properties.
+	 * 
+	 * @return the instance of {@link RenderingPropertyFinderSelector}.
+	 */
+	RenderingPropertyFinderSelector rendering();
+	
+	/**
+	 *  The type for selecting one of rendering property finders.
+	 */
+	public interface RenderingPropertyFinderSelector {
+		
+		/**
+		 * Returns all properties of {@link Flow}.
+		 * 
+		 * @return the list of the properties of the specified term, never be {@code null}.
+		 */
+		List<Flow> flow();
+		
+		/**
+		 * Returns all properties of {@link Layout}.
+		 * 
+		 * @return the list of the properties of the specified term, never be {@code null}.
+		 */
+		List<Layout> layout();
+		
+		/**
+		 * Returns all properties of {@link Orientation}.
+		 * 
+		 * @return the list of the properties of the specified term, never be {@code null}.
+		 */
+		List<Orientation> orientation();
+		
+		/**
+		 * Returns all properties of {@link Spread}.
+		 * 
+		 * @return the list of the properties of the specified term, never be {@code null}.
+		 */
+		List<Spread> spread();
+	}
 }
