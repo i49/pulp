@@ -17,7 +17,6 @@
 package com.github.i49.pulp.impl.io.readers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,6 +32,7 @@ import org.w3c.dom.Element;
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.PropertyBuilderSelector;
 import com.github.i49.pulp.api.vocabularies.GenericText;
+import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.Relator;
 import com.github.i49.pulp.api.vocabularies.RelatorRole;
 import com.github.i49.pulp.api.vocabularies.StandardVocabulary;
@@ -43,6 +43,12 @@ import com.github.i49.pulp.api.vocabularies.dc.Identifier;
 import com.github.i49.pulp.api.vocabularies.dc.Title;
 import com.github.i49.pulp.api.vocabularies.dc.TitleType;
 import com.github.i49.pulp.api.vocabularies.dcterms.DublinCoreTerm;
+import com.github.i49.pulp.api.vocabularies.rendering.Flow;
+import com.github.i49.pulp.api.vocabularies.rendering.Layout;
+import com.github.i49.pulp.api.vocabularies.rendering.Orientation;
+import com.github.i49.pulp.api.vocabularies.rendering.Rendering;
+import com.github.i49.pulp.api.vocabularies.rendering.Spread;
+import com.github.i49.pulp.impl.base.Enums;
 import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.vocabularies.epub.MetaPropertyTerm;
 import com.github.i49.pulp.impl.vocabularies.marc.Marc;
@@ -61,11 +67,18 @@ class MetadataParser3 implements MetadataParser {
 	private static final Vocabulary DEFAULT_VOCABULARY = StandardVocabulary.EPUB_META;
 	
 	private static final Map<Term, BiConsumer<MetadataParser3, MetadataEntry>> handlers;
-	private static final Map<String, TitleType> titleTypes;
-	private static final Map<String, RelatorRole> roles;
+	
+	private static final Map<String, RelatorRole> roles = Enums.mapTo(RelatorRole.class, RelatorRole::getCode);
+	private static final Map<String, TitleType> titleTypes = Enums.mapTo(TitleType.class, MetadataParser3::getTitleTypeValue);
+
+	private static final Map<String, Flow> flows = Enums.mapTo(Flow.class, Flow::getValue);
+	private static final Map<String, Layout> layouts = Enums.mapTo(Layout.class, Layout::getValue);
+	private static final Map<String, Orientation> orientations = Enums.mapTo(Orientation.class, Orientation::getValue);
+	private static final Map<String, Spread> spreads = Enums.mapTo(Spread.class, Spread::getValue);
 	
 	static {
 		handlers = new HashMap<Term, BiConsumer<MetadataParser3, MetadataEntry>>(){{
+			// Dublin Core
 			put(DublinCore.CONTRIBUTOR, MetadataParser3::handleContributor);
 			put(DublinCore.COVERAGE, MetadataParser3::handleCoverage);
 			put(DublinCore.CREATOR, MetadataParser3::handleCreator);
@@ -81,14 +94,13 @@ class MetadataParser3 implements MetadataParser {
 			put(DublinCore.SUBJECT, MetadataParser3::handleSubject);
 			put(DublinCore.TITLE, MetadataParser3::handleTitle);
 			put(DublinCore.TYPE, MetadataParser3::handleType);
+			// Dublin Core Term
 			put(DublinCoreTerm.MODIFIED, MetadataParser3::handleModified);
+			put(Rendering.FLOW, MetadataParser3::handleFlow);
+			put(Rendering.LAYOUT, MetadataParser3::handleLayout);
+			put(Rendering.ORIENTATION, MetadataParser3::handleOrientation);
+			put(Rendering.SPREAD, MetadataParser3::handleSpread);
 		}};
-
-		titleTypes = Arrays.stream(TitleType.values())
-				.collect(Collectors.toMap(t->t.name().toLowerCase(), Function.identity()));
-		
-		roles = Arrays.stream(RelatorRole.values())
-				.collect(Collectors.toMap(RelatorRole::getCode, Function.identity()));
 	}
 	
 	MetadataParser3(Metadata metadata, String uniqueIdentifier, CurieParser curieParser) {
@@ -173,6 +185,12 @@ class MetadataParser3 implements MetadataParser {
 		return metadata.add();
 	}
 	
+	private void add(Property<?> p) {
+		if (p != null) {
+			this.metadata.add(p);
+		}
+	}
+	
 	private void handleContributor(MetadataEntry entry) {
 		buildRelator(add().contributor(entry.getValue()), entry);
 	}
@@ -255,6 +273,22 @@ class MetadataParser3 implements MetadataParser {
 		add().modified(entry.getValue()).result();
 	}
 	
+	private void handleFlow(MetadataEntry entry) {
+		add(flows.get(entry.getValue()));
+	}
+
+	private void handleLayout(MetadataEntry entry) {
+		add(layouts.get(entry.getValue()));
+	}
+
+	private void handleOrientation(MetadataEntry entry) {
+		add(orientations.get(entry.getValue()));
+	}
+	
+	private void handleSpread(MetadataEntry entry) {
+		add(spreads.get(entry.getValue()));
+	}
+
 	private void handleGenericProperty(MetadataEntry entry) {
 		Term term = entry.getTerm();
 		GenericText.Builder b = add().generic(term, entry.getValue());
@@ -303,5 +337,9 @@ class MetadataParser3 implements MetadataParser {
 	
 	private static RelatorRole findRole(String value) {
 		return roles.get(value);
+	}
+	
+	private static String getTitleTypeValue(TitleType titleType) {
+		return titleType.name().toLowerCase();
 	}
 }

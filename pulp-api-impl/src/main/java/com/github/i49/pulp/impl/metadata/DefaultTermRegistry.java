@@ -29,6 +29,7 @@ import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.Vocabulary;
 import com.github.i49.pulp.api.vocabularies.dc.DublinCore;
 import com.github.i49.pulp.api.vocabularies.dcterms.DublinCoreTerm;
+import com.github.i49.pulp.api.vocabularies.rendering.Rendering;
 import com.github.i49.pulp.impl.vocabularies.epub.MetaPropertyTerm;
 import com.github.i49.pulp.impl.vocabularies.marc.Marc;
 
@@ -49,6 +50,7 @@ public class DefaultTermRegistry implements TermRegistry {
 		registerAllVocabularies(StandardVocabulary.class);
 		registerAllTerms(DublinCore.class);
 		registerAllTerms(DublinCoreTerm.class);
+		registerAllTerms(Rendering.class);
 		registerAllTerms(MetaPropertyTerm.class);
 		registerAllTerms(Marc.class);
 	}

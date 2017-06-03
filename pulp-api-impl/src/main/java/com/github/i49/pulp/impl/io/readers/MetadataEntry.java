@@ -109,6 +109,8 @@ class MetadataEntry {
 	
 	@Override
 	public String toString() {
-		return element.getTagName();
+		StringBuilder b = new StringBuilder();
+		b.append(element.getTagName()).append("=").append(getValue());
+		return b.toString();
 	}
 }

@@ -49,6 +49,9 @@ public enum StandardVocabulary implements Vocabulary {
 	 */
 	EPUB_META("http://idpf.org/epub/vocab/package/meta/#"),
 	
+	/**
+	 * EPUB Package Rendering Vocabulary.
+	 */
 	EPUB_RENDITION("http://www.idpf.org/vocab/rendition/#"),
 	
 	EPUB_SC("http://idpf.org/epub/vocab/sc/#"),
