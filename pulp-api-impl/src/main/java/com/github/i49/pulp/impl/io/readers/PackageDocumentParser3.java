@@ -128,8 +128,8 @@ class PackageDocumentParser3 implements PackageDocumentParser {
 	}
 	
 	protected MetadataParser createMetadataParser(Metadata metadata) {
-		PropertyParser propertyParser= new PropertyParser(this.prefixRegistry, this.termRegistry);
-		return new MetadataParser3(metadata, this.uniqueIdentifier, propertyParser);
+		CurieParser curieParser= new CurieParser(this.prefixRegistry, this.termRegistry);
+		return new MetadataParser3(metadata, this.uniqueIdentifier, curieParser);
 	}
 	
 	protected void parseManifest(Element element) {

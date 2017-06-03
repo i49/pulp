@@ -26,21 +26,39 @@ import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.io.containers.PrefixRegistry;
 
 /**
- * Property data type parser.
+ * Parser for compact URI represented by CURIE syntax.
  */
-class PropertyParser {
+class CurieParser {
 
-	private static final Logger log = Logger.getLogger(PropertyParser.class.getName());
+	private static final Logger log = Logger.getLogger(CurieParser.class.getName());
 	
 	private final PrefixRegistry prefixRegistry;
 	private final TermRegistry termRegistry;
+	private Vocabulary defaultVocabulary;
 
-	PropertyParser(PrefixRegistry prefixRegistry, TermRegistry termRegistry) {
+	CurieParser(PrefixRegistry prefixRegistry, TermRegistry termRegistry) {
 		this.prefixRegistry = prefixRegistry;
 		this.termRegistry = termRegistry;
 	}
 	
-	Optional<Term> parse(String value, Vocabulary defaultVocabulary) {
+	/**
+	 * Assigns the default vocabulary used when the prefix part of the CURIE is omitted. 
+	 * 
+	 * @param vocabulary the default vocabulary.
+	 * @return this parser.
+	 */
+	CurieParser setDefaultVocabulary(Vocabulary vocabulary) {
+		this.defaultVocabulary = vocabulary;
+		return this;
+	}
+	
+	/**
+	 * Parses the compact URI.
+	 * 
+	 * @param value the compact URI.
+	 * @return the term corresponding the given value, may be empty.
+	 */
+	Optional<Term> parse(String value) {
 		if (value == null || value.isEmpty()) {
 			return Optional.empty();
 		}
@@ -48,24 +66,25 @@ class PropertyParser {
 		if (parts.length >= 2) {
 			return parse(parts[0], parts[1]);
 		} else {
-			return Optional.of(getTerm(defaultVocabulary, value));
+			Term term = getTerm(this.defaultVocabulary, value);
+			return Optional.of(term);
 		}
 	}
 	
-	Optional<Term> findTerm(Vocabulary vocabulary, String name) {
-		return termRegistry.findTerm(vocabulary, name);
+	Optional<Term> parse(String reference, Vocabulary vocabulary) {
+		return termRegistry.findTerm(vocabulary, reference);
 	}
 	
-	private Optional<Term> parse(String prefix, String localName) {
+	private Optional<Term> parse(String prefix, String reference) {
 		Optional<Vocabulary> vocabulary = findVocabulary(prefix);
 		if (vocabulary.isPresent()) {
-			return Optional.of(getTerm(vocabulary.get(), localName));
+			return Optional.of(getTerm(vocabulary.get(), reference));
 		}
 		return Optional.empty();
 	}
 	
-	private Term getTerm(Vocabulary vocabulary, String localName) {
-		return this.termRegistry.getTerm(vocabulary, localName);
+	private Term getTerm(Vocabulary vocabulary, String reference) {
+		return this.termRegistry.getTerm(vocabulary, reference);
 	}
 	
 	private Optional<Vocabulary> findVocabulary(String prefix) {

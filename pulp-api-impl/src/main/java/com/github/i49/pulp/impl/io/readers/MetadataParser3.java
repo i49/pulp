@@ -55,7 +55,7 @@ class MetadataParser3 implements MetadataParser {
 	
 	private final Metadata metadata;
 	private final String uniqueIdentifier;
-	private final PropertyParser propertyParser;
+	private final CurieParser curieParser;
 
 	private static final Logger log = Logger.getLogger(MetadataParser3.class.getName());
 	private static final Vocabulary DEFAULT_VOCABULARY = StandardVocabulary.EPUB_META;
@@ -91,10 +91,10 @@ class MetadataParser3 implements MetadataParser {
 				.collect(Collectors.toMap(RelatorRole::getCode, Function.identity()));
 	}
 	
-	MetadataParser3(Metadata metadata, String uniqueIdentifier, PropertyParser propertyParser) {
+	MetadataParser3(Metadata metadata, String uniqueIdentifier, CurieParser curieParser) {
 		this.metadata = metadata;
 		this.uniqueIdentifier = uniqueIdentifier;
-		this.propertyParser = propertyParser;
+		this.curieParser = curieParser.setDefaultVocabulary(DEFAULT_VOCABULARY);
 	}
 	
 	@Override
@@ -123,13 +123,13 @@ class MetadataParser3 implements MetadataParser {
 		if (NAMESPACE_URI.equals(namespace)) {
 			if ("meta".equals(element.getLocalName())) {
 				String name = element.getAttribute("property").trim();
-				Optional<Term> term = parseProperty(name);
+				Optional<Term> term = this.curieParser.parse(name);
 				if (term.isPresent()) {
 					return new MetadataEntry(term.get(), element);
 				}
 			}
 		} else if (DC_NAMESPACE_URI.equals(namespace)) {
-			Optional<Term> term = propertyParser.findTerm(StandardVocabulary.DCMES, element.getLocalName());
+			Optional<Term> term = curieParser.parse(element.getLocalName(), StandardVocabulary.DCMES);
 			if (term.isPresent()) {
 				return new MetadataEntry(term.get(), element);
 			}
@@ -167,16 +167,6 @@ class MetadataParser3 implements MetadataParser {
 		} else {
 			handleGenericProperty(entry);
 		}
-	}
-	
-	/**
-	 * Parses property attribute value into a term.
-	 * 
-	 * @param value the attribute value.
-	 * @return parsed term, may be empty.
-	 */
-	private Optional<Term> parseProperty(String value) {
-		return propertyParser.parse(value, DEFAULT_VOCABULARY);
 	}
 	
 	private PropertyBuilderSelector add() {
@@ -300,7 +290,7 @@ class MetadataParser3 implements MetadataParser {
 		if (value == null) {
 			return true;
 		}
-		Optional<Term> term = parseProperty(value);
+		Optional<Term> term = this.curieParser.parse(value);
 		if (!term.isPresent()) {
 			return false;
 		}
