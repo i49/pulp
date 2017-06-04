@@ -32,5 +32,5 @@ public enum TitleType {
 	/** A designation that indicates substantive changes from one to the next. */
 	EDITION,
 	/** A fully expressed title. */
-	EXTENDED
+	EXPANDED
 }

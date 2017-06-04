@@ -24,6 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
@@ -47,10 +48,12 @@ import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.dc.Contributor;
 import com.github.i49.pulp.api.vocabularies.dc.Creator;
 import com.github.i49.pulp.api.vocabularies.dc.Identifier;
+import com.github.i49.pulp.api.vocabularies.dc.Language;
 import com.github.i49.pulp.api.vocabularies.dc.Publisher;
 import com.github.i49.pulp.api.vocabularies.dc.Subject;
 import com.github.i49.pulp.api.vocabularies.dc.Title;
 import com.github.i49.pulp.api.vocabularies.dc.TitleType;
+import com.github.i49.pulp.api.vocabularies.dcterms.DublinCoreTerm;
 import com.github.i49.pulp.api.vocabularies.rendering.Layout;
 import com.github.i49.pulp.api.vocabularies.rendering.Orientation;
 import com.github.i49.pulp.api.vocabularies.rendering.Spread;
@@ -320,6 +323,99 @@ public class Epub30SamplesTest {
 	
 			Metadata m = r.getMetadata();
 			assertThat(m.size()).isEqualTo(8);
+		});	
+	}
+
+	@Test
+	public void test_georgia_cfi() {
+		read("georgia-cfi.epub", p->{
+			assertCommon(p);
+			
+			assertThat(p.getNumberOfRenditions()).isEqualTo(1);
+	
+			Rendition r = p.getDefaultRendition();
+	
+			Metadata m = r.getMetadata();
+			assertThat(m.size()).isEqualTo(9);
+			
+			Creator creator = m.find().creator().get(0);
+			assertThat(creator.getValue()).isEqualTo("Various");
+			assertThat(creator.getRole()).hasValue(RelatorRole.AUTHOR);
+			
+			List<Title> titles = m.find().title();
+			assertThat(titles).hasSize(4);
+			assertThat(titles.get(0).getValue()).isEqualTo("Georgia");
+			assertThat(titles.get(0).getType()).hasValue(TitleType.MAIN);
+			assertThat(titles.get(0).getDisplayOrder()).hasValue(3);
+			assertThat(titles.get(1).getValue()).isEqualTo("Encyclopaedia Britannica, 11th Edition, Volume 11, Slice 7 / Georgia");
+			assertThat(titles.get(1).getType()).hasValue(TitleType.EXPANDED);
+			assertThat(titles.get(2).getValue()).isEqualTo("Encyclopaedia Britannica");
+			assertThat(titles.get(2).getType()).hasValue(TitleType.COLLECTION);
+			assertThat(titles.get(2).getDisplayOrder()).hasValue(1);
+			assertThat(titles.get(3).getValue()).isEqualTo("11th Edition");
+			assertThat(titles.get(3).getType()).hasValue(TitleType.EDITION);
+			assertThat(titles.get(3).getDisplayOrder()).hasValue(2);
+			
+			List<Property<?>> sources = m.find().propertyOf(DublinCoreTerm.SOURCE);
+			assertThat(sources).hasSize(1);
+			assertThat(sources.get(0).getValue()).isEqualTo("http://www.gutenberg.org/files/37523/37523-h/37523-h.htm");
+		});	
+	}
+	
+	@Test
+	public void test_georgia_pls_ssml() {
+		read("georgia-pls-ssml.epub", p->{
+			assertCommon(p);
+			
+			assertThat(p.getNumberOfRenditions()).isEqualTo(1);
+	
+			Rendition r = p.getDefaultRendition();
+	
+			Metadata m = r.getMetadata();
+			assertThat(m.size()).isEqualTo(9);
+		});	
+	}
+	
+	@Test
+	public void test_GhV_oeb_page() {
+		read("GhV-oeb-page.epub", p->{
+			assertCommon(p);
+			
+			assertThat(p.getNumberOfRenditions()).isEqualTo(1);
+	
+			Rendition r = p.getDefaultRendition();
+	
+			Metadata m = r.getMetadata();
+			assertThat(m.size()).isEqualTo(9);
+			
+			assertThat(m.find().language().get(0).getValue()).isSameAs(Locale.FRENCH);
+			
+			List<Contributor> contributors = m.find().contributor();
+			assertThat(contributors).hasSize(1);
+			assertThat(contributors.get(0).getValue()).isEqualTo("Vincent Gros");
+			assertThat(contributors.get(0).getRole()).hasValue(RelatorRole.MARKUP_EDITOR);
+			assertThat(contributors.get(0).getNormalizedValue()).hasValue("Gros, Vincent");
+		});	
+	}
+	
+	@Test
+	public void test_haruko_ahl() {
+		read("haruko-ahl.epub", p->{
+			assertCommon(p);
+			
+			assertThat(p.getNumberOfRenditions()).isEqualTo(1);
+	
+			Rendition r = p.getDefaultRendition();
+	
+			Metadata m = r.getMetadata();
+			assertThat(m.size()).isEqualTo(7);
+			
+			Language language = m.find().language().get(0);
+			assertThat(language.getValue()).isEqualTo(Locale.forLanguageTag("ja-jp"));
+			
+			CustomAssertions.assertThat(m.find().rendering().layout().get(0)).isSameAs(Layout.PRE_PAGINATED);
+			CustomAssertions.assertThat(m.find().rendering().orientation().get(0)).isSameAs(Orientation.PORTRAIT);
+			CustomAssertions.assertThat(m.find().rendering().spread().get(0)).isSameAs(Spread.LANDSCAPE);
 		});	
 	}
 
