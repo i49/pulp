@@ -20,7 +20,7 @@ import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.Term;
 
 /**
- * The rendering property which specifies the intended Reading System 
+ * The property which specifies the intended Reading System 
  * synthetic spread behavior for the given rendition.
  */
 public enum Spread implements Property<String> {

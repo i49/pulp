@@ -20,7 +20,7 @@ import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.Term;
 
 /**
- * The property to specify how Reading Systems should handle content overflow. 
+ * The property which specifies how Reading Systems should handle content overflow. 
  */
 public enum Flow implements Property<String> {
 	AUTO,

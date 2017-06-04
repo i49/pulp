@@ -22,29 +22,34 @@ import java.util.Optional;
 import java.util.function.Function;
 
 /**
- * Utility methods for enumeration types.
+ * A map for mapping keys to enum constants.
  */
-public final class Enums {
+public class ReverseEnumMap<K, V extends Enum<V>> {
 
-	private Enums() {
-	}
-	
 	/**
-	 * Returns a mapper which maps a key to the corresponding enum constant. 
+	 * Creates an instance of this class.
 	 * 
-	 * @param <K> the type of the key. 
-	 * @param <V> the type of the enum.
-	 * @param type the class representing the enum V.
-	 * @param keyMapper the mapper to map each enum constant to its key.
-	 * @return the created mapper.
+	 * @param <K> the type of the keys.
+	 * @param <V> the type of the values.
+	 * @param type the class of the enum.
+	 * @param keyMapper the mapper which generates a key for each enum constant.
+	 * @return newly created map.
 	 */
-	public static <K, V extends Enum<V>> Function<K, Optional<V>> mapper(Class<V> type, Function<V, K> keyMapper) {
-		final Map<K, V> map = new HashMap<>();
+	public static <K, V extends Enum<V>> ReverseEnumMap<K, V> to(Class<V> type, Function<V, K> keyMapper) {
+		Map<K, V> map = new HashMap<>();
 		for (V value: type.getEnumConstants()) {
 			map.put(keyMapper.apply(value), value);
 		}
-		return (K key)->{
-			return Optional.ofNullable(map.get(key));
-		};
+		return new ReverseEnumMap<K, V>(map);
+	}
+	
+	private final Map<K, V> map;
+	
+	private ReverseEnumMap(Map<K, V> map) {
+		this.map = map;
+	}
+	
+	public Optional<V> get(K key) {
+		return Optional.ofNullable(map.get(key));
 	}
 }

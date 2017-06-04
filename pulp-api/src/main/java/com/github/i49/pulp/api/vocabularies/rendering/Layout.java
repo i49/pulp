@@ -20,7 +20,7 @@ import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.Term;
 
 /**
- * Specifies whether the given rendition is reflowable or pre-paginated.
+ * The property which specifies whether the given rendition is reflowable or pre-paginated.
  */
 public enum Layout implements Property<String> {
 	/**

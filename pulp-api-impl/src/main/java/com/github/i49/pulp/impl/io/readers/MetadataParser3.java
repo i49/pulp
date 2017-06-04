@@ -48,8 +48,8 @@ import com.github.i49.pulp.api.vocabularies.rendering.Layout;
 import com.github.i49.pulp.api.vocabularies.rendering.Orientation;
 import com.github.i49.pulp.api.vocabularies.rendering.Rendering;
 import com.github.i49.pulp.api.vocabularies.rendering.Spread;
-import com.github.i49.pulp.impl.base.Enums;
 import com.github.i49.pulp.impl.base.Messages;
+import com.github.i49.pulp.impl.base.ReverseEnumMap;
 import com.github.i49.pulp.impl.vocabularies.epub.MetaPropertyTerm;
 import com.github.i49.pulp.impl.vocabularies.marc.Marc;
 import com.github.i49.pulp.impl.xml.Nodes;
@@ -68,13 +68,13 @@ class MetadataParser3 implements MetadataParser {
 	
 	private static final Map<Term, BiConsumer<MetadataParser3, MetadataEntry>> handlers;
 	
-	private static final Function<String, Optional<RelatorRole>> roles = Enums.mapper(RelatorRole.class, RelatorRole::getCode);
-	private static final Function<String, Optional<TitleType>> titleTypes = Enums.mapper(TitleType.class, MetadataParser3::getTitleTypeValue);
+	private static final ReverseEnumMap<String, RelatorRole> roles = ReverseEnumMap.to(RelatorRole.class, RelatorRole::getCode);
+	private static final ReverseEnumMap<String, TitleType> titleTypes = ReverseEnumMap.to(TitleType.class, MetadataParser3::getTitleTypeValue);
 
-	private static final Function<String, Optional<Flow>> flows = Enums.mapper(Flow.class, Flow::getValue);
-	private static final Function<String, Optional<Layout>> layouts = Enums.mapper(Layout.class, Layout::getValue);
-	private static final Function<String, Optional<Orientation>> orientations = Enums.mapper(Orientation.class, Orientation::getValue);
-	private static final Function<String, Optional<Spread>> spreads = Enums.mapper(Spread.class, Spread::getValue);
+	private static final ReverseEnumMap<String, Flow> flows = ReverseEnumMap.to(Flow.class, Flow::getValue);
+	private static final ReverseEnumMap<String, Layout> layouts = ReverseEnumMap.to(Layout.class, Layout::getValue);
+	private static final ReverseEnumMap<String, Orientation> orientations = ReverseEnumMap.to(Orientation.class, Orientation::getValue);
+	private static final ReverseEnumMap<String, Spread> spreads = ReverseEnumMap.to(Spread.class, Spread::getValue);
 	
 	static {
 		handlers = new HashMap<Term, BiConsumer<MetadataParser3, MetadataEntry>>(){{
@@ -279,19 +279,19 @@ class MetadataParser3 implements MetadataParser {
 	}
 	
 	private void handleFlow(MetadataEntry entry) {
-		add(flows.apply(entry.getValue()));
+		add(flows.get(entry.getValue()));
 	}
 
 	private void handleLayout(MetadataEntry entry) {
-		add(layouts.apply(entry.getValue()));
+		add(layouts.get(entry.getValue()));
 	}
 
 	private void handleOrientation(MetadataEntry entry) {
-		add(orientations.apply(entry.getValue()));
+		add(orientations.get(entry.getValue()));
 	}
 	
 	private void handleSpread(MetadataEntry entry) {
-		add(spreads.apply(entry.getValue()));
+		add(spreads.get(entry.getValue()));
 	}
 
 	private void handleGenericProperty(MetadataEntry entry) {
@@ -337,11 +337,11 @@ class MetadataParser3 implements MetadataParser {
 	}
 
 	private static Optional<TitleType> findTitleType(String value) {
-		return titleTypes.apply(value);
+		return titleTypes.get(value);
 	}
 	
 	private static Optional<RelatorRole> findRole(String value) {
-		return roles.apply(value);
+		return roles.get(value);
 	}
 	
 	private static String getTitleTypeValue(TitleType titleType) {

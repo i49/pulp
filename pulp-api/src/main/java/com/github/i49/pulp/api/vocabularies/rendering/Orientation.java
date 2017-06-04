@@ -20,7 +20,7 @@ import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.Term;
 
 /**
- * The rendering property which specifies which orientation 
+ * The property which specifies which orientation 
  * the author intends the given rendition to be rendered in. 
  */
 public enum Orientation implements Property<String> {

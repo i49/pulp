@@ -21,12 +21,24 @@ import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.Vocabulary;
 
 /**
- * Package rendering terms.
+ * All terms provided by EPUB Package Rendering Metadata.
  */
 public enum Rendering implements Term {
+	/**
+	 * Specifies how reading systems should handle content overflow.
+	 */
 	FLOW,
+	/**
+	 * Specifies whether the given rendition is reflowable or pre-paginated.
+	 */
 	LAYOUT,
+	/**
+	 * Specifies the orientation of the given rendition.
+	 */
 	ORIENTATION,
+	/**
+	 * Specifies synthetic spread behavior for the given rendition.
+	 */
 	SPREAD
 	;
 
