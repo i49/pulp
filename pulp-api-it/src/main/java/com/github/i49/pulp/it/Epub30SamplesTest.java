@@ -23,6 +23,8 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -47,6 +49,7 @@ import com.github.i49.pulp.api.vocabularies.RelatorRole;
 import com.github.i49.pulp.api.vocabularies.Term;
 import com.github.i49.pulp.api.vocabularies.dc.Contributor;
 import com.github.i49.pulp.api.vocabularies.dc.Creator;
+import com.github.i49.pulp.api.vocabularies.dc.Date;
 import com.github.i49.pulp.api.vocabularies.dc.Identifier;
 import com.github.i49.pulp.api.vocabularies.dc.Language;
 import com.github.i49.pulp.api.vocabularies.dc.Publisher;
@@ -417,6 +420,107 @@ public class Epub30SamplesTest {
 			CustomAssertions.assertThat(m.find().rendering().orientation().get(0)).isSameAs(Orientation.PORTRAIT);
 			CustomAssertions.assertThat(m.find().rendering().spread().get(0)).isSameAs(Spread.LANDSCAPE);
 		});	
+	}
+
+	@Test
+	public void test_haruko_html_jpeg() {
+		read("haruko-html-jpeg.epub", p->{
+			assertCommon(p);
+			
+			assertThat(p.getNumberOfRenditions()).isEqualTo(1);
+	
+			Rendition r = p.getDefaultRendition();
+	
+			Metadata m = r.getMetadata();
+			assertThat(m.size()).isEqualTo(7);
+		});	
+	}
+	
+	@Test
+	public void test_haruko_jpeg() {
+		read("haruko-jpeg.epub", p->{
+			assertCommon(p);
+			
+			assertThat(p.getNumberOfRenditions()).isEqualTo(1);
+	
+			Rendition r = p.getDefaultRendition();
+	
+			Metadata m = r.getMetadata();
+			assertThat(m.size()).isEqualTo(7);
+		});	
+	}
+
+	@Test
+	public void test_hefty_water() {
+		read("hefty-water.epub", p->{
+			assertCommon(p);
+			
+			assertThat(p.getNumberOfRenditions()).isEqualTo(1);
+	
+			Rendition r = p.getDefaultRendition();
+	
+			Metadata m = r.getMetadata();
+			assertThat(m.size()).isEqualTo(5);
+			
+			Date date = m.find().date().get(0);
+			assertThat(date.getValue()).isEqualTo(OffsetDateTime.of(2012, 3, 29, 0, 0, 0, 0, ZoneOffset.UTC));
+		});	
+	}
+	
+	@Test
+	public void test_internallinks() {
+		read("internallinks.epub", p->{
+			assertCommon(p);
+			
+			assertThat(p.getNumberOfRenditions()).isEqualTo(1);
+	
+			Rendition r = p.getDefaultRendition();
+	
+			Metadata m = r.getMetadata();
+			assertThat(m.size()).isEqualTo(5);
+		});
+	}
+	
+	@Test
+	public void test_israelsailing() {
+		read("israelsailing.epub", p->{
+			assertCommon(p);
+			
+			assertThat(p.getNumberOfRenditions()).isEqualTo(1);
+	
+			Rendition r = p.getDefaultRendition();
+	
+			Metadata m = r.getMetadata();
+			assertThat(m.size()).isEqualTo(18);
+		});
+	}
+
+	@Test
+	public void test_jlreq_in_english() {
+		read("jlreq-in-english.epub", p->{
+			assertCommon(p);
+			
+			assertThat(p.getNumberOfRenditions()).isEqualTo(1);
+	
+			Rendition r = p.getDefaultRendition();
+	
+			Metadata m = r.getMetadata();
+			assertThat(m.size()).isEqualTo(9);
+		});
+	}
+	
+	@Test
+	public void test_jlreq_in_japanese() {
+		read("jlreq-in-japanese.epub", p->{
+			assertCommon(p);
+			
+			assertThat(p.getNumberOfRenditions()).isEqualTo(1);
+	
+			Rendition r = p.getDefaultRendition();
+	
+			Metadata m = r.getMetadata();
+			assertThat(m.size()).isEqualTo(9);
+		});
 	}
 
 	protected void assertCommon(Publication p) {
