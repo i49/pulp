@@ -18,13 +18,13 @@ This project is composed of the following modules.
 
 Modules                     |Description                                 |Status
 ----------------------------|--------------------------------------------|---------
+pulp                        |Common settings for all other modules above |-
 pulp-api                    |Java API for EPUB processing                |Pre-alpha
-pulp-api-impl               |Reference implementation of the API         |Pre-alpha
 pulp-api-it                 |Integration tests with IDPF EPUB3 samples   |-
 pulp-api-ut                 |Unit tests for the API implementation       |-   
 pulp-cli                    |Command line utility built on the API       |Pre-alpha
+pulp-core                   |Reference implementation of the API         |Pre-alpha
 pulp-distribution           |Distribution file generator                 |-
-pulp-parent                 |Common settings for all other modules above |-
 
 ## How To Build
 
@@ -38,6 +38,6 @@ The following commands build and install all modules provided by this project in
 ```bash
 $ cd <where you place local git repositories>
 $ git clone https://github.com/i49/pulp.git
-$ cd pulp/pulp-parent
+$ cd pulp/pulp
 $ mvn install
 ```

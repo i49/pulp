@@ -3,13 +3,14 @@
 
   <parent>
     <groupId>com.github.i49</groupId>
-    <artifactId>pulp-parent</artifactId>
+    <artifactId>pulp</artifactId>
     <version>0.1.0-SNAPSHOT</version>
-    <relativePath>../pulp-parent</relativePath>
+    <relativePath>../pulp</relativePath>
   </parent>
 
   <artifactId>pulp-cli</artifactId>
   <packaging>jar</packaging>
+  <name>Pulp Command Line Utility</name>
 
   <dependencies>
     <dependency>
@@ -19,7 +20,7 @@
     </dependency>
     <dependency>
       <groupId>com.github.i49</groupId>
-      <artifactId>pulp-api-impl</artifactId>
+      <artifactId>pulp-core</artifactId>
       <version>${project.version}</version>
       <scope>runtime</scope>
     </dependency>

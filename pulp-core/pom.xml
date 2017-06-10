@@ -1,0 +1,98 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.github.i49</groupId>
+    <artifactId>pulp</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <relativePath>../pulp</relativePath>
+  </parent>
+
+  <artifactId>pulp-core</artifactId>
+  <name>Pulp Core Library</name>
+  
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>pulp-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>pulp-api-ut</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>pulp-api-it</artifactId>
+        <version>${project.version}</version>
+        <scope>test</scope>
+      </dependency>
+  </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack</id>
+            <phase>process-test-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>pulp-api-ut</artifactId>
+                  <version>${project.version}</version>
+                  <includes>epub/**/*, expanded/**/*</includes>
+                  <type>jar</type>
+                  <outputDirectory>${project.build.testOutputDirectory}</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <dependenciesToScan>
+            <dependency>${project.groupId}:pulp-api-ut</dependency>
+          </dependenciesToScan>
+          <systemPropertyVariables>
+            <test.resources.path>${project.build.testOutputDirectory}</test.resources.path>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
+  <profiles>
+    <profile>
+      <id>test-samples</id>
+      <activation>
+        <property>
+          <name>env.EPUB3_SAMPLES_HOME</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <dependenciesToScan>
+                <dependency>${project.groupId}:pulp-api-ut</dependency>
+                <dependency>${project.groupId}:pulp-api-it</dependency>
+              </dependenciesToScan>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+  
+</project>
