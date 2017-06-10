@@ -107,9 +107,9 @@ public class Epub30SamplesTest {
 			assertThat(identifier.getValue()).isEqualTo("urn:isbn:9781449328030");
 			assertThat(identifier.isPrimary()).isTrue();
 
-			assertThat(m.find().title().get(0)).hasValue("Accessible EPUB 3");
-			assertThat(m.find().language().get(0)).hasValue("en");
-			assertThat(m.find().creator().get(0)).hasValue("Matt Garrish");
+			assertThat(m.find().title().get(0).getValue()).isEqualTo("Accessible EPUB 3");
+			assertThat(m.find().language().get(0).getValueAsString()).isEqualTo("en");
+			assertThat(m.find().creator().get(0).getValue()).isEqualTo("Matt Garrish");
 			assertThat(m.find().contributor()).extracting(Property::getValueAsString).containsExactly(
 				"O’Reilly Production Services", 
 				"David Futato", 
@@ -118,10 +118,10 @@ public class Epub30SamplesTest {
 				"Dan Fauxsmith", 
 				"Karen Montgomery"
 				);
-			assertThat(m.find().publisher().get(0)).hasValue("O’Reilly Media, Inc.");
-			assertThat(m.find().rights().get(0)).hasValue("Copyright © 2012 O’Reilly Media, Inc");
-			assertThat(m.find().date().get(0)).hasValue("2012-02-20T00:00:00Z");
-			assertThat(m.find().modified().get(0)).hasValue("2012-10-24T15:30:00Z");
+			assertThat(m.find().publisher().get(0).getValue()).isEqualTo("O’Reilly Media, Inc.");
+			assertThat(m.find().rights().get(0).getValue()).isEqualTo("Copyright © 2012 O’Reilly Media, Inc");
+			assertThat(m.find().date().get(0).getValue()).isEqualTo("2012-02-20T00:00:00Z");
+			assertThat(m.find().modified().get(0).getValue()).isEqualTo("2012-10-24T15:30:00Z");
 			
 			Manifest mf = r.getManifest();
 			assertThat(mf.getNumberOfItems()).isEqualTo(35);
@@ -147,20 +147,20 @@ public class Epub30SamplesTest {
 
 			Metadata m = r.getMetadata();
 			assertThat(m.size()).isEqualTo(10);
-			assertThat(m.find().identifier().get(0)).hasValue("code.google.com.epub-samples.cc-shared-culture");
-			assertThat(m.find().title().get(0)).hasValue("Creative Commons - A Shared Culture");
-			assertThat(m.find().language().get(0)).hasValue("en-US");
-			assertThat(m.find().creator().get(0)).hasValue("Jesse Dylan");
-			assertThat(m.find().publisher().get(0)).hasValue("Creative Commons");
-			assertThat(m.find().contributor().get(0)).hasValue("mgylling");
-			assertThat(m.find().description().get(0)).hasValue("Multiple video tests (see Navigation Document (toc) for details)");
-			assertThat(m.find().rights().get(0)).hasValue("This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike (CC BY-NC-SA) license.");
-			assertThat(m.find().modified().get(0)).hasValue("2012-01-20T12:47:00Z");
+			assertThat(m.find().identifier().get(0).getValue()).isEqualTo("code.google.com.epub-samples.cc-shared-culture");
+			assertThat(m.find().title().get(0).getValue()).isEqualTo("Creative Commons - A Shared Culture");
+			assertThat(m.find().language().get(0).getValueAsString()).isEqualTo("en-US");
+			assertThat(m.find().creator().get(0).getValue()).isEqualTo("Jesse Dylan");
+			assertThat(m.find().publisher().get(0).getValue()).isEqualTo("Creative Commons");
+			assertThat(m.find().contributor().get(0).getValue()).isEqualTo("mgylling");
+			assertThat(m.find().description().get(0).getValue()).isEqualTo("Multiple video tests (see Navigation Document (toc) for details)");
+			assertThat(m.find().rights().get(0).getValue()).isEqualTo("This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike (CC BY-NC-SA) license.");
+			assertThat(m.find().modified().get(0).getValue()).isEqualTo("2012-01-20T12:47:00Z");
 
 			URI cc = URI.create("http://creativecommons.org/ns#");
 			Optional<Term> term = termRegistry.findTerm(cc, "attributionURL");
 			assertThat(term).isNotEmpty();
-			assertThat(m.find().propertyOf(term.get()).get(0)).hasValue("http://creativecommons.org/videos/a-shared-culture");
+			assertThat(m.find().propertyOf(term.get()).get(0).getValue()).isEqualTo("http://creativecommons.org/videos/a-shared-culture");
 			
 			Manifest mf = r.getManifest();
 			assertThat(mf.getNumberOfItems()).isEqualTo(21);
@@ -187,36 +187,36 @@ public class Epub30SamplesTest {
 	
 			Metadata m = r.getMetadata();
 			assertThat(m.size()).isEqualTo(12);
-			assertThat(m.find().identifier().get(0)).hasValue("http://www.gutenberg.org/ebooks/25545");
+			assertThat(m.find().identifier().get(0).getValue()).isEqualTo("http://www.gutenberg.org/ebooks/25545");
 			
 			List<Title> titles = m.find().title();
 			assertThat(titles).hasSize(2);
-			assertThat(titles.get(0)).hasValue("Children's Literature");
+			assertThat(titles.get(0).getValue()).isEqualTo("Children's Literature");
 			assertThat(titles.get(0).getType()).hasValue(TitleType.MAIN);
 			assertThat(titles.get(0).getDisplayOrder()).hasValue(1);
-			assertThat(titles.get(1)).hasValue("A Textbook of Sources for Teachers and Teacher-Training Classes");
+			assertThat(titles.get(1).getValue()).isEqualTo("A Textbook of Sources for Teachers and Teacher-Training Classes");
 			assertThat(titles.get(1).getType()).hasValue(TitleType.SUBTITLE);
 			assertThat(titles.get(1).getDisplayOrder()).hasValue(2);
 		
-			assertThat(m.find().language().get(0)).hasValue("en");
+			assertThat(m.find().language().get(0).getValueAsString()).isEqualTo("en");
 			
 			List<Creator> creators = m.find().creator();
 			assertThat(creators).hasSize(2);
-			assertThat(creators.get(0)).hasValue("Charles Madison Curry");
-			assertThat(creators.get(0)).hasNormalizedValue("Curry, Charles Madison");
-			assertThat(creators.get(1)).hasValue("Erle Elsworth Clippinger");
-			assertThat(creators.get(1)).hasNormalizedValue("Clippinger, Erle Elsworth");
+			assertThat(creators.get(0).getValue()).isEqualTo("Charles Madison Curry");
+			assertThat(creators.get(0).getNormalizedValue()).hasValue("Curry, Charles Madison");
+			assertThat(creators.get(1).getValue()).isEqualTo("Erle Elsworth Clippinger");
+			assertThat(creators.get(1).getNormalizedValue()).hasValue("Clippinger, Erle Elsworth");
 		
 			List<Subject> subjects = m.find().subject();
 			assertThat(subjects).hasSize(2);
-			assertThat(subjects.get(0)).hasValue("Children -- Books and reading");
-			assertThat(subjects.get(1)).hasValue("Children's literature -- Study and teaching");
+			assertThat(subjects.get(0).getValue()).isEqualTo("Children -- Books and reading");
+			assertThat(subjects.get(1).getValue()).isEqualTo("Children's literature -- Study and teaching");
 			
-			assertThat(m.find().source().get(0)).hasValue("http://www.gutenberg.org/files/25545/25545-h/25545-h.htm");
-			assertThat(m.find().rights().get(0)).hasValue("Public domain in the USA.");
+			assertThat(m.find().source().get(0).getValue()).isEqualTo("http://www.gutenberg.org/files/25545/25545-h/25545-h.htm");
+			assertThat(m.find().rights().get(0).getValue()).isEqualTo("Public domain in the USA.");
 
-			assertThat(m.find().date().get(0)).hasValue("2008-05-20T00:00:00Z");
-			assertThat(m.find().modified().get(0)).hasValue("2010-02-17T04:39:13Z");
+			assertThat(m.find().date().get(0).getValue()).isEqualTo("2008-05-20T00:00:00Z");
+			assertThat(m.find().modified().get(0).getValue()).isEqualTo("2010-02-17T04:39:13Z");
 
 			Manifest mf = r.getManifest();
 			assertThat(mf.getNumberOfItems()).isEqualTo(7);
@@ -293,11 +293,11 @@ public class Epub30SamplesTest {
 			assertThat(m.size()).isEqualTo(10);
 			
 			Layout layout = m.find().rendering().layout().get(0);
-			CustomAssertions.assertThat(layout).isSameAs(Layout.PRE_PAGINATED);
+			assertThat(layout).isSameAs(Layout.PRE_PAGINATED);
 			Orientation orient = m.find().rendering().orientation().get(0);
-			CustomAssertions.assertThat(orient).isSameAs(Orientation.LANDSCAPE);
+			assertThat(orient).isSameAs(Orientation.LANDSCAPE);
 			Spread spread = m.find().rendering().spread().get(0);
-			CustomAssertions.assertThat(spread).isSameAs(Spread.NONE);
+			assertThat(spread).isSameAs(Spread.NONE);
 		});	
 	}
 	
@@ -416,9 +416,9 @@ public class Epub30SamplesTest {
 			Language language = m.find().language().get(0);
 			assertThat(language.getValue()).isEqualTo(Locale.forLanguageTag("ja-jp"));
 			
-			CustomAssertions.assertThat(m.find().rendering().layout().get(0)).isSameAs(Layout.PRE_PAGINATED);
-			CustomAssertions.assertThat(m.find().rendering().orientation().get(0)).isSameAs(Orientation.PORTRAIT);
-			CustomAssertions.assertThat(m.find().rendering().spread().get(0)).isSameAs(Spread.LANDSCAPE);
+			assertThat(m.find().rendering().layout().get(0)).isSameAs(Layout.PRE_PAGINATED);
+			assertThat(m.find().rendering().orientation().get(0)).isSameAs(Orientation.PORTRAIT);
+			assertThat(m.find().rendering().spread().get(0)).isSameAs(Spread.LANDSCAPE);
 		});	
 	}
 

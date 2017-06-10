@@ -16,20 +16,12 @@
 
 package com.github.i49.pulp.it;
 
-import java.util.Optional;
-
 import org.assertj.core.api.AbstractAssert;
 
 import com.github.i49.pulp.api.publication.Spine;
 import com.github.i49.pulp.api.publication.Spine.Page;
-import com.github.i49.pulp.api.vocabularies.Normalizable;
-import com.github.i49.pulp.api.vocabularies.Property;
 
 public class CustomAssertions {
-
-	public static <T extends Property<?>> PropertyAssert<T> assertThat(T actual) {
-		return new PropertyAssert<T>(actual);
-	}
 
 	/**
 	 * Provides assertion on an instance of {@link Spine}. 
@@ -42,40 +34,6 @@ public class CustomAssertions {
 	}
 	
 	private CustomAssertions() {
-	}
-	
-	public static class PropertyAssert<T extends Property<?>> extends AbstractAssert<PropertyAssert<T>, T> {
-		
-		private PropertyAssert(T actual) {
-			super(actual, PropertyAssert.class);
-		}
-
-		public PropertyAssert<T> hasValue(String value) {
-			isNotNull();
-			String actualValue = actual.getValueAsString();
-			if (!actualValue.equals(value)) {
-				failWithMessage("Expected property value to be <%s> but was <%s>", value, actualValue);
-			}
-			return this;
-		}
-
-		public PropertyAssert<T> hasNormalizedValue(String value) {
-			isNotNull();
-			if (actual instanceof Normalizable) {
-				Normalizable actual = (Normalizable)this.actual;
-				Optional<String> normalized = actual.getNormalizedValue();
-				if (!normalized.isPresent()) {
-					failWithMessage("Expected normalized value to be <%s> but was <empty>", value);
-				}
-				String actualValue = normalized.get();
-				if (!actualValue.equals(value)) {
-					failWithMessage("Expected normalized value to be <%s> but was <%s>", value, actualValue);
-				}
-			} else {
-				failWithMessage("Property does not have a normalized value");
-			}
-			return this;
-		}
 	}
 	
 	public static class SpineAssert extends AbstractAssert<SpineAssert, Spine> {
