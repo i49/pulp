@@ -18,11 +18,11 @@ package com.github.i49.pulp.impl.service;
 
 import java.net.URI;
 
-import com.github.i49.pulp.api.core.Publication;
-import com.github.i49.pulp.api.core.PublicationReaderFactory;
-import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
-import com.github.i49.pulp.api.core.PublicationWriterFactory;
 import com.github.i49.pulp.api.metadata.TermRegistry;
+import com.github.i49.pulp.api.publication.Publication;
+import com.github.i49.pulp.api.publication.PublicationReaderFactory;
+import com.github.i49.pulp.api.publication.PublicationResourceBuilderFactory;
+import com.github.i49.pulp.api.publication.PublicationWriterFactory;
 import com.github.i49.pulp.api.spi.EpubService;
 
 /**

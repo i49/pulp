@@ -20,8 +20,8 @@ import java.util.Optional;
 
 import org.assertj.core.api.AbstractAssert;
 
-import com.github.i49.pulp.api.core.Spine;
-import com.github.i49.pulp.api.core.Spine.Page;
+import com.github.i49.pulp.api.publication.Spine;
+import com.github.i49.pulp.api.publication.Spine.Page;
 import com.github.i49.pulp.api.vocabularies.Normalizable;
 import com.github.i49.pulp.api.vocabularies.Property;
 

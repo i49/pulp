@@ -23,9 +23,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.i49.pulp.api.core.Epub;
-import com.github.i49.pulp.api.core.Publication;
-import com.github.i49.pulp.api.core.Rendition;
+import com.github.i49.pulp.api.publication.Epub;
+import com.github.i49.pulp.api.publication.Publication;
+import com.github.i49.pulp.api.publication.Rendition;
 import com.github.i49.pulp.api.vocabularies.Property;
 import com.github.i49.pulp.api.vocabularies.dc.Creator;
 import com.github.i49.pulp.api.vocabularies.dc.DublinCore;

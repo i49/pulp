@@ -21,8 +21,8 @@ import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.github.i49.pulp.api.core.Publication;
-import com.github.i49.pulp.api.core.Rendition;
+import com.github.i49.pulp.api.publication.Publication;
+import com.github.i49.pulp.api.publication.Rendition;
 import com.github.i49.pulp.impl.io.containers.ContainerDocumentProcessor;
 import com.github.i49.pulp.impl.publication.StandardMediaType;
 

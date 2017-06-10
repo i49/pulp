@@ -10,9 +10,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.i49.pulp.api.core.Epub;
-import com.github.i49.pulp.api.core.Rendition;
 import com.github.i49.pulp.api.metadata.Metadata;
+import com.github.i49.pulp.api.publication.Epub;
+import com.github.i49.pulp.api.publication.Rendition;
 import com.github.i49.pulp.api.vocabularies.dc.Creator;
 import com.github.i49.pulp.api.vocabularies.dc.Date;
 import com.github.i49.pulp.api.vocabularies.dc.Identifier;

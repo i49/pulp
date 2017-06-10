@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 
-import com.github.i49.pulp.api.core.ContentSource;
+import com.github.i49.pulp.api.publication.ContentSource;
 
 /**
  * Abstract Container interface to be read.

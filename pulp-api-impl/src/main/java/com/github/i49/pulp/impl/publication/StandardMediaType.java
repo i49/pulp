@@ -16,7 +16,7 @@
 
 package com.github.i49.pulp.impl.publication;
 
-import com.github.i49.pulp.api.core.MediaType;
+import com.github.i49.pulp.api.publication.MediaType;
 
 /**
  * Media types defined by IDPF.

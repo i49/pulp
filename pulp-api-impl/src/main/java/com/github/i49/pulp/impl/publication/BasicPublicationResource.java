@@ -24,10 +24,10 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.EnumSet;
 
-import com.github.i49.pulp.api.core.ContentSource;
-import com.github.i49.pulp.api.core.CoreMediaType;
-import com.github.i49.pulp.api.core.MediaType;
-import com.github.i49.pulp.api.core.PublicationResource;
+import com.github.i49.pulp.api.publication.ContentSource;
+import com.github.i49.pulp.api.publication.CoreMediaType;
+import com.github.i49.pulp.api.publication.MediaType;
+import com.github.i49.pulp.api.publication.PublicationResource;
 
 /**
  * A skeletal class implementing {@link PublicaionResource}.

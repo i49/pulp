@@ -21,8 +21,8 @@ import static com.github.i49.pulp.impl.base.Preconditions.*;
 import java.net.URI;
 import java.nio.file.Path;
 
-import com.github.i49.pulp.api.core.PublicationResourceBuilder;
-import com.github.i49.pulp.api.core.PublicationResourceBuilderFactory;
+import com.github.i49.pulp.api.publication.PublicationResourceBuilder;
+import com.github.i49.pulp.api.publication.PublicationResourceBuilderFactory;
 
 public class DefaultPublicationResourceBuilderFactory implements PublicationResourceBuilderFactory {
 	

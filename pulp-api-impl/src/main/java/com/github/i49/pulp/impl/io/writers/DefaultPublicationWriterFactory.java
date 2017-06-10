@@ -22,9 +22,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Path;
 
-import com.github.i49.pulp.api.core.EpubException;
-import com.github.i49.pulp.api.core.PublicationWriter;
-import com.github.i49.pulp.api.core.PublicationWriterFactory;
+import com.github.i49.pulp.api.publication.EpubException;
+import com.github.i49.pulp.api.publication.PublicationWriter;
+import com.github.i49.pulp.api.publication.PublicationWriterFactory;
 import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.io.containers.WriteableContainer;
 import com.github.i49.pulp.impl.io.containers.WriteableZipContainer;

@@ -27,14 +27,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import com.github.i49.pulp.api.core.EpubException;
-import com.github.i49.pulp.api.core.Manifest;
-import com.github.i49.pulp.api.core.Publication;
-import com.github.i49.pulp.api.core.PublicationResource;
-import com.github.i49.pulp.api.core.Rendition;
-import com.github.i49.pulp.api.core.Spine;
 import com.github.i49.pulp.api.metadata.Metadata;
-import com.github.i49.pulp.api.core.Manifest.Item;
+import com.github.i49.pulp.api.publication.EpubException;
+import com.github.i49.pulp.api.publication.Manifest;
+import com.github.i49.pulp.api.publication.Publication;
+import com.github.i49.pulp.api.publication.PublicationResource;
+import com.github.i49.pulp.api.publication.Rendition;
+import com.github.i49.pulp.api.publication.Spine;
+import com.github.i49.pulp.api.publication.Manifest.Item;
 import com.github.i49.pulp.impl.base.Messages;
 
 /**

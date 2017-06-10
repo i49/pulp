@@ -21,9 +21,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
 
-import com.github.i49.pulp.api.core.Epub;
-import com.github.i49.pulp.api.core.Publication;
-import com.github.i49.pulp.api.core.PublicationWriter;
+import com.github.i49.pulp.api.publication.Epub;
+import com.github.i49.pulp.api.publication.Publication;
+import com.github.i49.pulp.api.publication.PublicationWriter;
 
 public class BuildCommand extends Command {
 

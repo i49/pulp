@@ -25,8 +25,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import com.github.i49.pulp.api.core.EpubException;
-import com.github.i49.pulp.api.core.PublicationResource;
+import com.github.i49.pulp.api.publication.EpubException;
+import com.github.i49.pulp.api.publication.PublicationResource;
 import com.github.i49.pulp.impl.base.Messages;
 
 /**

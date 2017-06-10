@@ -29,10 +29,10 @@ import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.github.i49.pulp.api.core.Manifest;
-import com.github.i49.pulp.api.core.Rendition;
-import com.github.i49.pulp.api.core.Spine;
 import com.github.i49.pulp.api.metadata.Metadata;
+import com.github.i49.pulp.api.publication.Manifest;
+import com.github.i49.pulp.api.publication.Rendition;
+import com.github.i49.pulp.api.publication.Spine;
 import com.github.i49.pulp.api.vocabularies.dc.Contributor;
 import com.github.i49.pulp.api.vocabularies.dc.Creator;
 import com.github.i49.pulp.api.vocabularies.dc.Identifier;

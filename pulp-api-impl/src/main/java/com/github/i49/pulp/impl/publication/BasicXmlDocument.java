@@ -28,8 +28,8 @@ import javax.xml.transform.TransformerException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import com.github.i49.pulp.api.core.MediaType;
-import com.github.i49.pulp.api.core.XmlDocument;
+import com.github.i49.pulp.api.publication.MediaType;
+import com.github.i49.pulp.api.publication.XmlDocument;
 import com.github.i49.pulp.impl.xml.DocumentSerializer;
 import com.github.i49.pulp.impl.xml.XmlServices;
 

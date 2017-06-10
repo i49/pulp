@@ -24,9 +24,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.zip.ZipException;
 
-import com.github.i49.pulp.api.core.EpubException;
-import com.github.i49.pulp.api.core.PublicationReader;
-import com.github.i49.pulp.api.core.PublicationReaderFactory;
+import com.github.i49.pulp.api.publication.EpubException;
+import com.github.i49.pulp.api.publication.PublicationReader;
+import com.github.i49.pulp.api.publication.PublicationReaderFactory;
 import com.github.i49.pulp.api.spi.EpubService;
 import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.io.containers.ReadableContainer;

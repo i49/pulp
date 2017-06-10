@@ -16,7 +16,7 @@
 
 package com.github.i49.pulp.impl.io.readers;
 
-import com.github.i49.pulp.api.core.PublicationResource;
+import com.github.i49.pulp.api.publication.PublicationResource;
 
 /**
  * Resource finder for a rendition of a publication.

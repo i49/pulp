@@ -23,8 +23,8 @@ import java.net.URI;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.i49.pulp.api.core.Epub;
 import com.github.i49.pulp.api.metadata.Metadata;
+import com.github.i49.pulp.api.publication.Epub;
 
 public class SubjectTest {
 
