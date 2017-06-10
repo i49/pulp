@@ -19,8 +19,6 @@ package com.github.i49.pulp.api.publication;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
-import com.github.i49.pulp.api.spi.EpubService;
-
 /**
  * A helper class for loading {@link EpubService}.
  */

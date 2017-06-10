@@ -22,11 +22,11 @@ import java.net.URI;
 
 import com.github.i49.pulp.api.metadata.Metadata;
 import com.github.i49.pulp.api.metadata.TermRegistry;
+import com.github.i49.pulp.api.publication.EpubService;
 import com.github.i49.pulp.api.publication.Publication;
 import com.github.i49.pulp.api.publication.PublicationReaderFactory;
 import com.github.i49.pulp.api.publication.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.publication.PublicationWriterFactory;
-import com.github.i49.pulp.api.spi.EpubService;
 import com.github.i49.pulp.impl.io.readers.DefaultPublicationReaderFactory;
 import com.github.i49.pulp.impl.io.writers.DefaultPublicationWriterFactory;
 import com.github.i49.pulp.impl.metadata.DefaultMetadata;

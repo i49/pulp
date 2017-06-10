@@ -21,8 +21,8 @@ import static com.github.i49.pulp.impl.xml.XmlAssertions.assertOn;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.github.i49.pulp.api.publication.EpubService;
 import com.github.i49.pulp.api.publication.Rendition;
-import com.github.i49.pulp.api.spi.EpubService;
 import com.github.i49.pulp.impl.io.containers.PackageDocumentProcessor;
 
 /**

@@ -14,18 +14,11 @@
  * limitations under the License.
  */
 
-package com.github.i49.pulp.api.spi;
+package com.github.i49.pulp.api.publication;
 
 import java.net.URI;
 
 import com.github.i49.pulp.api.metadata.TermRegistry;
-import com.github.i49.pulp.api.publication.Publication;
-import com.github.i49.pulp.api.publication.PublicationReader;
-import com.github.i49.pulp.api.publication.PublicationReaderFactory;
-import com.github.i49.pulp.api.publication.PublicationResourceBuilder;
-import com.github.i49.pulp.api.publication.PublicationResourceBuilderFactory;
-import com.github.i49.pulp.api.publication.PublicationWriter;
-import com.github.i49.pulp.api.publication.PublicationWriterFactory;
 
 /**
  * Service Provider Interface (SPI) to be implemented by API implementor.

@@ -28,13 +28,13 @@ import org.xml.sax.SAXException;
 
 import com.github.i49.pulp.api.publication.EpubException;
 import com.github.i49.pulp.api.publication.EpubParsingException;
+import com.github.i49.pulp.api.publication.EpubService;
 import com.github.i49.pulp.api.publication.Publication;
 import com.github.i49.pulp.api.publication.PublicationReader;
 import com.github.i49.pulp.api.publication.PublicationResource;
 import com.github.i49.pulp.api.publication.PublicationResourceBuilder;
 import com.github.i49.pulp.api.publication.PublicationResourceBuilderFactory;
 import com.github.i49.pulp.api.publication.Rendition;
-import com.github.i49.pulp.api.spi.EpubService;
 import com.github.i49.pulp.impl.base.Messages;
 import com.github.i49.pulp.impl.io.containers.AbstractContainer;
 import com.github.i49.pulp.impl.io.containers.ReadableContainer;
